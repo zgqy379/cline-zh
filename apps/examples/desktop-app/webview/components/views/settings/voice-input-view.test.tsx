@@ -184,10 +184,10 @@ describe("VoiceInputContent", () => {
 		const onOpenModelProviders = await render();
 
 		expect(container.textContent).toContain(
-			"Voice input needs a configured model provider",
+			"语音输入需要已配置的服务商",
 		);
 		const openProviders = Array.from(container.querySelectorAll("button")).find(
-			(button) => button.textContent?.includes("Open Model Providers"),
+			(button) => button.textContent?.includes("打开服务商设置"),
 		);
 		await act(async () => openProviders?.click());
 		expect(onOpenModelProviders).toHaveBeenCalledOnce();
@@ -277,7 +277,7 @@ describe("VoiceInputContent", () => {
 		await render();
 
 		expect(container.textContent).toContain(
-			"None of your configured providers offer streaming speech-to-text models",
+			"你已配置的服务商都不提供流式语音转文字模型",
 		);
 		expect(container.textContent).toContain("Groq");
 	});
@@ -296,7 +296,7 @@ describe("VoiceInputContent", () => {
 		await render();
 
 		const toggle = container.querySelector<HTMLInputElement>(
-			'[aria-label="Enable voice input"]',
+			'[aria-label="启用语音输入"]',
 		);
 		expect(toggle?.checked).toBe(false);
 		await act(async () => toggle?.click());
@@ -310,7 +310,7 @@ describe("VoiceInputContent", () => {
 			'[role="radio"][aria-checked="true"]',
 		);
 		expect(selected?.textContent).toContain("Scribe v2 Realtime");
-		expect(selected?.textContent).toContain("Default");
+		expect(selected?.textContent).toContain("默认");
 	});
 
 	it("excludes batch models and clears the selection when disabled", async () => {
@@ -328,7 +328,7 @@ describe("VoiceInputContent", () => {
 
 		invokeMock.mockResolvedValue({});
 		const toggle = container.querySelector<HTMLInputElement>(
-			'[aria-label="Enable voice input"]',
+			'[aria-label="启用语音输入"]',
 		);
 		await act(async () => toggle?.click());
 		expect(invokeMock).toHaveBeenLastCalledWith("save_voice_input_settings", {

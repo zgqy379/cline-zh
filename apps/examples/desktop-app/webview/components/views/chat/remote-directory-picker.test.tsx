@@ -111,7 +111,7 @@ describe("RemoteDirectoryPicker", () => {
 		await vi.waitFor(() => {
 			expect(document.body.textContent).toContain("/srv/projects/cline");
 		});
-		await clickButton("Use this folder");
+		await clickButton("使用此文件夹");
 		expect(onSelect).toHaveBeenCalledWith("/srv/projects/cline");
 	});
 

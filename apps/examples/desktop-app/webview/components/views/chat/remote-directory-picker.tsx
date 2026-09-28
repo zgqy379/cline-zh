@@ -87,12 +87,12 @@ export function RemoteDirectoryPicker({
 				if (cancelled) return;
 				if (result.environmentId !== request.environmentId) {
 					throw new Error(
-						`Directory response belongs to ${result.environmentId}, not ${request.environmentId}.`,
+						`目录响应属于 ${result.environmentId}，而不是 ${request.environmentId}。`,
 					);
 				}
 				const canonicalPath = normalizeRemotePath(result.currentPath);
 				if (!canonicalPath) {
-					throw new Error("Remote host returned an empty directory path.");
+					throw new Error("远程主机返回了空目录路径。");
 				}
 				setCurrentPath(canonicalPath);
 				setParentPath(
@@ -127,16 +127,15 @@ export function RemoteDirectoryPicker({
 		<Dialog open={open} onOpenChange={(nextOpen) => !nextOpen && onCancel()}>
 			<DialogContent className="gap-4 sm:max-w-xl">
 				<DialogHeader>
-					<DialogTitle>Choose remote workspace</DialogTitle>
+					<DialogTitle>选择远程工作区</DialogTitle>
 					<DialogDescription>
-						Browse directories on the connected SSH host. No local folders are
-						shown here.
+						浏览已连接 SSH 主机上的目录。此处不显示本地文件夹。
 					</DialogDescription>
 				</DialogHeader>
 
 				<div className="flex min-w-0 items-center gap-2">
 					<Button
-						aria-label="Remote home directory"
+						aria-label="远程主目录"
 						disabled={loading || currentPath === normalizedHome}
 						onClick={() => setRequestedPath(normalizedHome)}
 						size="icon"
@@ -145,7 +144,7 @@ export function RemoteDirectoryPicker({
 						<Home />
 					</Button>
 					<Button
-						aria-label="Parent remote directory"
+						aria-label="上级远程目录"
 						disabled={loading || !canGoUp}
 						onClick={() => parentPath && setRequestedPath(parentPath)}
 						size="icon"
@@ -160,7 +159,7 @@ export function RemoteDirectoryPicker({
 						{currentPath}
 					</p>
 					<Button
-						aria-label="Refresh remote directories"
+						aria-label="刷新远程目录"
 						disabled={loading}
 						onClick={() => setReloadVersion((version) => version + 1)}
 						size="icon"
@@ -174,7 +173,7 @@ export function RemoteDirectoryPicker({
 					{loading ? (
 						<div className="flex h-52 items-center justify-center gap-2 text-sm text-muted-foreground">
 							<Loader2 className="size-4 animate-spin" />
-							Loading remote directories…
+							正在加载远程目录…
 						</div>
 					) : error ? (
 						<div className="flex h-52 flex-col items-center justify-center gap-2 px-6 text-center text-sm text-destructive">
@@ -183,7 +182,7 @@ export function RemoteDirectoryPicker({
 						</div>
 					) : directories.length === 0 ? (
 						<div className="flex h-52 items-center justify-center text-sm text-muted-foreground">
-							No subdirectories
+							无子目录
 						</div>
 					) : (
 						<div className="flex max-h-56 flex-col gap-0.5 overflow-y-auto">
@@ -207,20 +206,19 @@ export function RemoteDirectoryPicker({
 				</div>
 				{truncated && !loading && !error ? (
 					<p className="text-xs text-muted-foreground">
-						Only the first directories are shown. Open a folder to continue
-						browsing.
+						仅显示靠前的部分目录。打开某个文件夹以继续浏览。
 					</p>
 				) : null}
 
 				<DialogFooter>
 					<Button onClick={onCancel} variant="outline">
-						Cancel
+						取消
 					</Button>
 					<Button
 						disabled={loading || Boolean(error)}
 						onClick={() => onSelect(currentPath)}
 					>
-						Use this folder
+						使用此文件夹
 					</Button>
 				</DialogFooter>
 			</DialogContent>

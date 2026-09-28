@@ -132,12 +132,12 @@ describe("SessionsView table", () => {
 			.slice(0, 6)
 			.map((node) => node.textContent);
 		expect(headers).toEqual([
-			"Title",
+			"标题",
 			"Workspace",
 			"Model",
 			"Tokens",
 			"Cost",
-			"Time",
+			"时间",
 		]);
 	});
 
@@ -184,7 +184,7 @@ describe("SessionsView table", () => {
 		await view.render();
 
 		expect(
-			container.querySelector('[aria-label="Cloud session"]'),
+			container.querySelector('[aria-label="云端会话"]'),
 		).not.toBeNull();
 		expect(container.textContent).toContain("https://github.com/cline/cline");
 	});
@@ -216,16 +216,16 @@ describe("SessionsView table", () => {
 	it("keeps loading until the first response and only then shows the empty state", async () => {
 		const loading = renderView({ threads: [], hasLoadedHistory: false });
 		await loading.render();
-		expect(container.textContent).toContain("Loading session history...");
-		expect(container.textContent).not.toContain("No sessions yet.");
+		expect(container.textContent).toContain("正在加载会话历史…");
+		expect(container.textContent).not.toContain("还没有会话。");
 
 		await act(async () => root.unmount());
 		root = createRoot(container);
 
 		const empty = renderView({ threads: [], hasLoadedHistory: true });
 		await empty.render();
-		expect(container.textContent).toContain("No sessions yet.");
-		expect(container.textContent).not.toContain("Loading session history...");
+		expect(container.textContent).toContain("还没有会话。");
+		expect(container.textContent).not.toContain("正在加载会话历史…");
 	});
 
 	it("loads complete history before treating search results as exhaustive", async () => {
@@ -233,7 +233,7 @@ describe("SessionsView table", () => {
 		await view.render();
 
 		const search = container.querySelector<HTMLInputElement>(
-			'input[aria-label="Search sessions"]',
+			'input[aria-label="搜索会话"]',
 		);
 		expect(search).not.toBeNull();
 		await act(async () => {
@@ -255,7 +255,7 @@ describe("SessionsView table", () => {
 		await view.render();
 
 		const filterButton = container.querySelector<HTMLButtonElement>(
-			'button[aria-label="Filter sessions"]',
+			'button[aria-label="筛选会话"]',
 		);
 		await act(async () => {
 			filterButton?.dispatchEvent(
@@ -270,7 +270,7 @@ describe("SessionsView table", () => {
 
 		view.loadAllSessions.mockClear();
 		const sortButton = container.querySelector<HTMLButtonElement>(
-			'button[aria-label="Sort sessions"]',
+			'button[aria-label="排序会话"]',
 		);
 		await act(async () => {
 			sortButton?.dispatchEvent(
@@ -283,7 +283,7 @@ describe("SessionsView table", () => {
 		});
 		const oldestItem = Array.from(
 			document.body.querySelectorAll<HTMLElement>('[role="menuitem"]'),
-		).find((item) => item.textContent === "Oldest first");
+		).find((item) => item.textContent === "最旧优先");
 		expect(oldestItem).not.toBeUndefined();
 		await act(async () => {
 			oldestItem?.click();
@@ -306,7 +306,7 @@ describe("SessionsView table", () => {
 			await view.render();
 
 			const actions = container.querySelector<HTMLButtonElement>(
-				`button[aria-label="Session actions for ${thread.title}"]`,
+				`button[aria-label="会话操作：${thread.title}"]`,
 			);
 			await act(async () => {
 				actions?.dispatchEvent(
@@ -325,7 +325,7 @@ describe("SessionsView table", () => {
 				deleteItem?.click();
 			});
 
-			expect(document.body.textContent).toContain("Delete session?");
+			expect(document.body.textContent).toContain("删除会话？");
 			expect(document.body.textContent).toContain(TASK_WORKTREE_DELETE_WARNING);
 		} finally {
 			registerTaskWorktreeRoot("");
@@ -355,7 +355,7 @@ describe("SessionsView pagination", () => {
 		});
 	};
 
-	const clickNext = () => clickButton("Next page");
+	const clickNext = () => clickButton("下一页");
 
 	it("shows ten sessions per page", async () => {
 		const view = renderView({ threads: manyThreads });
@@ -445,11 +445,11 @@ describe("SessionsView pagination", () => {
 				?.getAttribute("aria-current"),
 		).toBe("page");
 
-		await clickButton("First page");
+		await clickButton("首页");
 		expect(rowTitles()[0]).toBe("Session 0");
 		expect(
 			container.querySelector<HTMLButtonElement>(
-				'button[aria-label="First page"]',
+				'button[aria-label="首页"]',
 			)?.disabled,
 		).toBe(true);
 	});

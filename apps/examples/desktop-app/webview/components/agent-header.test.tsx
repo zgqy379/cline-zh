@@ -281,7 +281,7 @@ describe("AgentHeader agent roster popover", () => {
 	it("says a running agent is starting up when it has done nothing yet", async () => {
 		await renderHeader();
 		const panel = await openPanel();
-		expect(panel?.textContent).toContain("Starting up...");
+		expect(panel?.textContent).toContain("正在启动…");
 	});
 
 	it("notes a finished agent that recorded no activity", async () => {
@@ -414,7 +414,7 @@ describe("AgentHeader subagent session badge", () => {
 
 	const newSessionButton = () =>
 		container.querySelector<HTMLButtonElement>(
-			'button[aria-label="New session"]',
+			'button[aria-label="新建会话"]',
 		);
 
 	it("stays hidden for an ordinary session, which keeps its new-session button", async () => {
@@ -428,7 +428,7 @@ describe("AgentHeader subagent session badge", () => {
 			onOpenParentSession: vi.fn(),
 		});
 		expect(badge).not.toBeNull();
-		// "New session" is a top-level action; a nested run offers the way back.
+		// "新建会话" is a top-level action; a nested run offers the way back.
 		expect(newSessionButton()).toBeNull();
 	});
 
@@ -472,7 +472,7 @@ describe("AgentHeader subagent session badge", () => {
 			onOpenParentSession: vi.fn(),
 		});
 		expect(badge?.textContent).toBe("Main Agent Session");
-		expect(badge?.getAttribute("title")).toBe("Back to the main agent session");
+		expect(badge?.getAttribute("title")).toBe("返回主智能体会话");
 	});
 
 	it("opens the parent session when clicked", async () => {

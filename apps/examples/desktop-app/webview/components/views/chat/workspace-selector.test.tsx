@@ -81,7 +81,7 @@ describe("WorkspaceSelector", () => {
 
 		await click(trigger as Element);
 		expect(onListGitBranches).not.toHaveBeenCalled();
-		expect(container.querySelector('input[placeholder*="Search"]')).toBeNull();
+		expect(container.querySelector('input[placeholder*="搜索"]')).toBeNull();
 
 		await render("feature/review");
 		expect(trigger?.textContent).toContain("feature/review");
@@ -184,16 +184,16 @@ describe("WorkspaceSelector", () => {
 
 		await click(trigger as Element);
 		await vi.waitFor(() => {
-			expect(container.textContent).toContain("Workspaces");
+			expect(container.textContent).toContain("工作区");
 		});
-		expect(container.textContent).not.toContain("Branches");
+		expect(container.textContent).not.toContain("分支");
 		expect(container.textContent).not.toContain(
 			"Create and checkout new branch",
 		);
-		expect(container.textContent).not.toContain("No branches found");
-		expect(container.textContent).toContain("Open folder...");
+		expect(container.textContent).not.toContain("未找到分支");
+		expect(container.textContent).toContain("打开文件夹…");
 		expect(
-			container.querySelector('input[placeholder="Search workspaces"]'),
+			container.querySelector('input[placeholder="搜索工作区"]'),
 		).not.toBeNull();
 	});
 
@@ -223,7 +223,7 @@ describe("WorkspaceSelector", () => {
 
 		await click(trigger as Element);
 		await vi.waitFor(() => {
-			expect(container.textContent).toContain("Branches");
+			expect(container.textContent).toContain("分支");
 		});
 		expect(container.textContent).toContain("feature/review");
 		expect(container.textContent).toContain("Create and checkout new branch");
@@ -249,7 +249,7 @@ describe("WorkspaceSelector", () => {
 			);
 		});
 
-		expect(container.textContent).toContain("Chat");
+		expect(container.textContent).toContain("对话");
 		await click(container.querySelector("#git-branch-btn") as Element);
 		await vi.waitFor(() => {
 			expect(container.textContent).toContain("/workspace/one");

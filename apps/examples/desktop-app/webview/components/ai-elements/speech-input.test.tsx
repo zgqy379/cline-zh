@@ -196,7 +196,7 @@ describe("SpeechInput", () => {
 		expect(stopTrack).toHaveBeenCalledOnce();
 		expect(onNetworkFallback).toHaveBeenCalledOnce();
 		expect(onError).not.toHaveBeenCalled();
-		expect(button?.title).toBe("Record with browser speech recognition");
+		expect(button?.title).toBe("使用浏览器语音识别录音");
 		await act(async () => button?.click());
 		expect(onStreamingStart).toHaveBeenCalledOnce();
 		await act(async () =>
@@ -318,10 +318,10 @@ describe("SpeechInput", () => {
 		});
 
 		const button = container.querySelector<HTMLButtonElement>(
-			'[aria-label="Record speech"]',
+			'[aria-label="开始语音输入"]',
 		);
 		await act(async () => button?.click());
-		expect(button?.getAttribute("aria-label")).toBe("Stop recording");
+		expect(button?.getAttribute("aria-label")).toBe("停止录音");
 
 		await act(async () => {
 			FakeSpeechRecognition.instances[0]?.emitTranscript("live transcript");
@@ -332,7 +332,7 @@ describe("SpeechInput", () => {
 			"speech-recognition",
 		);
 		expect(onAudioRecorded).not.toHaveBeenCalled();
-		expect(button?.getAttribute("aria-label")).toBe("Stop recording");
+		expect(button?.getAttribute("aria-label")).toBe("停止录音");
 	});
 
 	it("preserves browser speech-recognition error details", async () => {
@@ -343,7 +343,7 @@ describe("SpeechInput", () => {
 		});
 
 		const button = container.querySelector<HTMLButtonElement>(
-			'[aria-label="Record speech"]',
+			'[aria-label="开始语音输入"]',
 		);
 		await act(async () => button?.click());
 		await act(async () => {
@@ -354,7 +354,7 @@ describe("SpeechInput", () => {
 		expect(onError.mock.calls[0]?.[0]).toEqual(
 			new Error("Speech recognition failed: not-allowed"),
 		);
-		expect(button?.getAttribute("aria-label")).toBe("Record speech");
+		expect(button?.getAttribute("aria-label")).toBe("开始语音输入");
 	});
 
 	it("records audio for the provider even when browser speech recognition is available", async () => {
@@ -381,7 +381,7 @@ describe("SpeechInput", () => {
 		});
 
 		const button = container.querySelector<HTMLButtonElement>(
-			'[aria-label="Record speech"]',
+			'[aria-label="开始语音输入"]',
 		);
 		expect(button?.disabled).toBe(false);
 		expect(onActiveChange).toHaveBeenLastCalledWith(false);
@@ -395,8 +395,8 @@ describe("SpeechInput", () => {
 		expect(FakeMediaRecorder.instances).toHaveLength(1);
 		expect(FakeSpeechRecognition.instances).toHaveLength(0);
 		expect(onActiveChange).toHaveBeenLastCalledWith(true);
-		expect(button?.getAttribute("aria-label")).toBe("Stop recording");
-		expect(button?.title).toBe("Stop recording");
+		expect(button?.getAttribute("aria-label")).toBe("停止录音");
+		expect(button?.title).toBe("停止录音");
 		expect(
 			button?.querySelector(".lucide-mic")?.getAttribute("class"),
 		).toContain("animate-pulse");
@@ -468,7 +468,7 @@ describe("SpeechInput", () => {
 		});
 
 		const button = container.querySelector<HTMLButtonElement>(
-			'[aria-label="Record speech"]',
+			'[aria-label="开始语音输入"]',
 		);
 		await act(async () => {
 			button?.click();
@@ -476,7 +476,7 @@ describe("SpeechInput", () => {
 		});
 		expect(onStreamingStart).toHaveBeenCalledOnce();
 		expect(onStartStreaming).toHaveBeenCalledOnce();
-		expect(button?.getAttribute("aria-label")).toBe("Stop recording");
+		expect(button?.getAttribute("aria-label")).toBe("停止录音");
 
 		await act(async () => {
 			button?.click();
@@ -484,7 +484,7 @@ describe("SpeechInput", () => {
 		});
 		expect(stop).toHaveBeenCalledOnce();
 		expect(onStreamingEnd).toHaveBeenCalledOnce();
-		expect(button?.getAttribute("aria-label")).toBe("Record speech");
+		expect(button?.getAttribute("aria-label")).toBe("开始语音输入");
 	});
 
 	it("returns to inactive when MediaRecorder rejects stop", async () => {
@@ -503,7 +503,7 @@ describe("SpeechInput", () => {
 			);
 		});
 		const button = container.querySelector<HTMLButtonElement>(
-			'[aria-label="Record speech"]',
+			'[aria-label="开始语音输入"]',
 		);
 		await act(async () => {
 			button?.click();
@@ -517,7 +517,7 @@ describe("SpeechInput", () => {
 		expect(onActiveChange).toHaveBeenLastCalledWith(false);
 		expect(stopTrack).toHaveBeenCalledOnce();
 		expect(button?.disabled).toBe(false);
-		expect(button?.getAttribute("aria-label")).toBe("Record speech");
+		expect(button?.getAttribute("aria-label")).toBe("开始语音输入");
 	});
 
 	it("ignores a pending batch transcript after unmount", async () => {
@@ -539,7 +539,7 @@ describe("SpeechInput", () => {
 			);
 		});
 		const button = container.querySelector<HTMLButtonElement>(
-			'[aria-label="Record speech"]',
+			'[aria-label="开始语音输入"]',
 		);
 		await act(async () => {
 			button?.click();
@@ -576,7 +576,7 @@ describe("SpeechInput", () => {
 			);
 		});
 		const button = container.querySelector<HTMLButtonElement>(
-			'[aria-label="Record speech"]',
+			'[aria-label="开始语音输入"]',
 		);
 		await act(async () => {
 			button?.click();
@@ -591,7 +591,7 @@ describe("SpeechInput", () => {
 		expect(onActiveChange).toHaveBeenLastCalledWith(false);
 		expect(onProcessingChange).toHaveBeenLastCalledWith(false);
 		expect(button?.disabled).toBe(false);
-		expect(button?.getAttribute("aria-label")).toBe("Record speech");
+		expect(button?.getAttribute("aria-label")).toBe("开始语音输入");
 	});
 
 	it("cancels a streaming session that arrives after the component unmounts", async () => {
@@ -623,7 +623,7 @@ describe("SpeechInput", () => {
 		});
 
 		const button = container.querySelector<HTMLButtonElement>(
-			'[aria-label="Record speech"]',
+			'[aria-label="开始语音输入"]',
 		);
 		await act(async () => {
 			button?.click();

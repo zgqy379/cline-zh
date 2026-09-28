@@ -526,8 +526,8 @@ export default function Home() {
 				toast({
 					title:
 						environmentId === LOCAL_WORKSPACE_ENVIRONMENT_ID
-							? "Unable to switch to Local"
-							: "Unable to connect to SSH host",
+							? "无法切换到本地"
+							: "无法连接到 SSH 主机",
 					description: error instanceof Error ? error.message : String(error),
 					variant: "destructive",
 				});
@@ -787,7 +787,7 @@ export default function Home() {
 				handleOpenSession(session);
 			} catch (error) {
 				toast({
-					title: "Unable to open run",
+					title: "无法打开该会话",
 					description: humanizeCloudSessionError(
 						error instanceof Error ? error.message : String(error),
 					),
@@ -1814,11 +1814,11 @@ function ChatThreadPane({
 			if (supportedFiles.length !== files.length) {
 				toast({
 					title: isCloudSession
-						? "Unsupported cloud attachment"
-						: "Unsupported image format",
+						? "不支持的云端附件"
+						: "不支持的图片格式",
 					description: isCloudSession
-						? "Choose PNG, JPEG, GIF, or WebP images, or switch to Local to attach other files."
-						: "Convert the image to PNG, JPEG, GIF, or WebP before attaching it.",
+						? "请选择 PNG、JPEG、GIF 或 WebP 图片，或切换到本地模式以附加其他文件。"
+						: "请先将图片转换为 PNG、JPEG、GIF 或 WebP 格式再附加。",
 				});
 			}
 			setPendingAttachments((current) => {
@@ -1837,7 +1837,7 @@ function ChatThreadPane({
 				}
 				const error = isCloudSession && cloudImageAttachmentError(next);
 				if (error) {
-					toast({ title: "Cloud attachment limit", description: error });
+					toast({ title: "云端附件数量超限", description: error });
 					return current;
 				}
 				return next;
@@ -2029,8 +2029,8 @@ function ChatThreadPane({
 			if (!deleted) {
 				toast({
 					variant: "destructive",
-					title: "Delete failed",
-					description: "The session could not be removed from local history.",
+					title: "删除失败",
+					description: "无法从本地历史记录中删除该会话。",
 				});
 				return;
 			}
@@ -2055,10 +2055,10 @@ function ChatThreadPane({
 			const description =
 				error instanceof Error
 					? error.message
-					: "The session could not be removed from local history.";
+					: "无法从本地历史记录中删除该会话。";
 			toast({
 				variant: "destructive",
-				title: "Delete failed",
+				title: "删除失败",
 				description,
 			});
 		} finally {
@@ -2337,7 +2337,7 @@ function ChatThreadPane({
 				);
 			} catch (error) {
 				toast({
-					title: "Rename failed",
+					title: "重命名失败",
 					description: humanizeCloudSessionError(
 						error instanceof Error ? error.message : String(error),
 					),
@@ -2464,7 +2464,7 @@ function ChatThreadPane({
 				disabled={isCloudSessionExpired}
 				description={
 					isCloudSession
-						? "Images will be added to your next message"
+						? "图片将添加到你的下一条消息中"
 						: undefined
 				}
 				onAttachFiles={handleAttachFiles}
@@ -2605,11 +2605,11 @@ function ChatThreadPane({
 			>
 				<AlertDialogContent>
 					<AlertDialogHeader>
-						<AlertDialogTitle>Delete Session?</AlertDialogTitle>
+						<AlertDialogTitle>删除会话？</AlertDialogTitle>
 						<AlertDialogDescription>
 							{isCloudSession
-								? "This cloud session and its workspace will be deleted."
-								: "This session will be removed from local history."}
+								? "该云端会话及其工作区将被删除。"
+								: "该会话将从本地历史记录中移除。"}
 							{!isCloudSession &&
 							isTaskWorktreePath(config.workspaceRoot || config.cwd || "")
 								? ` ${TASK_WORKTREE_DELETE_WARNING}`
@@ -2618,14 +2618,14 @@ function ChatThreadPane({
 					</AlertDialogHeader>
 					<AlertDialogFooter>
 						<AlertDialogCancel disabled={deletingSession}>
-							Cancel
+							取消
 						</AlertDialogCancel>
 						<AlertDialogAction
 							className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
 							disabled={deletingSession}
 							onClick={() => void handleDeleteSession()}
 						>
-							{deletingSession ? "Deleting..." : "Delete"}
+							{deletingSession ? "正在删除…" : "删除"}
 						</AlertDialogAction>
 					</AlertDialogFooter>
 				</AlertDialogContent>

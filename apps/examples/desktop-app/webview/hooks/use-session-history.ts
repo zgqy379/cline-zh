@@ -255,7 +255,7 @@ function toTitle(session: SessionHistoryItem): string {
 	}
 	const line = normalizeTitle(session.prompt).trim().split("\n")[0]?.trim();
 	if (line) return line;
-	return `Session ${session.sessionId.slice(-6)}`;
+	return `会话 ${session.sessionId.slice(-6)}`;
 }
 
 function titleFromMessages(messages: SessionMessage[]): string | null {
@@ -850,7 +850,7 @@ export function useSessionHistory({
 						const keepExistingTitle =
 							Boolean(existing) &&
 							!incomingMetadataTitle &&
-							!(existing?.title.startsWith("Session ") ?? true);
+							!(existing?.title.startsWith("会话 ") ?? true);
 						return {
 							...thread,
 							title:
@@ -1177,7 +1177,7 @@ export function useSessionHistory({
 			setThreads((current) =>
 				updateThreadById(current, sessionId, (thread) => ({
 					...thread,
-					title: nextTitle || `Session ${sessionId.slice(-6)}`,
+					title: nextTitle || `会话 ${sessionId.slice(-6)}`,
 				})),
 			);
 		};
@@ -1419,7 +1419,7 @@ export function useSessionHistory({
 				}
 				const lastHydratedStatus =
 					messageHydratedStatusRef.current.get(sessionId);
-				const shouldHydrateTitle = existing.title.startsWith("Session ");
+				const shouldHydrateTitle = existing.title.startsWith("会话 ");
 				const hasManualTitle = Boolean(
 					getSessionMetadataTitle(session.metadata),
 				);
@@ -1550,12 +1550,12 @@ export function useSessionHistory({
 			} catch (error) {
 				toast({
 					variant: "destructive",
-					title: "Rename failed",
+					title: "重命名失败",
 					// Cloud failures arrive as a machine envelope; never show it raw.
 					description: humanizeCloudSessionError(
 						error instanceof Error
 							? error.message
-							: "The session title could not be updated.",
+							: "无法更新会话标题。",
 					),
 				});
 				return false;
@@ -1611,11 +1611,11 @@ export function useSessionHistory({
 				applyPinned(!pinned);
 				toast({
 					variant: "destructive",
-					title: pinned ? "Pin failed" : "Unpin failed",
+					title: pinned ? "置顶失败" : "取消置顶失败",
 					description:
 						error instanceof Error
 							? error.message
-							: "The session could not be updated.",
+							: "无法更新该会话。",
 				});
 				return false;
 			}
@@ -1653,7 +1653,7 @@ export function useSessionHistory({
 				});
 				const newSessionId = payload.sessionId?.trim();
 				if (!newSessionId) {
-					throw new Error("Fork did not return a new session id.");
+					throw new Error("分叉操作未返回新的会话 ID。");
 				}
 				const forkedSession: SessionHistoryItem = {
 					sessionId: newSessionId,
@@ -1679,11 +1679,11 @@ export function useSessionHistory({
 			} catch (error) {
 				toast({
 					variant: "destructive",
-					title: "Fork failed",
+					title: "分叉失败",
 					description:
 						error instanceof Error
 							? error.message
-							: "The session could not be forked.",
+							: "无法分叉该会话。",
 				});
 				return false;
 			} finally {
@@ -1712,7 +1712,7 @@ export function useSessionHistory({
 						: deleteResult.deleted === true;
 				if (!deleted) {
 					throw new Error(
-						"The session could not be removed from local history.",
+						"无法从本地历史记录中删除该会话。",
 					);
 				}
 				onDeleteSession?.(sourceSession.sessionId, sourceSession.environmentId);
@@ -1728,11 +1728,11 @@ export function useSessionHistory({
 			} catch (error) {
 				toast({
 					variant: "destructive",
-					title: "Delete failed",
+					title: "删除失败",
 					description: humanizeCloudSessionError(
 						error instanceof Error
 							? error.message
-							: "The session could not be removed from local history.",
+							: "无法从本地历史记录中删除该会话。",
 					),
 				});
 				return false;
@@ -1764,8 +1764,8 @@ export function useSessionHistory({
 				if (!loaded) {
 					toast({
 						variant: "destructive",
-						title: "Could not load more sessions",
-						description: "Session history is unavailable right now.",
+						title: "无法加载更多会话",
+						description: "当前无法获取会话历史记录。"
 					});
 				}
 				return loaded;

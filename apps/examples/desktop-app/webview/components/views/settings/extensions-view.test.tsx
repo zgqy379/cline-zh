@@ -112,7 +112,7 @@ describe("CustomizationSectionView Agent Plugin inventory", () => {
 					catalogPrimitive="plugin"
 					chrome="embedded"
 					marketplaceVariant="installed"
-					section="Plugins"
+					section="插件"
 				/>,
 			);
 		});
@@ -153,14 +153,14 @@ describe("CustomizationSectionView Agent Plugin inventory", () => {
 					catalogPrimitive="plugin"
 					chrome="embedded"
 					marketplaceVariant="installed"
-					section="Plugins"
+					section="插件"
 				/>,
 			);
 		});
 
 		await vi.waitFor(() => {
 			expect(container.textContent).toContain("agent-plugins-example");
-			expect(container.textContent).toContain("Agent Plugin");
+			expect(container.textContent).toContain("智能体插件");
 		});
 	});
 
@@ -171,14 +171,14 @@ describe("CustomizationSectionView Agent Plugin inventory", () => {
 					catalogPrimitive="skill"
 					chrome="embedded"
 					marketplaceVariant="installed"
-					section="Skills"
+					section="技能"
 				/>,
 			);
 		});
 
 		await vi.waitFor(() => {
 			expect(container.textContent).toContain("example-skill");
-			expect(container.textContent).toContain("Agent Plugin");
+			expect(container.textContent).toContain("智能体插件");
 		});
 	});
 });
@@ -280,7 +280,7 @@ describe("tool state controls", () => {
 			throw new Error(`Unexpected command: ${command}`);
 		});
 		await act(async () => {
-			root.render(<CustomizationSectionView section="Tools" />);
+			root.render(<CustomizationSectionView section="工具" />);
 		});
 		await act(async () => {
 			container

@@ -83,14 +83,14 @@ describe("Customize connector catalog", () => {
 		await render();
 		expect(container.textContent).toContain("GitHub");
 		expect(container.textContent).toContain("Google Calendar");
-		expect(container.textContent).not.toContain("Marketplace");
-		await act(async () => button("Install")?.click());
+		expect(container.textContent).not.toContain("市场");
+		await act(async () => button("安装")?.click());
 		expect(mocks.connect).toHaveBeenCalledWith("github");
-		await act(async () => button("View")?.click());
+		await act(async () => button("查看")?.click());
 		expect(document.querySelector('[role="dialog"]')?.textContent).toContain(
 			"GMAIL_SEND_EMAIL",
 		);
-		await act(async () => button("Uninstall")?.click());
+		await act(async () => button("卸载")?.click());
 		expect(mocks.disconnect).toHaveBeenCalledWith("gmail");
 	});
 
@@ -107,7 +107,7 @@ describe("Customize connector catalog", () => {
 		expect(container.textContent).toContain("search to find 1 more");
 		expect(container.textContent).not.toContain("App 24");
 		const input = container.querySelector(
-			'input[aria-label="Search connectors"]',
+			'input[aria-label="搜索连接器"]',
 		) as HTMLInputElement;
 		await act(async () => {
 			Object.getOwnPropertyDescriptor(
@@ -131,7 +131,7 @@ describe("Customize connector catalog", () => {
 		expect(container.querySelector('[role="alert"]')?.textContent).toContain(
 			"Service unavailable",
 		);
-		await act(async () => button("Retry")?.click());
+		await act(async () => button("重试")?.click());
 		expect(container.textContent).toContain("Gmail");
 		expect(container.querySelector('[role="alert"]')).toBeNull();
 	});
@@ -156,7 +156,7 @@ describe("installed connectors", () => {
 		await act(async () =>
 			root.render(<ComposioConnectorsView variant="installed" />),
 		);
-		await act(async () => button("View")?.click());
+		await act(async () => button("查看")?.click());
 		const dialog = document.querySelector('[role="dialog"]');
 		expect(dialog?.textContent).toContain("47 available in new sessions");
 		expect(dialog?.textContent).not.toContain("47/47");
@@ -174,7 +174,7 @@ describe("installed connectors", () => {
 			toolkits: [{ slug: "gmail", name: "Gmail", toolsCount: 47 }],
 		});
 		await render();
-		await act(async () => button("View")?.click());
+		await act(async () => button("查看")?.click());
 		expect(document.querySelector('[role="dialog"]')?.textContent).toContain(
 			"1/47 available in new sessions",
 		);
@@ -200,11 +200,11 @@ describe("installed connectors", () => {
 			),
 		);
 		expect(container.textContent).toBe(
-			"Browse all connectors in the Marketplace",
+			"在市场浏览全部连接器",
 		);
 		expect(mocks.catalog).not.toHaveBeenCalled();
 		await act(async () =>
-			button("Browse all connectors in the Marketplace")?.click(),
+			button("在市场浏览全部连接器")?.click(),
 		);
 		expect(openMarketplace).toHaveBeenCalledOnce();
 	});
@@ -231,7 +231,7 @@ describe("installed connectors", () => {
 		);
 		expect(container.textContent).toContain("Gmail");
 		expect(container.textContent).not.toContain("GitHub");
-		expect(container.textContent).not.toContain("Recommended");
+		expect(container.textContent).not.toContain("推荐");
 		expect(mocks.catalog).not.toHaveBeenCalled();
 	});
 });

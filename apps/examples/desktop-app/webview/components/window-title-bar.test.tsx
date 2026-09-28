@@ -110,7 +110,7 @@ describe("WindowTitleBar", () => {
 				.querySelector<HTMLButtonElement>('[aria-label="Restore"]')
 				?.click();
 			controls
-				.querySelector<HTMLButtonElement>('[aria-label="Close"]')
+				.querySelector<HTMLButtonElement>('[aria-label="关闭"]')
 				?.click();
 		});
 		expect(windowMocks.minimize).toHaveBeenCalledOnce();

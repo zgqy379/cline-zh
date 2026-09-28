@@ -2600,7 +2600,7 @@ export function useChatSession(environmentId: string) {
 				);
 			}
 			const id = payload.sessionId;
-			if (!id) throw new Error("Missing session id from server");
+			if (!id) throw new Error("服务端未返回会话 ID");
 			if (
 				validatedConfig.executionTarget === "cloud" &&
 				id !== validatedConfig.sessionId
@@ -2613,7 +2613,7 @@ export function useChatSession(environmentId: string) {
 			const cwd =
 				payload.cwd?.trim() || boundConfig.cwd?.trim() || workspaceRoot;
 			if (!workspaceRoot || !cwd) {
-				throw new Error("Missing resolved workspace from server");
+				throw new Error("服务端未返回解析后的工作区");
 			}
 			setSessionId(id);
 			setIsCloudSessionExpired(false);
@@ -2919,7 +2919,7 @@ export function useChatSession(environmentId: string) {
 									})
 									.catch((err) => {
 										throw new Error(
-											`Couldn't create a worktree: ${errorMessage(err)}`,
+											`无法创建工作树：${errorMessage(err)}`,
 										);
 									})
 									.then(async (worktree) => {
@@ -3624,10 +3624,10 @@ export function useChatSession(environmentId: string) {
 		async (checkpointRunCount: number) => {
 			const activeSessionId = activeSessionIdRef.current;
 			if (!activeSessionId) {
-				throw new Error("No active session to restore");
+				throw new Error("没有可还原的活动会话");
 			}
 			if (BUSY_STATUSES.has(status)) {
-				throw new Error("Wait for the current turn to finish before undoing");
+				throw new Error("请等待当前回合结束后再撤销");
 			}
 
 			clearAbortFallbackTimeout();
@@ -3651,7 +3651,7 @@ export function useChatSession(environmentId: string) {
 			const nextSessionId =
 				typeof payload.sessionId === "string" ? payload.sessionId.trim() : "";
 			if (!nextSessionId) {
-				throw new Error("Checkpoint restore did not return a new session id");
+				throw new Error("检查点还原未返回新的会话 ID");
 			}
 
 			const nextMessages = Array.isArray(payload.messages)
@@ -3728,7 +3728,7 @@ export function useChatSession(environmentId: string) {
 		async (targetSessionId: string, toolCallId?: string) => {
 			const normalizedSessionId = targetSessionId.trim();
 			if (!normalizedSessionId) {
-				throw new Error("No active session.");
+				throw new Error("没有活动会话。");
 			}
 			const response = await desktopClient.invoke<{ detachedCount?: number }>(
 				"proceed_while_running",
@@ -3739,7 +3739,7 @@ export function useChatSession(environmentId: string) {
 				},
 			);
 			if ((response.detachedCount ?? 0) < 1) {
-				throw new Error("The command finished before it could be detached.");
+				throw new Error("命令在分离前已执行完毕。");
 			}
 		},
 		[environmentId],
@@ -4076,10 +4076,10 @@ export function useChatSession(environmentId: string) {
 		}> => {
 			const activeSessionId = activeSessionIdRef.current;
 			if (!activeSessionId) {
-				throw new Error("No active session to fork.");
+				throw new Error("没有可分叉的活动会话。");
 			}
 			if (BUSY_STATUSES.has(status)) {
-				throw new Error("Wait for the current turn to finish before forking.");
+				throw new Error("请等待当前回合结束后再分叉。");
 			}
 			const payload = (await postSession({
 				action: "fork",
@@ -4093,7 +4093,7 @@ export function useChatSession(environmentId: string) {
 			const newSessionId =
 				typeof payload.sessionId === "string" ? payload.sessionId.trim() : "";
 			if (!newSessionId) {
-				throw new Error("Fork did not return a new session id.");
+				throw new Error("分叉操作未返回新的会话 ID。");
 			}
 			const forkedFromSessionId =
 				typeof payload.forkedFromSessionId === "string"

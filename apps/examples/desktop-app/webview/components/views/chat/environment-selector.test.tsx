@@ -122,7 +122,7 @@ describe("buildEnvironmentSelectorModel", () => {
 	it("does not mislabel an unloaded remote environment as Local", () => {
 		expect(buildEnvironmentSelectorModel("remote-loading", [])).toMatchObject({
 			activeKind: "remote",
-			activeLabel: "Remote",
+			activeLabel: "远程",
 			local: { selected: false },
 		});
 	});
@@ -151,33 +151,33 @@ describe("EnvironmentSelector", () => {
 		expect(document.body.textContent).not.toContain("Raspberry Pi");
 		await pointerDown(trigger());
 		expect(document.body.textContent).toContain("Raspberry Pi");
-		expect(document.body.textContent).toContain("Local");
-		expect(document.body.textContent).toContain("Remote");
+		expect(document.body.textContent).toContain("本地");
+		expect(document.body.textContent).toContain("远程");
 		expect(document.body.textContent).toContain("Build box");
 		expect(document.body.textContent).not.toContain(
 			"ubuntu@builder.example.com:2200",
 		);
-		expect(document.body.textContent).not.toContain("Connected");
-		expect(document.body.textContent).toContain("Cloud");
-		expect(document.body.textContent).toContain("Coming soon");
-		expect(menuItemContaining("Cloud").getAttribute("aria-disabled")).toBe(
+		expect(document.body.textContent).not.toContain("已连接");
+		expect(document.body.textContent).toContain("云端");
+		expect(document.body.textContent).toContain("即将推出");
+		expect(menuItemContaining("云端").getAttribute("aria-disabled")).toBe(
 			"true",
 		);
 
-		await click(menuItemContaining("Local"));
+		await click(menuItemContaining("本地"));
 		await vi.waitFor(() => {
 			expect(onSelectEnvironment).toHaveBeenCalledWith("local");
 		});
 
 		await pointerDown(trigger());
 		const addHost = document.querySelector(
-			'[role="menuitem"][aria-label="Add SSH Host"]',
+			'[role="menuitem"][aria-label="添加 SSH 主机"]',
 		);
 		expect(addHost).not.toBeNull();
 		expect(addHost?.textContent?.trim()).toBe("");
-		expect(addHost?.parentElement?.textContent).toContain("Remote");
-		expect(document.body.textContent?.indexOf("Cloud")).toBeLessThan(
-			document.body.textContent?.indexOf("Remote") ?? 0,
+		expect(addHost?.parentElement?.textContent).toContain("远程");
+		expect(document.body.textContent?.indexOf("云端")).toBeLessThan(
+			document.body.textContent?.indexOf("远程") ?? 0,
 		);
 		await click(addHost as HTMLElement);
 		expect(onAddSshHost).toHaveBeenCalledTimes(1);
@@ -199,14 +199,14 @@ describe("EnvironmentSelector", () => {
 			),
 		);
 		await pointerDown(trigger());
-		expect(document.body.textContent).not.toContain("Coming soon");
-		await click(menuItemContaining("Cloud"));
+		expect(document.body.textContent).not.toContain("即将推出");
+		await click(menuItemContaining("云端"));
 		expect(onSelectExecutionTarget).toHaveBeenCalledExactlyOnceWith("cloud");
 		expect(onSelectEnvironment).not.toHaveBeenCalled();
 	});
 
 	it.each([
-		["Local", "local"],
+		["本地", "local"],
 		["Build box", "build-box"],
 	])("switches from Cloud to %s without leaving Cloud selected", async (label, environmentId) => {
 		const onSelectExecutionTarget = vi.fn();
@@ -226,10 +226,10 @@ describe("EnvironmentSelector", () => {
 		);
 		expect(trigger().title).toBe("Environment: Cloud");
 		await pointerDown(trigger());
-		expect(menuItemContaining("Cloud").getAttribute("aria-current")).toBe(
+		expect(menuItemContaining("云端").getAttribute("aria-current")).toBe(
 			"true",
 		);
-		expect(menuItemContaining("Local").hasAttribute("aria-current")).toBe(
+		expect(menuItemContaining("本地").hasAttribute("aria-current")).toBe(
 			false,
 		);
 		await click(menuItemContaining(label));

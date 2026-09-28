@@ -169,7 +169,7 @@ describe("WelcomeScreen", () => {
 			workspaceRoot: "/projects/project-1",
 			workspaces: ["/projects/project-1"],
 		});
-		await clickButton("Connect GitHub");
+		await clickButton("连接 GitHub");
 
 		expect(invokeMock).toHaveBeenCalledWith("cline_integrations", {
 			operation: "githubInstallUrl",
@@ -446,9 +446,9 @@ describe("WelcomeScreen", () => {
 
 		expect(container.querySelector('button[title="main"]')).toBeNull();
 		expect(onListGitBranches).not.toHaveBeenCalled();
-		await clickButton("Chat");
+		await clickButton("对话");
 		expect(container.textContent).toContain("/projects/existing");
-		await clickButton("Just chat", true);
+		await clickButton("仅对话", true);
 
 		expect(selectChat).toHaveBeenCalledOnce();
 	});
