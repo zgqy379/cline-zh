@@ -222,7 +222,7 @@ describe("AgentSidebar session organization", () => {
 				);
 			});
 			const rename = [...document.querySelectorAll('[role="menuitem"]')].find(
-				(element) => element.textContent?.includes("Rename"),
+				(element) => element.textContent?.includes("重命名"),
 			);
 			if (!rename) throw new Error("Missing Rename menu item");
 			await click(rename);
@@ -578,7 +578,7 @@ describe("AgentSidebar session organization", () => {
 			expect(button).toBeDefined();
 			return button as HTMLButtonElement;
 		});
-		expect(document.body.textContent).toContain("Delete session?");
+		expect(document.body.textContent).toContain("删除会话？");
 		// A regular workspace: nothing but history goes away.
 		expect(document.body.textContent).not.toContain("git worktree");
 		await click(confirm);
@@ -617,7 +617,7 @@ describe("AgentSidebar session organization", () => {
 			);
 
 			await vi.waitFor(() => {
-				expect(document.body.textContent).toContain("Delete session?");
+				expect(document.body.textContent).toContain("删除会话？");
 			});
 			expect(document.body.textContent).toContain(TASK_WORKTREE_DELETE_WARNING);
 		} finally {
@@ -752,7 +752,7 @@ describe("AgentSidebar session organization", () => {
 		expect(sessionIsVisible("cli session 1")).toBe(true);
 
 		await click(
-			container.querySelector('[aria-label="Filter sessions"]') as Element,
+			container.querySelector('[aria-label="筛选会话"]') as Element,
 		);
 		const cliOption = await vi.waitFor(() => {
 			const option = [
@@ -788,7 +788,7 @@ describe("AgentSidebar session organization", () => {
 
 		// Before the backend has answered, an empty list means "still loading",
 		// never "no sessions": the definitive copy would read as lost history.
-		expect(container.textContent).toContain("Loading session history...");
+		expect(container.textContent).toContain("正在加载会话历史…");
 		expect(container.textContent).not.toContain("No sessions found in history");
 	});
 
@@ -812,7 +812,7 @@ describe("AgentSidebar session organization", () => {
 		});
 
 		expect(container.textContent).toContain("No sessions found in history");
-		expect(container.textContent).not.toContain("Loading session history...");
+		expect(container.textContent).not.toContain("正在加载会话历史…");
 	});
 
 	it("builds the hover overview with branch and secondary metadata last", () => {
@@ -972,10 +972,10 @@ describe("AgentSidebar session organization", () => {
 			expect(container.textContent).toContain("Beatrix");
 			expect(container.textContent).toContain("Cline Bot Inc");
 		});
-		expect(container.textContent).not.toContain("Cline Desktop");
-		expect(container.textContent).not.toContain("Local");
+		expect(container.textContent).not.toContain("Cline 桌面版");
+		expect(container.textContent).not.toContain("本地");
 		const accountButton = container.querySelector(
-			'[aria-label="Account settings"]',
+			'[aria-label="账户设置"]',
 		);
 		const settingsButton = container.querySelector('[aria-label="Settings"]');
 		expect(accountButton?.parentElement).toBe(settingsButton?.parentElement);
@@ -1014,7 +1014,7 @@ describe("AgentSidebar session organization", () => {
 		});
 
 		const accountButton = await vi.waitFor(() => {
-			const button = container.querySelector('[aria-label="Account settings"]');
+			const button = container.querySelector('[aria-label="账户设置"]');
 			expect(button).not.toBeNull();
 			return button;
 		});
@@ -1028,7 +1028,7 @@ describe("AgentSidebar session organization", () => {
 		invoke.mockResolvedValue(signedInUser);
 		const onSettingsSectionChange = vi.fn();
 
-		const renderSidebar = async (settingsSection: "Account" | "General") => {
+		const renderSidebar = async (settingsSection: "账户" | "General") => {
 			await act(async () => {
 				root.render(
 					<AccountProvider>
@@ -1057,7 +1057,7 @@ describe("AgentSidebar session organization", () => {
 		// still navigates to General rather than acting as a no-op.
 		// (split on spaces: the variant's hover:bg-surface-hover would match a
 		// plain substring check)
-		const gearOnAccount = await renderSidebar("Account");
+		const gearOnAccount = await renderSidebar("账户");
 		expect(gearOnAccount.className.split(" ")).not.toContain(
 			"bg-surface-hover",
 		);
@@ -1102,7 +1102,7 @@ describe("AgentSidebar session organization", () => {
 			);
 		});
 
-		const logoButton = container.querySelector('[aria-label="Cline home"]');
+		const logoButton = container.querySelector('[aria-label="Cline 主页"]');
 		expect(logoButton).not.toBeNull();
 		expect(document.body.textContent).not.toContain("Version 1.2.3");
 
@@ -1150,7 +1150,7 @@ describe("AgentSidebar session organization", () => {
 			);
 		});
 
-		const logoButton = container.querySelector('[aria-label="Cline home"]');
+		const logoButton = container.querySelector('[aria-label="Cline 主页"]');
 		expect(logoButton).not.toBeNull();
 		await hover(logoButton as Element);
 
@@ -1193,9 +1193,9 @@ describe("AgentSidebar session organization", () => {
 		expect(titleBar?.textContent).not.toContain("Cline");
 
 		await click(
-			container.querySelector('[aria-label="Previous page"]') as Element,
+			container.querySelector('[aria-label="上一页"]') as Element,
 		);
-		await click(container.querySelector('[aria-label="Next page"]') as Element);
+		await click(container.querySelector('[aria-label="下一页"]') as Element);
 		expect(onNavigateBack).toHaveBeenCalledOnce();
 		expect(onNavigateForward).toHaveBeenCalledOnce();
 	});
@@ -1221,9 +1221,9 @@ describe("AgentSidebar session organization", () => {
 			);
 		});
 
-		const logo = container.querySelector('[aria-label="Cline home"]');
+		const logo = container.querySelector('[aria-label="Cline 主页"]');
 		const actionsNav = container.querySelector(
-			'[aria-label="Sidebar actions"]',
+			'[aria-label="侧边栏操作"]',
 		);
 		expect(logo).not.toBeNull();
 		expect(actionsNav).not.toBeNull();
@@ -1252,7 +1252,7 @@ describe("AgentSidebar session organization", () => {
 
 	it("shows Installed and Marketplace sub-tabs under the open Customize row", async () => {
 		const onSettingsSectionChange = vi.fn();
-		const renderSidebar = async (section: "Customize" | "Marketplace") => {
+		const renderSidebar = async (section: "Customize" | "市场") => {
 			await act(async () => {
 				root.render(
 					<AccountProvider>
@@ -1274,10 +1274,10 @@ describe("AgentSidebar session organization", () => {
 
 		await renderSidebar("Customize");
 		const actionsNav = container.querySelector(
-			'[aria-label="Sidebar actions"]',
+			'[aria-label="侧边栏操作"]',
 		) as ParentNode;
-		const installedRow = buttonWithText("Installed", actionsNav);
-		const marketplaceRow = buttonWithText("Marketplace", actionsNav);
+		const installedRow = buttonWithText("已安装", actionsNav);
+		const marketplaceRow = buttonWithText("市场", actionsNav);
 		const customizeRow = buttonWithText("Customize", actionsNav);
 
 		// The active sub-tab carries the full selected background; the parent
@@ -1294,12 +1294,12 @@ describe("AgentSidebar session organization", () => {
 
 		await click(marketplaceRow);
 		expect(onSettingsSectionChange).toHaveBeenCalledWith("Marketplace");
-		await renderSidebar("Marketplace");
+		await renderSidebar("市场");
 		expect(
-			buttonWithText("Marketplace", actionsNav).getAttribute("aria-current"),
+			buttonWithText("市场", actionsNav).getAttribute("aria-current"),
 		).toBe("page");
 		expect(
-			buttonWithText("Installed", actionsNav).getAttribute("aria-current"),
+			buttonWithText("已安装", actionsNav).getAttribute("aria-current"),
 		).toBeNull();
 	});
 
@@ -1325,7 +1325,7 @@ describe("AgentSidebar session organization", () => {
 			});
 			return buttonWithText(
 				"Session",
-				container.querySelector('[aria-label="Sidebar actions"]') as ParentNode,
+				container.querySelector('[aria-label="侧边栏操作"]') as ParentNode,
 			);
 		};
 
@@ -1366,7 +1366,7 @@ describe("AgentSidebar session organization", () => {
 		// Search lives behind the logo-row icon, not an inline sidebar input.
 		expect(container.querySelector("input")).toBeNull();
 		const searchButton = container.querySelector(
-			'button[aria-label="Search sessions"]',
+			'button[aria-label="搜索会话"]',
 		);
 		expect(searchButton).not.toBeNull();
 		await click(searchButton as Element);
@@ -1397,12 +1397,12 @@ describe("AgentSidebar session organization", () => {
 			);
 		});
 
-		expect(container.querySelector('[aria-label="Cline home"]')).not.toBeNull();
+		expect(container.querySelector('[aria-label="Cline 主页"]')).not.toBeNull();
 		expect(
-			container.querySelector('[aria-label="Sidebar actions"]'),
+			container.querySelector('[aria-label="侧边栏操作"]'),
 		).toBeNull();
 		expect(
-			container.querySelector('[aria-label="Expand sidebar"]')?.className,
+			container.querySelector('[aria-label="展开侧边栏"]')?.className,
 		).toContain("mt-auto");
 	});
 
@@ -1417,7 +1417,7 @@ describe("AgentSidebar session organization", () => {
 							onSettingsSectionChange={vi.fn()}
 							sessionHistory={makeSessionHistory([], vi.fn())}
 							setView={vi.fn()}
-							settingsSection="Account"
+							settingsSection="账户"
 							view="settings"
 						/>
 					</SidebarProvider>
@@ -1433,13 +1433,13 @@ describe("AgentSidebar session organization", () => {
 		);
 		expect(sidebarWrapper?.dataset.state).toBe("collapsed");
 		expect(
-			container.querySelector('[aria-label="Settings sections"]'),
+			container.querySelector('[aria-label="设置分区"]'),
 		).not.toBeNull();
 		const leftAlignedButtons = [
-			"Cline home",
+			"Cline 主页",
 			"General",
-			"Account",
-			"Expand sidebar",
+			"账户",
+			"展开侧边栏",
 			"Settings",
 		];
 		for (const label of leftAlignedButtons) {
@@ -1447,10 +1447,10 @@ describe("AgentSidebar session organization", () => {
 			expect(button?.className).not.toContain("mx-auto");
 		}
 		expect(
-			container.querySelector('[aria-label="Expand sidebar"]')?.className,
+			container.querySelector('[aria-label="展开侧边栏"]')?.className,
 		).toContain("mt-auto");
 		expect(
-			container.querySelector('[aria-label="Settings sections"]')?.className,
+			container.querySelector('[aria-label="设置分区"]')?.className,
 		).toContain("items-start");
 	});
 
@@ -1477,7 +1477,7 @@ describe("AgentSidebar session organization", () => {
 			expect(container.querySelector('[aria-label="Settings"]')).not.toBeNull(),
 		);
 		expect(
-			container.querySelector('[aria-label="Account settings"]'),
+			container.querySelector('[aria-label="账户设置"]'),
 		).toBeNull();
 		expect(
 			container.querySelector('[aria-label="Settings"]')?.textContent,

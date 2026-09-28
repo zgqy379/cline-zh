@@ -75,7 +75,7 @@ vi.mock("@/components/ai-elements/speech-input", async () => {
 			return (
 				<div data-initial-recording-mode={initialRecordingMode}>
 					<button
-						aria-label="Record speech"
+						aria-label="开始语音输入"
 						disabled={props.disabled}
 						onClick={props.onClick}
 						title={props.title}
@@ -260,7 +260,7 @@ describe("ChatInputBar", () => {
 		const textarea = container.querySelector("textarea");
 		expect(textarea?.readOnly).toBe(true);
 		const send = container.querySelector<HTMLButtonElement>(
-			'button[aria-label="Send message"]',
+			'button[aria-label="发送消息"]',
 		);
 		expect(send).not.toBeNull();
 		expect(send?.disabled).toBe(true);
@@ -382,7 +382,7 @@ describe("ChatInputBar", () => {
 		});
 
 		const stopButton = container.querySelector<HTMLButtonElement>(
-			'[aria-label="Stop agent"]',
+			'[aria-label="停止智能体"]',
 		);
 		expect(stopButton).not.toBeNull();
 
@@ -411,7 +411,7 @@ describe("ChatInputBar", () => {
 		);
 		expect(cloudAttach).toHaveBeenCalledWith([png, pngByExtension]);
 		expect(toastMock).toHaveBeenCalledWith(
-			expect.objectContaining({ title: "Unsupported cloud attachment" }),
+			expect.objectContaining({ title: "云端不支持该附件" }),
 		);
 		Object.defineProperty(cloudInput, "files", {
 			configurable: true,
@@ -453,7 +453,7 @@ describe("ChatInputBar", () => {
 		expect(onAttachFiles).not.toHaveBeenCalled();
 		expect(toastMock).toHaveBeenCalledWith(
 			expect.objectContaining({
-				title: "This model doesn’t support image input",
+				title: "当前模型不支持图片输入",
 			}),
 		);
 		expect(toastMock.mock.calls.at(-1)?.[0]?.description).not.toContain(
@@ -637,7 +637,7 @@ describe("ChatInputBar", () => {
 		});
 		expect(onModelChange).not.toHaveBeenCalled();
 		expect(
-			container.querySelector('[aria-label="Attach images"]'),
+			container.querySelector('[aria-label="附加图片"]'),
 		).not.toBeNull();
 		expect(
 			container.querySelector<HTMLInputElement>('input[type="file"]')?.accept,
@@ -646,16 +646,16 @@ describe("ChatInputBar", () => {
 		expect(container.textContent).toContain("cline/cline / feature/cloud");
 		expect(
 			container.querySelector<HTMLButtonElement>(
-				'[aria-label="Model and provider"]',
+				'[aria-label="模型与供应商"]',
 			)?.disabled,
 		).toBe(false);
 		expect(
 			container.querySelector<HTMLButtonElement>(
-				'[aria-label="Thinking level"]',
+				'[aria-label="思考强度"]',
 			)?.disabled,
 		).toBe(true);
 		const modelTrigger = container.querySelector<HTMLButtonElement>(
-			'[aria-label="Model and provider"]',
+			'[aria-label="模型与供应商"]',
 		);
 		await act(async () => modelTrigger?.click());
 		const cloudModel = container.querySelector<HTMLButtonElement>(
@@ -749,15 +749,15 @@ describe("ChatInputBar", () => {
 
 		await render();
 		const sendButton = container.querySelector<HTMLButtonElement>(
-			'[aria-label="Send message"]',
+			'[aria-label="发送消息"]',
 		);
 		const promptInput = container.querySelector<HTMLTextAreaElement>(
 			'textarea[role="combobox"]',
 		);
 		expect(sendButton?.disabled).toBe(true);
-		expect(sendButton?.title).toBe("Choose a repository");
+		expect(sendButton?.title).toBe("请选择一个仓库");
 		expect(container.textContent).toContain("Repository required");
-		expect(promptInput?.placeholder).toBe("Choose a repository");
+		expect(promptInput?.placeholder).toBe("请选择一个仓库");
 		await act(async () => {
 			promptInput?.dispatchEvent(
 				new KeyboardEvent("keydown", { key: "Enter", bubbles: true }),
@@ -775,7 +775,7 @@ describe("ChatInputBar", () => {
 			{ id: "image-1", name: "image.png", isImage: true },
 		]);
 		const imageOnlySendButton = container.querySelector<HTMLButtonElement>(
-			'[aria-label="Send message"]',
+			'[aria-label="发送消息"]',
 		);
 		expect(imageOnlySendButton?.disabled).toBe(false);
 		await act(async () => imageOnlySendButton?.click());
@@ -921,7 +921,7 @@ describe("ChatInputBar", () => {
 		});
 
 		const sendButton = container.querySelector<HTMLButtonElement>(
-			'[aria-label="Send message"]',
+			'[aria-label="发送消息"]',
 		);
 		expect(textarea?.readOnly).toBe(true);
 		expect(sendButton?.disabled).toBe(true);
@@ -970,7 +970,7 @@ describe("ChatInputBar", () => {
 		expect(
 			container.querySelector('output[aria-live="polite"]'),
 		).not.toBeNull();
-		expect(textarea?.placeholder).toBe("Transcribing voice input…");
+		expect(textarea?.placeholder).toBe("正在转录语音输入…");
 
 		await act(async () => {
 			speechInputMockState.current?.onStreamingEnd?.();
@@ -1086,7 +1086,7 @@ describe("ChatInputBar", () => {
 		],
 		[
 			new DOMException("Permission denied", "NotAllowedError"),
-			"Check the microphone permission for Cline and try again.",
+			"请检查 Cline 的麦克风权限后重试。",
 		],
 	])("shows speech failures in chat with a configured model: %s", async (error, description) => {
 		loadProviderModelCatalogMock.mockResolvedValue(
@@ -1104,12 +1104,12 @@ describe("ChatInputBar", () => {
 		});
 		expect(toastMock).toHaveBeenCalledWith({
 			variant: "destructive",
-			title: "Speech input failed",
+			title: "语音输入失败",
 			description,
 		});
 		expect(container.querySelector("textarea")?.value).toBe("Keep my draft");
 		expect(
-			container.querySelector('[aria-label="Record speech"]'),
+			container.querySelector('[aria-label="开始语音输入"]'),
 		).not.toBeNull();
 	});
 
@@ -1219,7 +1219,7 @@ describe("ChatInputBar", () => {
 		await vi.waitFor(() =>
 			expect(
 				container
-					.querySelector('[aria-label="Record speech"]')
+					.querySelector('[aria-label="开始语音输入"]')
 					?.getAttribute("title"),
 			).toContain("ElevenLabs"),
 		);
@@ -1294,7 +1294,7 @@ describe("ChatInputBar", () => {
 		});
 		await vi.waitFor(() => {
 			const trigger = container.querySelector<HTMLButtonElement>(
-				'[aria-label="Thinking level"]',
+				'[aria-label="思考强度"]',
 			);
 			expect(trigger?.textContent).toContain("High");
 			expect(trigger?.disabled).toBe(true);
@@ -1304,7 +1304,7 @@ describe("ChatInputBar", () => {
 			).toContain("max-[560px]:sr-only");
 		});
 		const compactModelTrigger = container.querySelector<HTMLButtonElement>(
-			'[aria-label="Model and provider"]',
+			'[aria-label="模型与供应商"]',
 		);
 		expect(compactModelTrigger?.disabled).toBe(false);
 		await act(async () => compactModelTrigger?.click());
@@ -1321,7 +1321,7 @@ describe("ChatInputBar", () => {
 		expect(container.textContent).toContain("Refreshed model");
 		await act(async () =>
 			container
-				.querySelector<HTMLButtonElement>('[aria-label="Close model selector"]')
+				.querySelector<HTMLButtonElement>('[aria-label="关闭模型选择器"]')
 				?.click(),
 		);
 		expect(compactModelTrigger?.getAttribute("aria-expanded")).toBe("false");
@@ -1348,9 +1348,9 @@ describe("ChatInputBar", () => {
 		expect(promptInput?.rows).toBe(2);
 
 		await render("starting");
-		expect(container.querySelector('[aria-label="Stop agent"]')).toBeNull();
+		expect(container.querySelector('[aria-label="停止智能体"]')).toBeNull();
 		await render("running");
-		expect(container.querySelector('[aria-label="Stop agent"]')).not.toBeNull();
+		expect(container.querySelector('[aria-label="停止智能体"]')).not.toBeNull();
 
 		expect(onReasoningChange).not.toHaveBeenCalled();
 		const providerTrigger = container.querySelector<HTMLButtonElement>(
@@ -1364,13 +1364,13 @@ describe("ChatInputBar", () => {
 		const workspaceTrigger =
 			container.querySelector<HTMLButtonElement>("#git-branch-btn");
 		const attachTrigger = container.querySelector<HTMLButtonElement>(
-			'[aria-label="Attach files"]',
+			'[aria-label="附加文件"]',
 		);
 		const speechTrigger = container.querySelector<HTMLButtonElement>(
-			'[aria-label="Record speech"]',
+			'[aria-label="开始语音输入"]',
 		);
 		const thinkingTrigger = container.querySelector<HTMLButtonElement>(
-			'[aria-label="Thinking level"]',
+			'[aria-label="思考强度"]',
 		);
 		const leftControls = attachTrigger?.parentElement;
 		expect(leftControls?.className).toContain("max-[560px]:flex-nowrap");
@@ -1391,10 +1391,10 @@ describe("ChatInputBar", () => {
 		const rightControls = workspaceFooterSlot?.parentElement?.parentElement;
 		expect(rightControls?.contains(workspaceTrigger ?? null)).toBe(true);
 		const sendTrigger = container.querySelector<HTMLButtonElement>(
-			'[aria-label="Send message"]',
+			'[aria-label="发送消息"]',
 		);
 		const stopTrigger = container.querySelector<HTMLButtonElement>(
-			'[aria-label="Stop agent"]',
+			'[aria-label="停止智能体"]',
 		);
 		expect(promptInput?.parentElement?.className).toContain("items-start");
 		expect(promptInput?.parentElement?.contains(sendTrigger)).toBe(true);
@@ -1463,7 +1463,7 @@ describe("ChatInputBar", () => {
 		});
 		const trigger = await vi.waitFor(() => {
 			const element = container.querySelector<HTMLButtonElement>(
-				'[aria-label="Thinking level"]',
+				'[aria-label="思考强度"]',
 			);
 			expect(element?.disabled).toBe(false);
 			return element as HTMLButtonElement;
@@ -1619,7 +1619,7 @@ describe("ChatInputBar", () => {
 		await vi.waitFor(() => {
 			expect(
 				container.querySelector<HTMLButtonElement>(
-					'[aria-label="Thinking level"]',
+					'[aria-label="思考强度"]',
 				)?.disabled,
 			).toBe(false);
 		});
@@ -2101,7 +2101,7 @@ describe("ChatInputBar", () => {
 		expect(loadProviderModelsMock).toHaveBeenCalledTimes(2);
 		expect(loadProviderModelsMock).toHaveBeenLastCalledWith("cline");
 		const panel = document.querySelector('[role="dialog"]');
-		expect(panel?.textContent).toContain("Recommended");
+		expect(panel?.textContent).toContain("推荐");
 		expect(panel?.textContent).toContain("Free");
 		expect(panel?.textContent).toContain("All models");
 		expect(panel?.textContent).toContain("Most intelligent model");
@@ -2185,7 +2185,7 @@ describe("ChatInputBar", () => {
 		expect(options.map((option) => option.textContent)).toEqual([
 			"Cline",
 			"Cline Pass",
-			"Set up another provider",
+			"配置其他供应商",
 		]);
 
 		await act(async () => (options[2] as HTMLButtonElement).click());
@@ -2524,7 +2524,7 @@ describe("ChatInputBar", () => {
 			await act(async () => modelTrigger?.click());
 			const panel = document.querySelector('[role="dialog"]');
 			expect(panel?.textContent).not.toContain("Stale Legacy");
-			expect(panel?.textContent).not.toContain("Current model");
+			expect(panel?.textContent).not.toContain("当前模型");
 		});
 
 		it("does not apply another provider's remembered model to an empty selection", async () => {
@@ -2567,7 +2567,7 @@ describe("ChatInputBar", () => {
 			// selecting a value that does not exist in the list.
 			await act(async () => modelTrigger?.click());
 			const panel = document.querySelector('[role="dialog"]');
-			expect(panel?.textContent).toContain("Current model");
+			expect(panel?.textContent).toContain("当前模型");
 			const staleOption = [
 				...(panel?.querySelectorAll<HTMLButtonElement>('[role="option"]') ??
 					[]),
@@ -2731,9 +2731,9 @@ describe("ChatInputBar", () => {
 				},
 			]);
 		});
-		expect(container.querySelector('[aria-label="Attach images"]')).toBeNull();
+		expect(container.querySelector('[aria-label="附加图片"]')).toBeNull();
 		expect(
-			container.querySelector<HTMLButtonElement>('[aria-label="Attach files"]')
+			container.querySelector<HTMLButtonElement>('[aria-label="附加文件"]')
 				?.disabled,
 		).toBe(false);
 

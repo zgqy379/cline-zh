@@ -102,16 +102,16 @@ describe("RemoteEnvironmentsContent", () => {
 		expect(inputById("remote-name").disabled).toBe(false);
 		expect(inputById("remote-identity").disabled).toBe(false);
 		expect(container.textContent).toContain(
-			"Create a new host to change the SSH host, user, or port.",
+			"如需更改 SSH 主机、用户或端口，请新建主机。",
 		);
 
-		await click(buttonWithText("New Host"));
+		await click(buttonWithText("新建主机"));
 
 		expect(inputById("remote-host").disabled).toBe(false);
 		expect(inputById("remote-user").disabled).toBe(false);
 		expect(inputById("remote-port").disabled).toBe(false);
 		expect(container.textContent).not.toContain(
-			"Create a new host to change the SSH host, user, or port.",
+			"如需更改 SSH 主机、用户或端口，请新建主机。",
 		);
 	});
 
@@ -130,21 +130,21 @@ describe("RemoteEnvironmentsContent", () => {
 			expect(inputById("remote-name").value).toBe("Build box");
 		});
 
-		expect(buttonWithText("Save").disabled).toBe(true);
+		expect(buttonWithText("保存").disabled).toBe(true);
 
 		await type(inputById("remote-name"), "Build box 2");
-		expect(buttonWithText("Save").disabled).toBe(false);
+		expect(buttonWithText("保存").disabled).toBe(false);
 
 		await type(inputById("remote-name"), "Build box");
-		expect(buttonWithText("Save").disabled).toBe(true);
+		expect(buttonWithText("保存").disabled).toBe(true);
 
-		await click(buttonWithText("New Host"));
+		await click(buttonWithText("新建主机"));
 		expect(
 			[...container.querySelectorAll("button")].some((button) =>
-				button.textContent?.includes("Save"),
+				button.textContent?.includes("保存"),
 			),
 		).toBe(false);
-		expect(buttonWithText("Add").disabled).toBe(false);
+		expect(buttonWithText("添加").disabled).toBe(false);
 	});
 
 	it("keeps settings limited to saving and testing SSH hosts", async () => {
@@ -164,20 +164,20 @@ describe("RemoteEnvironmentsContent", () => {
 		});
 		await vi.waitFor(() => {
 			expect(container.textContent).toContain("Build box");
-			expect(buttonWithText("Test Connection").disabled).toBe(false);
+			expect(buttonWithText("测试连接").disabled).toBe(false);
 		});
 		expect(container.querySelector("#remote-workspace")).toBeNull();
 		expect(container.textContent).not.toContain("Connect & Open");
 		expect(container.textContent).not.toContain("Disconnect");
 		expect(container.textContent).toContain(
-			"Manage your remote SSH hosts and their configurations.",
+			"管理你的远程 SSH 主机及其配置。",
 		);
 		expect(container.textContent).toContain(
 			"Password sign-in is not supported.",
 		);
 
 		await type(inputById("remote-name"), "Build box 2");
-		await click(buttonWithText("Save"));
+		await click(buttonWithText("保存"));
 
 		await vi.waitFor(() => {
 			expect(invokeMock).toHaveBeenCalledTimes(2);
@@ -185,7 +185,7 @@ describe("RemoteEnvironmentsContent", () => {
 		expect(invokeMock).toHaveBeenNthCalledWith(2, "upsert_remote_environment", {
 			profile: { ...profile, name: "Build box 2" },
 		});
-		expect(container.textContent).toContain("Connected");
+		expect(container.textContent).toContain("已连接");
 		expect(container.textContent).toContain("Ready");
 	});
 
@@ -207,9 +207,9 @@ describe("RemoteEnvironmentsContent", () => {
 			root.render(<RemoteEnvironmentsContent />);
 		});
 		await vi.waitFor(() => {
-			expect(buttonWithText("Test Connection").disabled).toBe(false);
+			expect(buttonWithText("测试连接").disabled).toBe(false);
 		});
-		await click(buttonWithText("Test Connection"));
+		await click(buttonWithText("测试连接"));
 
 		await vi.waitFor(() => {
 			expect(container.textContent).toContain("Permission denied (publickey)");

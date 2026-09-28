@@ -72,11 +72,11 @@ describe("AccountView usage table", () => {
 		await act(async () => usageTab?.click());
 
 		await vi.waitFor(() => {
-			expect(container.textContent).toContain("See More");
-			expect(container.textContent).toContain("No usage transactions yet.");
+			expect(container.textContent).toContain("查看更多");
+			expect(container.textContent).toContain("暂无用量记录。");
 		});
 		const seeMoreButton = Array.from(container.querySelectorAll("button")).find(
-			(button) => button.textContent?.includes("See More"),
+			(button) => button.textContent?.includes("查看更多"),
 		);
 		await act(async () => seeMoreButton?.click());
 
@@ -98,7 +98,7 @@ describe("AccountView signed-out state", () => {
 		});
 
 		await vi.waitFor(() => {
-			expect(container.textContent).toContain("Sign in to Cline");
+			expect(container.textContent).toContain("登录 Cline");
 		});
 		expect(container.textContent).not.toContain(
 			"No Cline account auth token found",
@@ -153,7 +153,7 @@ describe("AccountView signed-out state", () => {
 		});
 
 		await vi.waitFor(() => {
-			expect(container.textContent).toContain("Sign in to Cline");
+			expect(container.textContent).toContain("登录 Cline");
 		});
 		expect(container.textContent).not.toContain("Beatrix");
 	});
@@ -188,6 +188,6 @@ describe("AccountView signed-out state", () => {
 		await vi.waitFor(() => {
 			expect(container.textContent).toContain("Beatrix");
 		});
-		expect(container.textContent).not.toContain("Sign in to Cline");
+		expect(container.textContent).not.toContain("登录 Cline");
 	});
 });

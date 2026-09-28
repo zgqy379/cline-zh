@@ -216,9 +216,9 @@ it("silently hides initial lookup failures and can recover on a later refresh", 
 
 it("keeps a dismissed error hidden through polling and focus until recovery", async () => {
 	await render();
-	invoke.mockRejectedValue(new Error("Connection failed"));
+	invoke.mockRejectedValue(new Error("连接失败"));
 	await clickRefreshViaFocus();
-	expect(container.textContent).toContain("Connection failed");
+	expect(container.textContent).toContain("连接失败");
 	await click("Dismiss pull request error");
 	expect(container.textContent).toBe("");
 	await clickRefreshViaFocus();
@@ -239,7 +239,7 @@ it("hides a formerly working row when GitHub becomes unavailable", async () => {
 	invoke.mockResolvedValue(null);
 	await clickRefreshViaFocus();
 	expect(container.textContent).toBe("");
-	invoke.mockRejectedValue(new Error("Connection failed"));
+	invoke.mockRejectedValue(new Error("连接失败"));
 	await clickRefreshViaFocus();
 	expect(container.textContent).toBe("");
 });

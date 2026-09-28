@@ -42,10 +42,10 @@ export function CloudOnboardingCard({
 		return (
 			<div className="rounded-xl border border-border bg-card/80 p-6 text-center shadow-sm backdrop-blur-sm">
 				<p className="text-sm font-medium text-foreground">
-					Could not reach Cline Cloud
+					无法连接到 Cline Cloud
 				</p>
 				<p className="mt-1 text-sm text-muted-foreground">
-					Check your connection and try again.
+					请检查网络连接后重试。
 				</p>
 				<Button
 					className="mt-4"
@@ -58,7 +58,7 @@ export function CloudOnboardingCard({
 						aria-hidden="true"
 						className={cn("size-3.5", checking && "animate-spin")}
 					/>
-					Retry
+					重试
 				</Button>
 			</div>
 		);
@@ -74,20 +74,18 @@ export function CloudOnboardingCard({
 					<div className="min-w-0">
 						<p className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-2.5 py-1 text-[11px] font-medium uppercase tracking-wide text-primary">
 							<Sparkles aria-hidden="true" className="size-3" />
-							Cloud sessions
+							云端会话
 						</p>
 						<h2 className="mt-3 text-lg font-semibold text-foreground">
 							{isSignedOut
-								? "Run Cline in the cloud"
+								? "在云端运行 Cline"
 								: isNoRepositories
-									? "Give Cline access to a repository"
-									: "Connect GitHub to get started"}
+									? "授予 Cline 仓库访问权限"
+									: "连接 GitHub 以开始"}
 						</h2>
 						<p className="mt-1.5 max-w-xl text-sm leading-relaxed text-muted-foreground">
-							Cloud sessions run on secure, isolated sandboxes on Cline's
-							infrastructure. Cline clones your repository, works on a branch,
-							and keeps going even when you close the app — check back in from
-							any device.
+							云端会话运行在 Cline 基础设施上安全、隔离的沙箱中。Cline 会克隆你的仓库、在分支上工作，
+							即使你关闭应用也会继续运行 — 你可以随时从任意设备回来查看。
 						</p>
 					</div>
 					<CloudFlowIllustration className="shrink-0 max-[720px]:self-center" />
@@ -98,35 +96,34 @@ export function CloudOnboardingCard({
 						<OnboardingStep
 							icon={<LogIn aria-hidden="true" className="size-4" />}
 							index={1}
-							title="Sign in with Cline"
+							title="使用 Cline 登录"
 						>
-							Cloud sessions are part of your Cline account.
+							云端会话属于你的 Cline 账户。
 						</OnboardingStep>
 					) : (
 						<OnboardingStep
 							done={isNoRepositories}
 							icon={<Github aria-hidden="true" className="size-4" />}
 							index={1}
-							title="Connect GitHub"
+							title="连接 GitHub"
 						>
-							Link your GitHub account from the Cline dashboard.
+							在 Cline 控制台中关联你的 GitHub 账户。
 						</OnboardingStep>
 					)}
 					<OnboardingStep
 						active={isNoRepositories}
 						icon={<ShieldCheck aria-hidden="true" className="size-4" />}
 						index={2}
-						title="Pick your repositories"
+						title="选择你的仓库"
 					>
-						Choose which repositories the Cline GitHub App can access.
+						选择 Cline GitHub App 可以访问的仓库。
 					</OnboardingStep>
 					<OnboardingStep
 						icon={<GitBranch aria-hidden="true" className="size-4" />}
 						index={3}
-						title="Start a session"
+						title="开始会话"
 					>
-						Pick a repo and branch here, describe the task, and Cline gets to
-						work in the cloud.
+						在这里选择仓库和分支，描述任务，Cline 就会在云端开始工作。
 					</OnboardingStep>
 				</ol>
 
@@ -134,12 +131,12 @@ export function CloudOnboardingCard({
 					{isSignedOut ? (
 						<Button disabled={signingIn} onClick={onSignIn} size="sm">
 							<LogIn aria-hidden="true" className="size-3.5" />
-							{signingIn ? "Waiting for browser…" : "Sign in with Cline"}
+							{signingIn ? "等待浏览器…" : "使用 Cline 登录"}
 						</Button>
 					) : (
 						<Button onClick={onConnect} size="sm">
 							<Github aria-hidden="true" className="size-3.5" />
-							{isNoRepositories ? "Manage repository access" : "Connect GitHub"}
+							{isNoRepositories ? "管理仓库访问权限" : "连接 GitHub"}
 							<ExternalLink aria-hidden="true" className="size-3" />
 						</Button>
 					)}
@@ -154,7 +151,7 @@ export function CloudOnboardingCard({
 								aria-hidden="true"
 								className={cn("size-3.5", checking && "animate-spin")}
 							/>
-							{isNoRepositories ? "Check again" : "I've connected GitHub"}
+							{isNoRepositories ? "重新检查" : "我已连接 GitHub"}
 						</Button>
 					)}
 					{isSignedOut ? null : (
@@ -166,7 +163,7 @@ export function CloudOnboardingCard({
 								aria-hidden="true"
 								className="size-3 animate-spin motion-reduce:animate-none"
 							/>
-							Watching for changes — this updates automatically.
+							正在监听变化 — 此处会自动更新。
 						</span>
 					)}
 				</div>

@@ -240,7 +240,7 @@ describe("ChannelsContent", () => {
 			) as HTMLInputElement,
 			"123456789",
 		);
-		await click(buttonWithText("Save"));
+		await click(buttonWithText("保存"));
 
 		await vi.waitFor(() => {
 			expect(invokeMock).toHaveBeenCalledWith("start_connector_channel", {
@@ -302,7 +302,7 @@ describe("ChannelsContent", () => {
 			) as Element,
 		);
 		expect(textarea.className).not.toContain("[-webkit-text-security:disc]");
-		await click(buttonWithText("Save"));
+		await click(buttonWithText("保存"));
 
 		await vi.waitFor(() => {
 			expect(invokeMock).toHaveBeenCalledWith("start_connector_channel", {
@@ -335,7 +335,7 @@ describe("ChannelsContent", () => {
 			"#channel-telegram-credential--k",
 		) as HTMLInputElement;
 		await changeInput(tokenInput, "7123456789:retry-token");
-		await click(buttonWithText("Save"));
+		await click(buttonWithText("保存"));
 
 		await vi.waitFor(() => {
 			expect(container.textContent).toContain("connector failed to start");
@@ -388,7 +388,7 @@ describe("ChannelsContent", () => {
 		).toBe(false);
 		expect(container.textContent).not.toContain("New Connection");
 		await changeInput(tokenInput, "7123456789:updated-token");
-		await click(buttonWithText("Save"));
+		await click(buttonWithText("保存"));
 
 		await vi.waitFor(() => {
 			expect(invokeMock).toHaveBeenCalledWith("start_connector_channel", {
@@ -431,7 +431,7 @@ describe("ChannelsContent", () => {
 		expect(container.textContent).toContain("Signing secret");
 		expect(container.textContent).not.toContain("App-level token");
 
-		await click(buttonWithText("Save"));
+		await click(buttonWithText("保存"));
 		expect(container.textContent).toContain("Bot token is required");
 		expect(invokeMock).not.toHaveBeenCalledWith(
 			"start_connector_channel",
@@ -467,14 +467,14 @@ describe("ChannelsContent", () => {
 				'[role="switch"][aria-label="Telegram connection"]',
 			),
 		).toHaveLength(1);
-		await click(buttonWithText("Reset"));
+		await click(buttonWithText("重置"));
 
 		await vi.waitFor(() => {
 			expect(document.body.textContent).toContain("Reset Telegram?");
 		});
 		await click(
 			buttonWithText(
-				"Reset",
+				"重置",
 				document.querySelector('[role="alertdialog"]') as Element,
 			),
 		);

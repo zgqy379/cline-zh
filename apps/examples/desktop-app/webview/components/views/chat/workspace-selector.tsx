@@ -85,11 +85,11 @@ export function WorkspaceSelector({
 
 	const workspaceName = useMemo(() => {
 		if (isChatWorkspacePath(workspaceRoot)) {
-			return "Chat";
+			return "对话";
 		}
 		const trimmed = workspaceRoot.trim().replace(/[\\/]+$/, "");
 		if (!trimmed) {
-			return "Chat";
+			return "对话";
 		}
 		const parts = trimmed.split(/[\\/]/);
 		return parts[parts.length - 1] || "workspace";
@@ -162,7 +162,7 @@ export function WorkspaceSelector({
 			return;
 		}
 		setWorkspaceError(
-			`Couldn't open "${next}". Check that the folder exists and try again.`,
+			`无法打开“${next}”。请确认该文件夹存在后重试。`,
 		);
 	};
 
@@ -184,7 +184,7 @@ export function WorkspaceSelector({
 				setWorkspaceError(
 					pickError instanceof Error && pickError.message.trim()
 						? pickError.message
-						: "The folder picker could not be opened. Type a folder path instead.",
+						: "无法打开文件夹选择器。请改为输入文件夹路径。",
 				);
 			} finally {
 				setPickingWorkspace(false);
@@ -257,8 +257,8 @@ export function WorkspaceSelector({
 							variant="ghost"
 							aria-label={
 								hasGit
-									? `Workspace ${workspaceName}, branch ${currentBranch}`
-									: `Folder ${workspaceName}`
+									? `工作区 ${workspaceName}，分支 ${currentBranch}`
+									: `文件夹 ${workspaceName}`
 							}
 							className="flex max-w-full min-w-0 items-center gap-1 h-auto px-1 py-0.5 hover:text-foreground transition-colors max-[560px]:size-7 max-[560px]:justify-center max-[560px]:p-0 text-sm"
 							disabled={disabled || switching}
@@ -305,7 +305,7 @@ export function WorkspaceSelector({
 				<>
 					<Button
 						variant="ghost"
-						aria-label="Close menu"
+						aria-label="关闭菜单"
 						className="fixed inset-0 z-40 cursor-default h-auto rounded-none opacity-0"
 						data-cursor="default"
 						onClick={() => {
@@ -326,7 +326,7 @@ export function WorkspaceSelector({
 								value={search}
 								onChange={(e) => setSearch(e.target.value)}
 								placeholder={
-									hasGit ? "Search workspaces & branches" : "Search workspaces"
+									hasGit ? "搜索工作区和分支" : "搜索工作区"
 								}
 								className="h-8 flex-1 border-0 bg-transparent px-0 py-0 text-xs shadow-none focus-visible:ring-0 dark:bg-transparent"
 							/>
@@ -334,14 +334,14 @@ export function WorkspaceSelector({
 
 						{loadingBranches ? (
 							<div className="px-3 py-4 text-xs text-muted-foreground">
-								Loading...
+								加载中…
 							</div>
 						) : (
 							<>
 								{/* Workspaces section */}
 								<div className="p-1.5 border-b border-border">
 									<div className="px-2 py-1 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
-										Workspaces
+										工作区
 									</div>
 									{looksLikeFolderPath(search) && (
 										<Button
@@ -354,7 +354,7 @@ export function WorkspaceSelector({
 										>
 											<FolderCode className="size-3 shrink-0 text-muted-foreground" />
 											<span className="truncate text-xs text-foreground">
-												Open folder “{search.trim()}”
+												打开文件夹“{search.trim()}”
 											</span>
 										</Button>
 									)}
@@ -365,8 +365,8 @@ export function WorkspaceSelector({
 										{filteredWorkspaces.length === 0 ? (
 											<div className="px-2 py-2 text-xs text-muted-foreground">
 												{looksLikeFolderPath(search)
-													? "Press the option above to open this folder"
-													: "No workspaces found — type a full folder path to add one"}
+													? "点击上方选项以打开此文件夹"
+													: "未找到工作区 — 输入完整文件夹路径以添加"}
 											</div>
 										) : (
 											filteredWorkspaces.map((wp) => {
@@ -413,8 +413,8 @@ export function WorkspaceSelector({
 										className="justify-start w-full mt-0.5 text-xs text-muted-foreground"
 									>
 										{pickingWorkspace
-											? "Opening folder picker..."
-											: "Open folder..."}
+											? "正在打开文件夹选择器…"
+											: "打开文件夹…"}
 									</Button>
 									{showWorkspacePathInput ? (
 										<div className="mt-1 flex items-center gap-1">
@@ -445,7 +445,7 @@ export function WorkspaceSelector({
 												disabled={switchingWorkspace}
 												className="h-7 px-2 text-xs"
 											>
-												Go
+												前往
 											</Button>
 										</div>
 									) : null}
@@ -460,7 +460,7 @@ export function WorkspaceSelector({
 								{hasGit ? (
 									<div className="p-1.5">
 										<div className="px-2 py-1 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
-											Branches
+											分支
 										</div>
 										<div
 											ref={branchListRef}
@@ -468,7 +468,7 @@ export function WorkspaceSelector({
 										>
 											{filteredBranches.length === 0 ? (
 												<div className="px-2 py-2 text-xs text-muted-foreground">
-													No branches found
+													未找到分支
 												</div>
 											) : (
 												filteredBranches.map((branch) => (
@@ -522,7 +522,7 @@ export function WorkspaceSelector({
 															setNewBranchName("");
 														}
 													}}
-													placeholder="Branch name"
+													placeholder="分支名称"
 													className="h-8 text-xs"
 												/>
 												<div className="flex items-center gap-2">
@@ -532,7 +532,7 @@ export function WorkspaceSelector({
 														size="sm"
 														className="flex-1 text-xs"
 													>
-														Create
+														创建
 													</Button>
 													<Button
 														variant="outline"
@@ -543,7 +543,7 @@ export function WorkspaceSelector({
 														}}
 														className="flex-1 text-xs text-muted-foreground"
 													>
-														Cancel
+														取消
 													</Button>
 												</div>
 											</div>
@@ -555,7 +555,7 @@ export function WorkspaceSelector({
 												className="justify-start w-full text-xs text-muted-foreground"
 											>
 												<Plus className="size-3" />
-												Create and checkout new branch...
+												创建并切换到新分支…
 											</Button>
 										)}
 									</div>

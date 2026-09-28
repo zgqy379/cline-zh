@@ -58,7 +58,7 @@ export function DiffView({
 
 	return (
 		<AgentChangesPanel
-			title="Uncommitted changes"
+			title="未提交的更改"
 			fileCount={fileDiffs.length}
 			onClose={onClose}
 			renderScroll={(content) => (
@@ -66,7 +66,7 @@ export function DiffView({
 			)}
 			emptyMessage={
 				fileDiffs.length === 0
-					? "No file changes in this session yet."
+					? "本次会话尚无文件更改。"
 					: undefined
 			}
 		>
@@ -147,11 +147,11 @@ function DiffFileSection({
 			} catch (error) {
 				toast({
 					variant: "destructive",
-					title: "Could not open file",
+					title: "无法打开文件",
 					description:
 						error instanceof Error
 							? error.message
-							: "The file could not be opened in an editor.",
+							: "无法在编辑器中打开该文件。",
 				});
 			} finally {
 				setOpening(false);
@@ -173,17 +173,17 @@ function DiffFileSection({
 				<DropdownMenu>
 					<DropdownMenuTrigger asChild>
 						<button
-							aria-label={`Open ${file.path} in editor`}
+							aria-label={`在编辑器中打开 ${file.path}`}
 							className="shrink-0 rounded-md p-1 text-muted-foreground opacity-0 transition-opacity hover:bg-surface-hover hover:text-foreground focus-visible:opacity-100 group-hover:opacity-100 disabled:opacity-50 data-[state=open]:opacity-100 data-[state=open]:bg-surface-hover data-[state=open]:text-foreground"
 							disabled={opening}
-							title="Open in editor"
+							title="在编辑器中打开"
 							type="button"
 						>
 							<ExternalLink className="h-3.5 w-3.5" />
 						</button>
 					</DropdownMenuTrigger>
 					<DropdownMenuContent align="end" className="w-52">
-						<DropdownMenuLabel>Open in</DropdownMenuLabel>
+						<DropdownMenuLabel>打开方式</DropdownMenuLabel>
 						{editors.map((editor) => (
 							<DropdownMenuItem
 								key={editor.id}
@@ -198,7 +198,7 @@ function DiffFileSection({
 							onSelect={() => void handleOpenInEditor("default")}
 						>
 							<AppWindow aria-hidden />
-							System default
+							系统默认
 						</DropdownMenuItem>
 					</DropdownMenuContent>
 				</DropdownMenu>
@@ -206,7 +206,7 @@ function DiffFileSection({
 		>
 			{file.hunks.length === 0 ? (
 				<p className="text-xs text-muted-foreground">
-					No hunk details available.
+					没有可显示的差异块详情。
 				</p>
 			) : (
 				// The index disambiguates repeated same-shaped hunks (e.g.

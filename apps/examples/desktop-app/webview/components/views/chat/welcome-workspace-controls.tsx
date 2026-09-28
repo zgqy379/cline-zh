@@ -132,7 +132,7 @@ function CloudRepositoryPicker({
 				aria-haspopup="dialog"
 				className={cn(TRIGGER_CLASS, "min-w-0 max-w-full")}
 				onClick={onToggle}
-				title={repoUrl || "Select a connected GitHub repository"}
+				title={repoUrl || "选择已连接的 GitHub 仓库"}
 				type="button"
 			>
 				<Github
@@ -141,8 +141,8 @@ function CloudRepositoryPicker({
 				/>
 				<span className="max-w-56 truncate">
 					{repoUrl
-						? cloudRepositoryLabel(repoUrl, "Cloud repo")
-						: "Select repository…"}
+						? cloudRepositoryLabel(repoUrl, "云端仓库")
+						: "选择仓库…"}
 				</span>
 			</button>
 
@@ -150,45 +150,45 @@ function CloudRepositoryPicker({
 				<div
 					className={PANEL_CLASS}
 					role="dialog"
-					aria-label="Cloud repository"
+					aria-label="云端仓库"
 				>
 					{result?.connected !== false ? (
 						<SearchInput
 							onChange={setQuery}
-							placeholder="Search repositories…"
+							placeholder="搜索仓库…"
 							value={query}
 						/>
 					) : null}
 					<div className="max-h-72 overflow-y-auto p-1.5">
 						{status === "loading" ? (
-							<PickerStatus icon="loading" message="Loading repositories…" />
+							<PickerStatus icon="loading" message="正在加载仓库…" />
 						) : status === "error" ? (
-							<PickerStatus message="Could not load repositories.">
+							<PickerStatus message="无法加载仓库。">
 								<Button
 									onClick={() => setReloadKey((current) => current + 1)}
 									size="sm"
 									variant="ghost"
 								>
 									<RefreshCcw aria-hidden="true" className="size-3" />
-									Retry
+									重试
 								</Button>
 							</PickerStatus>
 						) : result?.connected === false ? (
-							<PickerStatus message="Connect GitHub to select a repository.">
+							<PickerStatus message="连接 GitHub 以选择仓库。">
 								<Button
 									onClick={() => void onOpenExternalUrl(result.connectUrl)}
 									size="sm"
 									variant="ghost"
 								>
-									Connect GitHub
+									连接 GitHub
 								</Button>
 							</PickerStatus>
 						) : filteredRepositories.length === 0 ? (
 							<PickerStatus
 								message={
 									repositories.length === 0
-										? "No connected repositories."
-										: "No repositories found."
+										? "暂无已连接的仓库。"
+										: "未找到仓库。"
 								}
 							/>
 						) : (
@@ -407,8 +407,8 @@ function CloudBranchPicker({
 				onClick={onToggle}
 				title={
 					status === "unavailable"
-						? `Using the repository default branch${branch ? `: ${branch}` : ""}`
-						: branch || "Select a branch"
+						? `使用仓库默认分支${branch ? `：${branch}` : ""}`
+						: branch || "选择分支"
 				}
 				type="button"
 			>
@@ -419,17 +419,17 @@ function CloudBranchPicker({
 				<span className="max-w-48 truncate">
 					{status === "unavailable"
 						? branch
-							? `${branch} (default)`
-							: "Default branch"
-						: branch || "Select branch…"}
+							? `${branch}（默认）`
+							: "默认分支"
+						: branch || "选择分支…"}
 				</span>
 			</button>
 
 			{open && repositoryId && status !== "unavailable" ? (
-				<div className={PANEL_CLASS} role="dialog" aria-label="Cloud branch">
+				<div className={PANEL_CLASS} role="dialog" aria-label="云端分支">
 					<SearchInput
 						onChange={setQuery}
-						placeholder="Search branches…"
+						placeholder="搜索分支…"
 						value={query}
 					/>
 					<div
@@ -439,21 +439,21 @@ function CloudBranchPicker({
 						{status === "loading" || searchPending ? (
 							<PickerStatus
 								icon="loading"
-								message={query.trim() ? "Searching…" : "Loading branches…"}
+								message={query.trim() ? "搜索中…" : "正在加载分支…"}
 							/>
 						) : status === "error" ? (
-							<PickerStatus message="Could not load branches.">
+							<PickerStatus message="无法加载分支。">
 								<Button
 									onClick={() => setReloadKey((current) => current + 1)}
 									size="sm"
 									variant="ghost"
 								>
 									<RefreshCcw aria-hidden="true" className="size-3" />
-									Retry
+									重试
 								</Button>
 							</PickerStatus>
 						) : branches.length === 0 ? (
-							<PickerStatus message="No branches found." />
+							<PickerStatus message="未找到分支。" />
 						) : (
 							branches.map((item) => (
 								<Button
@@ -479,7 +479,7 @@ function CloudBranchPicker({
 								className="px-3 py-2 text-center text-xs text-muted-foreground"
 								ref={loadMoreRef}
 							>
-								{loadingMore ? "Loading more branches…" : null}
+								{loadingMore ? "正在加载更多分支…" : null}
 							</div>
 						) : null}
 						{loadMoreError ? (
@@ -489,7 +489,7 @@ function CloudBranchPicker({
 								onClick={() => void loadMore()}
 								variant="ghost"
 							>
-								Could not load more branches — Retry
+								无法加载更多分支 — 重试
 							</Button>
 						) : null}
 					</div>
@@ -646,7 +646,7 @@ function WorkspacePicker({
 			return;
 		}
 		setError(
-			`Couldn't open "${next}". Check that the folder exists and try again.`,
+			`无法打开“${next}”。请确认该文件夹存在后重试。`,
 		);
 	};
 
@@ -663,7 +663,7 @@ function WorkspacePicker({
 			setError(
 				pickError instanceof Error && pickError.message.trim()
 					? pickError.message
-					: "The folder picker could not be opened. Type a folder path above instead.",
+					: "无法打开文件夹选择器。请改为在上方输入文件夹路径。",
 			);
 		} finally {
 			setPicking(false);
@@ -681,7 +681,7 @@ function WorkspacePicker({
 	};
 
 	const workspaceLabel = isChatWorkspace
-		? "Chat"
+		? "对话"
 		: workspaceName(workspaceRoot);
 
 	return (
@@ -705,7 +705,7 @@ function WorkspacePicker({
 							setSearch(value);
 							setError(null);
 						}}
-						placeholder="Search workspaces, or type a folder path"
+						placeholder="搜索工作区，或输入文件夹路径"
 						value={search}
 					/>
 					<div className="p-1.5">
@@ -729,8 +729,8 @@ function WorkspacePicker({
 							{filteredWorkspaces.length === 0 ? (
 								<div className="px-2 py-2 text-xs text-muted-foreground">
 									{looksLikeFolderPath(search)
-										? "Press the option above to open this folder"
-										: "No workspaces found — type a full folder path to add one"}
+										? "点击上方选项以打开此文件夹"
+										: "未找到工作区 — 输入完整文件夹路径以添加"}
 								</div>
 							) : (
 								filteredWorkspaces.map((path) => {
@@ -772,7 +772,7 @@ function WorkspacePicker({
 							variant="ghost"
 						>
 							<Plus className="size-3" />
-							{picking ? "Opening folder picker..." : "Open folder..."}
+							{picking ? "正在打开文件夹选择器…" : "打开文件夹…"}
 						</Button>
 						<Button
 							className="w-full justify-start text-xs text-muted-foreground"
@@ -782,7 +782,7 @@ function WorkspacePicker({
 							variant="ghost"
 						>
 							<FilePlus2 className="size-3" />
-							{selectingChat ? "Switching to chat..." : "Just chat"}
+							{selectingChat ? "正在切换到对话…" : "仅对话"}
 						</Button>
 						{error && (
 							<div className="mt-1 rounded-md bg-destructive/10 px-2 py-1.5 text-xs text-destructive">
@@ -877,13 +877,13 @@ function BranchPicker({
 				<div className={PANEL_CLASS}>
 					<SearchInput
 						onChange={setSearch}
-						placeholder="Search branches"
+						placeholder="搜索分支"
 						value={search}
 					/>
 					<div className="p-1.5">
 						{loading ? (
 							<div className="px-2 py-4 text-xs text-muted-foreground">
-								Loading...
+								加载中…
 							</div>
 						) : (
 							<div
@@ -892,7 +892,7 @@ function BranchPicker({
 							>
 								{filteredBranches.length === 0 ? (
 									<div className="px-2 py-2 text-xs text-muted-foreground">
-										No branches found
+										未找到分支
 									</div>
 								) : (
 									filteredBranches.map((branch) => (
@@ -949,12 +949,12 @@ function WorktreeToggle({
 						onChange(checked ? "worktree" : "local")
 					}
 				/>
-				Worktree
+				工作树
 			</label>
 			<Tooltip>
 				<TooltipTrigger asChild>
 					<button
-						aria-label="About worktrees"
+						aria-label="关于工作树"
 						className="inline-flex rounded-full text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
 						type="button"
 					>
@@ -962,8 +962,8 @@ function WorktreeToggle({
 					</button>
 				</TooltipTrigger>
 				<TooltipContent className="max-w-64" side="top" sideOffset={6}>
-					Runs the task on a separate copy of this folder on its own branch, so
-					your files stay untouched until you merge.
+					在当前文件夹的独立副本上、于单独分支中运行任务，因此
+					在合并之前你的文件不会被改动。
 				</TooltipContent>
 			</Tooltip>
 		</span>
@@ -1144,7 +1144,7 @@ export function WelcomeWorkspaceControls({
 						variant="outline"
 					>
 						<LogIn className="size-3.5" />
-						{signingIn ? "Waiting for browser..." : "Sign in to use Cloud"}
+						{signingIn ? "等待浏览器…" : "登录以使用云端"}
 					</Button>
 				)
 			) : (

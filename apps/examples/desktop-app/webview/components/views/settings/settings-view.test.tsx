@@ -69,10 +69,10 @@ describe("SettingsView font size", () => {
 		});
 
 		const slider = container.querySelector<HTMLElement>(
-			'[role="slider"][aria-label="Font size"]',
+			'[role="slider"][aria-label="字号"]',
 		);
 		const increaseButton = container.querySelector<HTMLButtonElement>(
-			'button[aria-label="Increase font size"]',
+			'button[aria-label="增大字号"]',
 		);
 		expect(slider?.getAttribute("aria-valuenow")).toBe("17");
 		expect(increaseButton).not.toBeNull();
@@ -86,7 +86,7 @@ describe("SettingsView font size", () => {
 		expect(window.localStorage.getItem(APP_FONT_SIZE_STORAGE_KEY)).toBe("18");
 		expect(document.documentElement.style.fontSize).toBe("18px");
 		const updatedSlider = container.querySelector<HTMLElement>(
-			'[role="slider"][aria-label="Font size"]',
+			'[role="slider"][aria-label="字号"]',
 		);
 		expect(updatedSlider).toBe(slider);
 		expect(updatedSlider?.getAttribute("aria-valuenow")).toBe("18");
@@ -155,7 +155,7 @@ describe("SettingsView cloud sessions rollout", () => {
 		await vi.waitFor(() =>
 			expect(
 				container.querySelector(
-					'[role="switch"][aria-label="Cloud sessions"]',
+					'[role="switch"][aria-label="云端会话"]',
 				) !== null,
 			).toBe(visible),
 		);

@@ -67,12 +67,12 @@ describe("ChatMessages error action", () => {
 			],
 			{
 				error: "GitHub access expired",
-				errorAction: { label: "Connect GitHub", onClick },
+				errorAction: { label: "连接 GitHub", onClick },
 			},
 		);
 
 		const button = [...container.querySelectorAll("button")].find((candidate) =>
-			candidate.textContent?.includes("Connect GitHub"),
+			candidate.textContent?.includes("连接 GitHub"),
 		);
 		expect(button).toBeDefined();
 		expect(container.textContent?.match(/GitHub access expired/g)).toHaveLength(
@@ -234,7 +234,7 @@ describe("ChatMessages tool disclosures", () => {
 					id: "next-turn",
 					sessionId: "session-1",
 					role: "user",
-					content: "Continue",
+					content: "继续",
 					createdAt: 2,
 				},
 			],
@@ -352,7 +352,7 @@ describe("ChatMessages tool disclosures", () => {
 		await act(async () => image?.closest("button")?.click());
 		expect(
 			container.querySelector(
-				'[role="dialog"][aria-label="Expanded attachment"]',
+				'[role="dialog"][aria-label="展开的附件"]',
 			),
 		).not.toBeNull();
 	});
@@ -383,7 +383,7 @@ describe("ChatMessages tool disclosures", () => {
 		expect(container.textContent).toContain("1 / 2");
 
 		const next = container.querySelector<HTMLButtonElement>(
-			'button[aria-label="Next generated image"]',
+			'button[aria-label="下一张生成的图片"]',
 		);
 		await act(async () => next?.click());
 
@@ -412,7 +412,7 @@ describe("ChatMessages tool disclosures", () => {
 
 		// The final answer of the run is visible without a click…
 		const trigger = [...container.querySelectorAll("button")].find((element) =>
-			element.textContent?.includes("Scheduled task completed"),
+			element.textContent?.includes("定时任务已完成"),
 		);
 		expect(trigger?.getAttribute("aria-expanded")).toBe("true");
 		// …rendered as markdown structure, not a monospace code block.
@@ -445,8 +445,8 @@ describe("ChatMessages tool disclosures", () => {
 			},
 		]);
 
-		expect(container.textContent).toContain("Scheduled task failed");
-		expect(container.textContent).not.toContain("Scheduled task completed");
+		expect(container.textContent).toContain("定时任务失败");
+		expect(container.textContent).not.toContain("定时任务已完成");
 	});
 
 	it("keeps the scheduled-task report visible when the run collapses", async () => {
@@ -500,7 +500,7 @@ describe("ChatMessages tool disclosures", () => {
 		expect(workTrigger?.getAttribute("aria-expanded")).toBe("false");
 		// …but the report row did not fold with them: it stays visible and
 		// expanded outside the summary.
-		expect(container.textContent).toContain("Scheduled task completed");
+		expect(container.textContent).toContain("定时任务已完成");
 		expect(container.textContent).toContain(summary);
 	});
 
@@ -910,7 +910,7 @@ describe("ChatMessages tool disclosures", () => {
 		]);
 
 		expect(
-			container.querySelector('button[aria-label="Copy assistant message"]'),
+			container.querySelector('button[aria-label="复制助手消息"]'),
 		).toBeNull();
 	});
 
@@ -1048,15 +1048,15 @@ describe("ChatMessages tool disclosures", () => {
 		);
 
 		const restoreButton = container.querySelector<HTMLButtonElement>(
-			'button[aria-label="Restore checkpoint"]',
+			'button[aria-label="还原检查点"]',
 		);
 		await act(async () => restoreButton?.click());
 
 		expect(onRestoreCheckpoint).not.toHaveBeenCalled();
-		expect(document.body.textContent).toContain("Revert to this checkpoint?");
+		expect(document.body.textContent).toContain("还原到此检查点？");
 
 		const confirmButton = [...document.body.querySelectorAll("button")].find(
-			(button) => button.textContent === "Revert",
+			(button) => button.textContent === "还原",
 		);
 		await act(async () => confirmButton?.click());
 
@@ -1094,15 +1094,15 @@ describe("ChatMessages tool disclosures", () => {
 		);
 
 		const editButton = container.querySelectorAll<HTMLButtonElement>(
-			'button[aria-label="Edit user message"]',
+			'button[aria-label="编辑用户消息"]',
 		)[1];
 		await act(async () => editButton?.click());
 
 		expect(onEditMessage).not.toHaveBeenCalled();
-		expect(document.body.textContent).toContain("Edit and restart from here?");
+		expect(document.body.textContent).toContain("在此编辑并重新开始？");
 
 		const continueButton = [...document.body.querySelectorAll("button")].find(
-			(button) => button.textContent === "Continue",
+			(button) => button.textContent === "继续",
 		);
 		await act(async () => continueButton?.click());
 
@@ -1128,7 +1128,7 @@ describe("ChatMessages tool disclosures", () => {
 		]);
 
 		const copyButton = container.querySelector<HTMLButtonElement>(
-			'button[aria-label="Copy user message"]',
+			'button[aria-label="复制用户消息"]',
 		);
 		await act(async () => copyButton?.click());
 
@@ -1264,11 +1264,11 @@ describe("ChatMessages tool disclosures", () => {
 		);
 
 		const editButton = container.querySelector<HTMLButtonElement>(
-			'button[aria-label="Edit user message"]',
+			'button[aria-label="编辑用户消息"]',
 		);
 		await act(async () => editButton?.click());
 		const continueButton = [...document.body.querySelectorAll("button")].find(
-			(button) => button.textContent === "Continue",
+			(button) => button.textContent === "继续",
 		);
 		await act(async () => continueButton?.click());
 
@@ -1303,11 +1303,11 @@ describe("ChatMessages tool disclosures", () => {
 		);
 
 		const editButton = container.querySelector<HTMLButtonElement>(
-			'button[aria-label="Edit user message"]',
+			'button[aria-label="编辑用户消息"]',
 		);
 		await act(async () => editButton?.click());
 		const continueButton = [...document.body.querySelectorAll("button")].find(
-			(button) => button.textContent === "Continue",
+			(button) => button.textContent === "继续",
 		);
 		await act(async () => continueButton?.click());
 
@@ -1334,7 +1334,7 @@ describe("ChatMessages tool disclosures", () => {
 		);
 
 		expect(
-			container.querySelector('button[aria-label="Edit user message"]'),
+			container.querySelector('button[aria-label="编辑用户消息"]'),
 		).toBeNull();
 	});
 
@@ -1478,7 +1478,7 @@ describe("ChatMessages follow-up questions", () => {
 				pendingAskQuestions: [
 					{
 						createdAt: "2026-07-31T00:00:00.000Z",
-						options: ["Continue", "Stop"],
+						options: ["继续", "Stop"],
 						question: "Continue this task?",
 						requestId: "request-1",
 						sessionId: "session-1",
@@ -1488,7 +1488,7 @@ describe("ChatMessages follow-up questions", () => {
 		);
 
 		const answer = [...container.querySelectorAll("button")].find((button) =>
-			button.textContent?.includes("Continue"),
+			button.textContent?.includes("继续"),
 		);
 		await act(async () => answer?.click());
 
@@ -1575,10 +1575,10 @@ describe("ChatMessages image attachments", () => {
 		expect(container.textContent).toContain("1 / 2");
 
 		const previous = container.querySelector<HTMLButtonElement>(
-			'button[aria-label="Previous generated image"]',
+			'button[aria-label="上一张生成的图片"]',
 		);
 		const next = container.querySelector<HTMLButtonElement>(
-			'button[aria-label="Next generated image"]',
+			'button[aria-label="下一张生成的图片"]',
 		);
 		expect(previous?.disabled).toBe(true);
 		await act(async () => next?.click());
@@ -1618,12 +1618,12 @@ describe("ChatMessages image attachments", () => {
 
 		expect(
 			container.querySelector(
-				'[role="dialog"][aria-label="Expanded attachment"]',
+				'[role="dialog"][aria-label="展开的附件"]',
 			),
 		).not.toBeNull();
 		expect(
 			container.querySelector<HTMLImageElement>(
-				'img[alt="Expanded attachment"]',
+				'img[alt="展开的附件"]',
 			)?.src,
 		).toBe("data:image/png;base64,aGVsbG8=");
 
@@ -2074,17 +2074,17 @@ describe("ChatMessages thinking indicator", () => {
 
 	it("shows while starting", async () => {
 		await renderMessages([userMessage], { status: "starting" });
-		expect(container.textContent).toContain("Thinking...");
+		expect(container.textContent).toContain("思考中…");
 		expect(
 			[...container.querySelectorAll("span")]
-				.find((element) => element.textContent === "Thinking...")
+				.find((element) => element.textContent === "思考中…")
 				?.classList.contains("cline-chat-streaming-title"),
 		).toBe(true);
 	});
 
 	it("keeps showing while running until the first assistant output arrives", async () => {
 		await renderMessages([userMessage], { status: "running" });
-		expect(container.textContent).toContain("Thinking...");
+		expect(container.textContent).toContain("思考中…");
 	});
 
 	it("ignores trailing status messages when deciding to show", async () => {
@@ -2102,7 +2102,7 @@ describe("ChatMessages thinking indicator", () => {
 			{ status: "running" },
 		);
 
-		expect(container.textContent).toContain("Thinking...");
+		expect(container.textContent).toContain("思考中…");
 	});
 
 	it("hides once assistant output is streaming", async () => {
@@ -2120,7 +2120,7 @@ describe("ChatMessages thinking indicator", () => {
 			{ status: "running", streamingMessageId: "assistant-1" },
 		);
 
-		expect(container.textContent).not.toContain("Thinking...");
+		expect(container.textContent).not.toContain("思考中…");
 	});
 
 	it("hides while a tool runs", async () => {
@@ -2143,7 +2143,7 @@ describe("ChatMessages thinking indicator", () => {
 			{ status: "running" },
 		);
 
-		expect(container.textContent).not.toContain("Thinking...");
+		expect(container.textContent).not.toContain("思考中…");
 	});
 
 	it("shows between a finished tool and the next output", async () => {
@@ -2167,7 +2167,7 @@ describe("ChatMessages thinking indicator", () => {
 			{ status: "running" },
 		);
 
-		expect(container.textContent).toContain("Thinking...");
+		expect(container.textContent).toContain("思考中…");
 	});
 
 	it("hides while a tool approval is pending", async () => {
@@ -2184,7 +2184,7 @@ describe("ChatMessages thinking indicator", () => {
 			],
 		});
 
-		expect(container.textContent).not.toContain("Thinking...");
+		expect(container.textContent).not.toContain("思考中…");
 	});
 });
 
@@ -2309,7 +2309,7 @@ describe("ChatMessages credential failures", () => {
 		).toHaveLength(2);
 
 		const action = [...(bubble?.querySelectorAll("button") ?? [])].find(
-			(button) => button.textContent === "Sign in to Cline",
+			(button) => button.textContent === "登录 Cline",
 		);
 		expect(action).toBeDefined();
 		await act(async () => action?.click());
@@ -2338,7 +2338,7 @@ describe("ChatMessages credential failures", () => {
 		const buttons = [...container.querySelectorAll("button")].filter(
 			(button) =>
 				button.textContent === "Open API providers" ||
-				button.textContent === "Sign in to Cline",
+				button.textContent === "登录 Cline",
 		);
 		expect(buttons.map((button) => button.textContent)).toEqual([
 			"Open API providers",

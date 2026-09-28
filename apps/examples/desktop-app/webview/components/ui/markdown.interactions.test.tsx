@@ -142,7 +142,7 @@ describe("MemoizedMarkdown interactions", () => {
 		await vi.waitFor(() => {
 			expect(document.querySelector('[role="alertdialog"]')).not.toBeNull();
 		});
-		await click(getButton("Cancel"));
+		await click(getButton("取消"));
 
 		await click(link);
 		await vi.waitFor(() => {
@@ -150,7 +150,7 @@ describe("MemoizedMarkdown interactions", () => {
 			expect(document.body.textContent).toContain(url);
 		});
 
-		await click(getButton("Cancel"));
+		await click(getButton("取消"));
 		await vi.waitFor(() => {
 			expect(document.querySelector('[role="alertdialog"]')).toBeNull();
 		});

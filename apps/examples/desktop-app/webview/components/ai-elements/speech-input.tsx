@@ -262,7 +262,7 @@ export function SpeechInput({
 			onStreamingEndRef.current?.();
 			const speechError = event as SpeechRecognitionErrorEvent;
 			onErrorRef.current?.(
-				errorFromEvent(speechError, "Speech recognition failed"),
+				errorFromEvent(speechError, "语音识别失败"),
 			);
 		};
 
@@ -374,7 +374,7 @@ export function SpeechInput({
 				for (const track of stream.getTracks()) track.stop();
 				streamRef.current = null;
 				mediaRecorderRef.current = null;
-				onErrorRef.current?.(errorFromEvent(event, "Audio recording failed"));
+				onErrorRef.current?.(errorFromEvent(event, "录音失败"));
 			});
 			recorder.addEventListener("stop", async () => {
 				for (const track of stream.getTracks()) track.stop();
@@ -490,7 +490,7 @@ export function SpeechInput({
 				<TooltipTrigger asChild>
 					<Button
 						{...props}
-						aria-label={isListening ? "Stop recording" : "Record speech"}
+						aria-label={isListening ? "停止录音" : "开始语音输入"}
 						aria-pressed={isListening}
 						className={cn(
 							"group relative z-10 size-7 rounded-md p-1.5 transition-colors",
@@ -511,14 +511,14 @@ export function SpeechInput({
 						title={
 							mode === "speech-recognition" && recordingMode !== "auto"
 								? isListening
-									? "Stop browser speech recognition"
-									: "Record with browser speech recognition"
+									? "停止浏览器语音识别"
+									: "使用浏览器语音识别录音"
 								: isListening
-									? "Stop recording"
+									? "停止录音"
 									: (title ??
 										(unavailable
-											? "Speech input is not supported in this browser"
-											: "Record speech"))
+											? "当前浏览器不支持语音输入"
+											: "开始语音输入"))
 						}
 						type="button"
 					>
@@ -536,7 +536,7 @@ export function SpeechInput({
 				</TooltipTrigger>
 				{canShowStopHint ? (
 					<TooltipContent side="top" sideOffset={8}>
-						Click Stop to transcribe your recording.
+						点击停止即可转录你的录音。
 					</TooltipContent>
 				) : null}
 			</Tooltip>

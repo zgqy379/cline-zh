@@ -126,7 +126,7 @@ describe("WelcomeWorkspaceControls cloud mode", () => {
 		const buttons = [...container.querySelectorAll("button")].map(
 			(candidate) => candidate.textContent ?? "",
 		);
-		expect(buttons.some((text) => text.includes("Cloud"))).toBe(false);
+		expect(buttons.some((text) => text.includes("云端"))).toBe(false);
 		expect(buttons.some((text) => text.includes("cline"))).toBe(true);
 	});
 
@@ -135,9 +135,9 @@ describe("WelcomeWorkspaceControls cloud mode", () => {
 			executionTarget: "cloud",
 			signedIn: false,
 		});
-		expect(container.textContent).toContain("Sign in to use Cloud");
+		expect(container.textContent).toContain("登录以使用云端");
 		expect(container.textContent).not.toContain("Select repository");
-		await click(button("Sign in to use Cloud"));
+		await click(button("登录以使用云端"));
 		expect(props.onSignIn).toHaveBeenCalledOnce();
 	});
 
@@ -273,11 +273,11 @@ describe("WelcomeWorkspaceControls cloud mode", () => {
 		if (!unavailable)
 			await vi.waitFor(() =>
 				expect(
-					container.querySelector('[aria-label="Cloud branch"]')?.textContent,
+					container.querySelector('[aria-label="云端分支"]')?.textContent,
 				).toContain("feature/keep"),
 			);
 		if (unavailable) {
-			await vi.waitFor(() => expect(container.textContent).toContain("Retry"));
+			await vi.waitFor(() => expect(container.textContent).toContain("重试"));
 			expect(onCloudBranchChange).not.toHaveBeenCalled();
 		} else if (shouldFallback) {
 			await vi.waitFor(() =>
@@ -379,7 +379,7 @@ describe("WelcomeWorkspaceControls cloud mode", () => {
 		);
 		await click(button("main"));
 		const search = container.querySelector<HTMLInputElement>(
-			'input[placeholder="Search branches…"]',
+			'input[placeholder="搜索分支…"]',
 		);
 		await act(async () => {
 			const setter = Object.getOwnPropertyDescriptor(
@@ -525,7 +525,7 @@ describe("WelcomeWorkspaceControls cloud mode", () => {
 		await vi.waitFor(() => expect(releaseHungPage).toBeDefined());
 
 		const search = container.querySelector<HTMLInputElement>(
-			'input[placeholder="Search branches…"]',
+			'input[placeholder="搜索分支…"]',
 		);
 		expect(search).not.toBeNull();
 		await act(async () => {
@@ -609,7 +609,7 @@ describe("WelcomeWorkspaceControls cloud mode", () => {
 		expect(branchButton.title).toBe(
 			"Using the repository default branch: main",
 		);
-		expect(container.textContent).not.toContain("Could not load branches.");
+		expect(container.textContent).not.toContain("无法加载分支。");
 	});
 
 	it("links to GitHub setup when no integration is connected", async () => {
@@ -627,9 +627,9 @@ describe("WelcomeWorkspaceControls cloud mode", () => {
 			await Promise.resolve();
 		});
 		expect(container.textContent).toContain(
-			"Connect GitHub to select a repository.",
+			"连接 GitHub 以选择仓库。",
 		);
-		await click(button("Connect GitHub"));
+		await click(button("连接 GitHub"));
 		expect(props.onOpenExternalUrl).toHaveBeenCalledWith(
 			"https://app.example/dashboard/integrations",
 		);
@@ -743,7 +743,7 @@ describe("WelcomeWorkspaceControls manual path entry", () => {
 		await renderControls({ onPickWorkspaceDirectory });
 		await openWorkspaceMenu();
 
-		await clickButton("Open folder...");
+		await clickButton("打开文件夹…");
 
 		expect(container.textContent).toContain("No system folder picker found");
 	});
@@ -799,7 +799,7 @@ describe("WelcomeWorkspaceControls branch chip", () => {
 
 		await clickButton("recipes");
 		await vi.waitFor(() => {
-			expect(container.textContent).toContain("Open folder...");
+			expect(container.textContent).toContain("打开文件夹…");
 		});
 		expect(container.textContent).not.toContain("Add project");
 	});
@@ -817,13 +817,13 @@ describe("WelcomeWorkspaceControls worktree toggle", () => {
 			onWorkInChange,
 		});
 
-		// No second "Local" chip: the environment selector already says Local.
-		expect(container.textContent).not.toContain("Local");
+		// No second "本地" chip: the environment selector already says Local.
+		expect(container.textContent).not.toContain("本地");
 		const label = worktreeSwitch()?.closest("label");
-		expect(label?.textContent).toBe("Worktree");
+		expect(label?.textContent).toBe("工作树");
 		expect(worktreeSwitch()?.checked).toBe(false);
 		expect(
-			container.querySelector('[aria-label="About worktrees"]'),
+			container.querySelector('[aria-label="关于工作树"]'),
 		).not.toBeNull();
 
 		await click(label as HTMLElement);
@@ -852,6 +852,6 @@ describe("WelcomeWorkspaceControls worktree toggle", () => {
 			onWorkInChange: vi.fn(),
 		});
 		expect(worktreeSwitch()).toBeNull();
-		expect(container.textContent).not.toContain("Worktree");
+		expect(container.textContent).not.toContain("工作树");
 	});
 });

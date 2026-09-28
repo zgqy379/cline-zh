@@ -28,7 +28,7 @@ const provider: Provider = {
 	enabled: true,
 	modelList: [
 		{ id: "alpha", name: "Alpha" },
-		{ id: "beta", name: "Beta" },
+		{ id: "beta", name: "测试版" },
 	],
 };
 
@@ -235,7 +235,7 @@ describe("ProviderListContent", () => {
 				button.textContent?.includes(name),
 			);
 		expect(rowFor("Anthropic")?.textContent).toContain("Configured");
-		expect(rowFor("Cline")?.textContent).toContain("Sign in");
+		expect(rowFor("Cline")?.textContent).toContain("登录");
 		expect(rowFor("ElevenLabs")?.textContent).toContain("API key");
 	});
 
@@ -375,7 +375,7 @@ describe("ProviderDetailContent auth flows", () => {
 			);
 		});
 		const connect = Array.from(container.querySelectorAll("button")).find(
-			(button) => button.textContent === "Connect",
+			(button) => button.textContent === "连接",
 		);
 		await act(async () => connect?.click());
 		expect(onConnect).toHaveBeenCalledOnce();
@@ -432,7 +432,7 @@ describe("ProviderDetailContent audio capabilities", () => {
 				},
 				{
 					id: "chat",
-					name: "Chat",
+					name: "对话",
 					inputModalities: ["text"],
 					outputModalities: ["text"],
 				},
@@ -754,6 +754,6 @@ describe("ProviderDetailContent audio capabilities", () => {
 		const badgeTexts = Array.from(
 			container.querySelectorAll(".uppercase.tracking-wide"),
 		).map((badge) => badge.textContent);
-		expect(badgeTexts).toEqual(["Recommended", "NEW", "Free"]);
+		expect(badgeTexts).toEqual(["推荐", "NEW", "Free"]);
 	});
 });
