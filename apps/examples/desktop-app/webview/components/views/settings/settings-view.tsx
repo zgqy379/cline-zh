@@ -539,7 +539,7 @@ export function SettingsView({
 		>
 			<DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-3xl">
 				<DialogHeader>
-					<DialogTitle>Add Provider</DialogTitle>
+					<DialogTitle>添加供应商</DialogTitle>
 					<DialogDescription>
 						Add an OpenAI-compatible provider and choose its available models.
 					</DialogDescription>
@@ -556,7 +556,7 @@ export function SettingsView({
 
 	const providerContent = providersLoading ? (
 		<div className="flex h-full items-center justify-center">
-			<p className="text-sm text-muted-foreground">Loading providers...</p>
+			<p className="text-sm text-muted-foreground">正在加载供应商…</p>
 		</div>
 	) : providerCatalogError ? (
 		<div className="flex h-full items-center justify-center">
@@ -664,12 +664,12 @@ export function SettingsView({
  * violet reads the live brand token so it always matches the default theme.
  */
 const ACCENT_OPTIONS: { id: HubAccent; label: string; swatch: string }[] = [
-	{ id: "violet", label: "Violet", swatch: "var(--brand-violet)" },
-	{ id: "graphite", label: "Graphite", swatch: "oklch(0.27 0.012 248)" },
-	{ id: "cyan", label: "Cyan", swatch: "oklch(0.6 0.12 222)" },
-	{ id: "pink", label: "Pink", swatch: "oklch(0.75 0.1 354)" },
-	{ id: "espresso", label: "Espresso", swatch: "oklch(0.36 0.035 35)" },
-	{ id: "ember", label: "Ember", swatch: "oklch(0.6 0.19 33)" },
+	{ id: "violet", label: "紫色", swatch: "var(--brand-violet)" },
+	{ id: "graphite", label: "石墨色", swatch: "oklch(0.27 0.012 248)" },
+	{ id: "cyan", label: "青色", swatch: "oklch(0.6 0.12 222)" },
+	{ id: "pink", label: "粉色", swatch: "oklch(0.75 0.1 354)" },
+	{ id: "espresso", label: "浓缩咖啡色", swatch: "oklch(0.36 0.035 35)" },
+	{ id: "ember", label: "余烬橙", swatch: "oklch(0.6 0.19 33)" },
 ];
 
 function GeneralSettingsContent({
@@ -963,34 +963,34 @@ function GeneralSettingsContent({
 	return (
 		<PageFrame>
 			<PageHeader
-				description="Manage desktop preferences for this browser and CLI environment."
-				title="Settings"
+				description="管理此浏览器与 CLI 环境的桌面端偏好设置。"
+				title="设置"
 			/>
 			<section className="max-w-344">
 				<NotificationSettings />
 				<div className="flex py-4 items-center justify-between gap-5 border-b max-[720px]:flex-col max-[720px]:items-stretch max-[720px]:py-4">
 					<div className="flex flex-col gap-1">
-						<p className="text-base font-semibold text-foreground">Dark mode</p>
+						<p className="text-base font-semibold text-foreground">深色模式</p>
 						<p className="text-sm text-muted-foreground">
-							Keep the desktop interface in dark mode on this browser.
+							在此浏览器中让桌面界面保持深色模式。
 						</p>
 					</div>
 					<Switch
-						aria-label="Dark mode"
+						aria-label="深色模式"
 						checked={theme === "dark"}
 						onCheckedChange={updateTheme}
 					/>
 				</div>
 				<div className="flex items-center justify-between gap-5 border-b py-4 max-[720px]:flex-col max-[720px]:items-stretch">
 					<div className="flex flex-col gap-1">
-						<p className="text-base font-semibold text-foreground">Font size</p>
+						<p className="text-base font-semibold text-foreground">字号</p>
 						<p className="text-sm text-muted-foreground">
-							Adjust the size of text and interface elements throughout the app.
+							调整整个应用中的文字和界面元素尺寸。
 						</p>
 					</div>
 					<div className="flex w-64 shrink-0 items-center gap-3 max-[720px]:w-full">
 						<Button
-							aria-label="Decrease font size"
+							aria-label="减小字号"
 							className="size-7"
 							disabled={fontSize === MIN_APP_FONT_SIZE}
 							onClick={() => updateFontSizePreference(fontSize - 1)}
@@ -1001,8 +1001,8 @@ function GeneralSettingsContent({
 							<Minus />
 						</Button>
 						<Slider
-							aria-label="Font size"
-							aria-valuetext={`${fontSize} pixels`}
+							aria-label="字号"
+							aria-valuetext={`${fontSize} 像素`}
 							max={MAX_APP_FONT_SIZE}
 							min={MIN_APP_FONT_SIZE}
 							onValueChange={updateFontSize}
@@ -1010,7 +1010,7 @@ function GeneralSettingsContent({
 							value={[fontSize]}
 						/>
 						<Button
-							aria-label="Increase font size"
+							aria-label="增大字号"
 							className="size-7"
 							disabled={fontSize === MAX_APP_FONT_SIZE}
 							onClick={() => updateFontSizePreference(fontSize + 1)}
@@ -1021,7 +1021,7 @@ function GeneralSettingsContent({
 							<Plus />
 						</Button>
 						<output
-							aria-label="Selected font size"
+							aria-label="当前字号"
 							className="w-10 shrink-0 text-right font-mono text-sm tabular-nums text-foreground"
 						>
 							{fontSize}px
@@ -1031,10 +1031,10 @@ function GeneralSettingsContent({
 				<div className="flex py-4 items-center justify-between gap-5 border-b max-[720px]:flex-col max-[720px]:items-stretch max-[720px]:py-4">
 					<div className="flex flex-col gap-1">
 						<p className="text-base font-semibold text-foreground">
-							Accent color
+							强调色
 						</p>
 						<p className="text-sm text-muted-foreground">
-							Tint buttons, links, and highlights across the app.
+							为整个应用中的按钮、链接和高亮元素着色。
 						</p>
 					</div>
 					<div className="flex shrink-0 items-center gap-2">
@@ -1058,13 +1058,13 @@ function GeneralSettingsContent({
 				</div>
 				<div className="flex items-center justify-between gap-5 border-b py-4 max-[720px]:flex-col max-[720px]:items-stretch">
 					<div className="flex flex-col gap-1">
-						<p className="text-base font-semibold text-foreground">App icon</p>
+						<p className="text-base font-semibold text-foreground">应用图标</p>
 						<p className="text-sm text-muted-foreground">
-							Pick the icon Cline shows in the {appIconLocation}.
+							选择 Cline 在{appIconLocation}中显示的图标。
 						</p>
 						{appIconError ? (
 							<p className="mt-2 text-xs text-destructive" role="alert">
-								Failed to change app icon: {appIconError}
+								更改应用图标失败：{appIconError}
 							</p>
 						) : null}
 					</div>
@@ -1107,42 +1107,42 @@ function GeneralSettingsContent({
 				<div className="flex py-4 items-center justify-between gap-5 border-b max-[720px]:flex-col max-[720px]:items-stretch max-[720px]:py-4">
 					<div className="flex flex-col gap-1">
 						<p className="text-base font-semibold text-foreground">
-							Web search
+							网络搜索
 						</p>
 						<p className="text-sm text-muted-foreground">
-							Let the model search the web during a task. Only providers with
-							built-in web search honor this setting; other providers ignore it.
-							Applies to new sessions.
+							允许模型在任务执行中搜索网页。仅部分供应商
+							内置网络搜索的供应商会遵循此设置，其他供应商则忽略。
+							仅对新会话生效。
 						</p>
 						{webSearchReadyProviders ===
 						null ? null : webSearchReadyProviders.length > 0 ? (
 							<p className="text-xs text-muted-foreground">
-								Ready to use with {webSearchReadyProviders.join(", ")} on models
-								that support it — no extra setup needed.
+								可在支持该功能的模型上配合 {webSearchReadyProviders.join(", ")} 使用
+								，无需额外配置。
 							</p>
 						) : (
 							<p className="text-xs text-amber-700 dark:text-amber-300">
-								None of your connected providers include built-in web search, so
-								this setting has no effect yet.{" "}
+								你已连接的供应商均未内置网络搜索，因此
+								此设置暂不生效。{" "}
 								<button
 									className="underline underline-offset-2 hover:text-foreground"
 									onClick={onOpenModelProviders}
 									type="button"
 								>
-									Connect a provider
+									连接供应商
 								</button>{" "}
-								that supports it, such as Anthropic, OpenAI, Google Gemini, or
-								Cline.
+								连接支持该功能的供应商，例如 Anthropic、OpenAI、Google Gemini 或
+								Cline。
 							</p>
 						)}
 						{webSearchError ? (
 							<p className="mt-2 text-xs text-destructive" role="alert">
-								Failed to update web search setting: {webSearchError}
+								更新网络搜索设置失败：{webSearchError}
 							</p>
 						) : null}
 					</div>
 					<Switch
-						aria-label="Web search"
+						aria-label="网络搜索"
 						checked={webSearchEnabled}
 						disabled={webSearchLoading || webSearchSaving}
 						onCheckedChange={(checked) => void updateWebSearchEnabled(checked)}
@@ -1151,21 +1151,21 @@ function GeneralSettingsContent({
 				<div className="flex py-4 items-center justify-between gap-5 border-b max-[720px]:flex-col max-[720px]:items-stretch max-[720px]:py-4">
 					<div className="flex flex-col gap-1">
 						<p className="text-base font-semibold text-foreground">
-							Keep CLI up to date
+							保持 CLI 为最新
 						</p>
 						<p className="text-sm text-muted-foreground">
-							Automatically update the cline terminal command, which shares your
-							sessions and settings with this app. The app itself updates
-							separately.
+							自动更新 cline 终端命令，它与本应用
+							共享你的会话和设置。应用本体会
+							单独更新。
 						</p>
 						{autoUpdateError ? (
 							<p className="mt-2 text-xs text-destructive" role="alert">
-								Failed to update CLI auto-update setting: {autoUpdateError}
+								更新 CLI 自动更新设置失败：{autoUpdateError}
 							</p>
 						) : null}
 					</div>
 					<Switch
-						aria-label="Keep CLI up to date"
+						aria-label="保持 CLI 为最新"
 						checked={autoUpdateEnabled}
 						disabled={autoUpdateLoading || autoUpdateSaving}
 						onCheckedChange={(checked) => void updateAutoUpdateEnabled(checked)}
@@ -1175,34 +1175,31 @@ function GeneralSettingsContent({
 					<div className="flex py-4 items-center justify-between gap-5 border-b max-[720px]:flex-col max-[720px]:items-stretch max-[720px]:py-4">
 						<div className="flex flex-col gap-1">
 							<p className="flex items-center gap-2 text-base font-semibold text-foreground">
-								Cloud sessions
+								云端会话
 								<span className="rounded-full bg-primary/10 px-2 py-0.5 text-[11px] font-medium uppercase tracking-wide text-primary">
-									Preview
+									预览
 								</span>
 							</p>
 							<p className="text-sm text-muted-foreground">
-								Run Cline on your GitHub repositories in secure cloud sandboxes.
-								Adds a Cloud option to the new-session composer. Requires a
-								Cline account with GitHub connected.
+								在安全的云端沙箱中对你的 GitHub 仓库运行 Cline。
+								会在新建会话的编辑器中增加一个「云端」选项，需要已连接 GitHub 的 Cline 账户。
 							</p>
 							{cloudSessionsError ? (
 								<p className="mt-2 text-xs text-destructive" role="alert">
-									Failed to update cloud sessions setting: {cloudSessionsError}
+									更新云端会话设置失败：{cloudSessionsError}
 								</p>
 							) : null}
 							{cloudSessionsEffective !== null &&
 							!cloudSessionsLoading &&
 							cloudSessionsEffective !== cloudSessionsEnabled ? (
 								<p className="mt-2 text-xs text-muted-foreground">
-									Cloud sessions are currently{" "}
-									{cloudSessionsEffective ? "enabled" : "disabled"} by the
-									CLINE_CODE_CLOUD_AGENTS environment override, which takes
-									precedence over this setting.
+									云端会话当前{cloudSessionsEffective ? "已启用" : "已禁用"}，这是由{" "}
+									<code>CLINE_CODE_CLOUD_AGENTS</code> 环境变量覆盖所致，该覆盖优先于此设置。
 								</p>
 							) : null}
 						</div>
 						<Switch
-							aria-label="Cloud sessions"
+							aria-label="云端会话"
 							checked={cloudSessionsEnabled}
 							disabled={cloudSessionsLoading || cloudSessionsSaving}
 							onCheckedChange={(checked) =>
@@ -1213,18 +1210,18 @@ function GeneralSettingsContent({
 				) : null}
 				<div className="flex py-4 items-center justify-between gap-5 border-b max-[720px]:flex-col max-[720px]:items-stretch max-[720px]:py-4">
 					<div className="flex flex-col gap-1">
-						<p className="text-base font-semibold text-foreground">Telemetry</p>
+						<p className="text-base font-semibold text-foreground">遥测</p>
 						<p className="text-sm text-muted-foreground">
-							Enable error and usage reports to help improve Cline.
+							启用错误和使用情况报告，以帮助改进 Cline。
 						</p>
 						{telemetryError ? (
 							<p className="mt-2 text-xs text-destructive" role="alert">
-								Failed to update telemetry setting: {telemetryError}
+								更新遥测设置失败：{telemetryError}
 							</p>
 						) : null}
 					</div>
 					<Switch
-						aria-label="Telemetry"
+						aria-label="遥测"
 						checked={!telemetryOptOut}
 						disabled={telemetryLoading || telemetrySaving}
 						onCheckedChange={(checked) => void updateTelemetryOptOut(!checked)}
