@@ -173,7 +173,7 @@ export function setMcpServerDisabled(
 			{}) as JsonRecord;
 		const current = servers[name];
 		if (!current || typeof current !== "object") {
-			throw new Error(`unknown MCP server: ${name}`);
+			throw new Error(`未知的 MCP 服务器：${name}`);
 		}
 		servers[name] = { ...(current as JsonRecord), disabled };
 		settings.mcpServers = servers;

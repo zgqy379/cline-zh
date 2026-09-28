@@ -232,12 +232,12 @@ function buildConnectorStartArgs(args?: Record<string, unknown>): string[] {
 	const channel = asString(args?.channel);
 	if (!channel) throw new Error("channel is required");
 	const platform = CONNECTOR_PLATFORMS.find((entry) => entry.id === channel);
-	if (!platform) throw new Error(`unknown connector channel: ${channel}`);
+	if (!platform) throw new Error(`未知的连接器渠道：${channel}`);
 	const supported = new Set(
 		listConnectorCatalog().map((connector) => connector.name),
 	);
 	if (!supported.has(platform.id)) {
-		throw new Error(`connector channel is not available: ${channel}`);
+		throw new Error(`连接器渠道不可用：${channel}`);
 	}
 	const security = asRecord(args?.security);
 	return [
@@ -315,7 +315,7 @@ export async function stopConnectorChannel(
 		listConnectorCatalog().map((connector) => connector.name),
 	);
 	if (!supported.has(channel)) {
-		throw new Error(`unknown connector channel: ${channel}`);
+		throw new Error(`未知的连接器渠道：${channel}`);
 	}
 	const result = await runCliConnectCommand(workspaceRoot, ["--stop", channel]);
 	if (result.code !== 0) {

@@ -330,7 +330,7 @@ export function watchDesktopNotifications(): () => void {
 			void notify({
 				eventType: "taskCompletion",
 				sessionId,
-				title: "Task completed",
+				title: "任务已完成",
 				body: "Cline finished working and the result is ready.",
 			});
 			return;

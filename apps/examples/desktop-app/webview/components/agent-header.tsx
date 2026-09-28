@@ -303,7 +303,7 @@ function SubagentSessionBadge({
 	const parentTitle = parentSession.title?.trim();
 	const label = "Main Agent Session";
 	const hint = parentTitle
-		? `Back to the main agent session: ${parentTitle}`
+		? `返回主智能体会话：${parentTitle}`
 		: "返回主智能体会话";
 
 	return (

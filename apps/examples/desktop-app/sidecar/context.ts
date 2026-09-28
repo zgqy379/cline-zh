@@ -1345,7 +1345,7 @@ export function getRuntimeBinding(
 ): SessionRuntimeBinding {
 	const binding = ctx.runtimeBindings.get(environmentId);
 	if (!binding) {
-		throw new Error(`Environment ${environmentId} is not connected.`);
+		throw new Error(`环境 ${environmentId} 未连接。`);
 	}
 	return binding;
 }

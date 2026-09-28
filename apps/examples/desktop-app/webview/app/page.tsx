@@ -281,7 +281,7 @@ function toThreadTitle(options: { title?: string; prompt?: string }): string {
 	}
 	const line = options.prompt?.trim().split("\n")[0]?.trim();
 	if (line) return line.slice(0, 70);
-	return "New session";
+	return "新会话";
 }
 
 export default function Home() {

@@ -12,7 +12,7 @@ function resolveInstallRedirect(location: string, requestUrl: URL): string {
 	try {
 		resolved = new URL(location, requestUrl);
 	} catch {
-		throw new Error(`GitHub install redirect is not a valid URL: ${location}`);
+		throw new Error(`GitHub 安装重定向不是有效 URL：${location}`);
 	}
 	if (resolved.protocol !== "https:") {
 		throw new Error(

@@ -933,7 +933,7 @@ export async function installMarketplaceEntryFromCatalog(
 	);
 	if (!entry) {
 		throw new Error(
-			`Marketplace entry ${requested.type}:${requested.id} was not found in the catalog.`,
+			`在目录中未找到市场条目 ${requested.type}:${requested.id}。`,
 		);
 	}
 	return installMarketplaceEntry(
@@ -957,7 +957,7 @@ export async function uninstallMarketplaceEntryFromCatalog(
 	);
 	if (!entry) {
 		throw new Error(
-			`Marketplace entry ${requested.type}:${requested.id} was not found in the catalog.`,
+			`在目录中未找到市场条目 ${requested.type}:${requested.id}。`,
 		);
 	}
 	return uninstallMarketplaceEntry(

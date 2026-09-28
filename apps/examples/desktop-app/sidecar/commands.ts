@@ -922,7 +922,7 @@ async function createGitWorktree(
 		["rev-parse", "--show-toplevel"],
 		{ cwd, encoding: "utf8" },
 	).catch(() => {
-		throw new Error(`Not a git repository: ${cwd}`);
+		throw new Error(`不是 Git 仓库：${cwd}`);
 	});
 	const repoRoot = stdout.trim();
 	const id = randomUUID().replaceAll("-", "").slice(0, 5);
@@ -1082,7 +1082,7 @@ async function listWorkspaceDirectories(
 	if (binding.kind === "local") {
 		const currentPath = realpathSync(requestedPath || homedir());
 		if (!statSync(currentPath).isDirectory()) {
-			throw new Error(`Workspace path is not a directory: ${currentPath}`);
+			throw new Error(`工作区路径不是目录：${currentPath}`);
 		}
 		const directories = readdirSync(currentPath, { withFileTypes: true })
 			.filter((entry) => {
@@ -1826,7 +1826,7 @@ async function openFileInCodeEditor(
 	if (editorId && editorId !== "default") {
 		const editor = CODE_EDITOR_CATALOG.find((entry) => entry.id === editorId);
 		if (!editor) {
-			throw new Error(`Unknown editor: ${editorId}`);
+			throw new Error(`未知编辑器：${editorId}`);
 		}
 		const executable = await findExecutableOnPath(editor.cli);
 		if (executable && launchEditorCli(executable, filePath)) {
@@ -1839,7 +1839,7 @@ async function openFileInCodeEditor(
 				}
 			}
 		}
-		throw new Error(`${editor.label} is not available on this machine`);
+		throw new Error(`${editor.label} 在本机上不可用`);
 	}
 	if (!editorId) {
 		for (const editor of CODE_EDITOR_CATALOG) {
@@ -1974,7 +1974,7 @@ export async function handleCommand(
 			}
 
 			if (!connection) {
-				throw new Error(`Remote environment ${id} failed to connect.`);
+				throw new Error(`远程环境 ${id} 连接失败。`);
 			}
 
 			const previousProfileIds = new Set(
@@ -2332,7 +2332,7 @@ export async function handleCommand(
 		const answer = String(args?.answer ?? "").trim();
 		const resolved = resolveSidecarAskQuestion(ctx, requestId, answer);
 		if (!resolved) {
-			throw new Error(`unknown ask question request: ${requestId}`);
+			throw new Error(`未知的提问请求：${requestId}`);
 		}
 		broadcastEvent(ctx, "ask_question_answered", { requestId });
 		return true;
@@ -2756,7 +2756,7 @@ export async function handleCommand(
 		try {
 			parsed = new URL(rawUrl);
 		} catch {
-			throw new Error(`invalid url: ${rawUrl}`);
+			throw new Error(`无效 URL：${rawUrl}`);
 		}
 		if (!OPENABLE_URL_PROTOCOLS.has(parsed.protocol)) {
 			throw new Error(
@@ -3262,7 +3262,7 @@ export async function handleCommand(
 			filePath: settingsPath,
 		});
 		if (!registration) {
-			throw new Error(`unknown MCP server: ${name}`);
+			throw new Error(`未知的 MCP 服务器：${name}`);
 		}
 		const wasDisabled = registration.disabled === true;
 		setMcpServerDisabled({ filePath: settingsPath, name, disabled: true });
@@ -3313,7 +3313,7 @@ export async function handleCommand(
 		}
 		const registration = resolveMcpServerRegistration(name, { filePath: path });
 		if (!registration) {
-			throw new Error(`unknown MCP server: ${name}`);
+			throw new Error(`未知的 MCP 服务器：${name}`);
 		}
 		if (registration.transport.type !== "stdio") {
 			setMcpServerDisabled({ filePath: path, name, disabled: true });
@@ -3521,7 +3521,7 @@ export async function handleCommand(
 	if (command === "remove_git_worktree") {
 		const path = typeof args?.path === "string" ? args.path.trim() : "";
 		if (!isTaskWorktreePath(path)) {
-			throw new Error(`Not a task worktree: ${path}`);
+			throw new Error(`不是任务工作树：${path}`);
 		}
 		return await removeTaskWorktree(ctx, path);
 	}
@@ -3600,7 +3600,7 @@ export async function handleCommand(
 	if (command === "toggle_disabled_plugin_tool") {
 		const toolName = String(args?.name ?? "").trim();
 		if (!toolName) {
-			throw new Error("tool name is required");
+			throw new Error("工具名称为必填项");
 		}
 		const snapshot = await toggleHubSetting(ctx, {
 			type: "tools",
@@ -3614,7 +3614,7 @@ export async function handleCommand(
 			.map((name) => String(name ?? "").trim())
 			.filter(Boolean);
 		if (toolNames.length === 0) {
-			throw new Error("tool name is required");
+			throw new Error("工具名称为必填项");
 		}
 		let snapshot: CoreSettingsSnapshot | undefined;
 		for (const name of toolNames) {
@@ -3720,7 +3720,7 @@ export async function handleCommand(
 				: ctx.localWorkspaceRoot;
 		const filePath = isAbsolute(rawPath) ? rawPath : join(baseDir, rawPath);
 		if (!existsSync(filePath)) {
-			throw new Error(`File not found: ${filePath}`);
+			throw new Error(`未找到文件：${filePath}`);
 		}
 		const requestedEditor =
 			typeof args?.editor === "string" && args.editor.trim()
