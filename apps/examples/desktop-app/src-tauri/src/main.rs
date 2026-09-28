@@ -179,12 +179,12 @@ fn update_menu_item_text(update_status: &UpdateStatus) -> String {
         update_status.state.as_str(),
         update_status.version.as_deref(),
     ) {
-        ("checking", _) => "Checking for Updates...".to_string(),
-        ("downloading", Some(version)) => format!("Downloading Update v{version}..."),
-        ("downloading", None) => "Downloading Update...".to_string(),
-        ("ready", Some(version)) => format!("Restart to Update to v{version}"),
-        ("ready", None) => "Restart to Update".to_string(),
-        _ => "Check for Updates...".to_string(),
+        ("checking", _) => "正在检查更新…".to_string(),
+        ("downloading", Some(version)) => format!("正在下载更新 v{version}…"),
+        ("downloading", None) => "正在下载更新…".to_string(),
+        ("ready", Some(version)) => format!("重启以更新到 v{version}"),
+        ("ready", None) => "重启以更新".to_string(),
+        _ => "检查更新…".to_string(),
     }
 }
 
@@ -194,8 +194,8 @@ fn update_menu_item_enabled(update_status: &UpdateStatus) -> bool {
 
 fn running_sessions_text(running_sessions: u32) -> String {
     match running_sessions {
-        1 => "1 session running".to_string(),
-        count => format!("{count} sessions running"),
+        1 => "1 个会话运行中".to_string(),
+        count => format!("{count} 个会话运行中"),
     }
 }
 
@@ -1384,12 +1384,12 @@ fn setup_tray_icon(
     }
     let menu = menu
         .separator()
-        .text(TRAY_NEW_SESSION_MENU_ID, "New Session")
+        .text(TRAY_NEW_SESSION_MENU_ID, "新建会话")
         .item(&running_sessions)
         .separator()
-        .text(TRAY_SETTINGS_MENU_ID, "Settings")
+        .text(TRAY_SETTINGS_MENU_ID, "设置")
         .separator()
-        .text(TRAY_QUIT_MENU_ID, "Quit")
+        .text(TRAY_QUIT_MENU_ID, "退出")
         .build()?;
 
     // This is the same glyph used by webview/components/cline-logo.tsx,
@@ -1789,14 +1789,14 @@ mod tests {
 
     #[test]
     fn tray_session_count_updates_menu_tooltip_and_badge_copy() {
-        assert_eq!(running_sessions_text(0), "0 sessions running");
-        assert_eq!(running_sessions_text(1), "1 session running");
-        assert_eq!(running_sessions_text(3), "3 sessions running");
+        assert_eq!(running_sessions_text(0), "0 个会话运行中");
+        assert_eq!(running_sessions_text(1), "1 个会话运行中");
+        assert_eq!(running_sessions_text(3), "3 个会话运行中");
         assert_eq!(tray_tooltip_text("Cline", 0), "Cline");
-        assert_eq!(tray_tooltip_text("Cline", 3), "Cline — 3 sessions running");
+        assert_eq!(tray_tooltip_text("Cline", 3), "Cline — 3 个会话运行中");
         assert_eq!(
             tray_tooltip_text("Cline Beta", 2),
-            "Cline Beta — 2 sessions running"
+            "Cline Beta — 2 个会话运行中"
         );
         assert_eq!(tray_badge_text(0), None);
         assert_eq!(tray_badge_text(3), Some("3".to_string()));

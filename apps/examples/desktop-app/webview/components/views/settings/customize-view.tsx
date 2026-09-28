@@ -35,13 +35,13 @@ type CustomizeTab =
 	| "tools";
 
 const CUSTOMIZE_TABS: { id: CustomizeTab; label: string }[] = [
-	{ id: "tools", label: "Tools" },
-	{ id: "plugins", label: "Plugins" },
-	{ id: "skills", label: "Skills" },
-	{ id: "rules", label: "Rules" },
+	{ id: "tools", label: "工具" },
+	{ id: "plugins", label: "插件" },
+	{ id: "skills", label: "技能" },
+	{ id: "rules", label: "规则" },
 	{ id: "mcp", label: "MCP" },
-	{ id: "hooks", label: "Hooks" },
-	{ id: "integrations", label: "Connectors" },
+	{ id: "hooks", label: "钩子" },
+	{ id: "integrations", label: "连接器" },
 ];
 
 type TabCounts = Partial<Record<CustomizeTab, number>>;
