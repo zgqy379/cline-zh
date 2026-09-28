@@ -89,10 +89,10 @@ const ToolCallRow = memo(function ToolCallRow({
 		? [
 				{
 					text: inProgress
-						? "Completing scheduled task"
+						? "正在完成定时任务"
 						: payload?.isError
-							? "Scheduled task failed"
-							: "Scheduled task completed",
+							? "定时任务失败"
+							: "定时任务已完成",
 				},
 			]
 		: summary.labelParts;
@@ -179,7 +179,7 @@ const ToolCallRow = memo(function ToolCallRow({
 			setProceedError(
 				error instanceof Error
 					? error.message
-					: "Could not detach the running command.",
+					: "无法分离正在运行的命令。",
 			);
 		} finally {
 			setIsProceeding(false);
