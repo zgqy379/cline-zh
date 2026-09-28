@@ -69,7 +69,7 @@ function modelLabel(thread: SessionThread): string {
 	if (thread.provider && thread.model) {
 		return `${thread.provider}:${thread.model}`;
 	}
-	return thread.model || thread.provider || "No model";
+	return thread.model || thread.provider || "无模型";
 }
 
 export function formatCompactTokens(value: number): string {
@@ -343,28 +343,28 @@ export function SessionsView({ activeSessionId, history }: SessionsViewProps) {
 		<div className="flex h-full min-h-0 flex-col overflow-hidden bg-background text-foreground">
 			<header className="flex shrink-0 items-end justify-between gap-6 px-18 pb-7 pt-10 max-[1200px]:px-8 max-md:pl-12 max-[720px]:flex-col max-[720px]:items-stretch max-[720px]:pr-4 max-[720px]:pt-5">
 				<div className="min-w-0">
-					<h1 className="text-3xl font-semibold">Sessions</h1>
+					<h1 className="text-3xl font-semibold">会话</h1>
 					<p className="mt-3 text-base leading-6 text-muted-foreground">
-						Recent sessions across clients and workspaces.
+						跨客户端和工作区的最近会话。
 					</p>
 				</div>
 				<div className="flex min-w-0 items-center gap-2">
 					<div className="relative min-w-44 max-w-72 flex-1">
 						<Search className="-translate-y-1/2 pointer-events-none absolute left-2.5 top-1/2 size-4 text-muted-foreground" />
 						<Input
-							aria-label="Search sessions"
+							aria-label="搜索会话"
 							className="h-8 pl-8"
 							onChange={(event) => setQuery(event.target.value)}
-							placeholder="Search"
+							placeholder="搜索"
 							value={query}
 						/>
 					</div>
 					<Button
-						aria-label="Import sessions from other tools"
+						aria-label="从其他工具导入会话"
 						className="h-8 rounded-md px-2.5"
 						onClick={() => setImportDialogOpen(true)}
 						size="sm"
-						title="Import sessions from Claude Code, Codex, or opencode"
+						title="从 Claude Code、Codex 或 opencode 导入会话"
 						type="button"
 						variant="outline"
 					>
@@ -374,10 +374,10 @@ export function SessionsView({ activeSessionId, history }: SessionsViewProps) {
 					<DropdownMenu>
 						<DropdownMenuTrigger asChild>
 							<Button
-								aria-label="Sort sessions"
+								aria-label="排序会话"
 								className="h-8 rounded-md px-2.5"
 								size="sm"
-								title="Sort sessions"
+								title="排序会话"
 								type="button"
 								variant="outline"
 							>
@@ -386,10 +386,10 @@ export function SessionsView({ activeSessionId, history }: SessionsViewProps) {
 						</DropdownMenuTrigger>
 						<DropdownMenuContent align="end" sideOffset={6}>
 							<DropdownMenuItem onClick={() => setSortDirection("newest")}>
-								Newest first
+								最新优先
 							</DropdownMenuItem>
 							<DropdownMenuItem onClick={() => setSortDirection("oldest")}>
-								Oldest first
+								最旧优先
 							</DropdownMenuItem>
 						</DropdownMenuContent>
 					</DropdownMenu>
@@ -406,10 +406,10 @@ export function SessionsView({ activeSessionId, history }: SessionsViewProps) {
 					>
 						<DropdownMenuTrigger asChild>
 							<Button
-								aria-label="Filter sessions"
+								aria-label="筛选会话"
 								className="h-8 rounded-md px-2.5"
 								size="sm"
-								title="Filter sessions"
+								title="筛选会话"
 								type="button"
 								variant={sessionFilters.length > 0 ? "default" : "outline"}
 							>
@@ -418,18 +418,18 @@ export function SessionsView({ activeSessionId, history }: SessionsViewProps) {
 						</DropdownMenuTrigger>
 						<DropdownMenuContent align="end" className="max-h-72 w-72">
 							<DropdownMenuGroup>
-								<DropdownMenuLabel>Filter sessions</DropdownMenuLabel>
+								<DropdownMenuLabel>筛选会话</DropdownMenuLabel>
 								{sessionFilters.length > 0 ? (
 									<>
 										<DropdownMenuItem onClick={() => setSessionFilters([])}>
-											Clear filters
+											清除筛选
 										</DropdownMenuItem>
 										<DropdownMenuSeparator />
 									</>
 								) : null}
 								{filterOptions.length === 0 ? (
 									<DropdownMenuItem disabled>
-										No filters available
+										没有可用的筛选项
 									</DropdownMenuItem>
 								) : (
 									filterOptions.map((detail) => (
@@ -455,13 +455,13 @@ export function SessionsView({ activeSessionId, history }: SessionsViewProps) {
 			<section className="min-h-0 flex-1 overflow-auto px-18 pb-10 max-[1200px]:px-8 max-[720px]:px-4">
 				<div className="min-w-240 overflow-hidden rounded-lg border bg-card">
 					<div className="grid grid-cols-[minmax(14rem,1.35fr)_minmax(9rem,0.8fr)_minmax(12rem,1fr)_7rem_5rem_6rem_1.75rem] gap-x-4 bg-muted/40 px-4 py-3 text-sm font-medium text-muted-foreground">
-						<span>Title</span>
-						<span>Workspace</span>
-						<span>Model</span>
-						<span>Tokens</span>
-						<span>Cost</span>
-						<span>Time</span>
-						<span className="sr-only">Actions</span>
+						<span>标题</span>
+						<span>工作区</span>
+						<span>模型</span>
+						<span>令牌数</span>
+						<span>费用</span>
+						<span>时间</span>
+						<span className="sr-only">操作</span>
 					</div>
 					<div>
 						{/* Keep the loader up until the backend's first response: the
@@ -470,14 +470,14 @@ export function SessionsView({ activeSessionId, history }: SessionsViewProps) {
 						{!history.hasLoadedHistory && history.threads.length === 0 ? (
 							<div className="flex items-center gap-2 border-t px-4 py-8 text-sm text-muted-foreground">
 								<Loader2 className="size-4 animate-spin" />
-								Loading session history...
+								正在加载会话历史…
 							</div>
 						) : null}
 						{history.hasLoadedHistory && filteredThreads.length === 0 ? (
 							<div className="border-t px-4 py-8 text-sm text-muted-foreground">
 								{history.threads.length === 0
-									? "No sessions yet."
-									: "No sessions match the current filters."}
+									? "还没有会话。"
+									: "没有符合当前筛选条件的会话。"}
 							</div>
 						) : null}
 						{visibleThreads.map((thread) => {
@@ -531,7 +531,7 @@ export function SessionsView({ activeSessionId, history }: SessionsViewProps) {
 													value={editingTitle}
 												/>
 												<Button
-													aria-label="Save title"
+													aria-label="保存标题"
 													className="h-8 rounded-md px-2.5"
 													disabled={
 														pendingKind === "rename" || !editingTitle.trim()
@@ -546,7 +546,7 @@ export function SessionsView({ activeSessionId, history }: SessionsViewProps) {
 													)}
 												</Button>
 												<Button
-													aria-label="Cancel rename"
+													aria-label="取消重命名"
 													className="h-8 rounded-md px-2.5"
 													disabled={pendingKind === "rename"}
 													onClick={cancelRename}
@@ -597,7 +597,7 @@ export function SessionsView({ activeSessionId, history }: SessionsViewProps) {
 											tabIndex={pendingKind ? -1 : 0}
 										>
 											<span className="flex min-w-0 items-center gap-3 font-semibold">
-												<span className="sr-only">Open session: </span>
+												<span className="sr-only">打开会话：</span>
 												<SessionStatus
 													className="shrink-0"
 													label={`Session status: ${thread.status}`}
@@ -613,13 +613,13 @@ export function SessionsView({ activeSessionId, history }: SessionsViewProps) {
 												<span className="truncate">{thread.title}</span>
 												{thread.origin === "cloud" ? (
 													<Cloud
-														aria-label="Cloud session"
+														aria-label="云端会话"
 														className="size-3.5 shrink-0 text-muted-foreground"
 													/>
 												) : null}
 												{thread.pinned ? (
 													<Pin
-														aria-label="Pinned"
+														aria-label="已置顶"
 														className="size-3.5 shrink-0 fill-current text-muted-foreground"
 													/>
 												) : null}
@@ -635,10 +635,10 @@ export function SessionsView({ activeSessionId, history }: SessionsViewProps) {
 													title={thread.repoUrl || workspace}
 												>
 													{thread.origin === "cloud"
-														? thread.repoUrl || "Cloud repository"
+														? thread.repoUrl || "云端仓库"
 														: workspace
 															? basenamePath(workspace)
-															: "No workspace"}
+															: "无工作区"}
 												</span>
 											</span>
 											<span
@@ -662,7 +662,7 @@ export function SessionsView({ activeSessionId, history }: SessionsViewProps) {
 										<DropdownMenu>
 											<DropdownMenuTrigger asChild>
 												<button
-													aria-label={`Session actions for ${thread.title}`}
+													aria-label={`会话操作：${thread.title}`}
 													className="grid size-7 place-items-center rounded-md text-muted-foreground transition-colors hover:bg-surface-hover hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
 													disabled={Boolean(pendingKind)}
 													type="button"
@@ -690,19 +690,19 @@ export function SessionsView({ activeSessionId, history }: SessionsViewProps) {
 																thread.pinned && "fill-current",
 															)}
 														/>
-														{thread.pinned ? "Unpin" : "Pin"}
+														{thread.pinned ? "取消置顶" : "置顶"}
 													</DropdownMenuItem>
 												) : null}
 												<DropdownMenuItem onClick={() => startRename(thread)}>
 													<Pencil className="size-4" />
-													Rename
+													重命名
 												</DropdownMenuItem>
 												{thread.origin !== "cloud" ? (
 													<DropdownMenuItem
 														onClick={() => void history.forkThread(thread.id)}
 													>
 														<GitFork className="size-4" />
-														Fork
+														派生
 													</DropdownMenuItem>
 												) : null}
 												<DropdownMenuSeparator />
@@ -711,7 +711,7 @@ export function SessionsView({ activeSessionId, history }: SessionsViewProps) {
 													variant="destructive"
 												>
 													<Trash2 className="size-4" />
-													Delete
+													删除
 												</DropdownMenuItem>
 											</DropdownMenuContent>
 										</DropdownMenu>
@@ -727,24 +727,24 @@ export function SessionsView({ activeSessionId, history }: SessionsViewProps) {
 								</span>
 								<div className="flex items-center gap-1">
 									<Button
-										aria-label="First page"
+										aria-label="首页"
 										className="h-8 rounded-md px-2.5"
 										disabled={currentPage === 0 || history.isLoadingMore}
 										onClick={() => setPage(0)}
 										size="sm"
-										title="First page"
+										title="首页"
 										type="button"
 										variant="outline"
 									>
 										<ChevronsLeft className="size-4" />
 									</Button>
 									<Button
-										aria-label="Previous page"
+										aria-label="上一页"
 										className="h-8 rounded-md px-2.5"
 										disabled={currentPage === 0 || history.isLoadingMore}
 										onClick={() => setPage(currentPage - 1)}
 										size="sm"
-										title="Previous page"
+										title="上一页"
 										type="button"
 										variant="outline"
 									>
@@ -778,12 +778,12 @@ export function SessionsView({ activeSessionId, history }: SessionsViewProps) {
 										),
 									)}
 									<Button
-										aria-label="Next page"
+										aria-label="下一页"
 										className="h-8 rounded-md px-2.5"
 										disabled={!canGoNext || history.isLoadingMore}
 										onClick={() => void goToNextPage()}
 										size="sm"
-										title="Next page"
+										title="下一页"
 										type="button"
 										variant="outline"
 									>
@@ -810,11 +810,11 @@ export function SessionsView({ activeSessionId, history }: SessionsViewProps) {
 			>
 				<AlertDialogContent>
 					<AlertDialogHeader>
-						<AlertDialogTitle>Delete session?</AlertDialogTitle>
+						<AlertDialogTitle>删除会话？</AlertDialogTitle>
 						<AlertDialogDescription>
 							{deleteCandidate?.origin === "cloud"
-								? `This deletes "${deleteCandidate?.title ?? "this session"}" and its cloud workspace.`
-								: `This removes "${deleteCandidate?.title ?? "this session"}" from local history.`}
+								? `这将删除「${deleteCandidate?.title ?? "此会话"}」及其云端工作区。`
+								: `这将从本地历史记录中移除「${deleteCandidate?.title ?? "此会话"}」。`}
 							{deleteCandidate?.origin !== "cloud" &&
 							isTaskWorktreePath(deleteCandidate?.workspacePath ?? "")
 								? ` ${TASK_WORKTREE_DELETE_WARNING}`
@@ -825,7 +825,7 @@ export function SessionsView({ activeSessionId, history }: SessionsViewProps) {
 						<AlertDialogCancel
 							disabled={history.pendingAction?.action === "delete"}
 						>
-							Cancel
+							取消
 						</AlertDialogCancel>
 						<AlertDialogAction
 							className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
@@ -840,10 +840,10 @@ export function SessionsView({ activeSessionId, history }: SessionsViewProps) {
 							{history.pendingAction?.action === "delete" ? (
 								<>
 									<Loader2 className="size-4 animate-spin" />
-									Deleting...
+									正在删除…
 								</>
 							) : (
-								"Delete"
+								"删除"
 							)}
 						</AlertDialogAction>
 					</AlertDialogFooter>

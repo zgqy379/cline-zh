@@ -93,7 +93,7 @@ function AgentHeaderImpl({
 	const statusTone = sessionStatusTone(status);
 	const statusColor = sessionStatusColor(status);
 	const threadTitle = useMemo(
-		() => normalizeTitle(title?.trim()) || "New Session",
+		() => normalizeTitle(title?.trim()) || "新建会话",
 		[title],
 	);
 
@@ -128,7 +128,7 @@ function AgentHeaderImpl({
 			<div className="flex min-w-0 flex-1 items-center gap-2">
 				<SessionStatus
 					className="shrink-0 font-mono"
-					label={`Session status: ${status}`}
+					label={`会话状态：${status}`}
 					showLabel={false}
 					style={
 						{
@@ -201,7 +201,7 @@ function AgentHeaderImpl({
 				<DropdownMenu>
 					<DropdownMenuTrigger asChild>
 						<Button
-							aria-label="Session actions"
+							aria-label="会话操作"
 							className="shrink-0 text-muted-foreground transition-colors hover:text-foreground"
 							id="show-more-btn"
 							variant="ghost"
@@ -218,7 +218,7 @@ function AgentHeaderImpl({
 							onClick={triggerDeleteSession}
 						>
 							<Trash2 className="size-4" />
-							<span>{deletingSession ? "Deleting..." : "Delete session"}</span>
+							<span>{deletingSession ? "正在删除…" : "删除会话"}</span>
 						</DropdownMenuItem>
 					</DropdownMenuContent>
 				</DropdownMenu>
@@ -236,7 +236,7 @@ function AgentHeaderImpl({
 					/>
 					{additions !== 0 && (
 						<Button
-							aria-label={`Open diff: ${additions} additions, ${deletions} deletions`}
+							aria-label={`查看差异：新增 ${additions} 行，删除 ${deletions} 行`}
 							className={cn(
 								"flex items-center gap-1 rounded-md bg-secondary px-2 py-1 text-xs font-mono transition-colors",
 								hasChanges
@@ -264,7 +264,7 @@ function AgentHeaderImpl({
 						/>
 					) : (
 						<Button
-							aria-label="New session"
+							aria-label="新建会话"
 							className="flex items-center gap-1 rounded-md text-sm text-muted-foreground hover:bg-surface-hover hover:text-foreground transition-colors"
 							onClick={() => onNewThread?.()}
 							size="icon-sm"
@@ -304,7 +304,7 @@ function SubagentSessionBadge({
 	const label = "Main Agent Session";
 	const hint = parentTitle
 		? `Back to the main agent session: ${parentTitle}`
-		: "Back to the main agent session";
+		: "返回主智能体会话";
 
 	return (
 		<Button
@@ -407,7 +407,7 @@ function AgentActivityStatus({
 				id="agent-activity-panel"
 			>
 				<div className="border-b border-border/70 px-3 py-2">
-					<div className="text-sm font-medium text-foreground">Agents</div>
+					<div className="text-sm font-medium text-foreground">智能体</div>
 					<div className="mt-0.5 text-[11px] text-muted-foreground">
 						{label}
 					</div>
@@ -455,8 +455,8 @@ function AgentRoster({
 		return (
 			<div className="px-3 py-4 text-xs text-muted-foreground">
 				{activity.running > 0
-					? "Waiting for the first agent to report in..."
-					: "No agent details were recorded for this session."}
+					? "正在等待第一个智能体上报…"
+					: "此会话没有记录任何智能体详情。"}
 				{error ? (
 					<div className="mt-1 text-[11px] text-muted-foreground/80">
 						{error}
@@ -489,7 +489,7 @@ function AgentRoster({
 					className="border-t border-border/70 px-3 py-2 text-[11px] text-muted-foreground"
 					id="agent-roster-stale"
 				>
-					Could not refresh — showing the last known agents. {error}
+					刷新失败 — 显示最后已知的智能体。{error}
 				</div>
 			) : null}
 		</>
@@ -536,7 +536,7 @@ function AgentRosterRow({
 			<button
 				className="flex w-full min-w-0 items-start gap-2 px-3 py-2 text-left transition-colors hover:bg-surface-hover"
 				onClick={onSelect}
-				title="Open this agent's session"
+				title="打开此智能体的会话"
 				type="button"
 			>
 				<StateIcon
@@ -551,7 +551,7 @@ function AgentRosterRow({
 				    min-w-0 lets the clamp/truncate win over the text's intrinsic size. */}
 				<span className="flex min-w-0 flex-1 flex-col">
 					<span className="line-clamp-2 wrap-break-word text-xs font-medium text-foreground">
-						{task || "Untitled task"}
+						{task || "未命名任务"}
 					</span>
 					<span className="mt-0.5 flex min-w-0 items-center gap-1.5 text-[11px] text-muted-foreground">
 						{agent.kind === "teamtask" ? (
@@ -565,8 +565,8 @@ function AgentRosterRow({
 						>
 							{lastAction ||
 								(isRunning
-									? "Starting up..."
-									: `No activity recorded (${state})`)}
+									? "正在启动…"
+									: `没有记录活动（${state}）`)}
 						</span>
 					</span>
 				</span>
