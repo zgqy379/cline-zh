@@ -124,6 +124,12 @@ type AppView = "chat" | "sessions" | "settings";
 
 const filterOptions = ["All", "Running"] as const;
 type FilterOption = (typeof filterOptions)[number];
+// 显示用标签：枚举值本身参与逻辑判断（filter === "All"），不能翻译，
+// 因此在渲染处做一次显示映射。
+const FILTER_LABELS: Record<FilterOption, string> = {
+	All: "全部",
+	Running: "运行中",
+};
 type SidebarSortMode = "time" | "project";
 type SessionCategory = "pinned" | "scheduled" | "tasks";
 type DesktopProcessContext = {
@@ -166,7 +172,7 @@ const SETTINGS_SECTION_ICONS = {
 } satisfies Record<SettingsSection, typeof Settings>;
 
 // The Customize section is the installed inventory, so its nav row reads
-// "Installed" (it sits under a "Customize" group header / next to the
+// "Installed" (it sits under a "自定义" group header / next to the
 // Marketplace row, which supplies the context).
 function settingsSectionLabel(section: SettingsSection): string {
 	return (
@@ -223,7 +229,7 @@ function SettingsSectionNavigation({
 			<span
 				className={cn("block", collapsed && "flex w-full justify-start")}
 				key={section}
-				title="Configure a model provider to set up voice input"
+				title="配置模型供应商以启用语音输入"
 			>
 				{button}
 			</span>
@@ -232,7 +238,7 @@ function SettingsSectionNavigation({
 
 	return (
 		<nav
-			aria-label="Settings sections"
+			aria-label="设置分区"
 			className={cn(
 				"flex h-full min-h-0 flex-col overflow-y-auto overflow-x-hidden",
 				collapsed ? "w-full items-start" : "w-full",
@@ -240,7 +246,7 @@ function SettingsSectionNavigation({
 		>
 			{!collapsed ? (
 				<p className="px-2 pb-2 text-sm font-medium text-muted-foreground">
-					Settings
+					设置
 				</p>
 			) : null}
 			{/* Schedules and Customize already have dedicated rows at the top of
@@ -297,9 +303,9 @@ export function AgentSidebar({
 	const { user, activeOrganization } = useAccount();
 	const { displayName, email } = user || {};
 	const username = displayName?.split(" ")?.[0] || email?.split("@")?.[0];
-	const accountName = username?.trim() || "Cline Desktop";
+	const accountName = username?.trim() || "Cline 桌面版";
 	const accountScope = user
-		? (activeOrganization?.name ?? "Personal")
+		? (activeOrganization?.name ?? "个人")
 		: undefined;
 	const accountInitial = accountName.charAt(0).toUpperCase();
 	const {
@@ -385,7 +391,7 @@ export function AgentSidebar({
 				error:
 					error instanceof Error
 						? error.message
-						: "Unable to read Cline Hub status.",
+						: "无法读取 Cline Hub 状态。",
 				url: null,
 			});
 		}
@@ -501,7 +507,7 @@ export function AgentSidebar({
 		[filteredThreads],
 	);
 	// Category headers only appear once there is something to categorize;
-	// a lone "Tasks" header over the whole list would be noise.
+	// a lone "任务" header over the whole list would be noise.
 	const showCategorySections =
 		pinnedThreads.length > 0 || scheduledThreads.length > 0;
 	const showTimeShowMore =
@@ -618,7 +624,7 @@ export function AgentSidebar({
 		<DropdownMenu>
 			<DropdownMenuTrigger asChild>
 				<Button
-					aria-label="Filter sessions"
+					aria-label="筛选会话"
 					className="m-0! inline-flex size-8 items-center justify-center rounded-md p-0! text-muted-foreground hover:bg-surface-hover hover:text-sidebar-foreground"
 					variant="ghost"
 					size="icon"
@@ -627,7 +633,7 @@ export function AgentSidebar({
 				</Button>
 			</DropdownMenuTrigger>
 			<DropdownMenuContent align="end" className="w-36">
-				<DropdownMenuLabel>Status</DropdownMenuLabel>
+				<DropdownMenuLabel>状态</DropdownMenuLabel>
 				<DropdownMenuRadioGroup
 					onValueChange={(value) => {
 						setFilter(value as FilterOption);
@@ -639,14 +645,14 @@ export function AgentSidebar({
 				>
 					{filterOptions.map((opt) => (
 						<DropdownMenuRadioItem key={opt} value={opt}>
-							{opt}
+							{FILTER_LABELS[opt]}
 						</DropdownMenuRadioItem>
 					))}
 				</DropdownMenuRadioGroup>
 				{sourceOptions.length > 0 ? (
 					<>
 						<DropdownMenuSeparator />
-						<DropdownMenuLabel>Source</DropdownMenuLabel>
+						<DropdownMenuLabel>来源</DropdownMenuLabel>
 						<DropdownMenuRadioGroup
 							onValueChange={(value) => {
 								setSourceFilter(value);
@@ -657,7 +663,7 @@ export function AgentSidebar({
 							value={sourceFilter}
 						>
 							<DropdownMenuRadioItem value={ALL_SESSION_SOURCES}>
-								All sources
+								全部来源
 							</DropdownMenuRadioItem>
 							{sourceOptions.map((source) => (
 								<DropdownMenuRadioItem key={source} value={source}>
@@ -675,7 +681,7 @@ export function AgentSidebar({
 	// the click switches to, not the one currently active.
 	const sortToggle = (
 		<Button
-			aria-label={`Sort sessions: ${sortMode === "time" ? "Time" : "Project"}`}
+			aria-label={`排序会话：${sortMode === "time" ? "时间" : "项目"}`}
 			className="m-0! inline-flex size-8 items-center justify-center rounded-md p-0! text-muted-foreground hover:bg-surface-hover hover:text-sidebar-foreground"
 			onClick={() =>
 				setSortMode((current) => (current === "time" ? "project" : "time"))
@@ -793,24 +799,24 @@ export function AgentSidebar({
 					{!isCollapsed ? (
 						<>
 							<Button
-								aria-label="Previous page"
+								aria-label="上一页"
 								className="size-8 text-muted-foreground hover:bg-surface-hover hover:text-sidebar-foreground"
 								disabled={!canNavigateBack}
 								onClick={navigateBack}
 								size="icon"
-								title="Previous page"
+								title="上一页"
 								type="button"
 								variant="ghost"
 							>
 								<ArrowLeft className="size-4.5" />
 							</Button>
 							<Button
-								aria-label="Next page"
+								aria-label="下一页"
 								className="size-8 text-muted-foreground hover:bg-surface-hover hover:text-sidebar-foreground"
 								disabled={!canNavigateForward}
 								onClick={navigateForward}
 								size="icon"
-								title="Next page"
+								title="下一页"
 								type="button"
 								variant="ghost"
 							>
@@ -838,13 +844,13 @@ export function AgentSidebar({
 						>
 							<HoverCardTrigger asChild>
 								<button
-									aria-label="Cline home"
+									aria-label="Cline 主页"
 									className={cn(
 										"flex size-8 shrink-0 items-center justify-center rounded-md text-sidebar-foreground hover:bg-surface-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring",
 										isCollapsed && "size-9",
 									)}
 									onClick={openHome}
-									title="Home"
+									title="主页"
 									type="button"
 								>
 									<ClineLogo className="size-5" />
@@ -884,7 +890,7 @@ export function AgentSidebar({
 									</div>
 									{hubStatus && !hubStatus.connected && (
 										<p className="mt-1 text-[11px] text-destructive">
-											{hubStatus.error ?? "Cline Hub is not connected."}
+											{hubStatus.error ?? "Cline Hub 未连接。"}
 										</p>
 									)}
 								</div>
@@ -904,10 +910,10 @@ export function AgentSidebar({
 					{!isCollapsed ? (
 						<div className="flex items-center gap-1">
 							<Button
-								aria-label="Search sessions"
+								aria-label="搜索会话"
 								className="size-8 shrink-0 justify-center px-0"
 								onClick={onOpenSearch}
-								title="Search sessions (Cmd/Ctrl+P)"
+								title="搜索会话（Cmd/Ctrl+P）"
 								type="button"
 								variant="sidebarItem"
 							>
@@ -919,51 +925,51 @@ export function AgentSidebar({
 
 				{!isCollapsed ? (
 					<nav
-						aria-label="Sidebar actions"
+						aria-label="侧边栏操作"
 						className="mt-1 flex shrink-0 flex-col gap-0.5 px-2"
 					>
 						<Button
 							aria-current={newTaskActive ? "page" : undefined}
-							aria-label="New"
+							aria-label="新建"
 							className={cn(
 								newTaskActive && "bg-surface-hover text-sidebar-foreground",
 							)}
 							onClick={openHome}
-							title="Start a new session"
+							title="开始新会话"
 							type="button"
 							variant="sidebarItem"
 						>
 							<Plus className="size-4 shrink-0" />
-							<span className="truncate">Session</span>
+							<span className="truncate">会话</span>
 						</Button>
 						<Button
-							aria-label="Schedule"
+							aria-label="定时任务"
 							className={cn(
 								view === "settings" &&
 									settingsSection === "Schedules" &&
 									"bg-surface-hover text-sidebar-foreground",
 							)}
 							onClick={() => openSettingsSection("Schedules")}
-							title="Schedules"
+							title="定时任务"
 							type="button"
 							variant="sidebarItem"
 						>
 							<Clock3 className="size-4 shrink-0" />
-							<span className="truncate">Schedule</span>
+							<span className="truncate">定时</span>
 						</Button>
 						<Button
-							aria-label="Customize"
+							aria-label="自定义"
 							className={cn(
 								customizeSectionOpen &&
 									"bg-surface-hover-lighter text-sidebar-foreground",
 							)}
 							onClick={() => openSettingsSection("Customize")}
-							title="Customize Cline with plugins, rules, and more"
+							title="用插件、规则等自定义 Cline"
 							type="button"
 							variant="sidebarItem"
 						>
 							<Blocks className="size-4 shrink-0" />
-							<span className="truncate">Customize</span>
+							<span className="truncate">自定义</span>
 						</Button>
 						{customizeSectionOpen
 							? CUSTOMIZATION_SECTIONS.map((section) => (
@@ -1003,10 +1009,10 @@ export function AgentSidebar({
 							/>
 						) : null}
 						<Button
-							aria-label="Expand sidebar"
+							aria-label="展开侧边栏"
 							className="mt-auto size-9 justify-center px-0"
 							onClick={() => setOpen(true)}
-							title="Expand sidebar"
+							title="展开侧边栏"
 							type="button"
 							variant="sidebar"
 						>
@@ -1033,7 +1039,7 @@ export function AgentSidebar({
 									onClick={openSessions}
 									type="button"
 								>
-									{sortMode === "time" ? "Sessions" : "Projects"}
+									{sortMode === "time" ? "会话" : "项目"}
 								</button>
 								<div className="flex shrink-0 items-center gap-0.5">
 									{sortToggle}
@@ -1078,7 +1084,7 @@ export function AgentSidebar({
 															<CategorySection
 																collapsed={collapsedSections.has("pinned")}
 																count={pinnedThreads.length}
-																label="Pinned"
+																label="已置顶"
 																onToggle={() => toggleSection("pinned")}
 															>
 																{pinnedThreads.map((thread) =>
@@ -1090,7 +1096,7 @@ export function AgentSidebar({
 															<CategorySection
 																collapsed={collapsedSections.has("scheduled")}
 																count={scheduledRows.length}
-																label="Scheduled"
+																label="已排期"
 																onToggle={() => toggleSection("scheduled")}
 															>
 																{scheduledRows
@@ -1120,7 +1126,7 @@ export function AgentSidebar({
 															<CategorySection
 																collapsed={collapsedSections.has("tasks")}
 																count={taskThreads.length}
-																label="Tasks"
+																label="任务"
 																onToggle={() => toggleSection("tasks")}
 															>
 																{taskThreads
@@ -1220,7 +1226,7 @@ export function AgentSidebar({
 					{user && !isCollapsed ? (
 						<div className="flex min-w-0 items-center gap-2">
 							<button
-								aria-label="Account settings"
+								aria-label="账户设置"
 								className={cn(
 									"flex min-w-0 flex-1 items-center gap-2.5 rounded-md p-2 text-left text-sidebar-foreground hover:bg-surface-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring",
 									view === "settings" &&
@@ -1246,7 +1252,7 @@ export function AgentSidebar({
 								</span>
 							</button>
 							<Button
-								aria-label="Settings"
+								aria-label="设置"
 								className={cn(
 									"size-9 shrink-0 justify-center px-0",
 									view === "settings" &&
@@ -1254,7 +1260,7 @@ export function AgentSidebar({
 										"bg-surface-hover text-sidebar-foreground",
 								)}
 								onClick={openSettings}
-								title="Settings"
+								title="设置"
 								type="button"
 								variant="sidebarItem"
 							>
@@ -1263,7 +1269,7 @@ export function AgentSidebar({
 						</div>
 					) : (
 						<Button
-							aria-label="Settings"
+							aria-label="设置"
 							className={cn(
 								"min-w-0 justify-start",
 								isCollapsed && "size-9 justify-center px-0",
@@ -1271,12 +1277,12 @@ export function AgentSidebar({
 									"bg-surface-hover text-sidebar-foreground",
 							)}
 							onClick={openSettings}
-							title="Settings"
+							title="设置"
 							type="button"
 							variant="sidebarItem"
 						>
 							<Settings className="size-4" />
-							{!isCollapsed ? "Settings" : null}
+							{!isCollapsed ? "设置" : null}
 						</Button>
 					)}
 				</div>
@@ -1291,11 +1297,11 @@ export function AgentSidebar({
 			>
 				<AlertDialogContent>
 					<AlertDialogHeader>
-						<AlertDialogTitle>Delete session?</AlertDialogTitle>
+						<AlertDialogTitle>删除会话？</AlertDialogTitle>
 						<AlertDialogDescription>
 							{deleteConfirmThread?.origin === "cloud"
-								? `This deletes "${normalizeTitle(deleteConfirmThread?.title ?? "this session")}" and its cloud workspace.`
-								: `This removes "${normalizeTitle(deleteConfirmThread?.title ?? "this session")}" from local history.`}
+								? `这将删除「${normalizeTitle(deleteConfirmThread?.title ?? "此会话")}」及其云端工作区。`
+								: `这将从本地历史记录中移除「${normalizeTitle(deleteConfirmThread?.title ?? "此会话")}」。`}
 							{deleteConfirmThread?.origin !== "cloud" &&
 							isTaskWorktreePath(deleteConfirmThread?.workspacePath ?? "")
 								? ` ${TASK_WORKTREE_DELETE_WARNING}`
@@ -1324,7 +1330,7 @@ export function AgentSidebar({
 									Deleting...
 								</>
 							) : (
-								"Delete"
+								"删除"
 							)}
 						</AlertDialogAction>
 					</AlertDialogFooter>
@@ -1448,7 +1454,7 @@ function ScheduleGroupRow({
 						)}
 					/>
 					<Clock3
-						aria-label="Scheduled"
+						aria-label="已排期"
 						className="size-3 shrink-0 text-muted-foreground"
 					/>
 					<span className="block min-w-0 flex-1 overflow-hidden text-ellipsis whitespace-nowrap text-sm font-normal leading-tight">
@@ -1463,7 +1469,7 @@ function ScheduleGroupRow({
 						/>
 					) : null}
 					<span>
-						{runCount} {runCount === 1 ? "run" : "runs"}
+						{runCount} 次运行
 					</span>
 				</span>
 			</button>
@@ -1570,13 +1576,13 @@ function ThreadItem({
 								<>
 									{thread.origin === "cloud" ? (
 										<Cloud
-											aria-label="Cloud session"
+											aria-label="云端会话"
 											className="size-3 shrink-0 text-muted-foreground"
 										/>
 									) : null}
 									{thread.isScheduled && !nested ? (
 										<Clock3
-											aria-label="Scheduled"
+											aria-label="已排期"
 											className="size-3 shrink-0 text-muted-foreground"
 										/>
 									) : null}
@@ -1584,7 +1590,7 @@ function ThreadItem({
 							}
 							pinnedIndicator={
 								thread.pinned ? (
-									<Pin aria-label="Pinned" className="size-3 fill-current" />
+									<Pin aria-label="已置顶" className="size-3 fill-current" />
 								) : null
 							}
 							action={
@@ -1597,7 +1603,7 @@ function ThreadItem({
 										onDelete();
 									}}
 									size="icon"
-									title="Delete session"
+									title="删除会话"
 									type="button"
 									variant="ghost"
 								>
@@ -1647,20 +1653,20 @@ export function getSessionOverviewItems(
 	const workspacePath = thread.workspacePath || thread.codebase;
 	const items: Array<[string, string | null | undefined, string?]> = [
 		["Schedule", thread.scheduleName],
-		["Run", thread.scheduleRunNumber ? String(thread.scheduleRunNumber) : null],
+		["运行", thread.scheduleRunNumber ? String(thread.scheduleRunNumber) : null],
 		[
-			thread.origin === "cloud" ? "Repository" : "Workspace",
+			thread.origin === "cloud" ? "仓库" : "工作区",
 			thread.origin === "cloud"
 				? thread.repoUrl
 				: workspaceDisplayName(workspacePath),
 			workspacePath || undefined,
 		],
-		["Branch", thread.gitBranch],
-		["Provider", thread.provider],
-		["Model", thread.model],
-		["Tokens", formatTokenCount(thread.inputTokens, thread.outputTokens)],
-		["Cost", formatCostUsd(thread.totalCostUsd)],
-		["Source", thread.source],
+		["分支", thread.gitBranch],
+		["供应商", thread.provider],
+		["模型", thread.model],
+		["令牌数", formatTokenCount(thread.inputTokens, thread.outputTokens)],
+		["费用", formatCostUsd(thread.totalCostUsd)],
+		["来源", thread.source],
 	];
 	return items.filter((item): item is [string, string, string?] =>
 		Boolean(item[1]),
@@ -1744,7 +1750,7 @@ function SessionContextMenuContent({
 			{allowPin ? (
 				<ContextMenuItem disabled={pending} onSelect={onTogglePin}>
 					<Pin className={cn("size-4", pinned && "fill-current")} />
-					{pinned ? "Unpin" : "Pin"}
+					{pinned ? "取消置顶" : "置顶"}
 				</ContextMenuItem>
 			) : null}
 			<ContextMenuItem disabled={pending} onSelect={onRename}>
@@ -1753,7 +1759,7 @@ function SessionContextMenuContent({
 				) : (
 					<Pencil className="size-4" />
 				)}
-				{pendingAction === "rename" ? "Renaming..." : "Rename"}
+				{pendingAction === "rename" ? "重命名中…" : "重命名"}
 			</ContextMenuItem>
 			{allowFork ? (
 				<ContextMenuItem disabled={pending} onSelect={onFork}>
@@ -1762,7 +1768,7 @@ function SessionContextMenuContent({
 					) : (
 						<GitFork className="size-4" />
 					)}
-					{pendingAction === "fork" ? "Forking..." : "Fork"}
+					{pendingAction === "fork" ? "派生中…" : "派生"}
 				</ContextMenuItem>
 			) : null}
 			<ContextMenuItem
@@ -1775,7 +1781,7 @@ function SessionContextMenuContent({
 				) : (
 					<Trash2 className="size-4" />
 				)}
-				{pendingAction === "delete" ? "Deleting..." : "Delete"}
+				{pendingAction === "delete" ? "删除中…" : "删除"}
 			</ContextMenuItem>
 		</ContextMenuContent>
 	);
