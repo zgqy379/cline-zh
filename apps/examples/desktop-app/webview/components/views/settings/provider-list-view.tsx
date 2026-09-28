@@ -71,9 +71,9 @@ function featuredBadges(model: ProviderModel): string[] {
 	}
 	const badges: string[] = [];
 	if (featured.tier === "recommended") {
-		badges.push("Recommended");
+		badges.push("推荐");
 	} else if (featured.tier === "free") {
-		badges.push("Free");
+		badges.push("免费");
 	}
 	for (const tag of featured.tags) {
 		if (!badges.some((badge) => badge.toLowerCase() === tag.toLowerCase())) {
@@ -116,9 +116,9 @@ function writeFavoriteModels(value: Record<string, string[]>): void {
 // -----------------------------------------------------------
 
 const AUTH_KIND_LABEL: Record<ProviderAuthKind, string> = {
-	oauth: "Sign in",
-	local: "Local CLI",
-	"api-key": "API key",
+	oauth: "登录",
+	local: "本地 CLI",
+	"api-key": "API 密钥",
 };
 
 function AuthKindHint({ kind }: { kind: ProviderAuthKind }) {
@@ -213,7 +213,7 @@ function ProviderRow({
 			</p>
 			{connected ? (
 				<span className="shrink-0 text-xs font-medium text-muted-foreground">
-					Configured
+					已配置
 				</span>
 			) : (
 				<AuthKindHint kind={authKind} />
@@ -350,12 +350,12 @@ export function ProviderListContent({
 							isPanel ? "text-2xl" : "text-3xl",
 						)}
 					>
-						Model Providers
+						模型供应商
 					</h1>
 					<p className="mt-3 text-base leading-6 text-muted-foreground">
 						{connectedCount === 0
-							? "Connect a provider to start using models."
-							: `${connectedCount} configured · ${providers.length} available`}
+							? "连接供应商即可开始使用模型。"
+							: `${connectedCount} 个已配置 · 共 ${providers.length} 个可用`}
 					</p>
 				</div>
 				<Button
@@ -364,7 +364,7 @@ export function ProviderListContent({
 					type="button"
 				>
 					<PlusCircle className="size-4" />
-					Add provider
+					添加供应商
 				</Button>
 			</div>
 
@@ -374,18 +374,18 @@ export function ProviderListContent({
 				<div className="flex h-9 items-center gap-2 rounded border bg-background px-3">
 					<Search className="size-4 shrink-0 text-muted-foreground" />
 					<Input
-						aria-label="Search model providers"
+						aria-label="搜索模型供应商"
 						className={EMBEDDED_INPUT_CLASS}
 						onChange={(event) => {
 							setProviderSearch(event.target.value);
 							setCollapsedSections(new Set());
 						}}
-						placeholder="Search providers"
+						placeholder="搜索供应商"
 						value={providerSearch}
 					/>
 					{providerSearch ? (
 						<button
-							aria-label="Clear provider search"
+							aria-label="清除供应商搜索"
 							className="grid size-5 place-items-center rounded text-muted-foreground hover:text-foreground"
 							onClick={() => setProviderSearch("")}
 							type="button"
@@ -397,7 +397,7 @@ export function ProviderListContent({
 			</div>
 
 			<section
-				aria-label="Model providers"
+				aria-label="模型供应商"
 				className={cn(
 					"min-h-0 flex-1 overflow-y-auto overscroll-contain",
 					isPanel ? "max-w-none" : "max-w-2xl",
@@ -407,15 +407,15 @@ export function ProviderListContent({
 			>
 				{filteredProviders.length === 0 ? (
 					<div className="border-y px-2 py-6 text-base text-muted-foreground">
-						No providers match "{providerSearch.trim()}".
+						没有匹配“{providerSearch.trim()}”的供应商。
 					</div>
 				) : null}
 
 				{connectedProviders.length > 0 ? (
 					<ProviderSection
-						title="Configured"
-						expanded={!collapsedSections.has("Configured")}
-						onToggle={() => toggleSection("Configured")}
+						title="已配置"
+						expanded={!collapsedSections.has("已配置")}
+						onToggle={() => toggleSection("已配置")}
 					>
 						{renderRows(connectedProviders)}
 					</ProviderSection>
@@ -423,14 +423,14 @@ export function ProviderListContent({
 
 				{popularProviders.length > 0 ? (
 					<ProviderSection
-						expanded={!collapsedSections.has("Popular")}
-						onToggle={() => toggleSection("Popular")}
+						expanded={!collapsedSections.has("热门")}
+						onToggle={() => toggleSection("热门")}
 						description={
 							connectedProviders.length === 0 && !providerSearchQuery
-								? "Sign in or add an API key to connect."
+								? "登录或添加 API 密钥即可连接。"
 								: undefined
 						}
-						title="Popular"
+						title="热门"
 					>
 						{renderRows(popularProviders)}
 					</ProviderSection>
@@ -438,9 +438,9 @@ export function ProviderListContent({
 
 				{otherProviders.length > 0 ? (
 					<ProviderSection
-						title="All providers"
-						expanded={!collapsedSections.has("All providers")}
-						onToggle={() => toggleSection("All providers")}
+						title="所有供应商"
+						expanded={!collapsedSections.has("所有供应商")}
+						onToggle={() => toggleSection("所有供应商")}
 					>
 						{renderRows(otherProviders)}
 					</ProviderSection>
@@ -489,7 +489,7 @@ function ConfigFieldRow({
 						onClick={() => void openExternalUrl(providerKeyUrl)}
 						type="button"
 					>
-						{provider.docLabel || `Get a ${provider.name} API key`}
+						{provider.docLabel || `获取 ${provider.name} API 密钥`}
 						<ExternalLink className="size-3.5" />
 					</button>
 				) : null}
@@ -509,7 +509,7 @@ function ConfigFieldRow({
 					onChange={(event) => onCommit(event.target.value)}
 					value={valueText}
 				>
-					<option value="">Not set</option>
+					<option value="">未设置</option>
 					{field.options?.map((option) => (
 						<option key={String(option.value)} value={String(option.value)}>
 							{option.label}
@@ -541,7 +541,7 @@ function ConfigFieldRow({
 					{isSecret ? (
 						<>
 							<Button
-								aria-label={shown ? "Hide secret" : "Show secret"}
+								aria-label={shown ? "隐藏密钥" : "显示密钥"}
 								className="rounded-md p-1 text-muted-foreground hover:text-foreground "
 								onClick={onToggleShown}
 								variant="ghost"
@@ -553,7 +553,7 @@ function ConfigFieldRow({
 								)}
 							</Button>
 							<Button
-								aria-label={`Copy ${field.label}`}
+								aria-label={`复制${field.label}`}
 								className="rounded-md p-1 text-muted-foreground hover:text-foreground "
 								onClick={() => navigator.clipboard.writeText(valueText)}
 								variant="ghost"
@@ -813,11 +813,10 @@ export function ProviderDetailContent({
 					<div className="flex items-center justify-between gap-4 rounded-lg border px-4 py-3">
 						<div className="min-w-0">
 							<p className="text-sm font-medium text-foreground">
-								Signed in via browser
+								已通过浏览器登录
 							</p>
 							<p className="text-xs text-muted-foreground">
-								This provider authenticates with your account — no API key
-								needed.
+								该供应商使用你的账户进行身份验证，无需 API 密钥。
 							</p>
 						</div>
 					</div>
@@ -825,7 +824,7 @@ export function ProviderDetailContent({
 					<div className="flex flex-col">
 						<div className="mb-2 flex items-center justify-between gap-4">
 							<p className="text-sm text-muted-foreground">
-								Configured with an API key.
+								已使用 API 密钥配置。
 							</p>
 						</div>
 						{apiKeyField ? renderConfigFieldRow(apiKeyField) : null}
@@ -833,10 +832,10 @@ export function ProviderDetailContent({
 				) : (
 					<div className="rounded-lg border px-4 py-4">
 						<p className="text-sm font-medium text-foreground">
-							Sign in to {provider.name}
+							登录 {provider.name}
 						</p>
 						<p className="mt-1 text-xs text-muted-foreground">
-							Connects through your browser. No API key needed.
+							通过浏览器完成连接，无需 API 密钥。
 						</p>
 						{onOAuthLogin ? (
 							<Button
@@ -851,14 +850,14 @@ export function ProviderDetailContent({
 								) : null}
 								<span>
 									{oauthLoginPending
-										? "Waiting for browser..."
-										: "Sign in with browser"}
+										? "等待浏览器中完成操作..."
+										: "使用浏览器登录"}
 								</span>
 							</Button>
 						) : null}
 						{oauthLoginPending && deviceUserCode ? (
 							<p className="mt-3 text-xs text-muted-foreground">
-								Confirm this code in your browser:{" "}
+								请在浏览器中确认此代码：{" "}
 								<span className="font-mono font-medium text-foreground">
 									{deviceUserCode}
 								</span>
@@ -874,7 +873,7 @@ export function ProviderDetailContent({
 									type="button"
 									variant="ghost"
 								>
-									Use an API key instead
+									改用 API 密钥
 									<ChevronDown
 										aria-hidden="true"
 										className={cn(
@@ -898,11 +897,10 @@ export function ProviderDetailContent({
 				<div className="flex items-center justify-between gap-4 rounded-lg border px-4 py-3">
 					<div className="min-w-0">
 						<p className="text-sm font-medium text-foreground">
-							Uses your local CLI sign-in
+							使用本地 CLI 登录
 						</p>
 						<p className="text-xs text-muted-foreground">
-							Credentials come from the provider's own CLI on this machine — no
-							API key needed.
+							凭据来自本机上该供应商自带的 CLI，无需 API 密钥。
 						</p>
 					</div>
 					{!connected && onConnect && (
@@ -912,7 +910,7 @@ export function ProviderDetailContent({
 							size="sm"
 							type="button"
 						>
-							Connect
+							连接
 						</Button>
 					)}
 				</div>
@@ -927,9 +925,7 @@ export function ProviderDetailContent({
 				{!connected ? (
 					<div className="mt-4 flex items-center justify-between gap-4">
 						<p className="text-xs text-muted-foreground">
-							Saving an API key configures this provider automatically. Use
-							Connect if it reads credentials from your environment or a local
-							endpoint.
+							保存 API 密钥后会自动配置该供应商。如果凭据来自你的环境变量或本地端点，请使用“连接”。
 						</p>
 						{onConnect ? (
 							<Button
@@ -939,7 +935,7 @@ export function ProviderDetailContent({
 								type="button"
 								variant="outline"
 							>
-								Connect
+								连接
 							</Button>
 						) : null}
 					</div>
@@ -959,7 +955,7 @@ export function ProviderDetailContent({
 				<div className="mb-8 flex items-center gap-3">
 					{isPanel ? null : (
 						<Button
-							aria-label="Back to providers"
+							aria-label="返回供应商列表"
 							className="rounded-md p-1.5 text-muted-foreground hover:bg-surface-hover hover:text-foreground "
 							onClick={onBack}
 							variant="ghost"
@@ -978,12 +974,12 @@ export function ProviderDetailContent({
 								{provider.name}
 							</h1>
 							<span className="inline-flex shrink-0 items-center rounded-full border px-2.5 py-0.5 text-xs font-medium text-muted-foreground">
-								{connected ? "Configured" : "Not configured"}
+								{connected ? "已配置" : "未配置"}
 							</span>
 						</div>
 						{connected && authKind !== "oauth" && authKind !== "local" ? (
 							<p className="mt-2 text-xs text-muted-foreground">
-								Changes to the fields below are saved automatically.
+								以下字段的修改将自动保存。
 							</p>
 						) : null}
 					</div>
@@ -996,8 +992,8 @@ export function ProviderDetailContent({
 							variant="outline"
 						>
 							{authKind === "oauth" && oauthConnected
-								? "Sign out"
-								: "Disconnect"}
+								? "退出登录"
+								: "断开连接"}
 						</Button>
 					) : null}
 				</div>
@@ -1016,10 +1012,10 @@ export function ProviderDetailContent({
 				<div className="flex h-12 shrink-0 items-center justify-between bg-muted/40 px-4">
 					<div className="flex items-center gap-1">
 						<h2 className="mr-1 text-lg font-medium text-muted-foreground">
-							Models
+							模型
 						</h2>
 						<Button
-							aria-label="Refresh models"
+							aria-label="刷新模型列表"
 							className="size-4 rounded-none p-0 text-muted-foreground transition-colors hover:bg-transparent hover:text-foreground"
 							disabled={modelsLoading}
 							onClick={onLoadModels}
@@ -1032,7 +1028,7 @@ export function ProviderDetailContent({
 					</div>
 					{onUpdateModels ? (
 						<Button
-							aria-label="Add model"
+							aria-label="添加模型"
 							className="size-4 rounded-none p-0 text-muted-foreground transition-colors hover:bg-transparent hover:text-foreground"
 							disabled={modelsLoading}
 							onClick={() =>
@@ -1047,7 +1043,7 @@ export function ProviderDetailContent({
 				{isAddingModel ? (
 					<div className="flex shrink-0 items-center gap-2 border-t px-4 py-3">
 						<Input
-							aria-label="New model ID"
+							aria-label="新的模型 ID"
 							autoFocus
 							className="h-9 flex-1 font-mono"
 							onChange={(event) =>
@@ -1060,18 +1056,18 @@ export function ProviderDetailContent({
 								if (event.key === "Enter") addModel();
 								if (event.key === "Escape") setAddModelState(null);
 							}}
-							placeholder="Model ID"
+							placeholder="模型 ID"
 							value={newModelId}
 						/>
 						<Button disabled={!newModelId.trim()} onClick={addModel} size="sm">
-							Add
+							添加
 						</Button>
 						<Button
 							onClick={() => setAddModelState(null)}
 							size="sm"
 							variant="ghost"
 						>
-							Cancel
+							取消
 						</Button>
 					</div>
 				) : null}
@@ -1088,7 +1084,7 @@ export function ProviderDetailContent({
 						<div className="mx-4 mt-4 flex h-9 shrink-0 items-center gap-2 rounded border bg-background px-3">
 							<Search className="size-4 shrink-0 text-muted-foreground" />
 							<Input
-								aria-label="Search models"
+								aria-label="搜索模型"
 								className={EMBEDDED_INPUT_CLASS}
 								onChange={(event) =>
 									setModelSearchState({
@@ -1096,14 +1092,14 @@ export function ProviderDetailContent({
 										value: event.target.value,
 									})
 								}
-								placeholder="Search models by name or ID"
+								placeholder="按名称或 ID 搜索模型"
 								spellCheck={false}
 								value={modelSearch}
 							/>
 						</div>
 						{filteredModelList.length > 0 ? (
 							<section
-								aria-label="Models"
+								aria-label="模型"
 								className="min-h-0 flex-1 overflow-y-auto overscroll-contain border-t"
 								// biome-ignore lint/a11y/noNoninteractiveTabindex: Allow keyboard scrolling of the model list.
 								tabIndex={0}
@@ -1127,9 +1123,9 @@ export function ProviderDetailContent({
 												{/* Capability icons */}
 												{model.supportsAttachments && (
 													<span
-														aria-label="File support"
+														aria-label="文件支持"
 														role="img"
-														title="File support"
+														title="文件支持"
 													>
 														<FileIcon
 															aria-hidden="true"
@@ -1139,9 +1135,9 @@ export function ProviderDetailContent({
 												)}
 												{model.supportsVision && (
 													<span
-														aria-label="Image support"
+														aria-label="图片支持"
 														role="img"
-														title="Image support"
+														title="图片支持"
 													>
 														<ImageIcon
 															aria-hidden="true"
@@ -1154,9 +1150,9 @@ export function ProviderDetailContent({
 													model.operation !== "transcription" &&
 													model.operation !== "realtime" && (
 														<span
-															aria-label="Audio support"
+															aria-label="音频支持"
 															role="img"
-															title="Audio support"
+															title="音频支持"
 														>
 															<Mic
 																aria-hidden="true"
@@ -1166,9 +1162,9 @@ export function ProviderDetailContent({
 													)}
 												{model.supportsReasoning && (
 													<span
-														aria-label="Reasoning support"
+														aria-label="推理支持"
 														role="img"
-														title="Reasoning support"
+														title="推理支持"
 													>
 														<Brain
 															aria-hidden="true"
@@ -1183,17 +1179,17 @@ export function ProviderDetailContent({
 												</p>
 											) : null}
 											<button
-												aria-label={`Copy model ID ${model.id}`}
+												aria-label={`复制模型 ID ${model.id}`}
 												className="mt-1 flex max-w-full items-center gap-1.5 px-1 text-left text-xs text-muted-foreground  hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
 												onClick={() => copyModelId(model.id)}
-												title="Copy model ID"
+												title="复制模型 ID"
 												type="button"
 											>
 												<span className="min-w-0 truncate">{model.id}</span>
 												<Copy className="size-3 shrink-0" />
 												{copiedModelId === model.id ? (
 													<span className="shrink-0 text-foreground">
-														Copied
+														已复制
 													</span>
 												) : null}
 											</button>
@@ -1202,8 +1198,8 @@ export function ProviderDetailContent({
 										<Button
 											aria-label={
 												favoriteModelIds.has(model.id)
-													? `Unfavorite ${model.name}`
-													: `Favorite ${model.name}`
+													? `取消收藏 ${model.name}`
+													: `收藏 ${model.name}`
 											}
 											className={cn(
 												"ml-auto shrink-0 rounded-md p-1.5 transition-colors hover:bg-surface-hover hover:text-foreground",
@@ -1227,7 +1223,7 @@ export function ProviderDetailContent({
 						) : (
 							<div className="rounded-lg border border-border px-4 py-8 text-center">
 								<p className="text-sm text-muted-foreground">
-									No models match "{modelSearch.trim()}".
+									没有匹配“{modelSearch.trim()}”的模型。
 								</p>
 							</div>
 						)}
@@ -1236,8 +1232,8 @@ export function ProviderDetailContent({
 					<div className="rounded-lg border border-border px-4 py-8 text-center">
 						<p className="text-sm text-muted-foreground">
 							{modelsLoading
-								? "Loading models..."
-								: "No models available. Click refresh to load models."}
+								? "正在加载模型..."
+								: "没有可用的模型。点击刷新以加载模型。"}
 						</p>
 					</div>
 				)}

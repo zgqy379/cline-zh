@@ -169,7 +169,7 @@ function validateDraft(
 	const values = resolvedFieldValues(channel, draft);
 	for (const field of visibleFieldsForChannel(channel, draft)) {
 		if (field.required && !values[field.flag]?.trim()) {
-			return `${field.label} is required`;
+			return `${field.label} 为必填项`;
 		}
 	}
 	if (draft.securityEnabled && channel.security) {
@@ -192,8 +192,8 @@ function fieldDescription(
 		return field.requiredMessage;
 	}
 	return field.required
-		? "Required to connect this channel."
-		: "Optional channel setting.";
+		? "连接该渠道时必填。"
+		: "可选的渠道设置。";
 }
 
 function fieldDomId(
@@ -242,7 +242,7 @@ function CredentialField({
 	const revealButton = (className: string) =>
 		secret ? (
 			<button
-				aria-label={`${revealed ? "Hide" : "Show"} ${label}`}
+				aria-label={`${revealed ? "隐藏" : "显示"} ${label}`}
 				className={cn(
 					"absolute right-2 rounded p-0.5 text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50",
 					className,
@@ -583,11 +583,11 @@ export function ChannelsContent({
 
 	const refreshButton = (
 		<Button
-			aria-label="Refresh channels"
+			aria-label="刷新渠道"
 			disabled={isBusy}
 			onClick={() => void refreshChannels()}
 			size="sm"
-			title="Refresh channels"
+			title="刷新渠道"
 			variant="outline"
 		>
 			<RefreshCw className={cn("size-4", isLoading && "animate-spin")} />
@@ -599,19 +599,19 @@ export function ChannelsContent({
 			{chrome === "page" ? (
 				<PageHeader
 					actions={refreshButton}
-					description="Connect messaging platforms so you can chat with Cline anywhere. Click on a channel name to view or edit its configuration."
+					description="连接消息平台，随时随地与 Cline 对话。点击渠道名称可查看或修改其配置。"
 					meta={
 						<span className="rounded-md border border-border bg-background px-2 py-0.5 text-xs text-muted-foreground">
 							cline connect
 						</span>
 					}
-					title="Channels"
+					title="渠道"
 				/>
 			) : (
 				<div className="mb-4 flex items-center justify-between gap-3">
 					<p className="text-sm text-muted-foreground">
-						Connect messaging platforms so you can chat with Cline anywhere.
-						Click on a channel name to view or edit its configuration.
+						连接消息平台，随时随地与 Cline 对话。
+						点击渠道名称可查看或修改其配置。
 					</p>
 					{refreshButton}
 				</div>
@@ -622,21 +622,21 @@ export function ChannelsContent({
 					className="mb-4 rounded-lg border border-destructive/40 bg-destructive/10 px-3 py-2 text-sm text-destructive"
 					role="alert"
 				>
-					Failed to load channels: {catalogError}
+					加载渠道失败：{catalogError}
 				</div>
 			) : null}
 
 			<div className="mb-5 flex items-center gap-2 rounded-lg border border-border bg-input px-3 py-2">
 				<Search aria-hidden="true" className="size-4 text-muted-foreground" />
 				<label className="sr-only" htmlFor="channel-search">
-					Search channels
+					搜索渠道
 				</label>
 				<input
 					autoComplete="off"
 					className="flex-1 bg-transparent text-sm text-foreground outline-none placeholder:text-muted-foreground"
 					id="channel-search"
 					onChange={(event) => setQuery(event.target.value)}
-					placeholder="Search channels..."
+					placeholder="搜索渠道..."
 					type="search"
 					value={query}
 				/>
@@ -645,14 +645,14 @@ export function ChannelsContent({
 			<div className="flex flex-col gap-2">
 				{isLoading && channels.length === 0 ? (
 					<div className="rounded-lg border border-dashed border-border px-4 py-10 text-center">
-						<p className="text-sm text-muted-foreground">Loading channels...</p>
+						<p className="text-sm text-muted-foreground">正在加载渠道...</p>
 					</div>
 				) : null}
 
 				{!isLoading && channels.length === 0 && !catalogError ? (
 					<div className="rounded-lg border border-dashed border-border px-4 py-10 text-center">
 						<p className="text-sm text-muted-foreground">
-							No connector channels are available.
+							暂无可用的连接器渠道。
 						</p>
 					</div>
 				) : null}
@@ -715,7 +715,7 @@ export function ChannelsContent({
 								</button>
 								<Switch
 									aria-busy={pendingType !== undefined}
-									aria-label={`${channel.name} connection`}
+									aria-label={`${channel.name} 连接`}
 									checked={isConnected}
 									className="mr-4"
 									disabled={isBusy}
@@ -752,10 +752,9 @@ export function ChannelsContent({
 									{activeForChannel.length > 0 ? (
 										<div className="mb-4 rounded-lg border border-border bg-background px-4 py-3">
 											<p className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-												Active{" "}
 												{activeForChannel.length === 1
-													? "connection"
-													: "connections"}
+												? "1 个活动连接"
+												: `${activeForChannel.length} 个活动连接`}
 											</p>
 											<div className="flex flex-col gap-2">
 												{activeForChannel.map((connector) => (
@@ -825,7 +824,7 @@ export function ChannelsContent({
 														className="text-sm font-medium text-foreground"
 														htmlFor={`channel-${channel.id}-security-toggle`}
 													>
-														Restrict access
+														限制访问
 													</label>
 													<p className="mt-0.5 text-xs leading-relaxed text-muted-foreground">
 														{channel.security.prompt}
@@ -885,14 +884,14 @@ export function ChannelsContent({
 												}}
 												type="button"
 											>
-												{isConnected ? "Reset" : "Close"}
+												{isConnected ? "重置" : "关闭"}
 											</button>
 											<button
 												className="rounded-lg bg-primary px-3.5 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 disabled:pointer-events-none disabled:opacity-50"
 												disabled={isBusy}
 												type="submit"
 											>
-												{pendingType === "connecting" ? "Saving..." : "Save"}
+												{pendingType === "connecting" ? "保存中..." : "保存"}
 											</button>
 										</div>
 									</div>
@@ -905,7 +904,7 @@ export function ChannelsContent({
 				{!isLoading && channels.length > 0 && filteredChannels.length === 0 ? (
 					<div className="rounded-lg border border-dashed border-border px-4 py-10 text-center">
 						<p className="text-sm text-muted-foreground">
-							No channels match &ldquo;{query}&rdquo;.
+							没有匹配 &ldquo;{query}&rdquo; 的渠道。
 						</p>
 					</div>
 				) : null}
@@ -922,19 +921,19 @@ export function ChannelsContent({
 				<AlertDialogContent>
 					<AlertDialogHeader>
 						<AlertDialogTitle>
-							Reset {disconnectTarget?.name ?? "channel"}?
+							重置「{disconnectTarget?.name ?? "渠道"}」？
 						</AlertDialogTitle>
 						<AlertDialogDescription>
-							This stops{" "}
+							这将停止
 							{disconnectTargetConnectors.length === 1
-								? `the active ${disconnectTarget?.name ?? "channel"} connector`
-								: `all ${disconnectTargetConnectors.length} active ${disconnectTarget?.name ?? "channel"} connectors`}
-							. You will need to save its credentials to connect it again.
+							? `${disconnectTarget?.name ?? "渠道"} 当前的连接器`
+							: `全部 ${disconnectTargetConnectors.length} 个 ${disconnectTarget?.name ?? "渠道"} 连接器`}
+							。之后需要重新保存其凭据才能再次连接。
 						</AlertDialogDescription>
 					</AlertDialogHeader>
 					<AlertDialogFooter>
 						<AlertDialogCancel disabled={pendingAction !== null}>
-							Cancel
+							取消
 						</AlertDialogCancel>
 						<AlertDialogAction
 							className={buttonVariants({ variant: "destructive" })}
@@ -945,7 +944,7 @@ export function ChannelsContent({
 								}
 							}}
 						>
-							Reset
+							重置
 						</AlertDialogAction>
 					</AlertDialogFooter>
 				</AlertDialogContent>

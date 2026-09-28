@@ -178,13 +178,13 @@ const FALLBACK_PROVIDER_MODELS: Record<string, string[]> = {
 };
 
 const WEEKDAY_OPTIONS = [
-	{ label: "Mon", value: "MON" },
-	{ label: "Tue", value: "TUE" },
-	{ label: "Wed", value: "WED" },
-	{ label: "Thu", value: "THU" },
-	{ label: "Fri", value: "FRI" },
-	{ label: "Sat", value: "SAT" },
-	{ label: "Sun", value: "SUN" },
+	{ label: "周一", value: "MON" },
+	{ label: "周二", value: "TUE" },
+	{ label: "周三", value: "WED" },
+	{ label: "周四", value: "THU" },
+	{ label: "周五", value: "FRI" },
+	{ label: "周六", value: "SAT" },
+	{ label: "周日", value: "SUN" },
 ] as const;
 
 interface RoutineFormState {
@@ -257,11 +257,11 @@ function formatExecutionResult(execution?: RoutineExecution): string {
 	if (!execution) {
 		return "-";
 	}
-	const status = execution.status?.trim() || "unknown";
+	const status = execution.status?.trim() || "未知";
 	const timestamp =
 		execution.endedAt ?? execution.startedAt ?? execution.triggeredAt;
 	const when = formatDateTime(timestamp);
-	return when === "-" ? status : `${status} at ${when}`;
+	return when === "-" ? status : `${status} · ${when}`;
 }
 
 function asTrimmedFormString(value: unknown): string {
@@ -301,10 +301,10 @@ function normalizeScheduleDays(days: string[]): string[] {
 function formatScheduleDays(days: string[]): string {
 	const normalized = normalizeScheduleDays(days);
 	if (normalized.length === WEEKDAY_OPTIONS.length) {
-		return "Every day";
+		return "每天";
 	}
 	if (normalized.join(",") === ["MON", "TUE", "WED", "THU", "FRI"].join(",")) {
-		return "Weekdays";
+		return "工作日";
 	}
 	return normalized
 		.map(
@@ -375,12 +375,12 @@ function formatExecutionTimestamp(execution: RoutineExecution): string {
 
 function formatScheduleTrigger(schedule: RoutineSchedule): string {
 	if (schedule.cronPattern === ONE_TIME_SCHEDULE_CRON_PATTERN) {
-		return `Once · ${formatDateTime(getOneTimeScheduleRunAt(schedule))}`;
+		return `单次 · ${formatDateTime(getOneTimeScheduleRunAt(schedule))}`;
 	}
 	const parsed = parseCronPattern(schedule.cronPattern);
 	const label =
 		parsed.scheduleType === "daily"
-			? `Daily · ${formatScheduleTime(parsed.scheduleHour, parsed.scheduleMinute)}`
+			? `每天 · ${formatScheduleTime(parsed.scheduleHour, parsed.scheduleMinute)}`
 			: `${formatScheduleDays(parsed.scheduleDays)} · ${formatScheduleTime(parsed.scheduleHour, parsed.scheduleMinute)}`;
 	return schedule.timezone ? `${label} · ${schedule.timezone}` : label;
 }
@@ -847,16 +847,16 @@ export function RoutineSchedulesContent({
 			// loaded) — say so instead of confirming a start.
 			if (!reply?.execution) {
 				toast({
-					title: "Run not started",
-					description: `"${schedule.name}" did not queue a run — the schedule may be disabled or deleted.`,
+					title: "未开始运行",
+					description: `“${schedule.name}”未能进入运行队列——该计划可能已停用或已删除。`,
 					variant: "destructive",
 				});
 				await refreshSchedules({ force: true, showLoading: false });
 				return;
 			}
 			toast({
-				title: "Run started",
-				description: `"${schedule.name}" was queued to run now.`,
+				title: "已开始运行",
+				description: `“${schedule.name}”已加入队列，将立即运行。`,
 			});
 			// The trigger queues the run and returns before the runner starts
 			// the agent session, so the session id usually is not attached
@@ -897,7 +897,7 @@ export function RoutineSchedulesContent({
 			const message = error instanceof Error ? error.message : String(error);
 			setErrorMessage(message);
 			toast({
-				title: "Failed to start run",
+				title: "启动运行失败",
 				description: message,
 				variant: "destructive",
 			});
@@ -964,7 +964,7 @@ export function RoutineSchedulesContent({
 				"FRI",
 			],
 			prompt:
-				template?.prompt ?? "Review PRs opened yesterday and summarize issues.",
+				template?.prompt ?? "回顾昨天新建的 PR 并总结其中的问题。",
 			provider: preferredProvider,
 			model: preferredModel,
 			workspaceRoot: context.workspaceRoot || context.cwd,
@@ -1014,13 +1014,13 @@ export function RoutineSchedulesContent({
 	const submitCreateForm = async () => {
 		const name = asTrimmedFormString(createForm.name);
 		if (!name) {
-			setCreateFormError("Routine name is required.");
+			setCreateFormError("请填写例程名称。");
 			return;
 		}
 		const runAt =
 			createForm.scheduleType === "once" ? buildRunAt(createForm) : undefined;
 		if (createForm.scheduleType === "once" && (!runAt || runAt <= Date.now())) {
-			setCreateFormError("Choose a one-time date and time in the future.");
+			setCreateFormError("请选择未来的单次执行日期和时间。");
 			return;
 		}
 		const editedCronPattern =
@@ -1048,17 +1048,17 @@ export function RoutineSchedulesContent({
 					)
 				: editedCronPattern;
 		if (createForm.scheduleType === "weekly" && !cronPattern) {
-			setCreateFormError("Select at least one weekday.");
+			setCreateFormError("请至少选择一个星期几。");
 			return;
 		}
 		const prompt = asTrimmedFormString(createForm.prompt);
 		if (!prompt) {
-			setCreateFormError("Prompt is required.");
+			setCreateFormError("请填写提示词。");
 			return;
 		}
 		const workspaceRoot = asTrimmedFormString(createForm.workspaceRoot);
 		if (!workspaceRoot) {
-			setCreateFormError("Workspace is required.");
+			setCreateFormError("请填写工作区路径。");
 			return;
 		}
 		setCreateFormError(null);
@@ -1193,8 +1193,8 @@ export function RoutineSchedulesContent({
 	return (
 		<PageFrame>
 			<PageHeader
-				description="Run agents on cron schedules for recurring automations like daily summaries and code reviews."
-				title="Schedule"
+				description="按 cron 定时任务运行 Agent，实现每日摘要、代码审查等周期性自动化。"
+				title="计划"
 				meta={<CommandBadge>cline schedule</CommandBadge>}
 				actions={
 					<>
@@ -1210,7 +1210,7 @@ export function RoutineSchedulesContent({
 						</Button>
 						<Button size="sm" onClick={() => void openCreateDialog()}>
 							<Plus className="h-4 w-4" />
-							New Schedule
+							新建计划
 						</Button>
 					</>
 				}
@@ -1223,11 +1223,10 @@ export function RoutineSchedulesContent({
 			)}
 
 			{isLoading ? (
-				<PageEmptyState>Loading schedules...</PageEmptyState>
+				<PageEmptyState>正在加载计划...</PageEmptyState>
 			) : sortedSchedules.length === 0 ? (
 				<PageEmptyState>
-					No schedules yet. Start from a suggestion below, or create your own
-					with New Schedule.
+					还没有计划。你可以从下方的推荐开始，或点击“新建计划”自行创建。
 				</PageEmptyState>
 			) : (
 				<div className="flex flex-col gap-3">
@@ -1298,14 +1297,14 @@ export function RoutineSchedulesContent({
 													variant="ghost"
 													size="icon"
 													className="size-7"
-													aria-label={`Edit ${schedule.name}`}
+													aria-label={`编辑 ${schedule.name}`}
 													onClick={() => openEditDialog(schedule)}
 													disabled={isBusy}
 												>
 													<Pencil className="size-4" />
 												</Button>
 											</TooltipTrigger>
-											<TooltipContent>Edit schedule</TooltipContent>
+											<TooltipContent>编辑计划</TooltipContent>
 										</Tooltip>
 										<Tooltip>
 											<TooltipTrigger asChild>
@@ -1313,7 +1312,7 @@ export function RoutineSchedulesContent({
 													variant="ghost"
 													size="icon"
 													className="size-7"
-													aria-label={`Run ${schedule.name} now`}
+													aria-label={`立即运行 ${schedule.name}`}
 													onClick={() => void triggerSchedule(schedule)}
 													disabled={isBusy}
 												>
@@ -1324,7 +1323,7 @@ export function RoutineSchedulesContent({
 													)}
 												</Button>
 											</TooltipTrigger>
-											<TooltipContent>Run now</TooltipContent>
+											<TooltipContent>立即运行</TooltipContent>
 										</Tooltip>
 										<Tooltip>
 											<TooltipTrigger asChild>
@@ -1334,8 +1333,8 @@ export function RoutineSchedulesContent({
 													className="size-7"
 													aria-label={
 														schedule.enabled
-															? `Pause ${schedule.name}`
-															: `Resume ${schedule.name}`
+															? `暂停 ${schedule.name}`
+															: `恢复 ${schedule.name}`
 													}
 													onClick={() =>
 														void upsertScheduleEnabled(
@@ -1354,8 +1353,8 @@ export function RoutineSchedulesContent({
 											</TooltipTrigger>
 											<TooltipContent>
 												{schedule.enabled
-													? "Pause schedule"
-													: "Resume schedule"}
+													? "暂停计划"
+													: "恢复计划"}
 											</TooltipContent>
 										</Tooltip>
 										<Tooltip>
@@ -1364,14 +1363,14 @@ export function RoutineSchedulesContent({
 													variant="ghost"
 													size="icon"
 													className="size-7"
-													aria-label={`Delete ${schedule.name}`}
+													aria-label={`删除 ${schedule.name}`}
 													onClick={() => setSchedulePendingDelete(schedule)}
 													disabled={isBusy}
 												>
 													<Trash2 className="size-4" />
 												</Button>
 											</TooltipTrigger>
-											<TooltipContent>Delete schedule</TooltipContent>
+											<TooltipContent>删除计划</TooltipContent>
 										</Tooltip>
 										<Tooltip>
 											<TooltipTrigger asChild>
@@ -1381,13 +1380,13 @@ export function RoutineSchedulesContent({
 														void upsertScheduleEnabled(schedule, checked)
 													}
 													disabled={isBusy}
-													aria-label={`Enable ${schedule.name}`}
+													aria-label={`启用 ${schedule.name}`}
 												/>
 											</TooltipTrigger>
 											<TooltipContent>
 												{schedule.enabled
-													? "Enabled — click to disable"
-													: "Disabled — click to enable"}
+													? "已启用 — 点击停用"
+													: "已停用 — 点击启用"}
 											</TooltipContent>
 										</Tooltip>
 									</div>
@@ -1399,27 +1398,27 @@ export function RoutineSchedulesContent({
 										{schedule.scheduleId}
 									</p>
 									<p>
-										<span className="text-muted-foreground/70">Prompt:</span>{" "}
+										<span className="text-muted-foreground/70">提示词：</span>{" "}
 										{schedule.prompt}
 									</p>
 									<p>
-										<span className="text-muted-foreground/70">Model:</span>{" "}
+										<span className="text-muted-foreground/70">模型：</span>{" "}
 										{formatScheduleModel(schedule)}
 									</p>
 									<p>
-										<span className="text-muted-foreground/70">Last run:</span>{" "}
+										<span className="text-muted-foreground/70">上次运行：</span>{" "}
 										{formatDateTime(schedule.lastRunAt)}
 									</p>
 									<p>
 										<span className="text-muted-foreground/70">
-											Last result:
+											上次结果：
 										</span>{" "}
 										{formatExecutionResult(lastExecution)}
 									</p>
 									{lastExecution?.sessionId && (
 										<p>
 											<span className="text-muted-foreground/70">
-												Last session:
+												上次会话：
 											</span>{" "}
 											{lastExecution.sessionId}
 										</p>
@@ -1427,25 +1426,25 @@ export function RoutineSchedulesContent({
 									{lastExecution?.errorMessage && (
 										<p className="text-destructive">
 											<span className="text-muted-foreground/70">
-												Last error:
+												上次错误：
 											</span>{" "}
 											{lastExecution.errorMessage}
 										</p>
 									)}
 									<p>
-										<span className="text-muted-foreground/70">Next run:</span>{" "}
+										<span className="text-muted-foreground/70">下次运行：</span>{" "}
 										{formatDateTime(schedule.nextRunAt || upcoming?.nextRunAt)}
 									</p>
 									{activeExecution && (
 										<p>
-											<span className="text-muted-foreground/70">Active:</span>{" "}
-											{activeExecution.executionId} since{" "}
+											<span className="text-muted-foreground/70">进行中：</span>{" "}
+											{activeExecution.executionId} 开始于{" "}
 											{formatDateTime(activeExecution.startedAt)}
 										</p>
 									)}
 									{schedule.tags && schedule.tags.length > 0 && (
 										<p>
-											<span className="text-muted-foreground/70">Tags:</span>{" "}
+											<span className="text-muted-foreground/70">标签：</span>{" "}
 											{schedule.tags.join(", ")}
 										</p>
 									)}
@@ -1459,7 +1458,7 @@ export function RoutineSchedulesContent({
 			{!isLoading && visibleTemplates.length > 0 && (
 				<section className="mt-10">
 					<h2 className="text-xs font-medium tracking-wider text-muted-foreground uppercase">
-						Suggested
+						推荐
 					</h2>
 					<div className="mt-3 grid gap-3 sm:grid-cols-2">
 						{visibleTemplates.map((template) => {
@@ -1480,7 +1479,7 @@ export function RoutineSchedulesContent({
 												{template.title}
 											</h3>
 											<span className="shrink-0 rounded-md border border-border px-1.5 py-0.5 text-[10px] text-muted-foreground">
-												{template.scheduleType === "daily" ? "Daily" : "Weekly"}
+												{template.scheduleType === "daily" ? "每天" : "每周"}
 											</span>
 										</div>
 										<p className="mt-1 text-xs leading-5 text-muted-foreground">
@@ -1507,33 +1506,33 @@ export function RoutineSchedulesContent({
 					className="flex max-h-[85vh] flex-col sm:max-w-2xl"
 				>
 					<DialogHeader>
-						<DialogTitle>{viewingSchedule?.name ?? "Schedule"}</DialogTitle>
+						<DialogTitle>{viewingSchedule?.name ?? "计划"}</DialogTitle>
 					</DialogHeader>
 					{viewingSchedule && (
 						<div className="flex min-h-0 flex-1 flex-col gap-3 overflow-y-auto">
 							<div className="grid grid-cols-1 gap-1.5 text-xs sm:grid-cols-2">
 								<p>
-									<span className="text-muted-foreground/70">Schedule:</span>{" "}
+									<span className="text-muted-foreground/70">计划：</span>{" "}
 									{formatScheduleTrigger(viewingSchedule)}
 								</p>
 								<p>
-									<span className="text-muted-foreground/70">Mode:</span>{" "}
+									<span className="text-muted-foreground/70">模式：</span>{" "}
 									{viewingSchedule.mode}
 								</p>
 								<p>
-									<span className="text-muted-foreground/70">Model:</span>{" "}
+									<span className="text-muted-foreground/70">模型：</span>{" "}
 									{formatScheduleModel(viewingSchedule)}
 								</p>
 								<p>
-									<span className="text-muted-foreground/70">Enabled:</span>{" "}
-									{viewingSchedule.enabled ? "yes" : "no"}
+									<span className="text-muted-foreground/70">已启用：</span>{" "}
+									{viewingSchedule.enabled ? "是" : "否"}
 								</p>
 								<p>
-									<span className="text-muted-foreground/70">Last run:</span>{" "}
+									<span className="text-muted-foreground/70">上次运行：</span>{" "}
 									{formatDateTime(viewingSchedule.lastRunAt)}
 								</p>
 								<p>
-									<span className="text-muted-foreground/70">Next run:</span>{" "}
+									<span className="text-muted-foreground/70">下次运行：</span>{" "}
 									{formatDateTime(viewingSchedule.nextRunAt)}
 								</p>
 							</div>
@@ -1543,15 +1542,14 @@ export function RoutineSchedulesContent({
 								{JSON.stringify(viewingSchedule, null, 2)}
 							</pre>
 							<div className="mt-1 flex items-center justify-between">
-								<h3 className="text-sm font-semibold">Runs</h3>
+								<h3 className="text-sm font-semibold">运行记录</h3>
 								<span className="text-xs text-muted-foreground">
-									{viewingExecutions.length} result
-									{viewingExecutions.length === 1 ? "" : "s"}
+									{viewingExecutions.length} 条运行结果
 								</span>
 							</div>
 							{viewingExecutions.length === 0 ? (
 								<div className="rounded-lg border border-border px-3 py-6 text-center text-sm text-muted-foreground">
-									No runs yet.
+									暂无运行记录。
 								</div>
 							) : (
 								<div className="overflow-hidden rounded-lg border border-border">
@@ -1585,7 +1583,7 @@ export function RoutineSchedulesContent({
 												)}
 												<span className="min-w-0 flex-1">
 													<span className="block truncate font-medium capitalize">
-														{execution.status || "Unknown result"}
+														{execution.status || "未知结果"}
 													</span>
 													{execution.errorMessage && (
 														<span className="block truncate text-xs text-destructive">
@@ -1612,7 +1610,7 @@ export function RoutineSchedulesContent({
 									type="button"
 									variant="ghost"
 								>
-									Show all {viewingExecutions.length} runs
+									显示全部 {viewingExecutions.length} 条运行记录
 									<ChevronDown className="size-3.5" />
 								</Button>
 							) : null}
@@ -1630,10 +1628,9 @@ export function RoutineSchedulesContent({
 			>
 				<AlertDialogContent>
 					<AlertDialogHeader>
-						<AlertDialogTitle>Delete Routine</AlertDialogTitle>
+						<AlertDialogTitle>删除例程</AlertDialogTitle>
 						<AlertDialogDescription>
-							This will delete "{schedulePendingDelete?.name ?? "this routine"}"
-							and remove future scheduled runs.
+							这将删除“{schedulePendingDelete?.name ?? "该例程"}”，并移除后续的计划运行。
 						</AlertDialogDescription>
 					</AlertDialogHeader>
 					<AlertDialogFooter>
@@ -1644,7 +1641,7 @@ export function RoutineSchedulesContent({
 									: false
 							}
 						>
-							Cancel
+							取消
 						</AlertDialogCancel>
 						<AlertDialogAction
 							disabled={
@@ -1658,7 +1655,7 @@ export function RoutineSchedulesContent({
 							}}
 							className={buttonVariants({ variant: "destructive" })}
 						>
-							Delete
+							删除
 						</AlertDialogAction>
 					</AlertDialogFooter>
 				</AlertDialogContent>
@@ -1675,17 +1672,17 @@ export function RoutineSchedulesContent({
 			>
 				<DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-2xl">
 					<DialogHeader>
-						<DialogTitle>Schedule</DialogTitle>
+						<DialogTitle>计划</DialogTitle>
 						<DialogDescription>
 							{editingSchedule
-								? "Update this scheduler routine."
-								: "Create a scheduler routine."}
+								? "更新这个计划例程。"
+								: "创建一个计划例程。"}
 						</DialogDescription>
 					</DialogHeader>
 
 					<div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
 						<div className="sm:col-span-2 space-y-2">
-							<Label htmlFor="routine-name">Name</Label>
+							<Label htmlFor="routine-name">名称</Label>
 							<Input
 								id="routine-name"
 								value={createForm.name}
@@ -1695,24 +1692,23 @@ export function RoutineSchedulesContent({
 										name: event.target.value,
 									}))
 								}
-								placeholder="Daily code review"
+								placeholder="每日代码审查"
 							/>
 						</div>
 
 						<div className="sm:col-span-2 space-y-3">
-							<Label>Schedule</Label>
+							<Label>计划</Label>
 							{editingSchedule &&
 								editingSchedule.cronPattern !==
 									ONE_TIME_SCHEDULE_CRON_PATTERN && (
 									<p className="text-xs text-muted-foreground">
-										Current cron expression:{" "}
-										<code>{editingSchedule.cronPattern}</code>. Changing the
-										timing controls replaces this expression.
+										当前 cron 表达式：{" "}
+										<code>{editingSchedule.cronPattern}</code>，修改时间设置将替换此表达式。
 									</p>
 								)}
 							<div className="flex flex-wrap items-end gap-3 rounded-xl border border-border p-3">
 								<div className="min-w-32 flex-1 space-y-2">
-									<Label htmlFor="routine-schedule-type">Frequency</Label>
+									<Label htmlFor="routine-schedule-type">频率</Label>
 									<Select
 										onValueChange={(value) =>
 											setCreateForm((prev) => ({
@@ -1732,15 +1728,15 @@ export function RoutineSchedulesContent({
 											<SelectValue />
 										</SelectTrigger>
 										<SelectContent>
-											<SelectItem value="daily">Daily</SelectItem>
-											<SelectItem value="weekly">Weekly</SelectItem>
-											<SelectItem value="once">Once</SelectItem>
+											<SelectItem value="daily">每天</SelectItem>
+											<SelectItem value="weekly">每周</SelectItem>
+											<SelectItem value="once">单次</SelectItem>
 										</SelectContent>
 									</Select>
 								</div>
 								{createForm.scheduleType === "once" && (
 									<div className="min-w-40 flex-1 space-y-2">
-										<Label htmlFor="routine-date">Date</Label>
+										<Label htmlFor="routine-date">日期</Label>
 										<Input
 											id="routine-date"
 											min={minimumOnce.date}
@@ -1776,7 +1772,7 @@ export function RoutineSchedulesContent({
 								)}
 								{createForm.scheduleType === "weekly" && (
 									<div className="min-w-44 flex-[1.4] space-y-2">
-										<Label>Days</Label>
+										<Label>星期几</Label>
 										<DropdownMenu>
 											<DropdownMenuTrigger asChild>
 												<Button
@@ -1785,7 +1781,7 @@ export function RoutineSchedulesContent({
 												>
 													<span className="truncate">
 														{formatScheduleDays(createForm.scheduleDays) ||
-															"Choose days"}
+															"选择星期几"}
 													</span>
 												</Button>
 											</DropdownMenuTrigger>
@@ -1819,7 +1815,7 @@ export function RoutineSchedulesContent({
 									</div>
 								)}
 								<div className="min-w-32 flex-1 space-y-2">
-									<Label htmlFor="routine-time">Time</Label>
+									<Label htmlFor="routine-time">时间</Label>
 									<Input
 										id="routine-time"
 										min={
@@ -1852,7 +1848,7 @@ export function RoutineSchedulesContent({
 						</div>
 
 						<div className="sm:col-span-2 space-y-2">
-							<Label htmlFor="routine-prompt">Prompt</Label>
+							<Label htmlFor="routine-prompt">提示词</Label>
 							<Textarea
 								id="routine-prompt"
 								value={createForm.prompt}
@@ -1867,7 +1863,7 @@ export function RoutineSchedulesContent({
 						</div>
 
 						<div className="space-y-2">
-							<Label>Provider</Label>
+							<Label>供应商</Label>
 							<Combobox
 								items={availableProviders}
 								onValueChange={(value) => {
@@ -1898,7 +1894,7 @@ export function RoutineSchedulesContent({
 									showTrigger
 								/>
 								<ComboboxContent>
-									<ComboboxEmpty>No providers found.</ComboboxEmpty>
+									<ComboboxEmpty>未找到供应商。</ComboboxEmpty>
 									<ComboboxList>
 										{(item) => (
 											<ComboboxItem key={item} value={item}>
@@ -1911,7 +1907,7 @@ export function RoutineSchedulesContent({
 						</div>
 
 						<div className="space-y-2">
-							<Label>Model</Label>
+							<Label>模型</Label>
 							<Combobox
 								items={availableModelsForProvider}
 								onValueChange={(value) => {
@@ -1929,7 +1925,7 @@ export function RoutineSchedulesContent({
 									showTrigger
 								/>
 								<ComboboxContent>
-									<ComboboxEmpty>No models found.</ComboboxEmpty>
+									<ComboboxEmpty>未找到模型。</ComboboxEmpty>
 									<ComboboxList>
 										{(item) => (
 											<ComboboxItem key={item} value={item}>
@@ -1942,7 +1938,7 @@ export function RoutineSchedulesContent({
 						</div>
 
 						<div className="sm:col-span-2 space-y-2">
-							<Label htmlFor="routine-workspace">Workspace</Label>
+							<Label htmlFor="routine-workspace">工作区</Label>
 							<Input
 								id="routine-workspace"
 								value={createForm.workspaceRoot}
@@ -1957,7 +1953,7 @@ export function RoutineSchedulesContent({
 
 						<div className="sm:col-span-2 space-y-2">
 							<Label htmlFor="routine-system-prompt">
-								System prompt (optional)
+								系统提示词（可选）
 							</Label>
 							<Textarea
 								id="routine-system-prompt"
@@ -1974,7 +1970,7 @@ export function RoutineSchedulesContent({
 
 						<div className="space-y-2">
 							<Label htmlFor="routine-timeout">
-								Timeout seconds (optional)
+								超时时间（秒，可选）
 							</Label>
 							<Input
 								id="routine-timeout"
@@ -1991,7 +1987,7 @@ export function RoutineSchedulesContent({
 
 						<div className="space-y-2">
 							<Label htmlFor="routine-tags">
-								Tags (comma-separated, optional)
+								标签（用逗号分隔，可选）
 							</Label>
 							<Input
 								id="routine-tags"
@@ -2019,7 +2015,7 @@ export function RoutineSchedulesContent({
 							onClick={() => setIsCreateOpen(false)}
 							disabled={isCreating}
 						>
-							Cancel
+							取消
 						</Button>
 						<Button
 							onClick={() => void submitCreateForm()}
@@ -2027,11 +2023,11 @@ export function RoutineSchedulesContent({
 						>
 							{isCreating
 								? editingSchedule
-									? "Saving..."
-									: "Creating..."
+									? "保存中..."
+									: "创建中..."
 								: editingSchedule
-									? "Save Changes"
-									: "Create Schedule"}
+									? "保存修改"
+									: "创建计划"}
 						</Button>
 					</DialogFooter>
 				</DialogContent>

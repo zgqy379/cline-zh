@@ -67,9 +67,9 @@ function serverTypeOf(transportType: McpTransportType): McpServerType {
 }
 
 const TRANSPORT_TYPE_LABELS: Record<McpTransportType, string> = {
-	stdio: "Local · stdio",
-	sse: "Remote · SSE (legacy)",
-	streamableHttp: "Remote · Streamable HTTP",
+	stdio: "本地 · stdio",
+	sse: "远程 · SSE（旧版）",
+	streamableHttp: "远程 · Streamable HTTP",
 };
 
 interface McpServer {
@@ -171,7 +171,7 @@ function stringifyRedactedKeyValuePairs(
 		return "";
 	}
 	return Object.keys(input)
-		.map((key) => `${key}=[REDACTED]`)
+		.map((key) => `${key}=[已隐藏]`)
 		.join(", ");
 }
 
@@ -399,7 +399,7 @@ export function McpServersContent({
 	const buildServerInput = useCallback((form: McpServerFormState) => {
 		const name = form.name.trim();
 		if (!name) {
-			throw new Error("Server name is required.");
+			throw new Error("服务器名称不能为空。");
 		}
 		const env = form.envEntries.reduce<Record<string, string>>((acc, entry) => {
 			const key = entry.key.trim();
@@ -415,7 +415,7 @@ export function McpServersContent({
 		if (form.transportType === "stdio") {
 			const command = form.command.trim();
 			if (!command) {
-				throw new Error("Command is required for local servers.");
+				throw new Error("本地服务器必须填写命令。");
 			}
 			const args = splitCsv(form.argsText);
 			return {
@@ -432,7 +432,7 @@ export function McpServersContent({
 		}
 		const url = form.url.trim();
 		if (!url) {
-			throw new Error("Server URL is required for remote servers.");
+			throw new Error("远程服务器必须填写 URL。");
 		}
 		return {
 			name,
@@ -543,7 +543,7 @@ export function McpServersContent({
 				checked={!server.disabled}
 				onCheckedChange={(enabled) => toggleServer(server, !enabled)}
 				disabled={isBusy}
-				aria-label={`Enable ${server.name}`}
+				aria-label={`启用 ${server.name}`}
 			/>
 		);
 	};
@@ -556,7 +556,7 @@ export function McpServersContent({
 				<Button
 					variant="ghost"
 					size="icon-sm"
-					aria-label={`Edit ${server.name}`}
+					aria-label={`编辑 ${server.name}`}
 					onClick={() => openEditDialog(server)}
 					disabled={isBusy || isAuthorizing}
 				>
@@ -565,7 +565,7 @@ export function McpServersContent({
 				<Button
 					variant="ghost"
 					size="icon-sm"
-					aria-label={`Delete ${server.name}`}
+					aria-label={`删除 ${server.name}`}
 					onClick={() => setDeleteTarget(server)}
 					disabled={isBusy || isAuthorizing}
 				>
@@ -579,35 +579,35 @@ export function McpServersContent({
 		<div className="flex flex-col gap-1 text-xs text-muted-foreground">
 			{server.command && (
 				<p>
-					<span className="text-muted-foreground/70">Command:</span>{" "}
+					<span className="text-muted-foreground/70">命令：</span>{" "}
 					{server.command}
 				</p>
 			)}
 			{server.args && server.args.length > 0 && (
 				<p>
-					<span className="text-muted-foreground/70">Args:</span>{" "}
+					<span className="text-muted-foreground/70">参数：</span>{" "}
 					{server.args.join(", ")}
 				</p>
 			)}
 			{server.cwd && (
 				<p>
-					<span className="text-muted-foreground/70">CWD:</span> {server.cwd}
+					<span className="text-muted-foreground/70">工作目录：</span> {server.cwd}
 				</p>
 			)}
 			{server.url && (
 				<p>
-					<span className="text-muted-foreground/70">URL:</span> {server.url}
+					<span className="text-muted-foreground/70">URL：</span> {server.url}
 				</p>
 			)}
 			{server.env && Object.keys(server.env).length > 0 && (
 				<p>
-					<span className="text-muted-foreground/70">Env:</span>{" "}
+					<span className="text-muted-foreground/70">环境变量：</span>{" "}
 					{stringifyRedactedKeyValuePairs(server.env)}
 				</p>
 			)}
 			{server.headers && Object.keys(server.headers).length > 0 && (
 				<p>
-					<span className="text-muted-foreground/70">Headers:</span>{" "}
+					<span className="text-muted-foreground/70">请求头：</span>{" "}
 					{stringifyKeyValuePairs(server.headers)}
 				</p>
 			)}
@@ -647,7 +647,7 @@ export function McpServersContent({
 					</Badge>
 					{context?.matchedEntries?.length ? (
 						<Badge variant="outline" className="shrink-0 text-muted-foreground">
-							Marketplace
+							市场
 						</Badge>
 					) : null}
 					<div className="flex-1" />
@@ -660,7 +660,7 @@ export function McpServersContent({
 							role="alert"
 						>
 							<p className="text-xs font-medium text-destructive">
-								Invalid configuration
+								配置无效
 							</p>
 							<p className="mt-0.5 wrap-break-word text-xs text-muted-foreground">
 								{server.configurationError}
@@ -675,14 +675,14 @@ export function McpServersContent({
 							<div className="min-w-0 flex-1 grid gap-0.5">
 								<p className="text-xs font-medium text-foreground">
 									{isAuthorizing
-										? "Waiting for OAuth authorization"
-										: "OAuth authorization required"}
+										? "正在等待 OAuth 授权"
+										: "需要 OAuth 授权"}
 								</p>
 								<p className="wrap-break-word text-xs text-muted-foreground">
 									{isAuthorizing
-										? "Complete sign-in in your browser, or select Cancel to stop waiting."
+										? "请在浏览器中完成登录，或点击「取消」停止等待。"
 										: (serverError ??
-											"Select Connect to sign in with your browser. The server will remain off until authorization succeeds.")}
+											"点击「连接」在浏览器中登录。授权成功前该服务器将保持关闭。")}
 								</p>
 							</div>
 							<Button
@@ -691,8 +691,8 @@ export function McpServersContent({
 								className="shrink-0"
 								aria-label={
 									isAuthorizing
-										? `Cancel OAuth for ${server.name}`
-										: `Connect ${server.name} with OAuth`
+										? `取消 ${server.name} 的 OAuth 授权`
+										: `使用 OAuth 连接 ${server.name}`
 								}
 								onClick={() =>
 									void (isAuthorizing
@@ -701,7 +701,7 @@ export function McpServersContent({
 								}
 								disabled={isBusy}
 							>
-								{isAuthorizing ? "Cancel" : "Connect"}
+								{isAuthorizing ? "取消" : "连接"}
 							</Button>
 						</div>
 					) : null}
@@ -711,7 +711,7 @@ export function McpServersContent({
 							role="alert"
 						>
 							<p className="text-xs font-medium text-destructive">
-								Connection failed
+								连接失败
 							</p>
 							<p className="mt-0.5 wrap-break-word text-xs text-muted-foreground">
 								{serverError}
@@ -722,7 +722,7 @@ export function McpServersContent({
 					{server.oauthStatus?.configured ? (
 						<div className="flex items-center gap-2 text-xs text-muted-foreground">
 							<span className="rounded-md border border-primary/40 bg-primary/10 px-2 py-0.5 text-primary">
-								OAuth connected
+								OAuth 已连接
 							</span>
 						</div>
 					) : null}
@@ -757,7 +757,7 @@ export function McpServersContent({
 			</Button>
 			<Button size="sm" onClick={openCreateDialog}>
 				<Plus className="h-4 w-4" />
-				Add MCP Server
+				添加 MCP 服务器
 			</Button>
 		</>
 	);
@@ -768,15 +768,15 @@ export function McpServersContent({
 				<PageHeader
 					description={
 						hasSettingsFile
-							? "Editing this list updates cline_mcp_settings.json."
-							: "No MCP settings file found yet. Add a server to create it."
+							? "编辑此列表会更新 cline_mcp_settings.json。"
+							: "尚未找到 MCP 设置文件，添加服务器后会自动创建。"
 					}
-					title="MCP Servers"
+					title="MCP 服务器"
 					meta={
 						<>
 							<CommandBadge>cline config mcp</CommandBadge>
 							<span className="rounded-md border border-border bg-background px-2 py-0.5 text-xs text-muted-foreground">
-								From settings file
+								来自设置文件
 							</span>
 						</>
 					}
@@ -786,8 +786,8 @@ export function McpServersContent({
 				<div className="mb-4 flex items-center justify-between gap-3">
 					<p className="text-sm text-muted-foreground">
 						{hasSettingsFile
-							? "Editing this list updates cline_mcp_settings.json."
-							: "No MCP settings file found yet. Add a server to create it."}
+							? "编辑此列表会更新 cline_mcp_settings.json。"
+							: "尚未找到 MCP 设置文件，添加服务器后会自动创建。"}
 					</p>
 					<div className="flex shrink-0 items-center gap-2">
 						{headerActions}
@@ -796,14 +796,14 @@ export function McpServersContent({
 			)}
 
 			<div className="mb-1 flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
-				<span>MCP settings path:</span>
+				<span>MCP 设置文件路径：</span>
 				<Button
 					variant="link"
 					className="h-auto p-0 font-mono text-xs"
 					onClick={() => void openSettingsFile()}
 					disabled={isOpeningSettingsFile}
 				>
-					{settingsPath || "Open settings file"}
+					{settingsPath || "打开设置文件"}
 				</Button>
 			</div>
 			{errorMessage && (
@@ -831,22 +831,22 @@ export function McpServersContent({
 				<DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-2xl">
 					<DialogHeader>
 						<DialogTitle>
-							{editorMode === "edit" ? "Edit MCP Server" : "Add MCP Server"}
+							{editorMode === "edit" ? "编辑 MCP 服务器" : "添加 MCP 服务器"}
 						</DialogTitle>
 						<DialogDescription>
 							{editorMode === "edit"
-								? "Update the MCP server stored in "
-								: "The server is saved to "}
+								? "更新存储于以下位置的 MCP 服务器："
+								: "服务器将保存到 "}
 							<code className="font-mono">
 								{settingsPath || "cline_mcp_settings.json"}
 							</code>
-							.
+							。
 						</DialogDescription>
 					</DialogHeader>
 
 					<div className="grid gap-4">
 						<div className="grid gap-2">
-							<Label htmlFor="mcp-name">Server name</Label>
+							<Label htmlFor="mcp-name">服务器名称</Label>
 							<Input
 								id="mcp-name"
 								value={formState.name}
@@ -861,7 +861,7 @@ export function McpServersContent({
 						</div>
 
 						<div className="grid gap-2">
-							<Label>Server type</Label>
+							<Label>服务器类型</Label>
 							<RadioGroup
 								className="grid gap-2"
 								value={serverTypeOf(formState.transportType)}
@@ -888,11 +888,10 @@ export function McpServersContent({
 									/>
 									<span className="grid gap-0.5">
 										<span className="text-sm font-medium text-foreground">
-											Local
+											本地
 										</span>
 										<span className="text-xs text-muted-foreground">
-											Runs a command on this machine (stdio). Recommended when
-											available.
+											在本机上运行命令（stdio）。推荐使用。
 										</span>
 									</span>
 								</Label>
@@ -907,10 +906,10 @@ export function McpServersContent({
 									/>
 									<span className="grid gap-0.5">
 										<span className="text-sm font-medium text-foreground">
-											Remote
+											远程
 										</span>
 										<span className="text-xs text-muted-foreground">
-											Connects to a hosted server over HTTP by URL.
+											通过 URL 以 HTTP 连接到托管的服务器。
 										</span>
 									</span>
 								</Label>
@@ -920,7 +919,7 @@ export function McpServersContent({
 						{formState.transportType === "stdio" ? (
 							<>
 								<div className="grid gap-2">
-									<Label htmlFor="mcp-command">Command</Label>
+									<Label htmlFor="mcp-command">命令</Label>
 									<Input
 										id="mcp-command"
 										value={formState.command}
@@ -934,7 +933,7 @@ export function McpServersContent({
 									/>
 								</div>
 								<div className="grid gap-2">
-									<Label htmlFor="mcp-args">Args</Label>
+									<Label htmlFor="mcp-args">参数</Label>
 									<Textarea
 										id="mcp-args"
 										value={formState.argsText}
@@ -949,7 +948,7 @@ export function McpServersContent({
 								</div>
 								<div className="grid gap-2">
 									<div className="flex items-center justify-between gap-3">
-										<Label>Environment variables</Label>
+										<Label>环境变量</Label>
 										<Button
 											type="button"
 											variant="ghost"
@@ -967,7 +966,7 @@ export function McpServersContent({
 													variant="ghost"
 													size="icon-sm"
 													onClick={() => removeEnvEntry(entry.id)}
-													aria-label={`Remove env var ${entry.key || "row"}`}
+													aria-label={`删除环境变量 ${entry.key || "行"}`}
 												>
 													<Minus className="h-3.5 w-3.5" />
 												</Button>
@@ -998,7 +997,7 @@ export function McpServersContent({
 						) : (
 							<>
 								<div className="grid gap-2">
-									<Label htmlFor="mcp-url">Server URL</Label>
+									<Label htmlFor="mcp-url">服务器 URL</Label>
 									<Input
 										id="mcp-url"
 										value={formState.url}
@@ -1012,7 +1011,7 @@ export function McpServersContent({
 									/>
 								</div>
 								<div className="grid gap-2">
-									<Label htmlFor="mcp-headers">Headers</Label>
+									<Label htmlFor="mcp-headers">请求头</Label>
 									<Textarea
 										id="mcp-headers"
 										value={formState.headersText}
@@ -1026,7 +1025,7 @@ export function McpServersContent({
 									/>
 								</div>
 								<div className="grid gap-2">
-									<Label>Transport</Label>
+									<Label>传输方式</Label>
 									<Select
 										value={formState.transportType}
 										onValueChange={(value) =>
@@ -1037,13 +1036,13 @@ export function McpServersContent({
 										}
 									>
 										<SelectTrigger className="w-full">
-											<SelectValue placeholder="Select transport" />
+											<SelectValue placeholder="选择传输方式" />
 										</SelectTrigger>
 										<SelectContent>
 											<SelectItem value="streamableHttp">
-												Streamable HTTP (recommended)
+												Streamable HTTP（推荐）
 											</SelectItem>
-											<SelectItem value="sse">SSE (legacy)</SelectItem>
+											<SelectItem value="sse">SSE（旧版）</SelectItem>
 										</SelectContent>
 									</Select>
 								</div>
@@ -1066,13 +1065,13 @@ export function McpServersContent({
 											advancedOpen && "rotate-90",
 										)}
 									/>
-									Advanced
+									高级
 								</button>
 							</CollapsibleTrigger>
 							<CollapsibleContent className="grid gap-4">
 								{formState.transportType === "stdio" && (
 									<div className="grid gap-2">
-										<Label htmlFor="mcp-cwd">Working directory</Label>
+										<Label htmlFor="mcp-cwd">工作目录</Label>
 										<Input
 											id="mcp-cwd"
 											value={formState.cwd}
@@ -1087,7 +1086,7 @@ export function McpServersContent({
 									</div>
 								)}
 								<div className="grid gap-2">
-									<Label htmlFor="mcp-metadata">Metadata JSON</Label>
+									<Label htmlFor="mcp-metadata">元数据 JSON</Label>
 									<Textarea
 										id="mcp-metadata"
 										value={formState.metadataText}
@@ -1105,9 +1104,9 @@ export function McpServersContent({
 
 						<div className="flex items-center justify-between rounded-md border border-border px-3 py-2">
 							<div>
-								<p className="text-sm font-medium text-foreground">Enabled</p>
+								<p className="text-sm font-medium text-foreground">启用</p>
 								<p className="text-xs text-muted-foreground">
-									Disable the server without removing it from settings.
+									停用该服务器，但保留在设置中。
 								</p>
 							</div>
 							<Switch
@@ -1118,7 +1117,7 @@ export function McpServersContent({
 										disabled: !enabled,
 									}))
 								}
-								aria-label="Enable MCP server"
+								aria-label="启用 MCP 服务器"
 							/>
 						</div>
 
@@ -1135,17 +1134,17 @@ export function McpServersContent({
 							onClick={() => setEditorOpen(false)}
 							disabled={busyServerName !== null}
 						>
-							Cancel
+							取消
 						</Button>
 						<Button
 							onClick={() => void handleSaveServer()}
 							disabled={busyServerName !== null}
 						>
 							{busyServerName !== null
-								? "Saving..."
+								? "保存中..."
 								: editorMode === "edit"
-									? "Save changes"
-									: "Add server"}
+									? "保存更改"
+									: "添加服务器"}
 						</Button>
 					</DialogFooter>
 				</DialogContent>
@@ -1161,16 +1160,16 @@ export function McpServersContent({
 			>
 				<AlertDialogContent>
 					<AlertDialogHeader>
-						<AlertDialogTitle>Delete MCP Server</AlertDialogTitle>
+						<AlertDialogTitle>删除 MCP 服务器</AlertDialogTitle>
 						<AlertDialogDescription>
 							{deleteTarget
-								? `Delete MCP server "${deleteTarget.name}" from settings?`
-								: "Delete this MCP server from settings?"}
+								? `要从设置中删除 MCP 服务器「${deleteTarget.name}」吗？`
+								: "要从设置中删除该 MCP 服务器吗？"}
 						</AlertDialogDescription>
 					</AlertDialogHeader>
 					<AlertDialogFooter>
 						<AlertDialogCancel disabled={busyServerName !== null}>
-							Cancel
+							取消
 						</AlertDialogCancel>
 						<AlertDialogAction
 							disabled={busyServerName !== null || !deleteTarget}
@@ -1181,7 +1180,7 @@ export function McpServersContent({
 								}
 							}}
 						>
-							Delete
+							删除
 						</AlertDialogAction>
 					</AlertDialogFooter>
 				</AlertDialogContent>
