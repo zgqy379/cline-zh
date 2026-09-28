@@ -111,9 +111,9 @@ type UserInstructionConfigResponse = {
 const BUILTIN_SLASH_COMMANDS: SlashCommand[] = [
 	{
 		name: "fork",
-		description: "Create a copy of the current session into a new session",
+		description: "将当前会话复制为一个新会话",
 	},
-	{ name: "team", description: "Start the task with an agent team" },
+	{ name: "team", description: "以智能体团队启动任务" },
 ];
 
 // Last known user commands, kept across composer instances so reopening the
@@ -497,7 +497,7 @@ function ChatInputBarImpl({
 	);
 	const reportUnsupportedImages = useCallback(() => {
 		toast({
-			title: "This model doesn’t support image input",
+			title: "当前模型不支持图片输入",
 			description:
 				"Choose a model that supports images or remove the images before sending." +
 				(executionTarget === "cloud"
@@ -513,7 +513,7 @@ function ChatInputBarImpl({
 					: files;
 			if (supportedFiles.length !== files.length) {
 				toast({
-					title: "Unsupported cloud attachment",
+					title: "云端不支持该附件",
 					description:
 						"Choose PNG, JPEG, GIF, or WebP images, or switch to Local to attach other files.",
 				});
@@ -550,7 +550,7 @@ function ChatInputBarImpl({
 		} catch (error) {
 			toast({
 				variant: "destructive",
-				title: "Could not steer queued message",
+				title: "无法引导队列中的消息",
 				description: error instanceof Error ? error.message : String(error),
 			});
 		} finally {
@@ -567,7 +567,7 @@ function ChatInputBarImpl({
 		const prompt = promptInput.trim();
 		if (!prompt) {
 			toast({
-				title: "Add a message to go with your attachments",
+				title: "请为附件补充一条消息",
 				description:
 					"Describe what you want Cline to do with the attached files before sending.",
 			});
@@ -760,7 +760,7 @@ function ChatInputBarImpl({
 		const message =
 			error instanceof Error
 				? error.message
-				: "Check microphone permission and audio provider settings.";
+				: "请检查麦克风权限和音频供应商设置。";
 		writeDesktopDebugLog({
 			scope: "voice-input",
 			level: "error",
@@ -770,9 +770,9 @@ function ChatInputBarImpl({
 		});
 		toast({
 			variant: "destructive",
-			title: "Speech input failed",
+			title: "语音输入失败",
 			description: isMicrophoneError
-				? "Check the microphone permission for Cline and try again."
+				? "请检查 Cline 的麦克风权限后重试。"
 				: message,
 		});
 	}, []);
@@ -1112,8 +1112,8 @@ function ChatInputBarImpl({
 							{filteredSlashCommands.length === 0 ? (
 								<div className="px-3 py-2 text-sm text-muted-foreground">
 									{slashLoading
-										? "Loading commands..."
-										: "No matching commands"}
+										? "正在加载命令…"
+										: "没有匹配的命令"}
 								</div>
 							) : (
 								<>
@@ -1157,7 +1157,7 @@ function ChatInputBarImpl({
 						>
 							{mentionFiles.length === 0 ? (
 								<div className="px-3 py-2 text-sm text-muted-foreground">
-									{mentionLoading ? "Searching files..." : "No matching files"}
+									{mentionLoading ? "正在搜索文件…" : "没有匹配的文件"}
 								</div>
 							) : (
 								<>
@@ -1209,7 +1209,7 @@ function ChatInputBarImpl({
 								className="flex shrink-0 items-center gap-1.5 self-center text-xs text-muted-foreground"
 							>
 								<Spinner className="size-3.5" />
-								<span className="sr-only">Transcribing voice input</span>
+								<span className="sr-only">正在转录语音输入</span>
 							</output>
 						)}
 						<AgentComposerTextarea
@@ -1348,18 +1348,18 @@ function ChatInputBarImpl({
 							}
 							placeholder={
 								speechInputProcessing
-									? "Transcribing voice input…"
+									? "正在转录语音输入…"
 									: needsCloudRepository
-										? "Choose a repository"
+										? "请选择一个仓库"
 										: isBusy && variant !== "welcome"
 											? promptsInQueue.length > 0
-												? "Agent is working... submit to queue another message, or Enter to send the first message from the queue"
-												: "Agent is working... submit to queue another message"
+												? "智能体正在工作… 提交可再排入一条消息，或按 Enter 发送队列中的第一条消息"
+												: "智能体正在工作… 提交可再排入一条消息"
 											: executionTarget === "cloud"
-												? "Describe what Cline should do in this repository."
+												? "描述你希望 Cline 在此仓库中做什么。"
 												: variant === "welcome"
-													? "Ask to make changes, @mention files, reference #PRs, or run /commands."
-													: "Enter your question or type / for commands or @ for context"
+													? "提出修改需求、@ 引用文件、引用 #PR，或运行 /命令。"
+													: "输入你的问题，或输入 / 使用命令、输入 @ 引用上下文"
 							}
 							readOnly={speechInputActive || readOnly}
 							ref={promptInputRef}
@@ -1382,10 +1382,10 @@ function ChatInputBarImpl({
 							) : null}
 							{canAbort && (
 								<AgentComposerStopButton
-									aria-label="Stop agent"
+									aria-label="停止智能体"
 									variant={variant}
 									onClick={onAbort}
-									title="Stop the agent (Esc)"
+									title="停止智能体（Esc）"
 									type="button"
 								>
 									<CircleStop className="size-3" />
@@ -1403,7 +1403,7 @@ function ChatInputBarImpl({
 									onError={handleSpeechInputError}
 									onNetworkFallback={() =>
 										toast({
-											title: "Switched to browser speech recognition",
+											title: "已切换到浏览器语音识别",
 											description:
 												"The voice provider could not be reached. Click the microphone and repeat any missing speech. Browser recognition may also require internet access.",
 										})
@@ -1419,14 +1419,14 @@ function ChatInputBarImpl({
 							) : null}
 							{(!isBusy || canSend) && (
 								<AgentComposerSendButton
-									aria-label="Send message"
+									aria-label="发送消息"
 									variant={variant}
 									disabled={!canSend}
 									onClick={handleSend}
 									title={
 										needsCloudRepository
-											? "Choose a repository"
-											: "Send (Enter)"
+											? "请选择一个仓库"
+											: "发送（Enter）"
 									}
 									type="button"
 								>
@@ -1469,14 +1469,14 @@ function ChatInputBarImpl({
 				<AgentComposerSettingsGroup>
 					<button
 						aria-label={
-							executionTarget === "cloud" ? "Attach images" : "Attach files"
+							executionTarget === "cloud" ? "附加图片" : "附加文件"
 						}
 						title={
 							executionTarget === "cloud"
-								? "Attach images"
+								? "附加图片"
 								: imagesUnsupported
-									? "Attach files (this model doesn’t support images)"
-									: "Attach files"
+									? "附加文件（当前模型不支持图片）"
+									: "附加文件"
 						}
 						className="rounded-md p-2 text-muted-foreground hover:bg-surface-hover"
 						onClick={() => fileInputRef.current?.click()}
@@ -1556,14 +1556,14 @@ function ChatInputBarImpl({
 						value={EFFORT_LEVELS[effortIndex]?.value ?? "low"}
 					>
 						<SelectTrigger
-							aria-label="Thinking level"
+							aria-label="思考强度"
 							className="gap-1.5 border-0 px-2 text-sm shadow-none data-[size=sm]:h-7 [&>svg:last-child]:hidden max-[560px]:size-7 max-[560px]:justify-center max-[560px]:p-0 bg-transparent! hover:bg-surface-hover!"
 							size="sm"
 							title={
 								cloudSettingsLocked
-									? "Thinking level is fixed when a cloud session starts"
+									? "云端会话启动后思考强度即被固定"
 									: modelSupportsReasoning === false
-										? "The selected model does not report reasoning support"
+										? "当前模型未声明支持推理"
 										: undefined
 							}
 						>
@@ -1865,7 +1865,7 @@ const ModelSelector = memo(function ModelSelector({
 				? {
 						sections: [
 							...(modelPicker.sections ?? []),
-							{ id: "current", label: "Current model" },
+							{ id: "current", label: "当前模型" },
 						],
 					}
 				: {}),
@@ -2106,7 +2106,7 @@ const ModelSelector = memo(function ModelSelector({
 				? [
 						{
 							icon: <Plus className="size-3 shrink-0 text-muted-foreground" />,
-							label: "Set up another provider",
+							label: "配置其他供应商",
 							value: ADD_PROVIDER_OPTION_VALUE,
 						},
 					]
@@ -2119,15 +2119,15 @@ const ModelSelector = memo(function ModelSelector({
 			?.label ?? resolvedModel;
 	const renderProviderSelect = (triggerClassName: string) => (
 		<SearchCombobox
-			ariaLabel="Provider"
+			ariaLabel="供应商"
 			className={triggerClassName}
 			disabled={isBusy || providers.length === 0}
-			emptyText="No providers found."
+			emptyText="未找到供应商。"
 			onValueChange={handleProviderSelect}
 			options={providerOptions}
-			placeholder="Provider"
+			placeholder="供应商"
 			placement="top"
-			searchPlaceholder="Search providers"
+			searchPlaceholder="搜索供应商"
 			value={resolvedProvider}
 		/>
 	);
@@ -2136,10 +2136,10 @@ const ModelSelector = memo(function ModelSelector({
 		closeMobileMenu = false,
 	) => (
 		<SearchCombobox
-			ariaLabel="Model"
+			ariaLabel="模型"
 			className={triggerClassName}
 			disabled={isBusy || visibleModelPicker.options.length === 0}
-			emptyText="No models found."
+			emptyText="未找到模型。"
 			onOpen={refreshActiveProviderModels}
 			onValueChange={(value) => {
 				handleModelSelect(value);
@@ -2147,9 +2147,9 @@ const ModelSelector = memo(function ModelSelector({
 			}}
 			options={visibleModelPicker.options}
 			panelWidth="20rem"
-			placeholder="Model"
+			placeholder="模型"
 			placement="top"
-			searchPlaceholder="Search models"
+			searchPlaceholder="搜索模型"
 			sections={visibleModelPicker.sections}
 			value={resolvedModel}
 		/>
@@ -2160,11 +2160,11 @@ const ModelSelector = memo(function ModelSelector({
 			<button
 				aria-expanded={mobileOpen}
 				aria-haspopup="dialog"
-				aria-label="Model and provider"
+				aria-label="模型与供应商"
 				className="hidden size-7 items-center justify-center rounded-md text-foreground hover:bg-surface-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 max-[560px]:inline-flex"
 				disabled={isBusy || providers.length === 0}
 				onClick={() => setMobileOpen((current) => !current)}
-				title={`${providerNames[resolvedProvider]?.trim() || resolvedProvider || "Provider"} / ${selectedModelLabel || "Model"}`}
+				title={`${providerNames[resolvedProvider]?.trim() || resolvedProvider || "供应商"} / ${selectedModelLabel || "模型"}`}
 				type="button"
 			>
 				<Cpu className="size-3.5" />
@@ -2173,7 +2173,7 @@ const ModelSelector = memo(function ModelSelector({
 			{mobileOpen ? (
 				<>
 					<button
-						aria-label="Close model selector"
+						aria-label="关闭模型选择器"
 						className="fixed inset-0 z-40 hidden cursor-default opacity-0 max-[560px]:block"
 						onClick={() => setMobileOpen(false)}
 						type="button"
@@ -2181,7 +2181,7 @@ const ModelSelector = memo(function ModelSelector({
 					<div className="absolute bottom-full left-0 z-50 mb-2 hidden w-64 max-w-[calc(100vw-2rem)] space-y-3 rounded-lg border border-border bg-popover p-3 shadow-xl animate-in fade-in-0 zoom-in-95 slide-in-from-bottom-1 motion-reduce:animate-none max-[560px]:block">
 						<div className="space-y-1">
 							<div className="text-xs font-medium text-muted-foreground">
-								Provider
+								供应商
 							</div>
 							{renderProviderSelect(
 								"w-full max-w-none justify-between text-sm",
@@ -2189,7 +2189,7 @@ const ModelSelector = memo(function ModelSelector({
 						</div>
 						<div className="space-y-1">
 							<div className="text-xs font-medium text-muted-foreground">
-								Model
+								模型
 							</div>
 							{renderModelSelect(
 								"w-full max-w-none justify-between text-sm",
