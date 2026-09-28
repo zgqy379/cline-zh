@@ -50,13 +50,13 @@ export type CustomizationSection =
 	| "Tools";
 
 const sectionDescriptions: Record<CustomizationSection, string> = {
-	Rules: "Review project and global rule files that shape Cline behavior.",
-	Hooks: "Inspect hook configuration and recent execution status.",
-	MCP: "Manage installed MCP servers and add new servers from the marketplace.",
-	Skills: "Manage installed skills and add new skills from the marketplace.",
-	Agents: "Review configured agents discovered from local settings.",
-	Plugins: "Manage installed plugins and add new plugins from the marketplace.",
-	Tools: "Inspect built-in tools and tools contributed by plugins.",
+	Rules: "查看塑造 Cline 行为的项目级与全局规则文件。",
+	Hooks: "查看钩子配置与最近的执行状态。",
+	MCP: "管理已安装的 MCP 服务器，并从市场添加新服务器。",
+	Skills: "管理已安装的技能，并从市场添加新技能。",
+	Agents: "查看从本地设置中发现的已配置智能体。",
+	Plugins: "管理已安装的插件，并从市场添加新插件。",
+	Tools: "查看内置工具以及插件提供的工具。",
 };
 
 const sectionCommands: Record<CustomizationSection, string> = {
@@ -614,7 +614,7 @@ export function CustomizationSectionView({
 					Boolean,
 				);
 				if (names.length === 0) {
-					throw new Error("tool name is required");
+					throw new Error("工具名称为必填项");
 				}
 				const response =
 					await desktopClient.invoke<UserInstructionListsResponse>(
@@ -656,7 +656,7 @@ export function CustomizationSectionView({
 					[tool.name, ...(tool.headlessToolNames ?? [])].filter(Boolean),
 				);
 				if (names.length === 0) {
-					throw new Error("tool name is required");
+					throw new Error("工具名称为必填项");
 				}
 				const response =
 					await desktopClient.invoke<UserInstructionListsResponse>(
@@ -764,7 +764,7 @@ export function CustomizationSectionView({
 						status: "success",
 						message:
 							result.message ??
-							`Uninstalled ${target.name ?? target.id ?? target.path}.`,
+							`已卸载 ${target.name ?? target.id ?? target.path}。`,
 					});
 					return next;
 				});
@@ -1071,7 +1071,7 @@ export function CustomizationSectionView({
 			<DropdownMenu>
 				<DropdownMenuTrigger asChild>
 					<Button
-						aria-label={`More actions for ${target.name ?? "plugin"}`}
+						aria-label={`${target.name ?? "plugin"} 的更多操作`}
 						className="m-0 size-auto shrink-0 p-0 text-muted-foreground"
 						onClick={(event) => event.stopPropagation()}
 						size="icon"
@@ -1130,7 +1130,7 @@ export function CustomizationSectionView({
 					</Badge>
 					{item.agentPlugin === true ? (
 						<Badge variant="outline" className="shrink-0 text-muted-foreground">
-							Agent Plugin
+							智能体插件
 						</Badge>
 					) : null}
 					{context?.matchedEntries?.length ? (
@@ -1150,10 +1150,10 @@ export function CustomizationSectionView({
 						}
 						title={
 							item.type === "workflow"
-								? "Toggling workflows isn't supported yet"
+								? "暂不支持开关工作流"
 								: undefined
 						}
-						aria-label={`Toggle ${item.name}`}
+						aria-label={`切换 ${item.name}`}
 					/>
 					{item.agentPlugin !== true
 						? renderLocalItemMenu({
@@ -1219,7 +1219,7 @@ export function CustomizationSectionView({
 					</h3>
 					<ScopeBadge scope={scope} />
 					<Badge variant="outline" className="shrink-0 text-muted-foreground">
-						{plugin.agentPlugin === true ? "Agent Plugin" : "Cline Plugin"}
+						{plugin.agentPlugin === true ? "智能体插件" : "Cline 插件"}
 					</Badge>
 					{context?.matchedEntries?.length ? (
 						<Badge variant="outline" className="shrink-0 text-muted-foreground">
@@ -1352,7 +1352,7 @@ export function CustomizationSectionView({
 						([server.command, ...(server.args ?? [])]
 							.filter(Boolean)
 							.join(" ") ||
-							"No launch command configured.")}
+							"未配置启动命令。")}
 				</p>
 				{mcp.settingsPath ? (
 					<p className="truncate text-xs font-mono text-muted-foreground">
@@ -1514,8 +1514,8 @@ export function CustomizationSectionView({
 											checked
 											onCheckedChange={() => {}}
 											disabled
-											title="Toggling rules isn't supported yet"
-											aria-label={`Toggle ${rule.name}`}
+											title="暂不支持开关规则"
+											aria-label={`切换 ${rule.name}`}
 										/>
 										{renderLocalItemMenu(
 											{
@@ -1596,8 +1596,8 @@ export function CustomizationSectionView({
 															)}
 														>
 															{executed
-																? `${stats?.count ?? 0} executed`
-																: "never executed"}
+																? `已执行 ${stats?.count ?? 0} 次`
+																: "从未执行"}
 														</Badge>
 													);
 												})()}
@@ -1749,10 +1749,10 @@ export function CustomizationSectionView({
 					<div className="relative mb-6 block">
 						<Search className="pointer-events-none absolute left-2.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
 						<Input
-							aria-label="Search tools"
+							aria-label="搜索工具"
 							className="h-10 pl-8"
 							onChange={(event) => setToolsSearchQuery(event.target.value)}
-							placeholder="Search tools"
+							placeholder="搜索工具"
 							value={toolsSearchQuery}
 						/>
 					</div>
@@ -1783,15 +1783,15 @@ export function CustomizationSectionView({
 									id="builtin-tools-toggle-all"
 									aria-label={
 										allBuiltinToolsEnabled
-											? "Disable all builtin tools"
-											: "Enable all builtin tools"
+											? "禁用全部内置工具"
+											: "启用全部内置工具"
 									}
 								/>
 								<label
 									className="cursor-pointer"
 									htmlFor="builtin-tools-toggle-all"
 								>
-									{allBuiltinToolsEnabled ? "Disable all" : "Enable all"}
+									{allBuiltinToolsEnabled ? "全部禁用" : "全部启用"}
 								</label>
 							</div>
 						</div>
@@ -1815,12 +1815,12 @@ export function CustomizationSectionView({
 														void setToolEnabled(tool);
 													}}
 													disabled={isToggling}
-													aria-label={`Toggle ${tool.name}`}
+													aria-label={`切换 ${tool.name}`}
 												/>
 											</div>
 											<p className="line-clamp-2 text-xs leading-5 text-muted-foreground">
 												{tool.description?.trim() ||
-													"No description available."}
+													"暂无描述。"}
 											</p>
 											{!!tool.headlessToolNames?.length &&
 												tool.headlessToolNames?.length > 1 && (
@@ -1835,8 +1835,8 @@ export function CustomizationSectionView({
 							{filteredBuiltinTools.length === 0 && (
 								<p className="rounded-lg border border-dashed border-border px-4 py-3 text-sm text-muted-foreground">
 									{builtinTools.length === 0
-										? "No builtin tools found."
-										: "No tools match your search."}
+										? "未找到内置工具。"
+										: "没有符合搜索条件的工具。"}
 								</p>
 							)}
 						</div>
@@ -1868,15 +1868,15 @@ export function CustomizationSectionView({
 									id="plugin-tools-toggle-all"
 									aria-label={
 										allPluginToolsEnabled
-											? "Disable all plugin tools"
-											: "Enable all plugin tools"
+											? "禁用全部插件工具"
+											: "启用全部插件工具"
 									}
 								/>
 								<label
 									className="cursor-pointer"
 									htmlFor="plugin-tools-toggle-all"
 								>
-									{allPluginToolsEnabled ? "Disable all" : "Enable all"}
+									{allPluginToolsEnabled ? "全部禁用" : "全部启用"}
 								</label>
 							</div>
 						</div>
@@ -1909,12 +1909,12 @@ export function CustomizationSectionView({
 														void setToolEnabled(tool);
 													}}
 													disabled={isToggling}
-													aria-label={`Toggle ${tool.name}`}
+													aria-label={`切换 ${tool.name}`}
 												/>
 											</div>
 											<p className="line-clamp-2 text-xs leading-5 text-muted-foreground">
 												{tool.description?.trim() ||
-													"No description available."}
+													"暂无描述。"}
 											</p>
 										</div>
 									);
@@ -1923,8 +1923,8 @@ export function CustomizationSectionView({
 							{filteredPluginTools.length === 0 && (
 								<p className="rounded-lg border border-dashed border-border px-4 py-3 text-sm text-muted-foreground">
 									{pluginTools.length === 0
-										? "No plugin tools found."
-										: "No tools match your search."}
+										? "未找到插件工具。"
+										: "没有符合搜索条件的工具。"}
 								</p>
 							)}
 						</div>
