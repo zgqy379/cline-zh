@@ -69,7 +69,7 @@ export function VoiceInputContent({
 							};
 						} catch {
 							errors.push(
-								`Could not verify voice models for ${provider.name}.`,
+								`无法验证 ${provider.name} 的语音模型。`,
 							);
 							return { ...provider, modelList: [] };
 						}
@@ -173,7 +173,7 @@ export function VoiceInputContent({
 			) : null}
 			{modelErrors.length > 0 ? (
 				<p className="mb-4 text-sm text-destructive" role="alert">
-					{modelErrors.join(" ")} Reopen Voice settings to retry.
+					{modelErrors.join(" ")} 请重新打开语音设置后重试。
 				</p>
 			) : null}
 		</>
@@ -213,9 +213,9 @@ export function VoiceInputContent({
 					</p>
 					<p className="text-sm text-muted-foreground">
 						{voiceCapableProviderNames.length > 0
-							? `Connect a provider with streaming transcription models — for example ${voiceCapableProviderNames
-									.slice(0, 4)
-									.join(", ")} — and this page unlocks automatically.`
+							? `连接一个提供流式转录模型的服务商（例如 ${voiceCapableProviderNames
+								.slice(0, 4)
+								.join(", ")}）后，本页会自动解锁。`
 							: "Connect a provider with streaming transcription models and this page unlocks automatically."}
 					</p>
 					<Button onClick={onOpenModelProviders} size="sm" type="button">
@@ -238,8 +238,7 @@ export function VoiceInputContent({
 							Enable voice input
 						</p>
 						<p className="text-sm text-muted-foreground">
-							Turns on the microphone button in chat. A default model is
-							preselected — adjust it below.
+							开启聊天中的麦克风按钮。已预选默认模型，可在下方调整。
 						</p>
 					</div>
 					<Switch

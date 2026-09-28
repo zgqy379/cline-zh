@@ -57,9 +57,9 @@ const CLINE_PASS_SUBSCRIBE_URL =
 	"https://app.cline.bot/onboarding/individual-plan";
 
 const CLINE_SIGN_IN_BENEFITS = [
-	"Regular free model promotions",
-	"Subscribe to ClinePass for generous usage across the best open weights models like DeepSeek, Kimi, and GLM",
-	"No API key needed",
+	"常规免费模型推广",
+	"订阅 ClinePass，畅用 DeepSeek、Kimi、GLM 等顶尖开放权重模型",
+	"无需 API key",
 ];
 
 type ClineRecommendedModelsResponse = {
@@ -302,11 +302,10 @@ function WelcomeStep({ onContinue }: { onContinue: () => void }) {
 					<AgentWelcomeHero variant="bot-only" />
 				</div>
 				<h1 className="mt-5 text-4xl font-semibold text-foreground">Cline</h1>
-				<p className="mt-2 text-lg text-foreground">Build software your way</p>
+				<p className="mt-2 text-lg text-foreground">按你的方式构建软件</p>
 				<p className="mt-6 text-md text-muted-foreground">
-					Cline is an AI coding agent. It reads your code, edits files, runs
-					commands, and works through tasks with you — in any project on your
-					machine.
+					Cline 是一个 AI 编程智能体。它能读取代码、编辑文件、执行命令，
+					并与你一起完成任务——在这台机器上的任何项目中都可以。
 				</p>
 				<Button
 					className="mt-8 w-full max-w-64"
@@ -319,7 +318,7 @@ function WelcomeStep({ onContinue }: { onContinue: () => void }) {
 					Get started
 				</Button>
 				<p className="mt-8 text-xs text-muted-foreground">
-					Takes less than a minute. Everything can be changed later in Settings.
+					不到一分钟即可完成。所有内容之后都可以在设置中修改。
 				</p>
 			</div>
 		</OnboardingContent>
@@ -434,7 +433,7 @@ function ConnectStep({
 				// A typed not-authenticated result means the sidecar found no
 				// usable credential after the save — the key did not stick.
 				if (isClineAccountNotAuthenticatedResult(verified)) {
-					throw new Error("no Cline account credentials were found");
+					throw new Error("未找到 Cline 账户凭据");
 				}
 			} catch (verifyError) {
 				// Roll back the persisted key so an unusable credential does
@@ -446,7 +445,7 @@ function ConnectStep({
 					})
 					.catch(() => undefined);
 				throw new Error(
-					`the key could not be verified (${getErrorMessage(verifyError)})`,
+					`密钥无法通过验证（${getErrorMessage(verifyError)}）`,
 				);
 			}
 			rememberProviderSelection({ id: "cline" });
@@ -543,7 +542,7 @@ function ConnectStep({
 		<OnboardingContent surface="panel">
 			<div className="flex flex-col">
 				<IconButton
-					aria-label="Back"
+					aria-label="返回"
 					className="-ml-2"
 					onClick={onBack}
 					size="md"
@@ -554,11 +553,10 @@ function ConnectStep({
 					<ArrowLeft className="size-4" />
 				</IconButton>
 				<h1 className="mt-6 text-2xl font-semibold tracking-tight text-foreground">
-					Set up Cline
+					设置 Cline
 				</h1>
 				<p className="mt-4 text-sm text-muted-foreground">
-					Choose how Cline connects to models. You can add more providers
-					anytime in Settings.
+					选择 Cline 连接模型的方式。之后随时可以在设置中添加更多服务商。
 				</p>
 			</div>
 
@@ -566,7 +564,7 @@ function ConnectStep({
 				<SetupOptionCard
 					id="cline"
 					onSelect={() => setSelectedMethod("cline")}
-					selectLabel="Sign in with Cline"
+					selectLabel="使用 Cline 登录"
 					selected={selectedMethod === "cline"}
 				>
 					<SetupOptionHeader
@@ -575,7 +573,7 @@ function ConnectStep({
 								className="-mt-2 rounded-sm border-primary/30 bg-primary/10 px-1.5 !pt-[0.3rem] !pb-[0.2rem] text-primary-emphasis"
 								variant="outline"
 							>
-								Recommended
+								推荐
 							</Badge>
 						}
 						description={
@@ -592,12 +590,12 @@ function ConnectStep({
 							</ul>
 						}
 						icon={<ClineLogo className="size-5" />}
-						title="Sign in with Cline"
+						title="使用 Cline 登录"
 					/>
 					{user ? (
 						<div className="mt-6 flex flex-wrap items-center justify-end gap-6">
 							<p className="text-sm text-muted-foreground">
-								Signed in as{" "}
+								已登录为{" "}
 								<span className="font-medium">
 									{user.displayName || user.email}
 								</span>
@@ -612,7 +610,7 @@ function ConnectStep({
 								type="button"
 								variant="fill"
 							>
-								Continue
+								继续
 							</Button>
 						</div>
 					) : (
@@ -626,7 +624,7 @@ function ConnectStep({
 								variant="fill"
 							>
 								{signingIn && <Loader2 className="size-4 animate-spin" />}
-								{signingIn ? "Waiting for browser..." : "Sign in"}
+								{signingIn ? "正在等待浏览器..." : "登录"}
 							</Button>
 							{signingIn ? (
 								<Button
@@ -636,7 +634,7 @@ function ConnectStep({
 									type="button"
 									variant="ghost"
 								>
-									Cancel
+									取消
 								</Button>
 							) : (
 								<Button
@@ -646,14 +644,14 @@ function ConnectStep({
 									type="button"
 									variant="ghost"
 								>
-									Sign up
+									注册
 								</Button>
 							)}
 						</div>
 					)}
 					{!user && signingIn && deviceUserCode ? (
 						<p className="mt-4 ml-12 text-sm text-muted-foreground max-[720px]:ml-0">
-							Confirm this code in your browser:{" "}
+							请在浏览器中确认此代码：{" "}
 							<span className="font-mono font-medium text-foreground">
 								{deviceUserCode}
 							</span>
@@ -664,7 +662,7 @@ function ConnectStep({
 							className="mt-6 ml-12 text-xs text-destructive max-[720px]:ml-0"
 							role="alert"
 						>
-							Sign in failed: {signInError}
+							登录失败：{signInError}
 						</p>
 					) : null}
 					{!user ? (
@@ -682,7 +680,7 @@ function ConnectStep({
 								type="button"
 								variant="ghost"
 							>
-								Use a Cline API key
+								使用 Cline API key
 								<ChevronDown aria-hidden="true" className="size-3.5" />
 							</Button>
 							<ExpandablePanel
@@ -725,7 +723,7 @@ function ConnectStep({
 											{clineKeySaving ? (
 												<Loader2 className="size-4 animate-spin" />
 											) : null}
-											{clineKeySaving ? "Connecting..." : "Connect"}
+											{clineKeySaving ? "正在连接..." : "连接"}
 										</Button>
 									</div>
 									<Button
@@ -737,12 +735,12 @@ function ConnectStep({
 										type="button"
 										variant="ghost"
 									>
-										Find your key
+										查找你的 key
 										<ExternalLink className="size-3" />
 									</Button>
 									{clineKeyError ? (
 										<p className="text-xs text-destructive" role="alert">
-											Failed to save API key: {clineKeyError}
+											保存 API key 失败：{clineKeyError}
 										</p>
 									) : null}
 								</div>
@@ -756,13 +754,13 @@ function ConnectStep({
 						setSelectedMethod("api-key");
 						setClineKeyFormExpanded(false);
 					}}
-					selectLabel="Use your own API key"
+					selectLabel="使用自己的 API key"
 					selected={selectedMethod === "api-key"}
 				>
 					<SetupOptionHeader
-						description="Anthropic, OpenAI, OpenRouter, and more."
+						description="Anthropic、OpenAI、OpenRouter 等。"
 						icon={<KeyRound className="size-4" />}
-						title="Use your own API key"
+						title="使用自己的 API key"
 					/>
 					<ExpandablePanel
 						data-onboarding-api-key-form
@@ -771,7 +769,7 @@ function ConnectStep({
 						<div className="flex flex-col gap-3 pt-6">
 							{providersError ? (
 								<p className="text-xs text-destructive" role="alert">
-									Failed to load providers: {providersError}
+									加载服务商失败：{providersError}
 								</p>
 							) : (
 								<Select
@@ -783,14 +781,14 @@ function ConnectStep({
 									value={selectedProviderId || undefined}
 								>
 									<SelectTrigger
-										aria-label="Provider"
+										aria-label="服务商"
 										className="w-full bg-background"
 									>
 										<SelectValue
 											placeholder={
 												providersLoading
-													? "Loading providers..."
-													: "Choose a provider"
+													? "正在加载服务商..."
+													: "选择服务商"
 											}
 										/>
 									</SelectTrigger>
@@ -832,7 +830,7 @@ function ConnectStep({
 										variant="ghost"
 									>
 										{selectedProvider.docLabel ||
-											`Get a ${selectedProvider.name} API key`}
+											`获取 ${selectedProvider.name} API key`}
 										<ExternalLink className="size-3.5" />
 									</Button>
 								) : null}
@@ -845,12 +843,12 @@ function ConnectStep({
 									variant="fill"
 								>
 									{saving ? <Loader2 className="size-4 animate-spin" /> : null}
-									{saving ? "Connecting..." : "Connect"}
+									{saving ? "正在连接..." : "连接"}
 								</Button>
 							</div>
 							{saveError ? (
 								<p className="text-xs text-destructive" role="alert">
-									Failed to save provider: {saveError}
+									保存服务商失败：{saveError}
 								</p>
 							) : null}
 						</div>
@@ -866,7 +864,7 @@ function ConnectStep({
 					type="button"
 					variant="ghost"
 				>
-					Skip
+					跳过
 				</Button>
 			</div>
 		</OnboardingContent>
@@ -946,7 +944,7 @@ function ImportHistoryStep({
 						className="size-6 animate-spin text-muted-foreground"
 					/>
 					<p className="mt-4 text-md text-muted-foreground">
-						Checking for session history from other tools…
+						正在检查来自其他工具的会话历史…
 					</p>
 					<Button
 						className="mt-8"
@@ -955,7 +953,7 @@ function ImportHistoryStep({
 						type="button"
 						variant="ghost"
 					>
-						Skip
+						跳过
 					</Button>
 				</div>
 			</OnboardingContent>
@@ -971,12 +969,12 @@ function ImportHistoryStep({
 			<div className="flex flex-col items-center py-4 text-center">
 				<Import aria-hidden="true" className="size-10 text-primary" />
 				<h1 className="mt-4 text-3xl font-semibold tracking-tight text-foreground">
-					Bring your history with you
+					把历史记录一起带过来
 				</h1>
 				<p className="mt-3 text-md text-muted-foreground">
 					{imported
-						? "Your sessions are in Cline's history now. You can import more anytime from the Sessions page."
-						: `Cline found ${found.count} session${found.count === 1 ? "" : "s"} from ${toolList} on this machine. Import them to keep your past conversations — and continue them here.`}
+						? "你的会话已导入 Cline 的历史记录。之后可以随时在「会话」页面继续导入。"
+						: `Cline 在这台机器上发现了来自 ${toolList} 的 ${found.count} 个会话。导入它们以保留过往对话——并在这里继续。`}
 				</p>
 				{imported ? (
 					<Button
@@ -987,7 +985,7 @@ function ImportHistoryStep({
 						type="button"
 						variant="fill"
 					>
-						Start building
+						开始构建
 					</Button>
 				) : (
 					<>
@@ -999,7 +997,7 @@ function ImportHistoryStep({
 							type="button"
 							variant="fill"
 						>
-							Choose sessions to import
+							选择要导入的会话
 						</Button>
 						<Button
 							className="mt-3"
@@ -1008,7 +1006,7 @@ function ImportHistoryStep({
 							type="button"
 							variant="ghost"
 						>
-							Skip for now
+							暂时跳过
 						</Button>
 					</>
 				)}
@@ -1057,9 +1055,9 @@ function ClineModelsSummary() {
 		>
 			{freeModels.length > 0 ? (
 				<>
-					<h2 className="text-sm font-semibold text-foreground">Free models</h2>
+					<h2 className="text-sm font-semibold text-foreground">免费模型</h2>
 					<p className="mt-1 text-xs text-muted-foreground">
-						Try with limited usage at no cost.
+						免费试用，用量有限。
 					</p>
 					<ul className="mt-3 flex flex-wrap gap-1.5">
 						{freeModels.map((model) => (
@@ -1077,8 +1075,7 @@ function ClineModelsSummary() {
 				<div className="min-w-0 flex-1">
 					<h2 className="text-sm font-semibold text-foreground">ClinePass</h2>
 					<p className="mt-1 text-xs text-muted-foreground">
-						Generous usage across the best open weights models like DeepSeek,
-						Kimi, and GLM.
+						畅用 DeepSeek、Kimi、GLM 等顶尖开放权重模型。
 					</p>
 				</div>
 				<Button
@@ -1088,7 +1085,7 @@ function ClineModelsSummary() {
 					type="button"
 					variant="surface"
 				>
-					Get ClinePass
+					获取 ClinePass
 					<ExternalLink className="size-3.5" />
 				</Button>
 			</div>
@@ -1108,12 +1105,12 @@ function DoneStep({
 			<div className="flex flex-col items-center py-4 text-center">
 				<CheckCircle2 aria-hidden="true" className="size-10 text-primary" />
 				<h1 className="mt-4 text-3xl font-semibold tracking-tight text-foreground">
-					You&apos;re all set
+					全部就绪
 				</h1>
 				<p className="mt-3 text-md text-muted-foreground">
 					{connection?.kind === "provider"
-						? `${connection.providerName} is connected.`
-						: "Your Cline account is connected."}
+						? `${connection.providerName} 已连接。`
+						: "你的 Cline 账户已连接。"}
 				</p>
 				{connection?.kind === "cline" ? <ClineModelsSummary /> : null}
 				<Button
@@ -1124,7 +1121,7 @@ function DoneStep({
 					type="button"
 					variant="fill"
 				>
-					Start building
+					开始构建
 				</Button>
 			</div>
 		</OnboardingContent>

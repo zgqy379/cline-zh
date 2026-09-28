@@ -127,7 +127,7 @@ export function ConnectorActionButton({
 					type="button"
 					variant="default"
 				>
-					View
+					查看
 				</Button>
 			);
 		}
@@ -143,7 +143,7 @@ export function ConnectorActionButton({
 				variant="destructive"
 			>
 				{busy ? <Loader2 className="size-4 animate-spin" /> : null}
-				Uninstall
+				卸载
 			</Button>
 		);
 	}
@@ -159,7 +159,7 @@ export function ConnectorActionButton({
 				variant="ghost"
 			>
 				<Loader2 className="size-4 animate-spin" />
-				Cancel
+				取消
 			</Button>
 		);
 	}
@@ -175,7 +175,7 @@ export function ConnectorActionButton({
 			variant="outline"
 		>
 			{busy ? <Loader2 className="size-4 animate-spin" /> : null}
-			Install
+			安装
 		</Button>
 	);
 }
@@ -333,7 +333,7 @@ export function ComposioConnectorsView({
 	if (loadError) {
 		return (
 			<p className="select-text text-sm text-destructive" role="alert">
-				Failed to load connectors: {loadError}
+				连接器加载失败：{loadError}
 			</p>
 		);
 	}
@@ -341,7 +341,7 @@ export function ComposioConnectorsView({
 	if (!status) {
 		return (
 			<output
-				aria-label="Loading connectors"
+				aria-label="正在加载连接器"
 				className="flex items-center justify-center py-16"
 			>
 				<Loader2 className="size-6 animate-spin text-muted-foreground" />
@@ -353,7 +353,7 @@ export function ComposioConnectorsView({
 		// The parent hides this tab when the account has no beta access.
 		return (
 			<p className="text-sm text-muted-foreground">
-				Connectors aren&apos;t available.
+				连接器尚不可用。
 			</p>
 		);
 	}
@@ -366,7 +366,7 @@ export function ComposioConnectorsView({
 			variant="outline"
 		>
 			<Store className="size-4" />
-			Browse all connectors in the Marketplace
+			在市场浏览全部连接器
 		</Button>
 	) : null;
 	if (variant === "installed" && entries.length === 0) {
@@ -382,8 +382,8 @@ export function ComposioConnectorsView({
 			{!renderItem ? (
 				<div className="flex flex-wrap items-center justify-between gap-3">
 					<p className="text-sm text-muted-foreground">
-						Connect your accounts to give Cline tools for your favorite apps.
-						Tools will become available in new sessions.
+						连接你的账号，让 Cline 获得你常用应用的工具。
+						工具将在新会话中可用。
 					</p>
 					{searchQuery === undefined ? (
 						<div className="relative">
@@ -391,8 +391,8 @@ export function ComposioConnectorsView({
 							<Input
 								className="h-8 w-64 pl-8"
 								onChange={(event) => setQuery(event.target.value)}
-								aria-label="Search connectors"
-								placeholder="Search connectors"
+								aria-label="搜索连接器"
+								placeholder="搜索连接器"
 								value={query}
 							/>
 						</div>
@@ -402,7 +402,7 @@ export function ComposioConnectorsView({
 
 			{variant === "catalog" && catalogLoading && !catalog ? (
 				<output
-					aria-label="Loading connector catalog"
+					aria-label="正在加载连接器目录"
 					className="flex items-center justify-center py-10"
 				>
 					<Loader2 className="size-5 animate-spin text-muted-foreground" />
@@ -418,7 +418,7 @@ export function ComposioConnectorsView({
 						type="button"
 						variant="outline"
 					>
-						Retry
+						重试
 					</Button>
 				</div>
 			) : (
@@ -471,8 +471,8 @@ export function ComposioConnectorsView({
 						{visibleCatalog.length === 0 ? (
 							<p className="py-4 text-sm text-muted-foreground">
 								{trimmedQuery
-									? `No connectors match "${query.trim()}".`
-									: "No connectors are available for your account yet."}
+									? `没有匹配“${query.trim()}”的连接器。`
+									: "你的账号暂无可用连接器。"}
 							</p>
 						) : null}
 					</div>
@@ -481,8 +481,7 @@ export function ComposioConnectorsView({
 					) : null}
 					{!appendOnScroll && hiddenCount > 0 ? (
 						<p className="text-xs text-muted-foreground">
-							Showing the {CATALOG_PREVIEW_COUNT} most-used connectors — search
-							to find {hiddenCount} more.
+							当前展示最常用的 {CATALOG_PREVIEW_COUNT} 个连接器，搜索还可找到 {hiddenCount} 个。
 						</p>
 					) : null}
 				</>
@@ -638,7 +637,7 @@ function ConnectorDetailDialog({
 							<dl className="grid grid-cols-[auto_1fr] gap-x-6 gap-y-1.5 text-sm">
 								{entry.categories && entry.categories.length > 0 ? (
 									<>
-										<dt className="text-muted-foreground">Category</dt>
+										<dt className="text-muted-foreground">分类</dt>
 										<dd className="flex flex-wrap gap-1">
 											{entry.categories.map((category) => (
 												<Badge
@@ -654,20 +653,20 @@ function ConnectorDetailDialog({
 								) : null}
 								{summary?.connectedAt ? (
 									<>
-										<dt className="text-muted-foreground">Connected</dt>
+										<dt className="text-muted-foreground">已连接</dt>
 										<dd className="text-foreground">
 											{new Date(summary.connectedAt).toLocaleString()}
 										</dd>
 									</>
 								) : null}
-								<dt className="text-muted-foreground">Slug</dt>
+								<dt className="text-muted-foreground">标识</dt>
 								<dd className="font-mono text-xs leading-5 text-foreground">
 									{entry.slug}
 								</dd>
 								{typeof entry.toolsCount === "number" ||
 								(status === "connected" && toolNames.length > 0) ? (
 									<>
-										<dt className="text-muted-foreground">Tools</dt>
+										<dt className="text-muted-foreground">工具</dt>
 										<dd className="text-foreground">
 											{status === "connected" && toolNames.length > 0 ? (
 												<>
@@ -676,7 +675,7 @@ function ConnectorDetailDialog({
 														? `/${entry.toolsCount}`
 														: null}{" "}
 													<span className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-														available in new sessions
+														在新会话中可用
 													</span>
 												</>
 											) : (
@@ -703,7 +702,7 @@ function ConnectorDetailDialog({
 							{status === "pending" ? (
 								<p className="inline-flex items-center gap-2 text-sm text-muted-foreground">
 									<Loader2 className="size-4 animate-spin" />
-									Finish authorizing {entry.name} in your browser…
+									请在浏览器中完成 {entry.name} 的授权…
 								</p>
 							) : null}
 

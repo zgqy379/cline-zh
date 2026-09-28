@@ -48,18 +48,18 @@ type TypeMeta = {
 
 const TYPE_META: Record<MarketplacePrimitiveType, TypeMeta> = {
 	skill: {
-		label: "Skill",
-		plural: "Skills",
+		label: "技能",
+		plural: "技能",
 		icon: Zap,
 	},
 	mcp: {
-		label: "MCP Server",
-		plural: "MCP",
+		label: "MCP 服务器",
+		plural: "MCP 服务器",
 		icon: Server,
 	},
 	plugin: {
-		label: "Plugin",
-		plural: "Plugins",
+		label: "插件",
+		plural: "插件",
 		icon: Puzzle,
 	},
 };
@@ -272,10 +272,10 @@ function actionLabelFor(
 	installed: boolean,
 	ready: boolean,
 ): string {
-	if (!ready) return "Checking...";
-	if (state?.status === "installing") return "Installing...";
-	if (state?.status === "uninstalling") return "Uninstalling...";
-	return installed ? "Uninstall" : "Install";
+	if (!ready) return "检查中...";
+	if (state?.status === "installing") return "安装中...";
+	if (state?.status === "uninstalling") return "卸载中...";
+	return installed ? "卸载" : "安装";
 }
 
 function isBusy(state: EntryActionState | undefined): boolean {
@@ -365,7 +365,7 @@ function DetailPane({
 							{entry.verified ? (
 								<Badge className="border border-sky-500/20 bg-sky-500/10 text-sky-700 dark:text-sky-300">
 									<BadgeCheck />
-									Verified
+									已认证
 								</Badge>
 							) : null}
 							<Badge variant="outline" className="text-muted-foreground">
@@ -399,7 +399,7 @@ function DetailPane({
 									variant="outline"
 								>
 									<Globe className="size-4" />
-									Learn more
+									了解更多
 									<ArrowUpRight className="size-3.5 text-muted-foreground" />
 								</Button>
 							) : null}
@@ -418,7 +418,7 @@ function DetailPane({
 						) : null}
 					</div>
 					<Button
-						aria-label="Close details"
+						aria-label="关闭详情"
 						className="shrink-0 text-muted-foreground"
 						onClick={onClose}
 						size="icon"
@@ -433,7 +433,7 @@ function DetailPane({
 					{entry.author ? (
 						<MetaCell
 							icon={User}
-							label="Author"
+							label="作者"
 							onOpen={
 								entry.author.url
 									? () => void openExternalUrl(entry.author?.url as string)
@@ -442,11 +442,11 @@ function DetailPane({
 							value={entry.author.name}
 						/>
 					) : null}
-					<MetaCell icon={meta.icon} label="Type" value={meta.plural} />
+					<MetaCell icon={meta.icon} label="类型" value={meta.plural} />
 				</div>
 
 				<section className="grid gap-2">
-					<h2 className="text-sm font-semibold text-foreground">About</h2>
+					<h2 className="text-sm font-semibold text-foreground">简介</h2>
 					<p className="text-sm leading-6 text-muted-foreground">
 						{entry.description}
 					</p>
@@ -456,7 +456,7 @@ function DetailPane({
 								<button
 									key={tag}
 									onClick={() => onSelectTag(tag)}
-									title={`Filter by ${directory.tagLabels.get(tag) ?? tag}`}
+									title={`按${directory.tagLabels.get(tag) ?? tag}筛选`}
 									type="button"
 								>
 									<Badge
@@ -474,7 +474,7 @@ function DetailPane({
 				{requiredEnv.length > 0 || optionalEnv.length > 0 ? (
 					<section className="grid gap-2">
 						<h2 className="text-sm font-semibold text-foreground">
-							Environment setup
+							环境变量配置
 						</h2>
 						<div className="grid gap-2">
 							{[...requiredEnv, ...optionalEnv].map((env) => (
@@ -487,7 +487,7 @@ function DetailPane({
 											{env.name}
 										</code>
 										<Badge variant="outline">
-											{env.required === false ? "Optional" : "Required"}
+											{env.required === false ? "可选" : "必需"}
 										</Badge>
 									</div>
 									{env.description ? (
@@ -501,7 +501,7 @@ function DetailPane({
 											onClick={() => void openExternalUrl(env.url as string)}
 											type="button"
 										>
-											Get value
+											获取值
 											<ArrowUpRight className="size-3" />
 										</button>
 									) : null}
@@ -658,10 +658,10 @@ export function MarketplaceExplorerView() {
 					<div className="relative">
 						<Search className="pointer-events-none absolute left-2.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
 						<Input
-							aria-label="Search marketplace"
+							aria-label="搜索市场"
 							className="h-9 pl-8"
 							onChange={(event) => setQuery(event.target.value)}
-							placeholder="Search marketplace"
+							placeholder="搜索市场"
 							value={query}
 						/>
 					</div>
@@ -673,7 +673,7 @@ export function MarketplaceExplorerView() {
 							type="button"
 							variant={typeFilter === null ? "default" : "outline"}
 						>
-							All
+							全部
 						</Button>
 						{MATURITY_ORDER.map((type) => (
 							<Button
@@ -706,7 +706,7 @@ export function MarketplaceExplorerView() {
 								type="button"
 								variant={typeFilter === "connector" ? "default" : "outline"}
 							>
-								Connectors
+								连接器
 								<span className="text-[10px] opacity-70">
 									{connectorCount ?? "…"}
 								</span>
@@ -751,7 +751,7 @@ export function MarketplaceExplorerView() {
 									onClick={() => setTagsExpanded((current) => !current)}
 									type="button"
 								>
-									{tagsExpanded ? "Show less" : `+${hiddenTagCount} more`}
+									{tagsExpanded ? "收起" : `+${hiddenTagCount} 更多`}
 								</button>
 							) : null}
 						</div>
@@ -762,7 +762,7 @@ export function MarketplaceExplorerView() {
 						{typeFilter !== "connector" && directory.loading ? (
 							<p className="flex items-center justify-center p-6 text-sm text-muted-foreground">
 								<Spinner className="mr-2" />
-								Loading marketplace...
+								正在加载市场...
 							</p>
 						) : null}
 						{typeFilter !== "connector" && directory.errorMessage ? (
@@ -809,14 +809,14 @@ export function MarketplaceExplorerView() {
 						!directory.loading &&
 						!directory.errorMessage ? (
 							<p className="px-3 py-6 text-center text-sm text-muted-foreground">
-								No entries match the current filters.
+								没有符合当前筛选条件的条目。
 							</p>
 						) : null}
 						{showConnectors ? (
-							<section className="grid gap-1" aria-label="Connectors">
+							<section className="grid gap-1" aria-label="连接器">
 								<h2 className="flex items-center gap-1.5 px-2.5 pt-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
 									<Cable className="size-3.5 text-primary" />
-									Connectors
+									连接器
 									<span className="font-normal text-muted-foreground/70">
 										{connectorCount ?? "…"}
 									</span>

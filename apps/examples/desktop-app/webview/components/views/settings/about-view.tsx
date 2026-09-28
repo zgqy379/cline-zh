@@ -61,21 +61,21 @@ function UpdateRow() {
 		checking || status.state === "checking" || status.state === "downloading";
 	const description =
 		status.state === "ready"
-			? `Version ${status.version} is downloaded and will be used the next time Cline starts.`
+			? `版本 ${status.version} 已下载完成，将在下次启动 Cline 时生效。`
 			: status.state === "downloading"
-				? `Downloading version ${status.version ?? ""}…`
+				? `正在下载版本 ${status.version ?? ""}…`
 				: status.state === "error" && status.error
-					? `The last check failed: ${status.error}`
+					? `上次检查失败：${status.error}`
 					: checkResult === "up-to-date"
-						? "You're up to date. Cline also checks on its own shortly after launch and every two hours."
+						? "你已是最新版本。Cline 还会在启动后不久以及每两小时自动检查。"
 						: checkResult === "unavailable"
-							? "Update checks are only available in the desktop app."
-							: "Cline checks for updates shortly after launch and every two hours, and installs them when it restarts.";
+							? "仅桌面端支持检查更新。"
+							: "Cline 会在启动后不久和每两小时检查更新，并在重启时安装。";
 
 	return (
 		<div className="flex items-center justify-between gap-5 border-b py-4 max-[720px]:flex-col max-[720px]:items-stretch">
 			<div className="flex flex-col gap-1">
-				<p className="text-base font-semibold text-foreground">Updates</p>
+				<p className="text-base font-semibold text-foreground">更新</p>
 				<p className="text-sm text-muted-foreground">{description}</p>
 			</div>
 			{status.state === "ready" ? (
@@ -92,7 +92,7 @@ function UpdateRow() {
 					type="button"
 				>
 					{restarting ? <Loader2 className="size-3 animate-spin" /> : null}
-					Restart to update
+					重启以更新
 				</Button>
 			) : (
 				<Button
@@ -114,7 +114,7 @@ function UpdateRow() {
 					) : (
 						<RefreshCw className="size-3" />
 					)}
-					Check for updates
+					检查更新
 				</Button>
 			)}
 		</div>
@@ -136,7 +136,7 @@ function ReleaseNotes({
 	if (!releases) {
 		return (
 			<p className="py-4 text-sm text-muted-foreground">
-				Loading release notes…
+				正在加载版本说明…
 			</p>
 		);
 	}
@@ -151,13 +151,13 @@ function ReleaseNotes({
 						<button
 							className="font-mono text-sm text-foreground hover:underline"
 							onClick={() => void openExternalUrl(releaseUrl(release.version))}
-							title="Open this release on GitHub"
+							title="在 GitHub 上查看此版本"
 							type="button"
 						>
 							v{release.version}
 						</button>
 						{release.version === appVersion ? (
-							<Badge variant="secondary">Installed</Badge>
+							<Badge variant="secondary">已安装</Badge>
 						) : null}
 					</div>
 					<MemoizedMarkdown
@@ -186,7 +186,7 @@ export function AboutContent() {
 			.catch(() => {
 				if (!cancelled) {
 					setChangelogError(
-						"Release notes aren't available in this build. The full changelog is on GitHub.",
+						"此版本暂不提供版本说明。完整更新日志请见 GitHub。",
 					);
 				}
 			});
@@ -207,7 +207,7 @@ export function AboutContent() {
 						) : null}
 						{isBetaVersion(appVersion) ? (
 							<Badge className="uppercase tracking-wide" variant="secondary">
-								Beta
+								测试版
 							</Badge>
 						) : null}
 					</span>
@@ -220,10 +220,10 @@ export function AboutContent() {
 					<div className="flex items-center justify-between gap-5 border-b py-4 max-[720px]:flex-col max-[720px]:items-stretch">
 						<div className="flex flex-col gap-1">
 							<p className="text-base font-semibold text-foreground">
-								Highlights
+								近期亮点
 							</p>
 							<p className="text-sm text-muted-foreground">
-								A short tour of the biggest recent additions.
+								快速了解最近最重要的新增内容。
 							</p>
 						</div>
 						<Button
@@ -234,7 +234,7 @@ export function AboutContent() {
 							variant="outline"
 						>
 							<Sparkles className="size-3" />
-							Show what's new
+							查看新功能
 						</Button>
 						<WhatsNewDialog
 							onOpenChange={setWhatsNewOpen}
@@ -246,10 +246,10 @@ export function AboutContent() {
 				<div className="flex items-center justify-between gap-5 border-b py-4 max-[720px]:flex-col max-[720px]:items-stretch">
 					<div className="flex flex-col gap-1">
 						<p className="text-base font-semibold text-foreground">
-							Report an issue
+							反馈问题
 						</p>
 						<p className="text-sm text-muted-foreground">
-							Found a bug or have a request? Open an issue on GitHub.
+							发现缺陷或有建议？欢迎在 GitHub 提交 issue。
 						</p>
 					</div>
 					<Button
@@ -260,13 +260,13 @@ export function AboutContent() {
 						variant="outline"
 					>
 						<Bug className="size-3" />
-						Open GitHub issues
+						打开 GitHub issue
 					</Button>
 				</div>
 				<div className="pt-6">
 					<div className="flex items-center justify-between gap-4">
 						<h2 className="text-lg font-semibold text-foreground">
-							Release notes
+							版本说明
 						</h2>
 						<Button
 							className="text-muted-foreground"
@@ -275,7 +275,7 @@ export function AboutContent() {
 							type="button"
 							variant="ghost"
 						>
-							Full changelog
+							完整更新日志
 							<ExternalLink className="size-3" />
 						</Button>
 					</div>
