@@ -82,43 +82,43 @@ type MarketplacePageDetails = {
 
 const primitivePageDetails = {
 	mcp: {
-		title: "MCP Servers",
+		title: "MCP 服务器",
 		description:
-			"Install Model Context Protocol servers into this CLI environment.",
+			"将 Model Context Protocol 服务器安装到此 CLI 环境中。",
 		emptyInstalled:
-			"No MCP servers installed. Browse the marketplace or add a server manually.",
-		emptyCatalog: "No MCP servers match the current filters.",
+			"尚未安装 MCP 服务器。浏览市场或手动添加服务器。",
+		emptyCatalog: "没有符合当前筛选条件的 MCP 服务器。",
 		icon: Server,
 	},
 	skill: {
-		title: "Skills",
-		description: "Install skills globally for Cline.",
-		emptyInstalled: "No skills installed. Browse the marketplace to add one.",
-		emptyCatalog: "No skills match the current filters.",
+		title: "技能",
+		description: "为 Cline 全局安装技能。",
+		emptyInstalled: "尚未安装技能。浏览市场以添加。",
+		emptyCatalog: "没有符合当前筛选条件的技能。",
 		icon: Zap,
 	},
 	plugin: {
-		title: "Plugins",
-		description: "Install plugins into this CLI environment.",
-		emptyInstalled: "No plugins installed. Browse the marketplace to add one.",
-		emptyCatalog: "No plugins match the current filters.",
+		title: "插件",
+		description: "将插件安装到此 CLI 环境中。",
+		emptyInstalled: "尚未安装插件。浏览市场以添加。",
+		emptyCatalog: "没有符合当前筛选条件的插件。",
 		icon: Puzzle,
 	},
 } satisfies Record<MarketplacePrimitiveType, MarketplacePageDetails>;
 
 const directoryPageDetails: MarketplacePageDetails = {
-	title: "Marketplace",
+	title: "市场",
 	description:
-		"A curated set of plugins, MCP servers, and skills from the Cline community.",
-	emptyInstalled: "Nothing installed yet.",
-	emptyCatalog: "No marketplace entries match the current filters.",
+		"来自 Cline 社区精选的插件、MCP 服务器与技能合集。",
+	emptyInstalled: "尚未安装任何内容。",
+	emptyCatalog: "没有符合当前筛选条件的市场条目。",
 	icon: Store,
 };
 
 const TYPE_FILTER_LABELS: Record<MarketplacePrimitiveType, string> = {
-	plugin: "Plugins",
-	mcp: "MCP servers",
-	skill: "Skills",
+	plugin: "插件",
+	mcp: "MCP 服务器",
+	skill: "技能",
 };
 
 const TYPE_FILTER_ORDER: MarketplacePrimitiveType[] = [
@@ -220,10 +220,10 @@ function EntrySetupGuidance({ entry }: { entry: MarketplaceEntry }) {
 			{requiredEnv.length > 0 || optionalEnv.length > 0 ? (
 				<div className="rounded-lg border border-amber-500/30 bg-amber-500/10 p-3">
 					<p className="text-sm font-medium text-amber-800 dark:text-amber-200">
-						Environment setup needed
+						需要配置环境变量
 					</p>
 					<p className="mt-1 text-xs leading-5 text-amber-800/80 dark:text-amber-100/80">
-						Add these values to your Cline/plugin environment after install.
+						安装后请将这些值添加到 Cline/插件环境变量中。
 					</p>
 					<div className="mt-3 grid gap-2">
 						{[...requiredEnv, ...optionalEnv].map((env) => (
@@ -236,7 +236,7 @@ function EntrySetupGuidance({ entry }: { entry: MarketplaceEntry }) {
 										<span style={CODE_FONT_STYLE}>{env.name}</span>
 									</code>
 									<Badge variant="outline">
-										{env.required === false ? "Optional" : "Required"}
+										{env.required === false ? "可选" : "必需"}
 									</Badge>
 								</div>
 								{env.description ? (
@@ -260,7 +260,7 @@ function EntrySetupGuidance({ entry }: { entry: MarketplaceEntry }) {
 										rel="noreferrer"
 										target="_blank"
 									>
-										Get value
+										获取值
 										<ExternalLink className="size-3" />
 									</a>
 								) : null}
@@ -333,8 +333,8 @@ export function MarketplaceEntrySetupDetails({
 						>
 							<ChevronRight className="h-3 w-3 transition-transform group-data-[state=open]:rotate-90" />
 							{entriesWithGuidance.length > 1
-								? `Marketplace setup instructions (${entry.name})`
-								: "Marketplace setup instructions"}
+								? `市场安装说明（${entry.name}）`
+								: "市场安装说明"}
 						</button>
 					</CollapsibleTrigger>
 					<CollapsibleContent className="grid gap-3">
@@ -392,14 +392,14 @@ function MarketplaceEntryCard({
 		onInstall(entry);
 	};
 	const actionLabel = !installedStatusReady
-		? "Checking..."
+		? "检查中..."
 		: actionState?.status === "installing"
-			? "Installing..."
+			? "安装中..."
 			: actionState?.status === "uninstalling"
-				? "Uninstalling..."
+				? "卸载中..."
 				: installed
-					? "Uninstall"
-					: "Install";
+					? "卸载"
+					: "安装";
 	const statusMessage = inlineMessage ? (
 		<output
 			className={cn(
@@ -413,7 +413,7 @@ function MarketplaceEntryCard({
 		</output>
 	) : setupNeeded ? (
 		<span className="text-xs text-amber-700 dark:text-amber-300">
-			Requires setup after install
+			安装后需要配置
 		</span>
 	) : null;
 	const actionButton = (
@@ -446,7 +446,7 @@ function MarketplaceEntryCard({
 					{showFeatured && entry.featured ? (
 						<Badge className="border border-violet-500/20 bg-violet-500/10 text-violet-700 dark:text-violet-300">
 							<Star className="fill-current" />
-							Featured
+							精选
 						</Badge>
 					) : null}
 					{sourceLabel ? (
@@ -496,7 +496,7 @@ function MarketplaceEntryCard({
 		// biome-ignore lint/a11y/useSemanticElements: The card contains a nested action button, so the wrapper cannot be a native button.
 		<div
 			aria-expanded={expanded}
-			aria-label={`${expanded ? "Collapse" : "Expand"} ${entry.name}`}
+			aria-label={`${expanded ? "收起" : "展开"} ${entry.name}`}
 			className="relative grid min-w-0 cursor-pointer gap-2 rounded-lg border bg-card p-4 text-left transition-colors hover:bg-surface-hover-lighter focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none"
 			onClick={(event) => {
 				if (
@@ -969,7 +969,7 @@ export function MarketplaceView({
 					type="button"
 					variant={typeFilter === null ? "default" : "outline"}
 				>
-					All
+					全部
 					<span className="rounded bg-background/30 px-1.5 py-0.5 text-xs">
 						{queryFilteredEntries.length}
 					</span>
@@ -1019,7 +1019,7 @@ export function MarketplaceView({
 						variant="ghost"
 					>
 						<X className="size-3.5" />
-						Clear
+						清除
 					</Button>
 				) : null}
 			</div>
@@ -1135,7 +1135,7 @@ export function MarketplaceView({
 								variant="outline"
 							>
 								<Blocks className="size-4" />
-								Installed
+								已安装
 							</Button>
 						) : undefined
 					}
@@ -1145,14 +1145,14 @@ export function MarketplaceView({
 			{!catalog && !errorMessage ? (
 				<div className="flex min-h-80 items-center justify-center rounded-lg border bg-card text-sm text-muted-foreground">
 					<Spinner className="mr-2" />
-					Loading marketplace...
+					正在加载市场...
 				</div>
 			) : null}
 
 			{catalog && !installedStatusReady ? (
 				<div className="flex min-h-80 items-center justify-center rounded-lg border bg-card text-sm text-muted-foreground">
 					<Spinner className="mr-2" />
-					Checking installed status...
+					正在检查安装状态...
 				</div>
 			) : null}
 
@@ -1169,10 +1169,10 @@ export function MarketplaceView({
 							<div className="relative block flex-1">
 								<Search className="pointer-events-none absolute left-2.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
 								<Input
-									aria-label={`Search ${pageDetails.title}`}
+									aria-label={`搜索${pageDetails.title}`}
 									className="h-10 pl-8"
 									onChange={(event) => setQuery(event.target.value)}
-									placeholder={`Search ${pageDetails.title.toLowerCase()}`}
+									placeholder={`搜索${pageDetails.title}`}
 									value={query}
 								/>
 							</div>
@@ -1193,9 +1193,9 @@ export function MarketplaceView({
 							onUninstall={uninstallEntry}
 							showFeaturedBadges={false}
 							showEntryTags={false}
-							sourceLabel="Marketplace"
+							sourceLabel="市场"
 							tagLabels={tagLabels}
-							title="Installed"
+							title="已安装"
 						/>
 					) : null}
 
@@ -1237,7 +1237,7 @@ export function MarketplaceView({
 							onToggleExpanded={toggleExpanded}
 							onUninstall={uninstallEntry}
 							tagLabels={tagLabels}
-							title={variant === "directory" ? undefined : "Browse"}
+							title={variant === "directory" ? undefined : "浏览"}
 						/>
 					) : null}
 				</div>

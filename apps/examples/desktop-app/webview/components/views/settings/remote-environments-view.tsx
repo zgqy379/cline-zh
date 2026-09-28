@@ -62,13 +62,13 @@ function errorMessage(error: unknown): string {
 
 function profileIdOrThrow(profile: RemoteEnvironmentProfile): string {
 	if (!profile.id) {
-		throw new Error("The desktop backend did not return an SSH profile ID.");
+		throw new Error("桌面端后端未返回 SSH 配置 ID。");
 	}
 	return profile.id;
 }
 
 function statusLabel(value: string): string {
-	if (value === "untested") return "Not tested";
+	if (value === "untested") return "未测试";
 	return value
 		.split("-")
 		.map((part) => `${part.slice(0, 1).toUpperCase()}${part.slice(1)}`)
@@ -376,7 +376,7 @@ export function RemoteEnvironmentsContent() {
 			<PageHeader
 				actions={
 					<Button
-						aria-label="Refresh remote environments"
+						aria-label="刷新远程环境"
 						disabled={isLoading || isBusy}
 						onClick={() => void loadProfiles()}
 						variant="ghost"
@@ -385,14 +385,14 @@ export function RemoteEnvironmentsContent() {
 						<RefreshCw className={cn(isLoading && "animate-spin")} />
 					</Button>
 				}
-				title="Remote Environments"
-				description="Manage your remote SSH hosts and their configurations."
+				title="远程环境"
+				description="管理你的远程 SSH 主机及其配置。"
 			/>
 
 			{error ? (
 				<Alert className="mb-5" variant="destructive">
 					<CircleAlert />
-					<AlertTitle>Remote environment error</AlertTitle>
+					<AlertTitle>远程环境错误</AlertTitle>
 					<AlertDescription>{error}</AlertDescription>
 				</Alert>
 			) : null}
@@ -401,7 +401,7 @@ export function RemoteEnvironmentsContent() {
 				<Card className="h-112 gap-4 overflow-hidden py-5">
 					<CardHeader className="flex shrink-0 flex-row items-center justify-between gap-3 px-5">
 						<CardTitle className="flex items-center gap-2">
-							SSH Hosts
+							SSH 主机
 							<Badge variant="secondary">{profiles.length}</Badge>
 						</CardTitle>
 						<Button
@@ -411,19 +411,18 @@ export function RemoteEnvironmentsContent() {
 							size="xs"
 						>
 							<Plus />
-							New Host
+							新建主机
 						</Button>
 					</CardHeader>
 					<CardContent className="min-h-0 flex-1 space-y-2 overflow-y-auto px-3">
 						{isLoading ? (
 							<div className="flex items-center justify-center gap-2 py-10 text-sm text-muted-foreground">
 								<Loader2 className="size-4 animate-spin" />
-								Loading SSH hosts…
+								正在加载 SSH 主机…
 							</div>
 						) : profiles.length === 0 ? (
 							<PageEmptyState>
-								No SSH hosts yet. Add the address for your first remote
-								environment.
+								还没有 SSH 主机。添加你的第一个远程环境地址。
 							</PageEmptyState>
 						) : (
 							profiles.map((profile) => {
@@ -459,7 +458,7 @@ export function RemoteEnvironmentsContent() {
 													className="border-emerald-500/30 bg-emerald-500/10 text-emerald-700 dark:text-emerald-300"
 													variant="outline"
 												>
-													Active
+													使用中
 												</Badge>
 											) : runtime.connection === "connecting" ? (
 												<Loader2 className="size-4 animate-spin text-muted-foreground" />
@@ -476,7 +475,7 @@ export function RemoteEnvironmentsContent() {
 					<CardHeader className="px-5">
 						<div className="flex items-center justify-between gap-3">
 							<CardTitle>
-								{selectedProfile?.name ?? "Adding New Host..."}
+								{selectedProfile?.name ?? "正在添加新主机…"}
 							</CardTitle>
 							{draft.id ? (
 								<Button
@@ -491,36 +490,36 @@ export function RemoteEnvironmentsContent() {
 						</div>
 						{hasSavedDestination ? (
 							<CardDescription>
-								Create a new host to change the SSH host, user, or port.
+								如需更改 SSH 主机、用户或端口，请新建主机。
 							</CardDescription>
 						) : null}
 					</CardHeader>
 					<CardContent className="space-y-5 px-5">
 						<div className="grid grid-cols-2 gap-4 max-[620px]:grid-cols-1">
 							<div className="space-y-2">
-								<Label htmlFor="remote-name">Name</Label>
+								<Label htmlFor="remote-name">名称</Label>
 								<Input
 									disabled={isBusy}
 									id="remote-name"
 									onChange={(event) => updateDraft("name", event.target.value)}
-									placeholder="Build server"
+									placeholder="构建服务器"
 									value={draft.name}
 								/>
 							</div>
 							<div className="space-y-2">
-								<Label htmlFor="remote-host">SSH host</Label>
+								<Label htmlFor="remote-host">SSH 主机</Label>
 								<Input
 									autoCapitalize="none"
 									disabled={isBusy || hasSavedDestination}
 									id="remote-host"
 									onChange={(event) => updateDraft("host", event.target.value)}
-									placeholder="dev.example.com or ssh-config-alias"
+									placeholder="dev.example.com 或 ssh-config 别名"
 									spellCheck={false}
 									value={draft.host}
 								/>
 							</div>
 							<div className="space-y-2">
-								<Label htmlFor="remote-user">User (optional)</Label>
+								<Label htmlFor="remote-user">用户（可选）</Label>
 								<Input
 									autoCapitalize="none"
 									disabled={isBusy || hasSavedDestination}
@@ -532,7 +531,7 @@ export function RemoteEnvironmentsContent() {
 								/>
 							</div>
 							<div className="space-y-2">
-								<Label htmlFor="remote-port">Port</Label>
+								<Label htmlFor="remote-port">端口</Label>
 								<Input
 									disabled={isBusy || hasSavedDestination}
 									id="remote-port"
@@ -546,7 +545,7 @@ export function RemoteEnvironmentsContent() {
 												: Number(event.target.value),
 										)
 									}
-									placeholder="22 (from SSH config by default)"
+									placeholder="22（默认取自 SSH 配置）"
 									type="number"
 									value={
 										draft.port === undefined || Number.isNaN(draft.port)
@@ -558,7 +557,7 @@ export function RemoteEnvironmentsContent() {
 						</div>
 
 						<div className="space-y-2">
-							<Label htmlFor="remote-identity">Identity file (optional)</Label>
+							<Label htmlFor="remote-identity">身份文件（可选）</Label>
 							<Input
 								disabled={isBusy}
 								id="remote-identity"
@@ -570,8 +569,7 @@ export function RemoteEnvironmentsContent() {
 								value={draft.identityFile ?? ""}
 							/>
 							<p className="text-xs text-muted-foreground">
-								Password sign-in is not supported. The host key must already be
-								trusted in your SSH known_hosts file.
+								不支持密码登录。主机密钥必须已被你的 SSH known_hosts 文件信任。
 							</p>
 						</div>
 
@@ -582,7 +580,7 @@ export function RemoteEnvironmentsContent() {
 						<div className="rounded-lg border bg-muted/30 p-4">
 							<div className="mb-3 flex items-center justify-between gap-3">
 								<div className="flex items-center gap-2">
-									<p className="text-sm font-medium">Environment status</p>
+									<p className="text-sm font-medium">环境状态</p>
 								</div>
 								<Button
 									disabled={isBusy}
@@ -596,31 +594,31 @@ export function RemoteEnvironmentsContent() {
 									) : (
 										<Plug />
 									)}
-									Test Connection
+									测试连接
 								</Button>
 							</div>
 							<div className="grid grid-cols-2 gap-x-5 gap-y-3 max-[620px]:grid-cols-1">
 								<StatusBadge
-									label="Environment"
+									label="环境"
 									value={draft.id === activeProfileId ? "active" : "inactive"}
 								/>
 								<StatusBadge
-									label="Connection"
+									label="连接"
 									value={selectedRuntime.connection}
 								/>
 								<StatusBadge
-									label="Connection test"
+									label="连接测试"
 									value={selectedRuntime.test}
 								/>
 								<StatusBadge
-									label="Cline setup"
+									label="Cline 配置"
 									value={selectedRuntime.bootstrap}
 								/>
 							</div>
 
 							{selectedRuntime.remotePlatform || selectedRuntime.remoteArch ? (
 								<p className="mt-3 text-xs text-muted-foreground">
-									Remote:{" "}
+									远程：{" "}
 									{[selectedRuntime.remotePlatform, selectedRuntime.remoteArch]
 										.filter(Boolean)
 										.join(" · ")}
@@ -651,7 +649,7 @@ export function RemoteEnvironmentsContent() {
 									{busyAction?.action === "save" ? (
 										<Loader2 className="animate-spin" />
 									) : null}
-									{hasSavedDestination ? "Save" : "Add"}
+									{hasSavedDestination ? "保存" : "添加"}
 								</Button>
 							</div>
 						</div>
@@ -667,15 +665,15 @@ export function RemoteEnvironmentsContent() {
 			>
 				<AlertDialogContent>
 					<AlertDialogHeader>
-						<AlertDialogTitle>Delete SSH host?</AlertDialogTitle>
+						<AlertDialogTitle>删除 SSH 主机？</AlertDialogTitle>
 						<AlertDialogDescription>
 							{deleteTarget
-								? `Delete “${deleteTarget.name}” from remote environments? Projects and Cline session data remain on the remote host.`
-								: "Delete this SSH host from remote environments?"}
+								? `将“${deleteTarget.name}”从远程环境中删除？项目和 Cline 会话数据仍保留在远程主机上。`
+								: "要从远程环境中删除此 SSH 主机吗？"}
 						</AlertDialogDescription>
 					</AlertDialogHeader>
 					<AlertDialogFooter>
-						<AlertDialogCancel disabled={isBusy}>Cancel</AlertDialogCancel>
+						<AlertDialogCancel disabled={isBusy}>取消</AlertDialogCancel>
 						<AlertDialogAction
 							className={buttonVariants({ variant: "destructive" })}
 							disabled={isBusy || !deleteTarget}
@@ -683,7 +681,7 @@ export function RemoteEnvironmentsContent() {
 								if (deleteTarget) void deleteProfile(deleteTarget);
 							}}
 						>
-							Delete
+							删除
 						</AlertDialogAction>
 					</AlertDialogFooter>
 				</AlertDialogContent>

@@ -187,12 +187,12 @@ export function AddProviderContent({
 		<div className="flex flex-col gap-6">
 			<div className="rounded-lg border border-border p-5">
 				<h3 className="mb-4 text-sm font-semibold text-foreground">
-					OpenAI-Compatible Provider
+					OpenAI 兼容服务商
 				</h3>
 				<div className="grid grid-cols-1 gap-4 md:grid-cols-2">
 					<div>
 						<Label className="mb-2 block text-xs font-medium text-muted-foreground">
-							Provider ID
+							服务商 ID
 						</Label>
 						<input
 							type="text"
@@ -204,17 +204,17 @@ export function AddProviderContent({
 							className="w-full rounded-lg border border-border bg-input px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground/50 outline-none focus:ring-1 focus:ring-ring"
 						/>
 						<p className="mt-1.5 text-xs text-muted-foreground">
-							Lowercase ID used in provider registry.
+							服务商注册表中使用的小写 ID。
 						</p>
 						{duplicateProviderId ? (
 							<p className="mt-1 text-xs text-destructive">
-								This provider ID already exists.
+								该服务商 ID 已存在。
 							</p>
 						) : null}
 					</div>
 					<div>
 						<Label className="mb-2 block text-xs font-medium text-muted-foreground">
-							Provider Name
+							服务商名称
 						</Label>
 						<input
 							type="text"
@@ -222,7 +222,7 @@ export function AddProviderContent({
 							onChange={(e) =>
 								setForm((prev) => ({ ...prev, name: e.target.value }))
 							}
-							placeholder="My Provider"
+							placeholder="我的服务商"
 							className="w-full rounded-lg border border-border bg-input px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground/50 outline-none focus:ring-1 focus:ring-ring"
 						/>
 					</div>
@@ -231,7 +231,7 @@ export function AddProviderContent({
 
 			<div className="rounded-lg border border-border p-5">
 				<Label className="mb-2 block text-xs font-medium text-muted-foreground">
-					Base URL
+					基础 URL
 				</Label>
 				<input
 					type="url"
@@ -246,7 +246,7 @@ export function AddProviderContent({
 
 			<div className="rounded-lg border border-border p-5">
 				<Label className="mb-2 block text-xs font-medium text-muted-foreground">
-					Model Source URL (Optional)
+					模型来源 URL（可选）
 				</Label>
 				<input
 					type="url"
@@ -261,25 +261,24 @@ export function AddProviderContent({
 					className="w-full rounded-lg border border-border bg-input px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground/50 outline-none focus:ring-1 focus:ring-ring"
 				/>
 				<p className="mt-1.5 text-xs text-muted-foreground">
-					Supported JSON: OpenAI `/models` shape with a `data` array, or a
-					direct model array.
+					支持的 JSON 格式：OpenAI `/models` 结构（含 `data` 数组），或直接的模型数组。
 				</p>
 			</div>
 
 			<div className="rounded-lg border border-border p-5">
 				<Label className="mb-2 block text-xs font-medium text-muted-foreground">
-					Models
+					模型列表
 				</Label>
 				<ModelIdInput models={form.models} onChange={updateModels} />
 				<p className="mt-1.5 text-xs text-muted-foreground">
-					Add at least one model or set a Model Source URL.
+					至少添加一个模型，或设置模型来源 URL。
 				</p>
 			</div>
 
 			{form.models.length > 1 ? (
 				<div className="rounded-lg border border-border p-5">
 					<Label className="mb-2 block text-xs font-medium text-muted-foreground">
-						Default Model
+						默认模型
 					</Label>
 					<select
 						value={form.defaultModel}
@@ -299,7 +298,7 @@ export function AddProviderContent({
 
 			<div className="rounded-lg border border-border p-5">
 				<Label className="mb-2 block text-xs font-medium text-muted-foreground">
-					API Key (Optional)
+					API 密钥（可选）
 				</Label>
 				<div className="relative">
 					<input
@@ -316,7 +315,7 @@ export function AddProviderContent({
 							onClick={() => setShowApiKey(!showApiKey)}
 							variant="ghost"
 							className="rounded-md p-1 transition-colors"
-							aria-label={showApiKey ? "Hide API key" : "Show API key"}
+							aria-label={showApiKey ? "隐藏 API 密钥" : "显示 API 密钥"}
 						>
 							{showApiKey ? (
 								<EyeOff className="h-4 w-4" />
@@ -328,7 +327,7 @@ export function AddProviderContent({
 							onClick={() => navigator.clipboard.writeText(form.apiKey)}
 							variant="ghost"
 							className="rounded-md p-1 transition-colors"
-							aria-label="Copy API key"
+							aria-label="复制 API 密钥"
 						>
 							<Copy className="h-4 w-4" />
 						</Button>
@@ -338,7 +337,7 @@ export function AddProviderContent({
 
 			<div className="rounded-lg border border-border p-5">
 				<Label className="mb-3 block text-xs font-medium text-muted-foreground">
-					Capabilities
+					能力
 				</Label>
 				<div className="flex flex-wrap gap-2">
 					{CAPABILITY_OPTIONS.map((cap) => (
@@ -364,7 +363,7 @@ export function AddProviderContent({
 					className="flex w-full items-center justify-between px-5 py-4 text-sm font-medium transition-colors text-foreground/40"
 					variant="ghost"
 				>
-					Advanced Settings
+					高级设置
 					<ChevronDown
 						className={cn(
 							"h-4 w-4 text-muted-foreground transition-transform",
@@ -377,7 +376,7 @@ export function AddProviderContent({
 					<div className="border-t border-border px-5 py-5 flex flex-col gap-5">
 						<div>
 							<Label className="mb-2 block text-xs font-medium text-muted-foreground">
-								Timeout (ms)
+								超时时间（毫秒）
 							</Label>
 							<input
 								type="number"
@@ -395,7 +394,7 @@ export function AddProviderContent({
 
 						<div>
 							<Label className="mb-2 block text-xs font-medium text-muted-foreground">
-								Custom Headers
+								自定义请求头
 							</Label>
 							<div className="flex flex-col gap-2">
 								{Object.entries(form.headers).map(([key, value], idx) => (
@@ -406,20 +405,20 @@ export function AddProviderContent({
 											onChange={(e) =>
 												updateHeaderKey(key, e.target.value, idx)
 											}
-											placeholder="Header name"
+											placeholder="请求头名称"
 											className="flex-1 rounded-lg border border-border bg-input px-3 py-2 font-mono text-xs text-foreground placeholder:text-muted-foreground/50 outline-none focus:ring-1 focus:ring-ring"
 										/>
 										<input
 											type="text"
 											value={value}
 											onChange={(e) => updateHeaderValue(key, e.target.value)}
-											placeholder="Value"
+											placeholder="值"
 											className="flex-1 rounded-lg border border-border bg-input px-3 py-2 font-mono text-xs text-foreground placeholder:text-muted-foreground/50 outline-none focus:ring-1 focus:ring-ring"
 										/>
 										<Button
 											onClick={() => removeHeader(key)}
 											className="rounded-md p-2 text-muted-foreground hover:text-destructive transition-colors"
-											aria-label="Remove header"
+											aria-label="删除请求头"
 										>
 											<Trash2 className="h-4 w-4" />
 										</Button>
@@ -430,7 +429,7 @@ export function AddProviderContent({
 									className="flex items-center gap-1.5 rounded-md px-2 py-1.5 text-xs font-medium hover:text-foreground transition-colors w-fit"
 								>
 									<Plus className="h-3 w-3" />
-									Add Header
+									添加请求头
 								</Button>
 							</div>
 						</div>
@@ -445,7 +444,7 @@ export function AddProviderContent({
 					onClick={onBack}
 					className="rounded-lg border border-border px-4 py-2 text-sm font-medium hover:bg-surface-hover hover:text-foreground"
 				>
-					Cancel
+					取消
 				</Button>
 				<Button
 					onClick={() => void handleSave()}
@@ -457,7 +456,7 @@ export function AddProviderContent({
 							: "bg-muted cursor-not-allowed text-foreground",
 					)}
 				>
-					{saving ? "Saving..." : "Add Provider"}
+					{saving ? "保存中…" : "添加服务商"}
 				</Button>
 			</div>
 		</div>
@@ -470,17 +469,17 @@ export function AddProviderContent({
 	return (
 		<PageFrame contentClassName="max-w-4xl">
 			<PageHeader
-				description="Add an OpenAI-compatible provider and choose its available models."
-				title="Add Provider"
+				description="添加一个 OpenAI 兼容服务商并选择其可用模型。"
+				title="添加服务商"
 				actions={
 					<Button
 						onClick={onBack}
 						variant="secondary"
 						className="rounded-md p-1.5"
-						aria-label="Back to providers"
+						aria-label="返回服务商列表"
 					>
 						<ArrowLeft className="size-4" />
-						Providers
+						服务商
 					</Button>
 				}
 			/>
