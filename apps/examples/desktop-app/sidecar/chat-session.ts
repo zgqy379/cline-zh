@@ -215,7 +215,7 @@ export function rewriteDesktopTeamPrompt(
 		(entry) => entry.id === "teams" && entry.defaultEnabled,
 	);
 	if (!teamsAvailable) {
-		throw new Error(`Agent teams are not available in ${mode} mode.`);
+		throw new Error(`智能体团队在 ${mode} 模式下不可用。`);
 	}
 	return formatUserCommandBlock(
 		`spawn a team of agents for the following task: ${task}`,
@@ -1192,7 +1192,7 @@ async function startRebuiltSession(
 	});
 	if (restarted.sessionId !== sessionId) {
 		throw new Error(
-			`Provider switch changed session id from ${sessionId} to ${restarted.sessionId}`,
+			`切换供应商将会话 ID 从 ${sessionId} 改为 ${restarted.sessionId}`,
 		);
 	}
 }
@@ -1668,7 +1668,7 @@ async function handleForkUnlocked(
 				ctx.liveSessions.get(sourceSessionId)?.messages);
 
 	if (!sourceMessages?.length) {
-		throw new Error(`No messages found for session ${sourceSessionId}`);
+		throw new Error(`未找到会话 ${sourceSessionId} 的消息`);
 	}
 
 	const sourceMetadata =

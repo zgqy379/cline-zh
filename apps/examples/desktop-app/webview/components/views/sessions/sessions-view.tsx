@@ -515,7 +515,7 @@ export function SessionsView({ activeSessionId, history }: SessionsViewProps) {
 										>
 											<div className="col-span-2 flex min-w-0 items-center gap-2">
 												<Input
-													aria-label={`Rename ${thread.title}`}
+													aria-label={`重命名 ${thread.title}`}
 													autoFocus
 													className="h-8"
 													disabled={pendingKind === "rename"}

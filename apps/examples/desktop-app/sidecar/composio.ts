@@ -203,7 +203,7 @@ export function parseComposioToolkitSlug(value: unknown): ComposioToolkitSlug {
 		.trim()
 		.toLowerCase();
 	if (!isComposioToolkitSlug(slug)) {
-		throw new Error(`Invalid Composio toolkit slug: ${String(value)}`);
+		throw new Error(`无效的 Composio 工具包标识：${String(value)}`);
 	}
 	return slug;
 }
@@ -912,7 +912,7 @@ export async function connectComposioToolkit(
 				const reason = formatConnectorsError(error);
 				scope.lastConnectionErrors.set(
 					toolkit,
-					`Connection was not completed: ${reason}`,
+					`连接未完成：${reason}`,
 				);
 				logger?.log?.(`composio connect ${toolkit} failed: ${reason}`);
 				// The attempt is dead from the app's point of view (timeout, wait

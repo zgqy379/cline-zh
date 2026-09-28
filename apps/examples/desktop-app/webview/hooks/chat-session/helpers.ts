@@ -294,7 +294,7 @@ export function resolveCredentialFailureAction(
 		return null;
 	}
 	return normalizeProviderId(providerId) === "cline"
-		? { label: "Sign in to Cline", target: "account" }
+		? { label: "登录 Cline", target: "account" }
 		: { label: "Open API providers", target: "models" };
 }
 

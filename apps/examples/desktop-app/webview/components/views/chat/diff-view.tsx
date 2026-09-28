@@ -128,8 +128,8 @@ function DiffFileSection({
 		} catch {
 			toast({
 				variant: "destructive",
-				title: "Copy failed",
-				description: "The file path could not be copied to the clipboard.",
+				title: "复制失败",
+				description: "无法将文件路径复制到剪贴板。",
 			});
 		}
 	}, [resolvedPath]);
