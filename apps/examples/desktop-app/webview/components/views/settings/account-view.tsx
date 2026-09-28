@@ -46,7 +46,7 @@ function normalizeAccountViewError(error: unknown): Error {
 	const message = error instanceof Error ? error.message : String(error);
 	if (message.includes("unsupported desktop command: cline_account")) {
 		return new Error(
-			"The desktop sidecar is running an older build that does not support account commands. Restart the sidecar or reload the app, then try again.",
+			"桌面端 sidecar 正在运行的版本过旧，尚不支持账户相关命令。请重启 sidecar 或重新加载应用后再试。",
 		);
 	}
 	return error instanceof Error ? error : new Error(message);
@@ -454,6 +454,13 @@ export function AccountView() {
 
 	const tabs = ["overview", "usage", "billing"] as const;
 
+	// 逻辑枚举保持英文 id，界面显示统一走这张映射表。
+	const TAB_LABELS: Record<(typeof tabs)[number], string> = {
+		overview: "概览",
+		usage: "用量",
+		billing: "账单",
+	};
+
 	// -- Shared error / loading UI --
 
 	const renderError = (message: string, onRetry: () => void) => (
@@ -466,7 +473,7 @@ export function AccountView() {
 				className="flex items-center gap-2 rounded-lg border border-border px-3.5 py-2 text-sm font-medium text-muted-foreground hover:bg-surface-hover hover:text-foreground transition-colors"
 			>
 				<RefreshCw className="h-4 w-4" />
-				Retry
+				重试
 			</button>
 		</div>
 	);
@@ -479,11 +486,11 @@ export function AccountView() {
 				</div>
 				<div>
 					<h3 className="text-lg font-semibold text-foreground">
-						Sign in to Cline
+						登录 Cline
 					</h3>
 					<p className="mt-2 text-sm text-muted-foreground">
-						Connect your Cline account to review credits, usage, billing, and
-						organization details.
+						连接你的 Cline 账户，即可查看额度、用量、
+						账单和组织信息。
 					</p>
 				</div>
 				<div className="flex flex-wrap items-center justify-center gap-2">
@@ -498,20 +505,20 @@ export function AccountView() {
 						) : (
 							<LogIn className="h-4 w-4" />
 						)}
-						{accountActionPending === "sign-in" ? "Signing in" : "Sign in"}
+						{accountActionPending === "sign-in" ? "登录中" : "登录"}
 					</button>
 					<button
 						type="button"
 						onClick={() => void openExternalUrl(CREATE_ACCOUNT_URL)}
 						className="flex items-center gap-2 rounded-lg border border-border px-3.5 py-2 text-sm font-medium text-muted-foreground hover:bg-surface-hover hover:text-foreground "
 					>
-						Create account
+						创建账户
 						<ExternalLink className="h-4 w-4" />
 					</button>
 				</div>
 				{accountActionPending === "sign-in" && deviceUserCode ? (
 					<p className="text-sm text-muted-foreground">
-						Confirm this code in your browser:{" "}
+						请在浏览器中确认此代码：
 						<span className="font-mono font-medium text-foreground">
 							{deviceUserCode}
 						</span>
@@ -560,10 +567,10 @@ export function AccountView() {
 				<Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
 			) : input.active ? (
 				<span className="rounded-full bg-primary/20 px-2 py-0.5 text-xs font-medium text-primary">
-					Active
+					当前
 				</span>
 			) : (
-				<span className="text-xs text-muted-foreground">Switch</span>
+				<span className="text-xs text-muted-foreground">切换</span>
 			)}
 		</button>
 	);
@@ -571,7 +578,7 @@ export function AccountView() {
 	return (
 		<PageFrame contentClassName="max-w-3xl">
 			<PageHeader
-				title="Account"
+				title="账户"
 				actions={
 					user ? (
 						<button
@@ -585,7 +592,7 @@ export function AccountView() {
 							) : (
 								<LogOut className="size-4" />
 							)}
-							{accountActionPending === "sign-out" ? "Signing Out" : "Sign Out"}
+							{accountActionPending === "sign-out" ? "退出中" : "退出登录"}
 						</button>
 					) : undefined
 				}
@@ -610,8 +617,8 @@ export function AccountView() {
 									"cursor-not-allowed opacity-45 hover:text-muted-foreground",
 							)}
 						>
-							{tab}
-							{activeTab === tab && (
+						{TAB_LABELS[tab]}
+						{activeTab === tab && (
 								<span className="absolute inset-x-0 -bottom-px h-0.5 bg-foreground" />
 							)}
 						</button>
@@ -643,12 +650,12 @@ export function AccountView() {
 											{user.email}
 										</p>
 										<p className="mt-2 text-xs text-muted-foreground">
-											Member since {formatDate(user.createdAt)}
+											加入于 {formatDate(user.createdAt)}
 										</p>
 									</div>
 									<button
 										type="button"
-										title="Open dashboard"
+										title="打开控制台"
 										onClick={() => void openExternalUrl(DASHBOARD_URL)}
 										className="rounded-md p-1.5 text-muted-foreground hover:bg-surface-hover hover:text-foreground"
 									>
@@ -665,8 +672,8 @@ export function AccountView() {
 											<CreditCard className="h-5 w-5 text-primary" />
 											<h3 className="text-sm font-semibold text-foreground">
 												{activeOrganization
-													? `${activeOrganization.name} Balance`
-													: "Credits Balance"}
+													? `${activeOrganization.name} 余额`
+													: "额度余额"}
 											</h3>
 										</div>
 										<button
@@ -681,7 +688,7 @@ export function AccountView() {
 											className="flex items-center gap-1.5 rounded-md px-2.5 py-1.5 text-xs font-medium text-muted-foreground hover:bg-surface-hover hover:text-foreground transition-colors"
 										>
 											<Plus className="h-3.5 w-3.5" />
-											Credit
+											充值
 										</button>
 									</div>
 									<div className="flex items-baseline gap-2">
@@ -691,8 +698,8 @@ export function AccountView() {
 									</div>
 									{activeOrganization && balance && (
 										<p className="mt-2 text-xs text-muted-foreground">
-											Personal account: {formatCreditBalance(balance.balance)}{" "}
-											credits
+											个人账户：{formatCreditBalance(balance.balance)}{" "}
+											额度
 										</p>
 									)}
 								</div>
@@ -704,7 +711,7 @@ export function AccountView() {
 									<div className="flex items-center gap-3">
 										<Building className="h-5 w-5 text-muted-foreground" />
 										<h3 className="text-sm font-semibold text-foreground">
-											Organizations
+											组织
 										</h3>
 									</div>
 									<button
@@ -715,14 +722,14 @@ export function AccountView() {
 										className="flex items-center gap-1.5 rounded-md px-2.5 py-1.5 text-xs font-medium text-muted-foreground hover:bg-surface-hover hover:text-foreground "
 									>
 										<Plus className="h-3.5 w-3.5" />
-										Create
+										创建
 									</button>
 								</div>
 								<div className="flex flex-col gap-2">
 									{renderAccountRow({
 										key: "personal",
-										name: "Personal",
-										subtitle: user.email ?? "Personal account",
+										name: "个人",
+										subtitle: user.email ?? "个人账户",
 										icon: <User className="h-4 w-4" />,
 										active: !activeOrganization,
 										switching: switchTargetId === "",
@@ -751,22 +758,22 @@ export function AccountView() {
 				<div>
 					<p className="mb-6 text-sm text-muted-foreground">
 						{activeOrganization
-							? `Recent API usage and token consumption for ${activeOrganization.name}.`
-							: "Recent API usage and token consumption across all providers."}
+							? `${activeOrganization.name} 近期的 API 用量与 Token 消耗。`
+							: "所有服务商近期的 API 用量与 Token 消耗。"}
 					</p>
 					{usageLoading && renderLoading()}
 					{usageError && renderError(usageError, loadUsage)}
 					{!usageLoading && !usageError && usageLoaded && (
 						<div className="overflow-hidden rounded-lg border border-border">
 							<div className="grid grid-cols-[minmax(0,1fr)_5.5rem_4.5rem_5.5rem] gap-4 border-b border-border bg-secondary/50 px-4 py-2.5 text-xs font-medium text-muted-foreground">
-								<span>Model</span>
-								<span className="text-right">Tokens</span>
-								<span className="text-right">Credits</span>
-								<span className="text-right">Time</span>
+								<span>模型</span>
+								<span className="text-right">Token 数</span>
+								<span className="text-right">额度</span>
+								<span className="text-right">时间</span>
 							</div>
 							{usageTransactions.length === 0 ? (
 								<p className="px-4 py-8 text-center text-sm text-muted-foreground">
-									No usage transactions yet.
+									暂无用量记录。
 								</p>
 							) : (
 								<div className="divide-y divide-border">
@@ -803,7 +810,7 @@ export function AccountView() {
 									onClick={() => void openExternalUrl(USAGE_DASHBOARD_URL)}
 									className="flex items-center gap-1.5 rounded-md px-3 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-surface-hover hover:text-foreground"
 								>
-									See More
+									查看更多
 									<ExternalLink className="h-3.5 w-3.5" />
 								</button>
 							</div>
@@ -816,7 +823,7 @@ export function AccountView() {
 			{activeTab === "billing" && (
 				<div>
 					<p className="mb-6 text-sm text-muted-foreground">
-						Payment history and credit purchases.
+						支付记录与额度购买。
 					</p>
 					{billingLoading && renderLoading()}
 					{billingError && renderError(billingError, loadBilling)}
@@ -825,14 +832,14 @@ export function AccountView() {
 						billingLoaded &&
 						(paymentTransactions.length === 0 ? (
 							<p className="py-8 text-center text-sm text-muted-foreground">
-								No payment transactions yet.
+								暂无支付记录。
 							</p>
 						) : (
 							<div className="rounded-lg border border-border overflow-hidden">
 								<div className="grid grid-cols-[1fr_auto_auto] gap-4 border-b border-border bg-secondary/50 px-4 py-2.5 text-xs font-medium text-muted-foreground">
-									<span>Date</span>
-									<span className="text-right">Amount</span>
-									<span className="text-right">Credits</span>
+									<span>日期</span>
+									<span className="text-right">金额</span>
+									<span className="text-right">额度</span>
 								</div>
 								<div className="divide-y divide-border">
 									{paymentTransactions.map((tx) => (
