@@ -62,7 +62,7 @@ export function ModelIdInput({
 						onChange(models.slice(0, -1));
 					}
 				}}
-				placeholder={models.length === 0 ? "Type model ID and press Enter" : ""}
+				placeholder={models.length === 0 ? "输入模型 ID 并按回车" : ""}
 				type="text"
 				value={modelInput}
 			/>

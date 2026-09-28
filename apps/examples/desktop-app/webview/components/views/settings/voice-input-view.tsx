@@ -159,8 +159,8 @@ export function VoiceInputContent({
 	const header = (
 		<>
 			<PageHeader
-				description="Speak instead of typing: the microphone in chat transcribes your voice with the model chosen here. Text appears as you speak; Stop ends the live session."
-				title="Voice input"
+				description="用说的代替打字：聊天中的麦克风会用这里选择的模型转录你的语音。文字随说话实时出现；点“停止”即可结束实时会话。"
+				title="语音输入"
 			/>
 			{providers !== null &&
 			voiceInput &&
@@ -168,7 +168,7 @@ export function VoiceInputContent({
 				(model) => model.id === voiceInput.modelId,
 			) ? (
 				<p className="mb-4 text-sm text-destructive" role="alert">
-					Choose a streaming transcription model to use live voice input.
+					请选择一个流式转录模型以使用实时语音输入。
 				</p>
 			) : null}
 			{modelErrors.length > 0 ? (
@@ -183,7 +183,7 @@ export function VoiceInputContent({
 		return (
 			<PageFrame>
 				{header}
-				<p className="text-sm text-muted-foreground">Loading providers...</p>
+				<p className="text-sm text-muted-foreground">正在加载服务商...</p>
 			</PageFrame>
 		);
 	}
@@ -193,7 +193,7 @@ export function VoiceInputContent({
 			<PageFrame>
 				{header}
 				<p className="text-sm text-destructive">
-					Failed to load providers: {loadError}
+					加载服务商失败：{loadError}
 				</p>
 			</PageFrame>
 		);
@@ -208,18 +208,18 @@ export function VoiceInputContent({
 					<Mic aria-hidden="true" className="size-6 text-muted-foreground" />
 					<p className="text-base font-medium text-foreground">
 						{hasConnected
-							? "None of your configured providers offer streaming speech-to-text models"
-							: "Voice input needs a configured model provider"}
+							? "你已配置的服务商都不提供流式语音转文字模型"
+							: "语音输入需要已配置的服务商"}
 					</p>
 					<p className="text-sm text-muted-foreground">
 						{voiceCapableProviderNames.length > 0
 							? `连接一个提供流式转录模型的服务商（例如 ${voiceCapableProviderNames
 								.slice(0, 4)
 								.join(", ")}）后，本页会自动解锁。`
-							: "Connect a provider with streaming transcription models and this page unlocks automatically."}
+							: "连接一个提供流式转录模型的服务商后，本页会自动解锁。"}
 					</p>
 					<Button onClick={onOpenModelProviders} size="sm" type="button">
-						Open Model Providers
+						打开服务商设置
 					</Button>
 				</div>
 			</PageFrame>
@@ -235,14 +235,14 @@ export function VoiceInputContent({
 				<div className="flex items-center justify-between gap-5 border-y py-4">
 					<div className="flex flex-col gap-1">
 						<p className="text-base font-semibold text-foreground">
-							Enable voice input
+							启用语音输入
 						</p>
 						<p className="text-sm text-muted-foreground">
 							开启聊天中的麦克风按钮。已预选默认模型，可在下方调整。
 						</p>
 					</div>
 					<Switch
-						aria-label="Enable voice input"
+						aria-label="启用语音输入"
 						checked={enabled}
 						disabled={saving}
 						onCheckedChange={(checked) => {
@@ -254,7 +254,7 @@ export function VoiceInputContent({
 
 				{saveError ? (
 					<p className="mt-3 text-xs text-destructive" role="alert">
-						Failed to save voice input settings: {saveError}
+						保存语音输入设置失败：{saveError}
 					</p>
 				) : null}
 
@@ -262,7 +262,7 @@ export function VoiceInputContent({
 					<>
 						<div className="mt-6">
 							<p className="mb-2 text-sm font-semibold text-foreground">
-								Provider
+								服务商
 							</p>
 							<div className="flex flex-wrap gap-2">
 								{voiceProviders.map(({ provider }) => {
@@ -291,10 +291,10 @@ export function VoiceInputContent({
 						{selectedEntry ? (
 							<div className="mt-6">
 								<p className="mb-2 text-sm font-semibold text-foreground">
-									Model
+									模型
 								</p>
 								<div
-									aria-label="Voice input model"
+									aria-label="语音输入模型"
 									className="overflow-hidden rounded-lg border"
 									role="radiogroup"
 								>
@@ -343,7 +343,7 @@ export function VoiceInputContent({
 														<AudioModelBadges model={model} />
 														{isDefault ? (
 															<span className="shrink-0 text-[0.625rem] font-medium uppercase tracking-wide text-muted-foreground">
-																Default
+																默认
 															</span>
 														) : null}
 													</div>

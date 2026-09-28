@@ -71,8 +71,8 @@ export function ImportContent() {
 						Import sessions
 					</Button>
 				}
-				description="Bring your conversation history from other coding tools into Cline. Imported sessions show up in your history and can be continued here."
-				title="Import"
+				description="把其他编程工具中的对话历史导入 Cline。导入的会话会出现在历史记录中，并可在此继续。"
+				title="导入"
 			/>
 			<section className="max-w-2xl">
 				{SESSION_IMPORT_TOOL_ORDER.map((tool, index) => (
@@ -92,7 +92,7 @@ export function ImportContent() {
 								{scan
 									? toolStatus(tool, scan)
 									: scanError
-										? "Scan failed"
+										? "扫描失败"
 										: "Scanning…"}
 							</p>
 						</div>

@@ -161,7 +161,7 @@ export async function checkForUpdateAndNotify(): Promise<void> {
 			toast({
 				variant: "destructive",
 				title: "Update check failed",
-				description: status.error ?? "Unknown error",
+				description: status.error ?? "未知错误",
 			});
 			return;
 		default:

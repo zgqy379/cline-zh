@@ -15,8 +15,8 @@ export function AudioModelBadges({ model }: { model: ProviderModel }) {
 			<span
 				title={
 					realtime
-						? "Live audio with streaming updates"
-						: "Audio-to-text transcription"
+						? "实时音频，支持流式更新"
+						: "音频转文字转录"
 				}
 				className="inline-flex shrink-0 items-center gap-1 rounded bg-surface-hover px-1.5 py-px font-sans text-[0.625rem] font-medium uppercase tracking-wide text-muted-foreground"
 			>
@@ -27,8 +27,8 @@ export function AudioModelBadges({ model }: { model: ProviderModel }) {
 			!model.operationModes.includes("streaming") ? (
 				<span
 					role="img"
-					aria-label="Streaming not supported"
-					title="Streaming not supported"
+					aria-label="不支持流式"
+					title="不支持流式"
 					className="shrink-0 text-muted-foreground"
 				>
 					<WifiOff aria-hidden="true" className="size-3.5" />

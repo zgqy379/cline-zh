@@ -144,8 +144,8 @@ export function CustomizeView({
 						</Button>
 					) : undefined
 				}
-				description="Extend what Cline can do and how it works. Explore the marketplace for more options."
-				title="Customize"
+				description="扩展 Cline 的能力与工作方式。去市场看看更多选项。"
+				title="自定义"
 			/>
 
 			<div className="mb-6 flex items-center gap-0 border-b border-border">

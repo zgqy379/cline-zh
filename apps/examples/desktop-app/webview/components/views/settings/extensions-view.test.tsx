@@ -193,14 +193,14 @@ describe("rule scope grouping", () => {
 	])("classifies only exact workspace rule roots as Project for %s", async (workspaceRoot) => {
 		const prefix = workspaceRoot.replaceAll("\\", "/").replace(/\/+$/, "");
 		const ruleCases = [
-			["legacy-rule", `${prefix}/.clinerules/legacy-rule.md`, "Project"],
-			["new-rule", `${prefix}/.cline/rules/new-rule.md`, "Project"],
-			["nested-rule", `${prefix}/.cline/rules/team/nested.md`, "Project"],
-			["single-file", `${prefix}/.clinerules`, "Project"],
-			["nested-global", `${prefix}/other/.cline/rules/global.md`, "Global"],
-			["nested-legacy", `${prefix}/other/.clinerules/global.md`, "Global"],
-			["prefix-sibling", `${prefix}/.cline/rules-other/rule.md`, "Global"],
-			["outside-rule", "/elsewhere/.cline/rules/global.md", "Global"],
+			["legacy-rule", `${prefix}/.clinerules/legacy-rule.md`, "项目"],
+			["new-rule", `${prefix}/.cline/rules/new-rule.md`, "项目"],
+			["nested-rule", `${prefix}/.cline/rules/team/nested.md`, "项目"],
+			["single-file", `${prefix}/.clinerules`, "项目"],
+			["nested-global", `${prefix}/other/.cline/rules/global.md`, "全局"],
+			["nested-legacy", `${prefix}/other/.clinerules/global.md`, "全局"],
+			["prefix-sibling", `${prefix}/.cline/rules-other/rule.md`, "全局"],
+			["outside-rule", "/elsewhere/.cline/rules/global.md", "全局"],
 		];
 		invoke.mockImplementation(async (command: string) => {
 			if (command === "list_marketplace_installed_entries")

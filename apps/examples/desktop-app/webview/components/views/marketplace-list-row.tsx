@@ -41,7 +41,7 @@ export function MarketplaceListRow({
 			{installed ? (
 				<span
 					className="size-1.5 shrink-0 rounded-full bg-emerald-500"
-					title="Installed"
+					title="已安装"
 				/>
 			) : null}
 		</button>
