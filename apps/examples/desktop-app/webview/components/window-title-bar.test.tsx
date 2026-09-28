@@ -101,13 +101,13 @@ describe("WindowTitleBar", () => {
 		if (!controls) {
 			throw new Error("Expected Windows caption controls");
 		}
-		expect(controls.querySelector('[aria-label="Restore"]')).not.toBeNull();
+		expect(controls.querySelector('[aria-label="向下还原"]')).not.toBeNull();
 		await act(async () => {
 			controls
-				.querySelector<HTMLButtonElement>('[aria-label="Minimize"]')
+				.querySelector<HTMLButtonElement>('[aria-label="最小化"]')
 				?.click();
 			controls
-				.querySelector<HTMLButtonElement>('[aria-label="Restore"]')
+				.querySelector<HTMLButtonElement>('[aria-label="向下还原"]')
 				?.click();
 			controls
 				.querySelector<HTMLButtonElement>('[aria-label="关闭"]')
@@ -138,10 +138,10 @@ describe("WindowTitleBar", () => {
 		const toggleButtonLabel = () =>
 			controls
 				.querySelector(
-					'button[aria-label="Maximize"], button[aria-label="Restore"]',
+					'button[aria-label="最大化"], button[aria-label="向下还原"]',
 				)
 				?.getAttribute("aria-label");
-		expect(toggleButtonLabel()).toBe("Maximize");
+		expect(toggleButtonLabel()).toBe("最大化");
 
 		const onResized = windowMocks.onResized.mock.calls.at(-1)?.[0];
 		expect(onResized).toBeTypeOf("function");
@@ -154,14 +154,14 @@ describe("WindowTitleBar", () => {
 			onResized();
 			await Promise.resolve();
 		});
-		expect(toggleButtonLabel()).toBe("Restore");
+		expect(toggleButtonLabel()).toBe("向下还原");
 
 		windowMocks.isMaximized.mockResolvedValue(false);
 		await act(async () => {
 			onResized();
 			await Promise.resolve();
 		});
-		expect(toggleButtonLabel()).toBe("Maximize");
+		expect(toggleButtonLabel()).toBe("最大化");
 	});
 
 	it.each([

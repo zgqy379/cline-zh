@@ -121,7 +121,7 @@ export function SessionCommandBar({
 	return (
 		<CommandDialog
 			className="h-[min(38rem,calc(100vh-2rem))] w-[min(56rem,calc(100vw-2rem))] max-w-none sm:max-w-none"
-			description="Search messages across all Cline sessions"
+			description="在所有 Cline 会话中搜索消息"
 			onOpenChange={onOpenChange}
 			open={open}
 			// Hits arrive filtered and ranked by the FTS index; letting cmdk
@@ -129,11 +129,11 @@ export function SessionCommandBar({
 			// text lives outside the truncated snippet.
 			shouldFilter={false}
 			showCloseButton={false}
-			title="Search session history"
+			title="搜索会话历史"
 		>
 			<CommandInput
 				onValueChange={handleQueryChange}
-				placeholder="Search all session history…"
+				placeholder="搜索全部会话历史…"
 				value={query}
 			/>
 			<CommandList
@@ -143,14 +143,14 @@ export function SessionCommandBar({
 				{searching ? (
 					<div className="flex items-center justify-center gap-2 py-8 text-sm text-muted-foreground">
 						<Loader2 className="size-4 animate-spin" />
-						Searching sessions…
+						正在搜索会话…
 					</div>
 				) : null}
 				{!searching && query.trim() ? (
-					<CommandEmpty>No matching session history.</CommandEmpty>
+					<CommandEmpty>没有匹配的会话历史。</CommandEmpty>
 				) : null}
 				{!searching && hits.length > 0 ? (
-					<CommandGroup heading="Session history">
+					<CommandGroup heading="会话历史">
 						{visibleHits.map((hit) => (
 							<CommandItem
 								className="items-start py-3"

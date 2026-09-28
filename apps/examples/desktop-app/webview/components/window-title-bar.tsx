@@ -92,7 +92,7 @@ export function WindowControls() {
 			}}
 		>
 			<button
-				aria-label="Minimize"
+				aria-label="最小化"
 				className="flex w-12 items-center justify-center text-foreground hover:bg-surface-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring"
 				onClick={() => void appWindow.minimize()}
 				type="button"
@@ -100,7 +100,7 @@ export function WindowControls() {
 				<Minus aria-hidden="true" className="size-4" strokeWidth={1.5} />
 			</button>
 			<button
-				aria-label={isMaximized ? "Restore" : "Maximize"}
+				aria-label={isMaximized ? "向下还原" : "最大化"}
 				className="flex w-12 items-center justify-center text-foreground hover:bg-surface-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring"
 				onClick={() => void appWindow.toggleMaximize()}
 				type="button"
@@ -115,7 +115,7 @@ export function WindowControls() {
 				)}
 			</button>
 			<button
-				aria-label="Close"
+				aria-label="关闭"
 				className="flex w-12 items-center justify-center text-foreground hover:bg-red-600 hover:text-white focus-visible:bg-red-600 focus-visible:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-white"
 				onClick={() => void appWindow.close()}
 				type="button"

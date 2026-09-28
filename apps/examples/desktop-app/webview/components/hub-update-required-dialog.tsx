@@ -175,7 +175,7 @@ export function HubUpdateRequiredDialog() {
 			setUpdateHint(
 				error instanceof Error && error.message
 					? error.message
-					: "Updating the Cline Hub failed. Try again, or run 'cline doctor fix' in a terminal.",
+					: "更新 Cline Hub 失败。请重试，或在终端中运行 'cline doctor fix'。",
 			);
 			setPhase("idle");
 			return;
@@ -210,15 +210,14 @@ export function HubUpdateRequiredDialog() {
 			<AlertDialog open>
 				<AlertDialogContent>
 					<AlertDialogHeader>
-						<AlertDialogTitle>Cline Hub update required</AlertDialogTitle>
+						<AlertDialogTitle>需要更新 Cline Hub</AlertDialogTitle>
 						<AlertDialogDescription>
-							Cline needs a newer Cline Hub, but the running one is still
-							serving {describeOutdatedHubSessions(mismatch)}.
+							Cline 需要更新版本的 Cline Hub，但当前运行的 Hub 仍在为
+							{describeOutdatedHubSessions(mismatch)} 提供服务。
 						</AlertDialogDescription>
 						<AlertDialogDescription>
-							Update Now stops that Hub and interrupts its sessions. Quit Cline
-							closes this app and leaves the Hub running, so you can update
-							later.
+							立即更新会停止该 Hub 并中断其中的会话。退出 Cline 则会关闭本应用，
+							让 Hub 继续运行，你可以稍后再更新。
 						</AlertDialogDescription>
 						{updateHint ? (
 							<AlertDialogDescription>{updateHint}</AlertDialogDescription>
@@ -232,7 +231,7 @@ export function HubUpdateRequiredDialog() {
 								void handleQuit();
 							}}
 						>
-							Quit Cline
+							退出 Cline
 						</AlertDialogCancel>
 						<AlertDialogAction
 							disabled={phase !== "idle"}
@@ -242,12 +241,12 @@ export function HubUpdateRequiredDialog() {
 							}}
 						>
 							{phase === "restarting"
-								? "Restarting…"
+								? "正在重启…"
 								: phase === "updating"
-									? "Updating…"
+									? "正在更新…"
 									: updateHint
-										? "Try again"
-										: "Update Now"}
+										? "重试"
+										: "立即更新"}
 						</AlertDialogAction>
 					</AlertDialogFooter>
 				</AlertDialogContent>
@@ -277,14 +276,14 @@ export function HubUpdateRequiredDialog() {
 		>
 			<AlertDialogContent>
 				<AlertDialogHeader>
-					<AlertDialogTitle>Cline Hub was updated</AlertDialogTitle>
+					<AlertDialogTitle>Cline Hub 已更新</AlertDialogTitle>
 					<AlertDialogDescription>
-						Another Cline installation updated the shared Cline Hub
+						另一个 Cline 安装更新了共享的 Cline Hub
 						{mismatch?.hubCoreVersion
-							? ` (core ${mismatch.hubCoreVersion})`
+							? `（核心版本 ${mismatch.hubCoreVersion}）`
 							: ""}
-						, and it no longer matches this app. Update and restart Cline to
-						stay in sync with the running Hub.
+						，它现在与本应用不再匹配。更新并重启 Cline，即可与正在运行的
+						Hub 保持一致。
 					</AlertDialogDescription>
 					{updateHint ? (
 						<AlertDialogDescription>{updateHint}</AlertDialogDescription>
@@ -292,7 +291,7 @@ export function HubUpdateRequiredDialog() {
 				</AlertDialogHeader>
 				<AlertDialogFooter>
 					<AlertDialogCancel disabled={phase !== "idle"}>
-						Later
+						稍后
 					</AlertDialogCancel>
 					<AlertDialogAction
 						disabled={phase !== "idle"}
@@ -302,12 +301,12 @@ export function HubUpdateRequiredDialog() {
 						}}
 					>
 						{phase === "restarting"
-							? "Restarting…"
+							? "正在重启…"
 							: phase === "updating"
-								? "Checking for updates…"
+								? "正在检查更新…"
 								: updateHint
-									? "Try again"
-									: "Update and restart"}
+									? "重试"
+									: "更新并重启"}
 					</AlertDialogAction>
 				</AlertDialogFooter>
 			</AlertDialogContent>

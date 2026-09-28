@@ -168,7 +168,7 @@ describe("VoiceInputContent", () => {
 		});
 		fetchProviderCatalogMock.mockReturnValue(new Promise(() => {}));
 		await render();
-		expect(container.textContent).not.toContain("Loading providers");
+		expect(container.textContent).not.toContain("正在加载服务商");
 		expect(container.textContent).toContain("Scribe v2 Realtime");
 		expect(
 			container.querySelector('[role="radio"][aria-checked="true"]')

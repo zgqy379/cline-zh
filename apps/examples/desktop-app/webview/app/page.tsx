@@ -250,13 +250,13 @@ function useCloudProvisioningPhase(
 	const label =
 		phase === "cloning_repo"
 			? repoLabel
-				? `Cloning ${repoLabel}`
-				: "Cloning your repository"
+				? `正在克隆 ${repoLabel}`
+				: "正在克隆你的仓库"
 			: phase === "agent_starting"
-				? "Starting the agent"
-				: "Starting your workspace";
+				? "正在启动智能体"
+				: "正在启动你的工作区";
 	return longRunning
-		? `${label}... This may take several minutes.`
+		? `${label}...这可能需要几分钟。`
 		: `${label}...`;
 }
 
@@ -2393,10 +2393,10 @@ function ChatThreadPane({
 				<div className="h-5 w-5 animate-spin rounded-full border-2 border-muted-foreground border-t-transparent" />
 				<p className="text-sm text-muted-foreground">
 					{chatTransportState === "unavailable"
-						? "Desktop backend unavailable"
+						? "桌面端后端不可用"
 						: chatTransportState !== "connected"
-							? "Connecting..."
-							: "Loading..."}
+							? "正在连接..."
+							: "正在加载..."}
 				</p>
 				{chatTransportError ? (
 					<p className="max-w-xl px-6 text-center text-xs text-muted-foreground">

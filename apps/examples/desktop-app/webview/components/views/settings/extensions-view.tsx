@@ -342,7 +342,7 @@ function getPathScope(path: string, workspaceRoot: string): ItemScope {
 function ScopeBadge({ scope }: { scope: ItemScope }) {
 	return (
 		<Badge variant="outline" className="shrink-0 text-muted-foreground">
-			{scope}
+			{scope === "Project" ? "项目" : "全局"}
 		</Badge>
 	);
 }
@@ -1056,7 +1056,7 @@ export function CustomizationSectionView({
 				variant="destructive"
 			>
 				{uninstalling ? <Spinner /> : <Trash2 className="size-4" />}
-				{uninstalling ? "Uninstalling..." : "Uninstall"}
+				{uninstalling ? "正在卸载..." : "卸载"}
 			</Button>
 		);
 	};
@@ -1097,7 +1097,7 @@ export function CustomizationSectionView({
 							onClick={() => void uninstallLocalPrimitive(target)}
 						>
 							{uninstalling ? <Spinner /> : <Trash2 className="size-4" />}
-							{uninstalling ? "Uninstalling..." : "Uninstall"}
+							{uninstalling ? "正在卸载..." : "卸载"}
 						</DropdownMenuItem>
 					) : null}
 				</DropdownMenuContent>
