@@ -15,7 +15,7 @@ export function ReasoningBlock({
 	redacted: boolean;
 	streaming?: boolean;
 }) {
-	const displayContent = content || (redacted ? "[redacted]" : "");
+	const displayContent = content || (redacted ? "[内容已隐藏]" : "");
 	if (!displayContent) {
 		return null;
 	}

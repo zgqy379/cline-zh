@@ -18,7 +18,7 @@ export type ToolApprovalRequestItem = {
 export function formatApprovalTimestamp(raw: string): string {
 	const parsed = new Date(raw);
 	if (Number.isNaN(parsed.getTime())) {
-		return "Pending now";
+		return "立即待处理";
 	}
 	return parsed.toLocaleString();
 }
@@ -54,10 +54,10 @@ export function ToolApprovalPanel({
 		<section className="rounded-xl border border-amber-400/40 bg-amber-500/5 p-3">
 			<div className="flex items-center gap-2 text-sm font-medium text-foreground">
 				<ShieldAlert className="h-4 w-4 text-amber-500" />
-				Tool approval required
+				需要工具审批
 			</div>
 			<p className="mt-1 text-xs text-muted-foreground">
-				Review each tool call and approve or reject it before execution.
+				执行前请逐一审核工具调用，并选择批准或拒绝。
 			</p>
 			<div className="mt-3 flex flex-col gap-2">
 				{items.map((item) => {
@@ -67,9 +67,9 @@ export function ToolApprovalPanel({
 						<AgentApprovalCard
 							description={
 								<>
-									Request {item.requestId}
+									请求 {item.requestId}
 									{item.iteration != null
-										? ` · Iteration ${item.iteration}`
+										? ` · 第 ${item.iteration} 轮`
 										: ""}
 								</>
 							}

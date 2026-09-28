@@ -40,7 +40,7 @@ export function MessageImageCarousel({
 			{images.length > 1 ? (
 				<>
 					<button
-						aria-label="Previous generated image"
+						aria-label="上一张生成的图片"
 						className="absolute left-1 top-1/2 flex size-7 -translate-y-1/2 items-center justify-center rounded-full border border-border bg-background/85 text-foreground shadow-sm backdrop-blur-sm transition-opacity hover:bg-background disabled:cursor-not-allowed disabled:opacity-35"
 						disabled={safeIndex === 0}
 						onClick={() => setActiveIndex((index) => Math.max(0, index - 1))}
@@ -49,7 +49,7 @@ export function MessageImageCarousel({
 						<ChevronLeft className="size-4" />
 					</button>
 					<button
-						aria-label="Next generated image"
+						aria-label="下一张生成的图片"
 						className="absolute right-1 top-1/2 flex size-7 -translate-y-1/2 items-center justify-center rounded-full border border-border bg-background/85 text-foreground shadow-sm backdrop-blur-sm transition-opacity hover:bg-background disabled:cursor-not-allowed disabled:opacity-35"
 						disabled={safeIndex === lastIndex}
 						onClick={() =>

@@ -279,9 +279,9 @@ export const MessageBubble = memo(function MessageBubble({
 					<MessageActions side="end" visible={keepUserActionsVisible}>
 						{onCopyMessage ? (
 							<MessageAction
-								label={wasCopied ? "Copied user message" : "Copy user message"}
+								label={wasCopied ? "已复制用户消息" : "复制用户消息"}
 								onClick={() => void onCopyMessage(message.id, displayContent)}
-								title={wasCopied ? "Copied" : "Copy message"}
+								title={wasCopied ? "已复制" : "复制消息"}
 							>
 								{wasCopied ? (
 									<Check className="h-3.5 w-3.5" />
@@ -293,11 +293,11 @@ export const MessageBubble = memo(function MessageBubble({
 						{onEditMessage && runCount && displayContent.trim() ? (
 							<MessageAction
 								disabled={editDisabled || editPending}
-								label="Edit user message"
+								label="编辑用户消息"
 								onClick={() =>
 									void onEditMessage(message.id, displayContent, runCount)
 								}
-								title="Edit message and restart from this point"
+								title="编辑消息并从此处重新开始"
 							>
 								{editPending ? (
 									<Loader2 className="h-3.5 w-3.5 animate-spin" />
@@ -309,11 +309,11 @@ export const MessageBubble = memo(function MessageBubble({
 						{checkpoint ? (
 							<MessageAction
 								disabled={restoreDisabled || restorePending}
-								label="Restore checkpoint"
+								label="还原检查点"
 								onClick={() =>
 									void onRestoreCheckpoint?.(message.id, checkpoint.runCount)
 								}
-								title="Restore checkpoint"
+								title="还原检查点"
 							>
 								{restorePending ? (
 									<Loader2 className="h-3.5 w-3.5 animate-spin" />
@@ -343,11 +343,11 @@ export const MessageBubble = memo(function MessageBubble({
 						<MessageAction
 							label={
 								wasCopied
-									? "Copied assistant message"
-									: "Copy assistant message"
+									? "已复制助手消息"
+									: "复制助手消息"
 							}
 							onClick={() => void onCopyMessage(message.id, message.content)}
-							title={wasCopied ? "Copied" : "Copy raw assistant output"}
+							title={wasCopied ? "已复制" : "复制助手原始输出"}
 						>
 							{wasCopied ? (
 								<Check className="h-3 w-3" />
@@ -359,9 +359,9 @@ export const MessageBubble = memo(function MessageBubble({
 					{onForkSession ? (
 						<MessageAction
 							disabled={forkDisabled || forkPending}
-							label="Fork session"
+							label="分叉会话"
 							onClick={() => void onForkSession(message.id)}
-							title="Fork session - copy full message history into a new session"
+							title="分叉会话 — 将完整消息历史复制到新会话"
 						>
 							{forkPending ? (
 								<Loader2 className="h-3 w-3 animate-spin" />
