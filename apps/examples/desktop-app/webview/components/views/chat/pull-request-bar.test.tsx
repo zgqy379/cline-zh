@@ -67,12 +67,12 @@ async function click(label: string) {
 
 it("opens the PR, shows conflicts and expands CI details", async () => {
 	await render();
-	expect(container.textContent).toContain("Conflicts");
+	expect(container.textContent).toContain("存在冲突");
 	expect(container.textContent).toContain("+1,234");
-	expect(container.textContent).toContain("CI failed");
-	await click("Open pull request #42: Feature");
+	expect(container.textContent).toContain("CI 失败");
+	await click("打开拉取请求 #42：Feature");
 	expect(openExternalUrl).toHaveBeenCalledWith(data.pullRequest!.url);
-	await click("CI failed");
+	await click("CI 失败");
 	expect(document.body.textContent).toContain("Tests");
 });
 
@@ -83,62 +83,62 @@ it.each<{
 }>([
 	{
 		status: { mergeStateStatus: "BLOCKED" },
-		label: "Blocked",
+		label: "已阻塞",
 		color: "text-yellow-500",
 	},
 	{
 		status: { mergeStateStatus: "BEHIND" },
-		label: "Behind base",
+		label: "落后于基线",
 		color: "text-yellow-500",
 	},
 	{
 		status: { mergeStateStatus: "UNSTABLE" },
-		label: "Checks failing",
+		label: "检查失败",
 		color: "text-red-400",
 	},
 	{
 		status: { mergeable: "UNKNOWN", mergeStateStatus: "UNKNOWN" },
-		label: "Merge status pending",
+		label: "合并状态待定",
 		color: "text-cline-ui-muted-foreground",
 	},
 	{
 		status: { mergeable: "UNKNOWN" },
-		label: "Merge status pending",
+		label: "合并状态待定",
 		color: "text-cline-ui-muted-foreground",
 	},
 	{
 		status: { mergeStateStatus: "UNKNOWN" },
-		label: "No conflicts",
+		label: "无冲突",
 		color: "text-cline-ui-muted-foreground",
 	},
 	{
 		status: { mergeStateStatus: "DIRTY" },
-		label: "Conflicts",
+		label: "存在冲突",
 		color: "text-red-400",
 	},
 	{
 		status: { mergeable: "CONFLICTING" },
-		label: "Conflicts",
+		label: "存在冲突",
 		color: "text-red-400",
 	},
 	{
 		status: { isDraft: true, mergeable: "CONFLICTING" },
-		label: "Draft",
+		label: "草稿",
 		color: "text-cline-ui-muted-foreground",
 	},
 	{
 		status: { state: "MERGED", mergeable: "CONFLICTING" },
-		label: "Merged",
+		label: "已合并",
 		color: "text-purple-400",
 	},
 	{
 		status: { state: "CLOSED" },
-		label: "Closed",
+		label: "已关闭",
 		color: "text-red-400",
 	},
 	{
 		status: {},
-		label: "Ready to merge",
+		label: "可合并",
 		color: "text-green-500",
 	},
 ])("uses $color for the $label label and PR icon", async ({
@@ -169,7 +169,7 @@ it("offers the compare form when no PR exists", async () => {
 	await render();
 	await act(async () =>
 		[...container.querySelectorAll("button")]
-			.find((button) => button.textContent?.includes("Create PR"))!
+			.find((button) => button.textContent?.includes("创建拉取请求"))!
 			.click(),
 	);
 	expect(openExternalUrl).toHaveBeenCalledWith(data.createUrl);
@@ -197,7 +197,7 @@ it("refreshes and replaces stale status with an actionable error on failure", as
 	expect(container.textContent).toContain("Check GitHub CLI access");
 	expect(container.textContent).not.toContain("#42");
 	invoke.mockResolvedValue(data);
-	await click("Refresh pull request status");
+	await click("刷新拉取请求状态");
 	expect(container.textContent).toContain("#42");
 });
 
@@ -219,7 +219,7 @@ it("keeps a dismissed error hidden through polling and focus until recovery", as
 	invoke.mockRejectedValue(new Error("连接失败"));
 	await clickRefreshViaFocus();
 	expect(container.textContent).toContain("连接失败");
-	await click("Dismiss pull request error");
+	await click("关闭拉取请求错误");
 	expect(container.textContent).toBe("");
 	await clickRefreshViaFocus();
 	await act(async () => {
@@ -276,15 +276,15 @@ it("reports exposure once per workspace/branch, without polling impressions", as
 
 it("reports PR, CI, check, and refresh interactions without identifying data", async () => {
 	await render();
-	await click("Open pull request #42: Feature");
-	await click("CI failed");
+	await click("打开拉取请求 #42：Feature");
+	await click("CI 失败");
 	const check = [...document.querySelectorAll("button")].find(
 		(button) => button.textContent?.trim() === "Tests",
 	);
 	if (!check) throw new Error("Expected check link");
 	await act(async () => check.click());
-	await click("CI failed"); // Closing the popover is not another expansion.
-	await click("Refresh pull request status");
+	await click("CI 失败"); // Closing the popover is not another expansion.
+	await click("刷新拉取请求状态");
 	expect(telemetryEvents().map((event) => event.action)).toEqual([
 		"shown",
 		"open_clicked",
@@ -306,7 +306,7 @@ it("records create intent without claiming a PR was created", async () => {
 	invoke.mockResolvedValue({ ...data, pullRequest: null });
 	await render();
 	const create = [...container.querySelectorAll("button")].find((button) =>
-		button.textContent?.includes("Create PR"),
+		button.textContent?.includes("创建拉取请求"),
 	);
 	if (!create) throw new Error("Expected create button");
 	await act(async () => create.click());
@@ -333,7 +333,7 @@ it("keeps PR links usable when telemetry delivery fails", async () => {
 		return data;
 	});
 	await render();
-	await click("Open pull request #42: Feature");
+	await click("打开拉取请求 #42：Feature");
 	expect(openExternalUrl).toHaveBeenCalledWith(data.pullRequest?.url);
 });
 
