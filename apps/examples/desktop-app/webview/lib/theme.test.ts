@@ -6,16 +6,21 @@ import {
 	applyHubAccent,
 	DEFAULT_HUB_ACCENT,
 	DEFAULT_HUB_THEME,
+	DEFAULT_HUB_THEME_PREFERENCE,
 	HUB_ACCENT_STORAGE_KEY,
 	HUB_THEME_BOOTSTRAP_SCRIPT,
 	HUB_THEME_STORAGE_KEY,
 	isHubAccent,
 	readStoredHubAccent,
 	readStoredHubTheme,
+	readStoredHubThemePreference,
 	readSystemHubTheme,
+	resolveHubTheme,
 	setStoredHubAccent,
+	setStoredHubThemePreference,
 	syncHubAccent,
 	syncHubTheme,
+	watchSystemHubTheme,
 } from "./theme";
 
 afterEach(() => {
@@ -73,6 +78,120 @@ describe("hub theme", () => {
 
 		expect(document.documentElement.classList.contains("dark")).toBe(true);
 		expect(document.documentElement.dataset.clineHubTheme).toBe("dark");
+	});
+});
+
+describe("hub theme: system preference", () => {
+	it("treats a missing preference as system", () => {
+		setSystemTheme("light");
+
+		expect(readStoredHubThemePreference()).toBeNull();
+		expect(DEFAULT_HUB_THEME_PREFERENCE).toBe("system");
+		expect(syncHubTheme()).toBe("light");
+		expect(document.documentElement.classList.contains("dark")).toBe(false);
+	});
+
+	it("resolves an explicit system preference through the media query", () => {
+		setSystemTheme("dark");
+		window.localStorage.setItem(HUB_THEME_STORAGE_KEY, "system");
+
+		expect(readStoredHubThemePreference()).toBe("system");
+		expect(readStoredHubTheme()).toBe("dark");
+		expect(syncHubTheme()).toBe("dark");
+	});
+
+	it("applies the system preference before first paint", () => {
+		setSystemTheme("dark");
+		window.localStorage.setItem(HUB_THEME_STORAGE_KEY, "system");
+
+		runThemeBootstrap();
+
+		expect(document.documentElement.classList.contains("dark")).toBe(true);
+		expect(document.documentElement.dataset.clineHubTheme).toBe("dark");
+	});
+
+	it("keeps an explicit light/dark preference over the system one", () => {
+		setSystemTheme("dark");
+		window.localStorage.setItem(HUB_THEME_STORAGE_KEY, "light");
+
+		runThemeBootstrap();
+
+		expect(document.documentElement.classList.contains("dark")).toBe(false);
+		expect(document.documentElement.dataset.clineHubTheme).toBe("light");
+	});
+
+	it("resolves preferences through resolveHubTheme", () => {
+		setSystemTheme("light");
+		expect(resolveHubTheme("system")).toBe("light");
+		expect(resolveHubTheme("dark")).toBe("dark");
+		setSystemTheme("dark");
+		expect(resolveHubTheme("system")).toBe("dark");
+		expect(resolveHubTheme("light")).toBe("light");
+	});
+
+	it("stores the system preference and applies the resolved theme", () => {
+		setSystemTheme("dark");
+
+		const applied = setStoredHubThemePreference("system");
+
+		expect(window.localStorage.getItem(HUB_THEME_STORAGE_KEY)).toBe("system");
+		expect(applied).toBe("dark");
+		expect(document.documentElement.classList.contains("dark")).toBe(true);
+	});
+
+	it("follows OS changes while the preference is system", () => {
+		let system: "light" | "dark" | null = "light";
+		const listeners: (() => void)[] = [];
+		window.matchMedia = ((query: string) =>
+			({
+				get matches() {
+					return (
+						system !== null && query === `(prefers-color-scheme: ${system})`
+					);
+				},
+				media: query,
+				addEventListener(_: string, fn: () => void) {
+					listeners.push(fn);
+				},
+				removeEventListener() {},
+			}) as unknown as MediaQueryList) as typeof window.matchMedia;
+		window.localStorage.setItem(HUB_THEME_STORAGE_KEY, "system");
+
+		const seen: string[] = [];
+		const stop = watchSystemHubTheme((theme) => seen.push(theme));
+		system = "dark";
+		for (const fn of listeners) fn();
+		stop();
+
+		expect(seen).toEqual(["dark"]);
+		expect(document.documentElement.classList.contains("dark")).toBe(true);
+	});
+
+	it("stops following once the user picks a concrete theme", () => {
+		let system: "light" | "dark" | null = "light";
+		const listeners: (() => void)[] = [];
+		window.matchMedia = ((query: string) =>
+			({
+				get matches() {
+					return (
+						system !== null && query === `(prefers-color-scheme: ${system})`
+					);
+				},
+				media: query,
+				addEventListener(_: string, fn: () => void) {
+					listeners.push(fn);
+				},
+				removeEventListener() {},
+			}) as unknown as MediaQueryList) as typeof window.matchMedia;
+		window.localStorage.setItem(HUB_THEME_STORAGE_KEY, "light");
+
+		const seen: string[] = [];
+		watchSystemHubTheme((theme) => seen.push(theme));
+		system = "dark";
+		for (const fn of listeners) fn();
+
+		expect(seen).toEqual([]);
+		expect(document.documentElement.classList.contains("dark")).toBe(false);
 	});
 });
 

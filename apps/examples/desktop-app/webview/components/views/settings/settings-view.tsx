@@ -10,6 +10,13 @@ import {
 	DialogHeader,
 	DialogTitle,
 } from "@/components/ui/dialog";
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "@/components/ui/select";
 import { Slider } from "@/components/ui/slider";
 import {
 	DEFAULT_APP_FONT_SIZE,
@@ -52,11 +59,13 @@ import type {
 import {
 	type HubAccent,
 	type HubTheme,
+	type HubThemePreference,
 	readStoredHubAccent,
-	readStoredHubTheme,
+	readStoredHubThemePreference,
 	readSystemHubTheme,
 	setStoredHubAccent,
-	setStoredHubTheme,
+	setStoredHubThemePreference,
+	watchSystemHubTheme,
 } from "@/lib/theme";
 import { cn } from "@/lib/utils";
 import { MarketplaceExplorerView } from "../marketplace-explorer-view";
@@ -679,10 +688,24 @@ function GeneralSettingsContent({
 	onOpenModelProviders: () => void;
 	onExportDiagnostics: () => void;
 }) {
+	const [themePreference, setThemePreference] =
+		useState<HubThemePreference>(() => {
+			if (typeof window === "undefined") return "system";
+			// 无偏好等同于「跟随系统」，与旧行为（只看系统）保持一致
+			return readStoredHubThemePreference() ?? "system";
+		});
+	// 实际生效的深浅色。偏好为 system 时跟随系统实时变化，
+	// 因此单独保存一份状态，供 UI 显示「当前生效：深色/浅色」。
 	const [theme, setTheme] = useState<HubTheme>(() => {
 		if (typeof window === "undefined") return "light";
-		return readStoredHubTheme() ?? readSystemHubTheme();
+		return readSystemHubTheme();
 	});
+
+	// 偏好切到「跟随系统」后，监听系统变化以更新生效值
+	useEffect(() => {
+		if (themePreference !== "system") return;
+		return watchSystemHubTheme((next) => setTheme(next));
+	}, [themePreference]);
 	const [accent, setAccent] = useState<HubAccent>(() => {
 		if (typeof window === "undefined") return "violet";
 		return readStoredHubAccent();
@@ -917,9 +940,9 @@ function GeneralSettingsContent({
 		}
 	};
 
-	const updateTheme = (darkModeEnabled: boolean) => {
-		const nextTheme = darkModeEnabled ? "dark" : "light";
-		setTheme(setStoredHubTheme(nextTheme));
+	const updateThemePreference = (nextPreference: HubThemePreference) => {
+		setThemePreference(nextPreference);
+		setTheme(setStoredHubThemePreference(nextPreference));
 	};
 
 	const updateAccent = (nextAccent: HubAccent) => {
@@ -970,16 +993,31 @@ function GeneralSettingsContent({
 				<NotificationSettings />
 				<div className="flex py-4 items-center justify-between gap-5 border-b max-[720px]:flex-col max-[720px]:items-stretch max-[720px]:py-4">
 					<div className="flex flex-col gap-1">
-						<p className="text-base font-semibold text-foreground">深色模式</p>
+						<p className="text-base font-semibold text-foreground">主题外观</p>
 						<p className="text-sm text-muted-foreground">
-							在此浏览器中让桌面界面保持深色模式。
+							{themePreference === "system"
+								? `跟随系统（当前为${theme === "dark" ? "深色" : "浅色"}）`
+								: "固定使用所选外观，不再随系统变化。"}
 						</p>
 					</div>
-					<Switch
-						aria-label="深色模式"
-						checked={theme === "dark"}
-						onCheckedChange={updateTheme}
-					/>
+					<Select
+						onValueChange={(value) =>
+							updateThemePreference(value as HubThemePreference)
+						}
+						value={themePreference}
+					>
+						<SelectTrigger
+							aria-label="主题外观"
+							className="w-40 shrink-0"
+						>
+							<SelectValue placeholder="选择主题" />
+						</SelectTrigger>
+						<SelectContent align="end">
+							<SelectItem value="system">跟随系统</SelectItem>
+							<SelectItem value="light">浅色</SelectItem>
+							<SelectItem value="dark">深色</SelectItem>
+						</SelectContent>
+					</Select>
 				</div>
 				<div className="flex items-center justify-between gap-5 border-b py-4 max-[720px]:flex-col max-[720px]:items-stretch">
 					<div className="flex flex-col gap-1">
