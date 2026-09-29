@@ -48,9 +48,9 @@ describe("read_files summaries", () => {
 			toolName: "read_files",
 			input: { files: [{ path: "src/app.tsx", start_line: 10, end_line: 80 }] },
 		});
-		expect(summary.label).toBe("Read file app.tsx (10–80)");
+		expect(summary.label).toBe("已读取 file app.tsx (10–80)");
 		expect(summary.labelParts).toEqual([
-			{ text: "Read file " },
+			{ text: "已读取 file " },
 			{ text: "app.tsx (10–80)", code: true },
 		]);
 		expect(summary.kind).toBe("read");
@@ -72,7 +72,7 @@ describe("read_files summaries", () => {
 			toolName: "read_files",
 			input: { files: [{ path: "a.ts", start_line: 100 }] },
 		});
-		expect(summary.label).toBe("Read file a.ts (100+)");
+		expect(summary.label).toBe("已读取 file a.ts (100+)");
 		expect(summary.details).toEqual(["a.ts:100+"]);
 	});
 
@@ -82,7 +82,7 @@ describe("read_files summaries", () => {
 			input: { file_paths: ["src/a.ts", "src/b.ts", "src/c.ts"] },
 			inProgress: true,
 		});
-		expect(summary.label).toBe("Reading 3 files");
+		expect(summary.label).toBe("正在读取 3 files");
 		expect(summary.details).toEqual(["src/a.ts", "src/b.ts", "src/c.ts"]);
 		expect(summary.aggregate?.count).toBe(3);
 	});
@@ -91,13 +91,13 @@ describe("read_files summaries", () => {
 		expect(
 			buildToolSummary({ toolName: "read_files", input: { paths: ["x.go"] } })
 				.label,
-		).toBe("Read file x.go");
+		).toBe("已读取 file x.go");
 		expect(
 			buildToolSummary({
 				toolName: "read_files",
 				input: '{"file_paths":["y.rs"]}',
 			}).label,
-		).toBe("Read file y.rs");
+		).toBe("已读取 file y.rs");
 	});
 
 	it("shortens long paths in details but keeps basenames in labels", () => {
@@ -107,7 +107,7 @@ describe("read_files summaries", () => {
 			toolName: "read_files",
 			input: { file_paths: [longPath] },
 		});
-		expect(summary.label).toBe("Read file chat-messages.tsx");
+		expect(summary.label).toBe("已读取 file chat-messages.tsx");
 		expect(summary.details[0]).toBe(shortenPath(longPath));
 		expect(summary.details[0].startsWith(".../")).toBe(true);
 	});
@@ -119,9 +119,9 @@ describe("run_commands summaries", () => {
 			toolName: "run_commands",
 			input: { commands: ["bun run test"] },
 		});
-		expect(summary.label).toBe("Ran command bun run test");
+		expect(summary.label).toBe("已运行 command bun run test");
 		expect(summary.labelParts).toEqual([
-			{ text: "Ran command " },
+			{ text: "已运行 command " },
 			{ text: "bun run test", code: true },
 		]);
 		expect(summary.items).toEqual([
@@ -138,7 +138,7 @@ describe("run_commands summaries", () => {
 			toolName: "run_commands",
 			input: { commands: [command] },
 		});
-		expect(summary.label).toBe(`Ran command ${command}`);
+		expect(summary.label).toBe(`已运行 command ${command}`);
 	});
 
 	it("applies maxInlineChars only when a consumer opts in", () => {
@@ -150,7 +150,7 @@ describe("run_commands summaries", () => {
 			{ maxInlineChars: 60 },
 		);
 		expect(summary.label.length).toBeLessThanOrEqual(
-			"Ran command ".length + 60,
+			"已运行 command ".length + 60,
 		);
 		expect(summary.label.endsWith("…")).toBe(true);
 		expect(summary.details[0]).toBe(`echo ${"x".repeat(400)}`);
@@ -185,7 +185,7 @@ describe("run_commands summaries", () => {
 			},
 			inProgress: true,
 		});
-		expect(summary.label).toBe("Running 2 commands");
+		expect(summary.label).toBe("正在运行 2 commands");
 		expect(summary.details).toEqual(["ls -la", "git status -sb"]);
 	});
 
@@ -205,7 +205,7 @@ describe("search / web summaries", () => {
 			toolName: "search_codebase",
 			input: { queries: ["ToolActivityTrigger"] },
 		});
-		expect(summary.label).toBe("Searched ToolActivityTrigger");
+		expect(summary.label).toBe("已搜索 ToolActivityTrigger");
 	});
 
 	it("aggregates multiple queries", () => {
@@ -213,7 +213,7 @@ describe("search / web summaries", () => {
 			toolName: "search_codebase",
 			input: { queries: ["a", "b"] },
 		});
-		expect(summary.label).toBe("Explored 2 searches");
+		expect(summary.label).toBe("已探查 2 searches");
 		expect(summary.details).toEqual(["a", "b"]);
 	});
 
@@ -223,7 +223,7 @@ describe("search / web summaries", () => {
 				toolName: "fetch_web_content",
 				input: { requests: [{ url: "https://cline.bot" }] },
 			}).label,
-		).toBe("Fetched https://cline.bot");
+		).toBe("已获取 https://cline.bot");
 		expect(
 			buildToolSummary({
 				toolName: "web_fetch",
@@ -231,7 +231,7 @@ describe("search / web summaries", () => {
 					requests: [{ url: "https://a.dev" }, { url: "https://b.dev" }],
 				},
 			}).label,
-		).toBe("Explored 2 links");
+		).toBe("已探查 2 links");
 	});
 });
 
@@ -245,7 +245,7 @@ describe("editor summaries", () => {
 				new_text: "const a = 1;\nconst b = 3;\nconst c = 4;",
 			},
 		});
-		expect(summary.label).toBe("Edited file util.ts");
+		expect(summary.label).toBe("已编辑文件 util.ts");
 		// The expanded panel leads with the fuller path, like read rows.
 		expect(summary.details).toEqual(["src/util.ts"]);
 		expect(summary.diff).toEqual({ additions: 2, deletions: 1 });
@@ -284,7 +284,7 @@ describe("editor summaries", () => {
 			toolName: "editor",
 			input: { path: "new.py", new_text: "print(1)\nprint(2)" },
 		});
-		expect(summary.label).toBe("Created file new.py");
+		expect(summary.label).toBe("已创建文件 new.py");
 		expect(summary.diff).toEqual({ additions: 2, deletions: 0 });
 	});
 
@@ -307,7 +307,7 @@ describe("editor summaries", () => {
 			input: { path: "a.ts", old_text: "x", new_text: "y" },
 			inProgress: true,
 		});
-		expect(summary.label).toBe("Editing file a.ts");
+		expect(summary.label).toBe("正在编辑文件 a.ts");
 	});
 
 	it("falls back to +N:/-N: counts from the result", () => {
@@ -316,7 +316,7 @@ describe("editor summaries", () => {
 			input: { path: "a.ts" },
 			result: { result: "+12: added line\n-13: removed line\n+14: another" },
 		});
-		expect(summary.label).toBe("Edited file a.ts");
+		expect(summary.label).toBe("已编辑文件 a.ts");
 		expect(summary.diff).toEqual({ additions: 2, deletions: 1 });
 	});
 });
@@ -401,7 +401,7 @@ describe("apply_patch summaries", () => {
 			"*** End Patch",
 		].join("\n");
 		const summary = buildToolSummary({ toolName: "apply_patch", input: patch });
-		expect(summary.label).toBe("Deleted file gone.ts");
+		expect(summary.label).toBe("已删除文件 gone.ts");
 		expect(summary.details).toEqual(["Deleted src/gone.ts"]);
 		const item = summary.items[0];
 		if (item.type === "file") {
@@ -421,7 +421,7 @@ describe("apply_patch summaries", () => {
 			toolName: "apply_patch",
 			input: rename,
 		});
-		expect(renamed.label).toBe("Edited file old-name.ts → new-name.ts");
+		expect(renamed.label).toBe("已编辑文件 old-name.ts → new-name.ts");
 		expect(renamed.details).toEqual([
 			"src/old-name.ts → src/new-name.ts +1 -1",
 		]);
@@ -429,7 +429,7 @@ describe("apply_patch summaries", () => {
 
 	it("labels multi-file patches with counts and per-file details", () => {
 		const summary = buildToolSummary({ toolName: "apply_patch", input: patch });
-		expect(summary.label).toBe("Edited 2 files");
+		expect(summary.label).toBe("已编辑 2 files");
 		expect(summary.diff).toEqual({ additions: 3, deletions: 1 });
 		expect(summary.details).toEqual(["src/one.ts +2 -1", "src/two.ts +1 -0"]);
 	});
@@ -443,12 +443,12 @@ describe("apply_patch summaries", () => {
 		].join("\n");
 		expect(
 			buildToolSummary({ toolName: "apply_patch", input: single }).label,
-		).toBe("Edited file only.ts");
+		).toBe("已编辑文件 only.ts");
 	});
 
 	it("degrades to a generic label when the envelope is unparsable", () => {
 		const summary = buildToolSummary({ toolName: "apply_patch", input: 42 });
-		expect(summary.label).toBe("Applied patch");
+		expect(summary.label).toBe("已应用补丁");
 	});
 });
 
@@ -458,7 +458,7 @@ describe("spawn / skill / question summaries", () => {
 			toolName: "spawn_agent",
 			input: { task: "Fix the login bug in auth flow" },
 		});
-		expect(summary.label).toBe("Spawned agent: Fix the login bug in auth flow");
+		expect(summary.label).toBe("已创建 agent: Fix the login bug in auth flow");
 		expect(summary.details).toEqual(["Fix the login bug in auth flow"]);
 	});
 
@@ -506,14 +506,14 @@ describe("team summaries", () => {
 describe("fallbacks", () => {
 	it("labels input-less events by kind", () => {
 		expect(buildToolSummary({ toolName: "read_files" }).label).toBe(
-			"Read file",
+			"已读取文件",
 		);
 		expect(
 			buildToolSummary({ toolName: "run_commands", inProgress: true }).label,
-		).toBe("Running command");
-		expect(buildToolSummary({ toolName: "editor" }).label).toBe("Edited file");
+		).toBe("正在运行命令");
+		expect(buildToolSummary({ toolName: "editor" }).label).toBe("已编辑文件");
 		expect(buildToolSummary({ toolName: "search_codebase" }).label).toBe(
-			"Searched",
+			"已搜索",
 		);
 	});
 
@@ -575,7 +575,7 @@ describe("buildGroupedToolLabel", () => {
 			}),
 		];
 		expect(buildGroupedToolLabel(summaries)).toBe(
-			"Read 3 files · Ran 1 command",
+			"已读取 3 files · 已运行 1 command",
 		);
 	});
 
@@ -584,7 +584,7 @@ describe("buildGroupedToolLabel", () => {
 			toolName: "read_files",
 			input: { files: [{ path: "a.ts", start_line: 1, end_line: 5 }] },
 		});
-		expect(buildGroupedToolLabel([summary])).toBe("Read file a.ts (1–5)");
+		expect(buildGroupedToolLabel([summary])).toBe("已读取 file a.ts (1–5)");
 	});
 
 	it("merges input-less fallback summaries into grouped counts", () => {
@@ -595,7 +595,7 @@ describe("buildGroupedToolLabel", () => {
 				result: { text: "Done" },
 			}),
 		);
-		expect(buildGroupedToolLabel(spawns)).toBe("Spawned 3 agents");
+		expect(buildGroupedToolLabel(spawns)).toBe("已创建 3 agents");
 	});
 
 	it("uses progress verbs when any merged call is in progress", () => {
@@ -610,7 +610,7 @@ describe("buildGroupedToolLabel", () => {
 			}),
 			inProgress: true,
 		};
-		expect(buildGroupedToolLabel([done, running])).toBe("Reading 2 files");
+		expect(buildGroupedToolLabel([done, running])).toBe("正在读取 2 files");
 	});
 });
 
