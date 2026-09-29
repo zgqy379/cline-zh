@@ -32,7 +32,7 @@ export function ModelIdInput({
 				>
 					<span className="font-mono">{model}</span>
 					<Button
-						aria-label={`Remove ${model}`}
+						aria-label={`移除 ${model}`}
 						className="text-foreground hover:text-foreground"
 						disabled={disabled}
 						onClick={() => onChange(models.filter((entry) => entry !== model))}

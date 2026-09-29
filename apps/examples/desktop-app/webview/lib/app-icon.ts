@@ -8,10 +8,10 @@ export const APP_ICON_STORAGE_KEY = "cline.code.app-icon.v1";
  * browser favicon) and src-tauri/icons/app (runtime app icon resources).
  */
 export const APP_ICONS = [
-	{ id: "classic", label: "Classic" },
-	{ id: "midnight", label: "Midnight" },
-	{ id: "hologram", label: "Hologram" },
-	{ id: "chip", label: "Chip" },
+	{ id: "classic", label: "经典" },
+	{ id: "midnight", label: "午夜" },
+	{ id: "hologram", label: "全息" },
+	{ id: "chip", label: "芯片" },
 ] as const;
 
 export type AppIconId = (typeof APP_ICONS)[number]["id"];

@@ -29,7 +29,7 @@ async function tryTauriInvoke<T>(
 		return await invoke<T>(command, args);
 	} catch (error) {
 		const message = error instanceof Error ? error.message : String(error);
-		throw new Error(`Tauri invoke failed for ${command}: ${message}`);
+		throw new Error(`Tauri 调用 ${command} 失败：${message}`);
 	}
 }
 
@@ -71,7 +71,7 @@ export async function resolveDesktopBackendWsEndpoint(): Promise<string> {
 			resolvedEndpointCache = trimmed;
 			return resolvedEndpointCache;
 		}
-		throw new Error("Tauri returned an empty desktop backend endpoint");
+		throw new Error("Tauri 返回了空的桌面后端端点");
 	}
 
 	// 3. Env override, then default sidecar port for local dev mode without
@@ -447,7 +447,7 @@ class DesktopClient {
 			return;
 		}
 		if (!response.ok) {
-			pending.reject(new Error(response.error || "Desktop command failed"));
+			pending.reject(new Error(response.error || "桌面命令执行失败"));
 			return;
 		}
 		pending.resolve(response.result);
