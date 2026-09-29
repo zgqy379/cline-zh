@@ -30,7 +30,7 @@ export function AgentCommandOutput({
 	return (
 		<div className="mt-2 space-y-1">
 			<div className="text-[11px] uppercase tracking-wide text-cline-ui-muted-foreground/80">
-				Output
+				输出
 			</div>
 			<div
 				aria-label="命令输出"

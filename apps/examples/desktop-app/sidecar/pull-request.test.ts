@@ -188,7 +188,7 @@ describe("pull request status", () => {
 		await expect(
 			createPullRequestStatusReader({ run })("/repo"),
 		).rejects.toThrow(
-			"Could not load pull request status. Check your connection and try again.",
+			"无法加载拉取请求状态。请检查网络连接后重试。",
 		);
 	});
 
@@ -236,17 +236,17 @@ describe("check and merge states", () => {
 		const value = result!.pullRequest!;
 		expect(
 			getMergeStatus({ ...value, mergeStateStatus: "BLOCKED" }).label,
-		).toBe("Blocked");
-		expect(getMergeStatus({ ...value, isDraft: true }).label).toBe("Draft");
+		).toBe("已阻塞");
+		expect(getMergeStatus({ ...value, isDraft: true }).label).toBe("草稿");
 		expect(
 			getMergeStatus({
 				...value,
 				mergeable: "UNKNOWN",
 				mergeStateStatus: "UNKNOWN",
 			}).label,
-		).toBe("Merge status pending");
+		).toBe("合并状态待定");
 		expect(getMergeStatus({ ...value, mergeable: "CONFLICTING" }).label).toBe(
-			"Conflicts",
+			"存在冲突",
 		);
 	});
 });
