@@ -136,7 +136,7 @@ export const ROUTINE_TEMPLATES: RoutineTemplate[] = [
 		description:
 			"排查近期提交中躲过评审的高危缺陷，并修复有明确触发路径的问题。",
 		icon: Bug,
-		name: "Find critical bugs",
+		name: "查找严重缺陷",
 		prompt: FIND_CRITICAL_BUGS_PROMPT,
 		scheduleType: "daily",
 		scheduleDays: ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"],
@@ -149,7 +149,7 @@ export const ROUTINE_TEMPLATES: RoutineTemplate[] = [
 		description:
 			"审计代码库中具备完整可利用攻击路径的安全问题。",
 		icon: ShieldAlert,
-		name: "Security scan",
+		name: "扫描安全漏洞",
 		prompt: SECURITY_SCAN_PROMPT,
 		scheduleType: "weekly",
 		scheduleDays: ["MON"],
@@ -162,7 +162,7 @@ export const ROUTINE_TEMPLATES: RoutineTemplate[] = [
 		description:
 			"汇总过去 24 小时的所有变更，并附上值得关注的风险。",
 		icon: Newspaper,
-		name: "Daily change digest",
+		name: "每日汇总变更",
 		prompt: DAILY_DIGEST_PROMPT,
 		scheduleType: "daily",
 		scheduleDays: ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"],
@@ -175,7 +175,7 @@ export const ROUTINE_TEMPLATES: RoutineTemplate[] = [
 		description:
 			"在代码与文档出现偏差时更新文档，并对照源码核实。",
 		icon: BookOpen,
-		name: "Update docs",
+		name: "保持文档同步",
 		prompt: UPDATE_DOCS_PROMPT,
 		scheduleType: "weekly",
 		scheduleDays: ["FRI"],
