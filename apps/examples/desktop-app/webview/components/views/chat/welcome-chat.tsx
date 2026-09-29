@@ -418,7 +418,7 @@ export function WelcomeScreen({
 								/>
 								{signInError ? (
 									<p className="mt-2 text-xs text-destructive">
-										Sign in failed: {signInError}
+										登录失败：{signInError}
 									</p>
 								) : null}
 							</div>

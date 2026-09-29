@@ -234,7 +234,7 @@ describe("DesktopClient command deadlines", () => {
 		const invocation = desktopClient.invoke("get_process_context");
 		await connectLatestSocket();
 		const rejection = expect(invocation).rejects.toThrow(
-			"Desktop command timed out waiting for get_process_context",
+			"等待桌面命令 get_process_context 响应超时",
 		);
 
 		await vi.advanceTimersByTimeAsync(120_000);
