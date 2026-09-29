@@ -15,12 +15,21 @@ export type TeamSummaryResult = {
 	aggregate?: ToolAggregate;
 };
 
+/**
+ * `${count} ${noun}`。
+ *
+ * ⚠️ 中文名词没有复数变化，原实现默认给 plural 加 "s"，
+ *    导致「2 文件s」这种错误输出。这里在名词含中日韩字符时
+ *    跳过复数后缀，直接复用原词。
+ */
 export function pluralize(
 	count: number,
 	singular: string,
 	plural = `${singular}s`,
 ): string {
-	return `${count} ${count === 1 ? singular : plural}`;
+	const hasCjk = /[㐀-鿿぀-ヿ]/.test(singular);
+	const noun = count === 1 || hasCjk ? singular : plural;
+	return `${count} ${noun}`;
 }
 
 function asRecord(value: unknown): Record<string, unknown> | null {

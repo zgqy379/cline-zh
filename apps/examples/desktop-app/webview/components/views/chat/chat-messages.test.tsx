@@ -537,9 +537,9 @@ describe("ChatMessages tool disclosures", () => {
 		// One row per call — the multi-file read keeps its own count, and each
 		// edit stands alone; nothing merges across calls.
 		expect(container.querySelectorAll(".cline-chat-tool")).toHaveLength(5);
-		expect(container.textContent).toContain("Read 2 files");
+		expect(container.textContent).toContain("已读取 2 文件");
 		for (const path of ["one.ts", "two.ts", "three.ts", "four.ts"]) {
-			expect(container.textContent).toContain(`Edited file ${path}`);
+			expect(container.textContent).toContain(`已编辑文件 ${path}`);
 		}
 		expect(container.textContent).not.toContain("·");
 	});
