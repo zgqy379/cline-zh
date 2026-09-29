@@ -328,7 +328,7 @@ function MarkdownImage({ alt, height, src, title, width }: MarkdownImageProps) {
 
 	return (
 		<span data-streamdown="blocked-image" role="note">
-			External image blocked for privacy{label ? `: ${label}` : ""}
+			出于隐私已拦截外部图片{label ? `：${label}` : ""}
 		</span>
 	);
 }

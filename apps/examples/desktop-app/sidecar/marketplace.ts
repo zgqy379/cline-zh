@@ -359,7 +359,7 @@ function normalizeTransport(value: string | undefined): string {
 		return normalized;
 	}
 	throw new Error(
-		`Unsupported MCP transport "${normalized}". Expected stdio, sse, http, streamable-http, or streamableHttp.`,
+		`不支持的 MCP 传输类型“${normalized}”。可选值：stdio、sse、http、streamable-http、streamableHttp。`,
 	);
 }
 
@@ -393,7 +393,7 @@ export function buildMarketplaceMcpInput(args: string[]): JsonRecord {
 		}
 		if (parsingMarketplaceOptions && (arg === "--transport" || arg === "-t")) {
 			const next = rest[index + 1]?.trim();
-			if (!next) throw new Error("--transport requires a value");
+			if (!next) throw new Error("--transport 需要提供一个值");
 			transportType = normalizeTransport(next);
 			index++;
 			continue;
@@ -481,12 +481,12 @@ function resolveUserInstructionRemovalTarget(input: {
 	);
 	if (!containingRoot) {
 		throw new Error(
-			`${input.type} uninstall requires a file inside a configured ${input.type} directory.`,
+			`卸载 ${input.type} 需要指定位于已配置的 ${input.type} 目录内的文件。`,
 		);
 	}
 	const stats = statSync(filePath, { throwIfNoEntry: false });
 	if (!stats?.isFile()) {
-		throw new Error(`${input.type} file does not exist: ${filePath}`);
+		throw new Error(`${input.type} 文件不存在：${filePath}`);
 	}
 	if (input.type === "workflow") {
 		return filePath;
@@ -527,7 +527,7 @@ export async function uninstallLocalPrimitive(
 	}
 	if (input.type === "skill" || input.type === "workflow") {
 		if (!input.path) {
-			throw new Error(`${input.type} uninstall requires a path.`);
+			throw new Error(`卸载 ${input.type} 需要提供路径。`);
 		}
 		const target = resolveUserInstructionRemovalTarget({
 			type: input.type,
@@ -536,7 +536,7 @@ export async function uninstallLocalPrimitive(
 		});
 		const stats = statSync(target, { throwIfNoEntry: false });
 		if (!stats) {
-			throw new Error(`${input.type} target does not exist: ${target}`);
+			throw new Error(`${input.type} 目标不存在：${target}`);
 		}
 		rmSync(target, { recursive: stats.isDirectory(), force: true });
 		return {
