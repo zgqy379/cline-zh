@@ -525,7 +525,7 @@ fn spawn_desktop_backend_process(context: &AppContext) -> Result<Child, String> 
         command
     } else {
         return Err(format!(
-            "desktop backend sidecar not found. checked binary/script under workspace_root={} and launch_cwd={}",
+            "未找到桌面端 sidecar。已在 workspace_root={} 与 launch_cwd={} 下查找过二进制与脚本。",
             context.workspace_root, context.launch_cwd
         ));
     };
@@ -537,7 +537,7 @@ fn spawn_desktop_backend_process(context: &AppContext) -> Result<Child, String> 
     hide_console_window(&mut command);
     command
         .spawn()
-        .map_err(|e| format!("failed to start desktop backend sidecar: {e}"))
+        .map_err(|e| format!("启动桌面端 sidecar 失败：{e}"))
 }
 
 fn ensure_desktop_backend_started(
@@ -562,7 +562,7 @@ fn ensure_desktop_backend_started_with(
     let process_guard = state
         .process
         .lock()
-        .map_err(|_| "failed to lock desktop backend process state")?;
+        .map_err(|_| "无法锁定桌面后端进程状态".to_string())?;
     ensure_desktop_backend_started_locked(state, process_guard, spawn_backend)
 }
 
@@ -600,11 +600,11 @@ fn ensure_desktop_backend_started_locked(
     let stdout = child
         .stdout
         .take()
-        .ok_or_else(|| "failed to capture desktop backend stdout".to_string())?;
+        .ok_or_else(|| "无法获取桌面后端的标准输出".to_string())?;
     let stderr = child
         .stderr
         .take()
-        .ok_or_else(|| "failed to capture desktop backend stderr".to_string())?;
+        .ok_or_else(|| "无法获取桌面后端的标准错误输出".to_string())?;
 
     let child_pid = child.id();
     let state_for_stdout = state.clone();
@@ -678,7 +678,7 @@ fn resolve_mcp_settings_path() -> Result<PathBuf, String> {
     // homedir() resolves there); HOME is usually unset on Windows.
     let home = std::env::var("HOME")
         .or_else(|_| std::env::var("USERPROFILE"))
-        .map_err(|_| "neither HOME nor USERPROFILE is set".to_string())?;
+        .map_err(|_| "未设置 HOME 或 USERPROFILE 环境变量".to_string())?;
     Ok(PathBuf::from(home)
         .join(".cline")
         .join("data")
@@ -692,11 +692,11 @@ fn open_path_with_default_app(path: &Path) -> Result<(), String> {
         let status = Command::new("open")
             .arg(path)
             .status()
-            .map_err(|e| format!("failed to open path: {e}"))?;
+            .map_err(|e| format!("打开路径失败：{e}"))?;
         if status.success() {
             return Ok(());
         }
-        return Err(format!("open command exited with status {status}"));
+        return Err(format!("open 命令以状态码 {status} 退出"));
     }
 
     #[cfg(target_os = "windows")]
@@ -705,13 +705,11 @@ fn open_path_with_default_app(path: &Path) -> Result<(), String> {
         let mut command = Command::new("cmd");
         command.args(["/C", "start", "", &path_arg]);
         hide_console_window(&mut command);
-        let status = command
-            .status()
-            .map_err(|e| format!("failed to open path: {e}"))?;
+        let status = command.status().map_err(|e| format!("打开路径失败：{e}"))?;
         if status.success() {
             return Ok(());
         }
-        return Err(format!("start command exited with status {status}"));
+        return Err(format!("start 命令以状态码 {status} 退出"));
     }
 
     #[cfg(all(unix, not(target_os = "macos")))]
@@ -719,15 +717,15 @@ fn open_path_with_default_app(path: &Path) -> Result<(), String> {
         let status = Command::new("xdg-open")
             .arg(path)
             .status()
-            .map_err(|e| format!("failed to open path: {e}"))?;
+            .map_err(|e| format!("打开路径失败：{e}"))?;
         if status.success() {
             return Ok(());
         }
-        return Err(format!("xdg-open command exited with status {status}"));
+        return Err(format!("xdg-open 命令以状态码 {status} 退出"));
     }
 
     #[allow(unreachable_code)]
-    Err("opening files is not supported on this platform".to_string())
+    Err("当前平台不支持打开文件".to_string())
 }
 
 /// How long one `get_desktop_backend_endpoint` call waits for the sidecar's
@@ -763,7 +761,7 @@ fn wait_for_desktop_backend_endpoint(
     let mut last_respawn: Option<Instant> = None;
     loop {
         if state.is_shutting_down() {
-            return Err("desktop backend is shutting down".to_string());
+            return Err("桌面后端正在关闭".to_string());
         }
         if let Some(endpoint) = state
             .ws_endpoint
@@ -794,7 +792,7 @@ fn wait_for_desktop_backend_endpoint(
             respawn()?;
         }
         if Instant::now() >= deadline {
-            return Err("desktop backend endpoint not ready".to_string());
+            return Err("桌面后端端点未就绪".to_string());
         }
         thread::sleep(poll_interval);
     }
@@ -821,7 +819,7 @@ async fn get_desktop_backend_endpoint(
         )
     })
     .await
-    .map_err(|error| format!("desktop backend startup task failed: {error}"))?
+    .map_err(|error| format!("桌面后端启动任务失败：{error}"))?
 }
 
 #[tauri::command]
@@ -1047,17 +1045,15 @@ fn open_mcp_settings_file() -> Result<String, String> {
     let settings_path = resolve_mcp_settings_path()?;
     if !settings_path.exists() {
         if let Some(parent) = settings_path.parent() {
-            fs::create_dir_all(parent)
-                .map_err(|e| format!("failed creating MCP settings directory: {e}"))?;
+            fs::create_dir_all(parent).map_err(|e| format!("创建 MCP 设置目录失败：{e}"))?;
         }
         let initial = serde_json::json!({
             "mcpServers": {}
         });
-        let mut body = serde_json::to_vec_pretty(&initial)
-            .map_err(|e| format!("failed encoding MCP settings: {e}"))?;
+        let mut body =
+            serde_json::to_vec_pretty(&initial).map_err(|e| format!("序列化 MCP 设置失败：{e}"))?;
         body.push(b'\n');
-        fs::write(&settings_path, body)
-            .map_err(|e| format!("failed writing MCP settings file: {e}"))?;
+        fs::write(&settings_path, body).map_err(|e| format!("写入 MCP 设置文件失败：{e}"))?;
     }
     open_path_with_default_app(&settings_path)?;
     Ok(settings_path.to_string_lossy().to_string())
@@ -1172,7 +1168,7 @@ fn show_session_notification(
     let body = body.trim();
     let session_id = session_id.trim();
     if title.is_empty() || body.is_empty() || session_id.is_empty() {
-        return Err("notification title, body, and session ID are required".to_string());
+        return Err("通知的标题、正文和会话 ID 为必填项".to_string());
     }
 
     let mut notification = notify_rust::Notification::new();
@@ -1180,7 +1176,7 @@ fn show_session_notification(
         .summary(title)
         .body(body)
         .auto_icon()
-        .action("open-session", "Open");
+        .action("open-session", "打开");
     if let Some(sound) = sound
         .as_deref()
         .map(str::trim)
@@ -1729,10 +1725,7 @@ mod tests {
         };
 
         assert_eq!(tray_status_text(&status("idle"), true), "状态：运行正常");
-        assert_eq!(
-            tray_status_text(&status("idle"), false),
-            "状态：Hub 已断开"
-        );
+        assert_eq!(tray_status_text(&status("idle"), false), "状态：Hub 已断开");
         assert_eq!(
             tray_status_text(&status("checking"), false),
             "状态：正在检查更新"
@@ -1760,24 +1753,21 @@ mod tests {
         };
 
         let idle = status("idle", None);
-        assert_eq!(update_menu_item_text(&idle), "Check for Updates...");
+        assert_eq!(update_menu_item_text(&idle), "检查更新…");
         assert!(update_menu_item_enabled(&idle));
         let failed = status("error", None);
-        assert_eq!(update_menu_item_text(&failed), "Check for Updates...");
+        assert_eq!(update_menu_item_text(&failed), "检查更新…");
         assert!(update_menu_item_enabled(&failed));
 
         let checking = status("checking", None);
-        assert_eq!(update_menu_item_text(&checking), "Checking for Updates...");
+        assert_eq!(update_menu_item_text(&checking), "正在检查更新…");
         assert!(!update_menu_item_enabled(&checking));
         let downloading = status("downloading", Some("1.2.3"));
-        assert_eq!(
-            update_menu_item_text(&downloading),
-            "Downloading Update v1.2.3..."
-        );
+        assert_eq!(update_menu_item_text(&downloading), "正在下载更新 v1.2.3…");
         assert!(!update_menu_item_enabled(&downloading));
 
         let ready = status("ready", Some("1.2.3"));
-        assert_eq!(update_menu_item_text(&ready), "Restart to Update to v1.2.3");
+        assert_eq!(update_menu_item_text(&ready), "重启以更新到 v1.2.3");
         assert!(update_menu_item_enabled(&ready));
     }
 
@@ -2018,10 +2008,7 @@ mod tests {
                 ensure_desktop_backend_started_with(&state, spawn_exiting_sidecar)
             },
         );
-        assert_eq!(
-            result,
-            Err("desktop backend endpoint not ready".to_string())
-        );
+        assert_eq!(result, Err("桌面后端端点未就绪".to_string()));
         // 400ms window with a 150ms backoff allows the initial respawn plus
         // at most a few paced ones — not one per 10ms poll tick.
         let respawns = respawn_count.load(Ordering::SeqCst);
@@ -2045,10 +2032,7 @@ mod tests {
             Duration::from_millis(100),
             || panic!("a live child must not be respawned"),
         );
-        assert_eq!(
-            result,
-            Err("desktop backend endpoint not ready".to_string())
-        );
+        assert_eq!(result, Err("桌面后端端点未就绪".to_string()));
 
         if let Ok(mut guard) = state.process.lock() {
             if let Some(child) = guard.as_mut() {
@@ -2070,7 +2054,7 @@ mod tests {
             Duration::from_millis(100),
             || panic!("shutdown must not respawn"),
         );
-        assert_eq!(result, Err("desktop backend is shutting down".to_string()));
+        assert_eq!(result, Err("桌面后端正在关闭".to_string()));
     }
 
     #[test]
