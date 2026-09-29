@@ -2168,7 +2168,7 @@ export async function handleChatSessionCommand(
 				if (!sessionId) throw new Error("sessionId 为必填项");
 				if (request.attachments?.userFiles?.length) {
 					throw new Error(
-						"File attachments are not supported in cloud sessions",
+						"云端会话不支持文件附件。",
 					);
 				}
 				const prompt = request.prompt?.trim() ?? "";

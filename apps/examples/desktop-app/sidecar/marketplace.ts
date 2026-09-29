@@ -110,7 +110,7 @@ export async function fetchMarketplaceCatalog(
 	});
 	if (!response.ok) {
 		throw new Error(
-			`Failed to fetch marketplace catalog: ${response.status} ${response.statusText}`.trim(),
+			`获取市场目录失败：${response.status} ${response.statusText}`.trim(),
 		);
 	}
 	return response.json();
@@ -681,7 +681,7 @@ function ensureGlobalSkillsDirWritable(): void {
 	} catch (error) {
 		const message = error instanceof Error ? error.message : String(error);
 		throw new Error(
-			`Cannot install skill globally because ~/.agents/skills is not writable: ${message}`,
+			`无法全局安装技能，因为 ~/.agents/skills 不可写：${message}`,
 		);
 	}
 }
@@ -792,7 +792,7 @@ async function installSkill(
 	if (result.exitCode !== 0) {
 		const output = commandOutput(result);
 		throw new Error(
-			`Skill install failed with exit code ${result.exitCode}${output ? `:\n${output}` : ""}`,
+			`技能安装失败，退出码 ${result.exitCode}${output ? `:\n${output}` : ""}`,
 		);
 	}
 	const output = commandOutput(result);
@@ -801,7 +801,7 @@ async function installSkill(
 	}
 	if (!isGlobalSkillInstalled(entry)) {
 		throw new Error(
-			`Skill install completed, but ${entry.name ?? entry.id} was not found in Cline's global skills directories.`,
+			`技能安装已完成，但在 Cline 的全局技能目录中未找到 ${entry.name ?? entry.id}。`,
 		);
 	}
 	return {
@@ -847,7 +847,7 @@ async function installPlugin(
 	});
 	const warnings = result.mcpSyncFailures.map(
 		(failure) =>
-			`Failed to sync plugin MCP servers for ${failure.pluginName ?? failure.pluginPath}: ${failure.message}`,
+			`同步插件的 MCP 服务器失败（${failure.pluginName ?? failure.pluginPath}）：${failure.message}`,
 	);
 	return {
 		id: entry.id,

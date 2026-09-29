@@ -499,10 +499,10 @@ function ChatInputBarImpl({
 		toast({
 			title: "当前模型不支持图片输入",
 			description:
-				"Choose a model that supports images or remove the images before sending." +
+				"请改为支持图片输入的模型，或先移除图片再发送。" +
 				(executionTarget === "cloud"
 					? ""
-					: " Other files can still be attached."),
+					: "其他文件仍可正常添加。"),
 		});
 	}, [executionTarget]);
 	const handleAttachFiles = useCallback(
@@ -515,7 +515,7 @@ function ChatInputBarImpl({
 				toast({
 					title: "云端不支持该附件",
 					description:
-						"Choose PNG, JPEG, GIF, or WebP images, or switch to Local to attach other files.",
+						"云端会话仅支持 PNG、JPEG、GIF、WebP 图片；如需添加其他文件，请切换到本地。",
 				});
 			}
 			const allowed = imagesUnsupported
@@ -569,7 +569,7 @@ function ChatInputBarImpl({
 			toast({
 				title: "请为附件补充一条消息",
 				description:
-					"Describe what you want Cline to do with the attached files before sending.",
+					"请先说明你希望 Cline 对这些附件做什么，再发送。",
 			});
 			return;
 		}
@@ -1142,7 +1142,7 @@ function ChatInputBarImpl({
 									))}
 									{slashLoading && (
 										<div className="px-3 py-1 text-[10px] text-muted-foreground">
-											Loading...
+											正在加载…
 										</div>
 									)}
 								</>
@@ -1181,7 +1181,7 @@ function ChatInputBarImpl({
 									))}
 									{mentionLoading && (
 										<div className="px-3 py-1 text-[10px] text-muted-foreground">
-											Updating...
+											正在更新…
 										</div>
 									)}
 								</>
@@ -1510,7 +1510,7 @@ function ChatInputBarImpl({
 							}}
 							type="button"
 						>
-							Plan
+							规划
 						</button>
 						<button
 							aria-pressed={mode === "act"}
@@ -1525,7 +1525,7 @@ function ChatInputBarImpl({
 							}}
 							type="button"
 						>
-							Act
+							执行
 						</button>
 					</div>
 					<div className="min-w-0 shrink-0">

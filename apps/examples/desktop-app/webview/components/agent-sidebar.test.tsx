@@ -1104,12 +1104,12 @@ describe("AgentSidebar session organization", () => {
 
 		const logoButton = container.querySelector('[aria-label="Cline 主页"]');
 		expect(logoButton).not.toBeNull();
-		expect(document.body.textContent).not.toContain("Version 1.2.3");
+		expect(document.body.textContent).not.toContain("版本 1.2.3");
 
 		await hover(logoButton as Element);
 
 		await vi.waitFor(() => {
-			expect(document.body.textContent).toContain("Version 1.2.3");
+			expect(document.body.textContent).toContain("版本 1.2.3");
 			expect(document.body.textContent).toContain("Cline Hub @25463");
 			expect(document.body.textContent).not.toContain(
 				"ws://127.0.0.1:25463/hub",

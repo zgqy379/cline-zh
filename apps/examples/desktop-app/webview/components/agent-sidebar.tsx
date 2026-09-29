@@ -708,8 +708,8 @@ export function AgentSidebar({
 			size="icon"
 			title={
 				sortMode === "time"
-					? "Sorted by time — click to group by project"
-					: "Grouped by project — click to sort by time"
+					? "按时间排序 — 点击改为按项目分组"
+					: "按项目分组 — 点击改为按时间排序"
 			}
 			variant="ghost"
 		>
@@ -890,7 +890,7 @@ export function AgentSidebar({
 									{productNameForVersion(appVersion)}
 								</p>
 								<p className="mt-0.5 text-xs text-muted-foreground">
-									{appVersion ? `Version ${appVersion}` : "Version unavailable"}
+									{appVersion ? `版本 ${appVersion}` : "版本信息不可用"}
 								</p>
 								<div className="mt-3 border-border border-t pt-3">
 									<div className="flex items-center gap-2 text-xs">

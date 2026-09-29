@@ -1943,7 +1943,7 @@ export async function handleCommand(
 					currentConnection.endpoint !== connection.endpoint
 				) {
 					throw new Error(
-						`Remote environment ${id} disconnected during initialization.`,
+						`远程环境 ${id} 在初始化过程中断开连接。`,
 					);
 				}
 			} catch (error) {
