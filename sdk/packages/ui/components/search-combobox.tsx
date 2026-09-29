@@ -87,7 +87,7 @@ export function SearchCombobox({
 	disabled = false,
 	emptyText = "无结果",
 	loading = false,
-	loadingText = "Loading…",
+	loadingText = "正在加载…",
 	onOpen,
 	onValueChange,
 	options,
@@ -364,7 +364,7 @@ export function SearchCombobox({
 
 			{open ? (
 				<div
-					aria-label={`Search ${ariaLabel.toLowerCase()}`}
+					aria-label={`搜索 ${ariaLabel.toLowerCase()}`}
 					className={[
 						"cline-ui-search-combobox__panel absolute z-50 overflow-hidden rounded-cline-ui-lg border border-cline-ui-border bg-cline-ui-popover shadow-xl",
 						`cline-ui-search-combobox__panel--${align}`,
