@@ -8,7 +8,7 @@ export type WorkIn = "local" | "worktree";
  * worktree, since deleting the session force-removes the worktree too.
  */
 export const TASK_WORKTREE_DELETE_WARNING =
-	"This session ran in its own git worktree. Deleting it also removes that worktree and its generated branch, including any uncommitted changes in it.";
+	"该会话在自己的 git 工作树中运行，删除它会同时移除该工作树及其生成的分支，包括其中尚未提交的改动。";
 
 /**
  * "Work in" only matters for the prompt that starts a brand-new thread;

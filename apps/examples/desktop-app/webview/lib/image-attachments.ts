@@ -7,16 +7,16 @@ import {
 export function cloudImageAttachmentError(
 	files: Pick<File, "size">[],
 ): string | undefined {
-	if (files.length > 5) return "Attach up to 5 images.";
+	if (files.length > 5) return "最多只能添加 5 张图片。";
 	const encodedSizes = files.map((file) => 4 * Math.ceil(file.size / 3));
 	if (encodedSizes.some((size) => size > DEFAULT_MAX_IMAGE_BASE64_BYTES)) {
-		return "Each image must be 3.75 MB or smaller.";
+		return "单张图片不得超过 3.75 MB。";
 	}
 	if (
 		encodedSizes.reduce((total, size) => total + size, 0) >
 		DEFAULT_MAX_TOTAL_MEDIA_BYTES
 	) {
-		return "Attachments must be 6 MB or smaller in total.";
+		return "附件总计不得超过 6 MB。";
 	}
 	return undefined;
 }

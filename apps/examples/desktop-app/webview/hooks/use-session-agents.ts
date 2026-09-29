@@ -142,7 +142,7 @@ export function useSessionAgents({
 					return;
 				}
 				const message =
-					err instanceof Error ? err.message : "Could not load agents.";
+					err instanceof Error ? err.message : "无法加载智能体。";
 				setRoster((prev) => ({
 					environmentId,
 					sessionId: targetSessionId,

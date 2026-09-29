@@ -211,7 +211,7 @@ export function resolveCredentialError(
 ): string | null {
 	if (config.executionTarget === "cloud") {
 		if (config.provider.trim().toLowerCase() !== "cline") {
-			return "Cloud sessions require the Cline provider.";
+			return "云端会话需要使用 Cline 供应商。";
 		}
 		// Sends into an existing cloud session need no repo URL — the sandbox
 		// was already provisioned with one.
@@ -220,18 +220,18 @@ export function resolveCredentialError(
 		}
 		const repoUrl = config.repoUrl?.trim() ?? "";
 		if (!repoUrl) {
-			return "Select a GitHub repository before starting a cloud session.";
+			return "开始云端会话前请先选择 GitHub 仓库。";
 		}
 		// The picker validates as-you-type, but config accepts any keystroke —
 		// re-validate here so a half-typed URL can't reach the create call.
 		if (!isGitHubRepositoryUrl(repoUrl)) {
-			return "Enter a valid HTTPS GitHub repository URL (https://github.com/owner/repo).";
+			return "请输入有效的 HTTPS GitHub 仓库地址（https://github.com/owner/repo）。";
 		}
 		return null;
 	}
 	const providerId = config.provider.trim().toLowerCase();
 	if (!providerId) {
-		return "Provider is required before starting a chat session.";
+		return "开始会话前必须先选择供应商。";
 	}
 	if (OAUTH_MANAGED_PROVIDERS.has(providerId)) {
 		return null;
@@ -247,7 +247,7 @@ export function resolveCredentialError(
 	if (config.apiKey.trim().length > 0) {
 		return null;
 	}
-	return `Missing API key for provider "${config.provider}". Add credentials in Settings, or switch providers.`;
+	return `供应商 "${config.provider}" 缺少 API key，请在设置中添加凭据，或改用其他供应商。`;
 }
 
 /**

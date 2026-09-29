@@ -123,15 +123,15 @@ export function normalizeRemoteEnvironmentProfile(
 export function validateRemoteEnvironmentProfile(
 	profile: RemoteEnvironmentProfile,
 ): string | undefined {
-	if (!profile.name.trim()) return "Name is required.";
-	if (!profile.host.trim()) return "SSH host is required.";
+	if (!profile.name.trim()) return "名称为必填项。";
+	if (!profile.host.trim()) return "SSH 主机为必填项。";
 	if (
 		profile.port !== undefined &&
 		(!Number.isInteger(profile.port) ||
 			profile.port < 1 ||
 			profile.port > 65_535)
 	) {
-		return "Port must be a whole number between 1 and 65535.";
+		return "端口必须是 1 到 65535 之间的整数。";
 	}
 	return undefined;
 }
