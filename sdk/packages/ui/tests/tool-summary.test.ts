@@ -82,7 +82,7 @@ describe("read_files summaries", () => {
 			input: { file_paths: ["src/a.ts", "src/b.ts", "src/c.ts"] },
 			inProgress: true,
 		});
-		expect(summary.label).toBe("正在读取 3 files");
+		expect(summary.label).toBe("正在读取 3 文件");
 		expect(summary.details).toEqual(["src/a.ts", "src/b.ts", "src/c.ts"]);
 		expect(summary.aggregate?.count).toBe(3);
 	});
@@ -185,7 +185,7 @@ describe("run_commands summaries", () => {
 			},
 			inProgress: true,
 		});
-		expect(summary.label).toBe("正在运行 2 commands");
+		expect(summary.label).toBe("正在运行 2 条命令");
 		expect(summary.details).toEqual(["ls -la", "git status -sb"]);
 	});
 
@@ -213,7 +213,7 @@ describe("search / web summaries", () => {
 			toolName: "search_codebase",
 			input: { queries: ["a", "b"] },
 		});
-		expect(summary.label).toBe("已探查 2 searches");
+		expect(summary.label).toBe("已探查 2 次搜索");
 		expect(summary.details).toEqual(["a", "b"]);
 	});
 
@@ -231,7 +231,7 @@ describe("search / web summaries", () => {
 					requests: [{ url: "https://a.dev" }, { url: "https://b.dev" }],
 				},
 			}).label,
-		).toBe("已探查 2 links");
+		).toBe("已探查 2 个链接");
 	});
 });
 
@@ -429,7 +429,7 @@ describe("apply_patch summaries", () => {
 
 	it("labels multi-file patches with counts and per-file details", () => {
 		const summary = buildToolSummary({ toolName: "apply_patch", input: patch });
-		expect(summary.label).toBe("已编辑 2 files");
+		expect(summary.label).toBe("已编辑 2 文件");
 		expect(summary.diff).toEqual({ additions: 3, deletions: 1 });
 		expect(summary.details).toEqual(["src/one.ts +2 -1", "src/two.ts +1 -0"]);
 	});
@@ -575,7 +575,7 @@ describe("buildGroupedToolLabel", () => {
 			}),
 		];
 		expect(buildGroupedToolLabel(summaries)).toBe(
-			"已读取 3 files · 已运行 1 command",
+			"已读取 3 文件 · 已运行 1 条命令",
 		);
 	});
 
@@ -595,7 +595,7 @@ describe("buildGroupedToolLabel", () => {
 				result: { text: "Done" },
 			}),
 		);
-		expect(buildGroupedToolLabel(spawns)).toBe("已创建 3 agents");
+		expect(buildGroupedToolLabel(spawns)).toBe("已创建 3 个智能体");
 	});
 
 	it("uses progress verbs when any merged call is in progress", () => {
@@ -610,7 +610,7 @@ describe("buildGroupedToolLabel", () => {
 			}),
 			inProgress: true,
 		};
-		expect(buildGroupedToolLabel([done, running])).toBe("正在读取 2 files");
+		expect(buildGroupedToolLabel([done, running])).toBe("正在读取 2 文件");
 	});
 });
 
