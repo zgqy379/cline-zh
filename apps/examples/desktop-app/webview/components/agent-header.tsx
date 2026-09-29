@@ -301,7 +301,7 @@ function SubagentSessionBadge({
 	onOpenParentSession?: (parentSessionId: string) => void | Promise<void>;
 }) {
 	const parentTitle = parentSession.title?.trim();
-	const label = "Main Agent Session";
+	const label = "主智能体会话";
 	const hint = parentTitle
 		? `返回主智能体会话：${parentTitle}`
 		: "返回主智能体会话";

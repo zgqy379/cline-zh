@@ -388,8 +388,8 @@ export async function startStreamingTranscription(options: {
 					new Error(
 						providerError ??
 							(connectionOpened || navigator.onLine === false
-								? "Streaming transcription network connection was lost"
-								: "Streaming transcription connection failed"),
+								? "流式转录网络连接已断开"
+								: "流式转录连接失败"),
 					),
 				);
 			};
@@ -399,8 +399,8 @@ export async function startStreamingTranscription(options: {
 						new Error(
 							providerError ??
 								(connectionOpened && event.code === 1006
-									? "Streaming transcription network connection was lost"
-									: `Streaming transcription ended before a final transcript was received (code ${event.code})`),
+									? "流式转录网络连接已断开"
+									: `流式转录在收到最终转录结果前已结束 (code ${event.code})`),
 						),
 					);
 				}

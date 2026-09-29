@@ -793,10 +793,10 @@ function ChatInputBarImpl({
 		thinking !== undefined || reasoningEffort !== undefined;
 	const effortLabel =
 		!hasExplicitReasoningSelection && modelSupportsReasoning === null
-			? "Reasoning"
+			? "推理"
 			: !hasExplicitReasoningSelection && modelSupportsReasoning === false
-				? "None"
-				: (EFFORT_LEVELS[effortIndex]?.label ?? "Reasoning");
+				? "无"
+				: (EFFORT_LEVELS[effortIndex]?.label ?? "推理");
 	const promptInputRows =
 		variant === "welcome" || promptInputFocused
 			? PROMPT_INPUT_EXPANDED_ROWS

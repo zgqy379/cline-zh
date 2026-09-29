@@ -4001,8 +4001,8 @@ export function useChatSession(environmentId: string) {
 					setIsCloudSessionExpired(true);
 					setError(
 						historyMessages.length > 0
-							? "This cloud session has expired. Start a new cloud session to continue."
-							: "This cloud session has expired and no archived history is available. Start a new cloud session to continue.",
+							? "此云端会话已过期。请启动新的云端会话以继续。"
+							: "此云端会话已过期且没有可用的归档历史。请启动新的云端会话以继续。",
 					);
 				}
 

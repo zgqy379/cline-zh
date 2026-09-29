@@ -611,7 +611,7 @@ class DesktopClient {
 				? lastError
 				: new Error(
 						lastError === undefined
-							? "Desktop backend transport unavailable"
+							? "桌面后端传输不可用"
 							: String(lastError),
 					);
 		this.reportError({

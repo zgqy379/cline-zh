@@ -691,7 +691,7 @@ function ConnectStep({
 								<div className="flex flex-col gap-2 pt-3 ml-2 max-[720px]:ml-0">
 									<div className="flex flex-wrap items-center gap-2">
 										<Input
-											aria-label="Cline API key"
+											aria-label="Cline API 密钥"
 											autoComplete="off"
 											className="min-w-52 flex-1 bg-background"
 											disabled={clineKeySaving}
@@ -708,7 +708,7 @@ function ConnectStep({
 													void connectWithClineApiKey();
 												}
 											}}
-											placeholder="Cline API key"
+											placeholder="Cline API 密钥"
 											type="password"
 											value={clineApiKey}
 										/>
@@ -758,7 +758,7 @@ function ConnectStep({
 					selected={selectedMethod === "api-key"}
 				>
 					<SetupOptionHeader
-						description="Anthropic、OpenAI、OpenRouter 等。"
+						description="支持 Anthropic、OpenAI、OpenRouter 等。"
 						icon={<KeyRound className="size-4" />}
 						title="使用自己的 API key"
 					/>
@@ -802,7 +802,7 @@ function ConnectStep({
 								</Select>
 							)}
 							<Input
-								aria-label="API key"
+								aria-label="API 密钥"
 								autoComplete="off"
 								className="bg-background"
 								disabled={saving}
