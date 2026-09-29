@@ -5017,7 +5017,7 @@ describe("useChatSession", () => {
 			(message) => message.role === "error",
 		);
 		expect(errorMessage?.content).toContain("Unauthorized: invalid API key");
-		expect(errorMessage?.content).toContain("Settings");
+		expect(errorMessage?.content).toContain("设置");
 	});
 
 	it("shows a failure relayed through chat_session_ended", async () => {
@@ -5540,11 +5540,11 @@ describe("useChatSession", () => {
 
 		let retryPromise: Promise<boolean> | undefined;
 		await act(async () => {
-			retryPromise = current.sendPrompt("重试");
+			retryPromise = current.sendPrompt("Retry");
 			if (queuedRpcReject) await Promise.resolve();
 		});
 		expect(current.promptsInQueue.map((item) => item.prompt)).toEqual([
-			"重试",
+			"Retry",
 		]);
 		if (startRetry) {
 			if (testSecondFailure) {
@@ -5581,7 +5581,7 @@ describe("useChatSession", () => {
 					stream: "chat_queued_prompt_start",
 					chunk: JSON.stringify({
 						promptId: queuedRpcReject === "other" ? "other" : "queued-retry",
-						prompt: queuedRpcReject === "other" ? "Other prompt" : "重试",
+						prompt: queuedRpcReject === "other" ? "Other prompt" : "Retry",
 						transcriptReflected: testSecondFailure,
 					}),
 					ts: Date.now(),
@@ -5591,7 +5591,7 @@ describe("useChatSession", () => {
 			expect(current.status).toBe("running");
 			if (queuedRpcReject === "other") {
 				expect(current.promptsInQueue.map((item) => item.prompt)).toEqual([
-					"重试",
+					"Retry",
 				]);
 			}
 			if (queuedRpcReject) {
@@ -5685,7 +5685,7 @@ describe("useChatSession", () => {
 		const errorMessages = current.messages.filter((m) => m.role === "error");
 		expect(errorMessages).toHaveLength(1);
 		expect(errorMessages[0]?.content).toContain("no longer valid");
-		expect(errorMessages[0]?.content).toContain("Settings → Account");
+		expect(errorMessages[0]?.content).toContain("设置 → 账户");
 		expect(errorMessages[0]?.meta).toEqual({
 			reason: "credentials",
 			providerId: "cline",
@@ -6069,7 +6069,7 @@ describe("useChatSession", () => {
 
 		await act(async () => current.sendPrompt("First attempt"));
 		expect(current.status).toBe("error");
-		await act(async () => current.sendPrompt("重试"));
+		await act(async () => current.sendPrompt("Retry"));
 
 		expect(actions.filter((action) => action !== "pending_prompts")).toEqual([
 			"start",

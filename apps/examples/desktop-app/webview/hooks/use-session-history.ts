@@ -850,7 +850,7 @@ export function useSessionHistory({
 						const keepExistingTitle =
 							Boolean(existing) &&
 							!incomingMetadataTitle &&
-							!(existing?.title.startsWith("会话 ") ?? true);
+							(!(existing?.title.startsWith("会话 ") ?? true) && !(existing?.title.startsWith("Session ") ?? true));
 						return {
 							...thread,
 							title:
@@ -1419,7 +1419,7 @@ export function useSessionHistory({
 				}
 				const lastHydratedStatus =
 					messageHydratedStatusRef.current.get(sessionId);
-				const shouldHydrateTitle = existing.title.startsWith("会话 ");
+				const shouldHydrateTitle = existing.title.startsWith("会话 ") || existing.title.startsWith("Session ");
 				const hasManualTitle = Boolean(
 					getSessionMetadataTitle(session.metadata),
 				);
