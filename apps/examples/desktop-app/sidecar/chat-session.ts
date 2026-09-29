@@ -1080,9 +1080,7 @@ async function handleAttach(
 		? getSessionRuntimeBinding(ctx, sessionId, preferredEnvironmentId)
 		: await findSessionRuntimeBinding(ctx, sessionId);
 	if (!binding) {
-		throw new Error(
-			`Session ${sessionId} not found in a connected environment`,
-		);
+		throw new Error(`未在已连接的环境中找到会话 ${sessionId}`);
 	}
 	const manager = binding.sessionManager;
 	const session = await manager.get(sessionId);
