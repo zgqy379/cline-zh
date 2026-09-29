@@ -54,25 +54,25 @@ export function getAgentPullRequestMergeStatus(
 	pr: NonNullable<AgentPullRequestData["pullRequest"]>,
 ) {
 	if (pr.state === "MERGED")
-		return { label: "Merged", tone: "merged" } as const;
+		return { label: "已合并", tone: "merged" } as const;
 	if (pr.state === "CLOSED")
-		return { label: "Closed", tone: "failure" } as const;
-	if (pr.isDraft) return { label: "Draft", tone: "neutral" } as const;
+		return { label: "已关闭", tone: "failure" } as const;
+	if (pr.isDraft) return { label: "草稿", tone: "neutral" } as const;
 	if (pr.mergeable === "CONFLICTING" || pr.mergeStateStatus === "DIRTY")
-		return { label: "Conflicts", tone: "failure" } as const;
+		return { label: "存在冲突", tone: "failure" } as const;
 	if (pr.mergeStateStatus === "BLOCKED")
-		return { label: "Blocked", tone: "warning" } as const;
+		return { label: "已阻塞", tone: "warning" } as const;
 	if (pr.mergeStateStatus === "BEHIND")
-		return { label: "Behind base", tone: "warning" } as const;
+		return { label: "落后于基线", tone: "warning" } as const;
 	if (pr.mergeStateStatus === "UNSTABLE")
-		return { label: "Checks failing", tone: "failure" } as const;
+		return { label: "检查失败", tone: "failure" } as const;
 	if (pr.mergeable === "UNKNOWN")
-		return { label: "Merge status pending", tone: "neutral" } as const;
+		return { label: "合并状态待定", tone: "neutral" } as const;
 	if (pr.mergeStateStatus === "CLEAN")
-		return { label: "Ready to merge", tone: "success" } as const;
+		return { label: "可合并", tone: "success" } as const;
 	if (pr.mergeable === "MERGEABLE")
-		return { label: "No conflicts", tone: "neutral" } as const;
-	return { label: "Merge status pending", tone: "neutral" } as const;
+		return { label: "无冲突", tone: "neutral" } as const;
+	return { label: "合并状态待定", tone: "neutral" } as const;
 }
 export function summarizeAgentPullRequestChecks(
 	checks: AgentPullRequestCheck[],
@@ -84,12 +84,12 @@ export function summarizeAgentPullRequestChecks(
 	return "success";
 }
 const checkLabels = {
-	unavailable: "CI unavailable",
-	none: "No checks",
-	pending: "CI pending",
-	success: "CI passed",
-	failure: "CI failed",
-	skipped: "CI skipped",
+	unavailable: "CI 不可用",
+	none: "无 CI 检查",
+	pending: "CI 进行中",
+	success: "CI 通过",
+	failure: "CI 失败",
+	skipped: "CI 已跳过",
 };
 const statusColors = {
 	merged: "text-purple-400",
@@ -179,15 +179,15 @@ export function AgentPullRequestBar({
 			data-native-navigation={onNavigate ? true : undefined}
 		>
 			<p className="cline-ui-pr-bar__checks-title mb-2 text-cline-ui-sm font-medium">
-				Checks for #{pr?.number}
+				#{pr?.number} 的检查
 			</p>
 			{ci === "unavailable" ? (
 				<p className="text-cline-ui-xs text-cline-ui-muted-foreground">
-					Checks could not be loaded. Refresh to try again.
+					无法加载检查。请刷新重试。
 				</p>
 			) : ci === "none" ? (
 				<p className="text-cline-ui-xs text-cline-ui-muted-foreground">
-					No checks reported for this pull request.
+					此拉取请求暂无检查报告。
 				</p>
 			) : null}
 			<ul className="max-h-64 space-y-2 overflow-y-auto">
@@ -244,13 +244,13 @@ export function AgentPullRequestBar({
 							/>
 							{pr ? (
 								<>
-									{link(
-										pr.url,
-										"open",
-										<>#{pr.number}</>,
-										pr.title,
-										`Open pull request #${pr.number}: ${pr.title}`,
-									)}
+										{link(
+											pr.url,
+											"open",
+											<>#{pr.number}</>,
+											pr.title,
+											`打开拉取请求 #${pr.number}：${pr.title}`,
+										)}
 									<span
 										className={`shrink-0 cline-ui-pr-bar__tone--${status?.tone} ${statusColors[status?.tone ?? "neutral"]}`}
 									>
@@ -261,8 +261,8 @@ export function AgentPullRequestBar({
 								link(
 									data.createUrl,
 									"create",
-									"Create PR",
-									"Open GitHub’s comparison form for this branch. Push your commits before submitting.",
+									"创建拉取请求",
+									"打开此分支的 GitHub 比较表单。提交前请先推送您的提交。",
 								)
 							) : null}
 							<span
@@ -281,21 +281,21 @@ export function AgentPullRequestBar({
 								</span>
 							</span>
 							{!pr && data.published === false && (
-								<span>Task branch not on GitHub</span>
+								<span>任务分支不在 GitHub 上</span>
 							)}
 							{pr && (
 								<>
 									{pr.additions !== undefined && pr.deletions !== undefined && (
-										<span
-											className="cline-ui-pr-bar__counts shrink-0 tabular-nums"
-											{...(onNavigate
-												? {}
-												: {
-														role: "img",
-														"aria-label": `${pr.additions} additions, ${pr.deletions} deletions`,
-													})}
-											title={`${pr.additions} additions, ${pr.deletions} deletions`}
-										>
+											<span
+												className="cline-ui-pr-bar__counts shrink-0 tabular-nums"
+												{...(onNavigate
+													? {}
+													: {
+															role: "img",
+															"aria-label": `新增 ${pr.additions} 行，删除 ${pr.deletions} 行`,
+														})}
+												title={`新增 ${pr.additions} 行，删除 ${pr.deletions} 行`}
+											>
 											<span className="cline-ui-pr-bar__tone--success text-green-500">
 												+{pr.additions.toLocaleString()}
 											</span>{" "}
@@ -326,7 +326,7 @@ export function AgentPullRequestBar({
 							)}
 						</>
 					) : (
-						<span>Task branch unavailable.</span>
+						<span>任务分支不可用。</span>
 					))}
 				<button
 					type="button"

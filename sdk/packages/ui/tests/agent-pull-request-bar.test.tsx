@@ -53,10 +53,10 @@ it("shares readiness precedence, CI summary, counts and ordinary web navigation"
 			/>,
 		),
 	);
-	expect(container.textContent).toContain("Merge status pending");
-	expect(container.querySelector('[aria-label="CI failed"]')).not.toBeNull();
+	expect(container.textContent).toContain("合并状态待定");
+	expect(container.querySelector('[aria-label="CI 失败"]')).not.toBeNull();
 	expect(
-		container.querySelector('[aria-label="5 additions, 2 deletions"]'),
+		container.querySelector('[aria-label="新增 5 行，删除 2 行"]'),
 	).not.toBeNull();
 	expect(container.querySelector("a")?.getAttribute("href")).toBe(
 		data.pullRequest?.url,
@@ -85,7 +85,7 @@ it("delegates native links and refresh to its host without owning popover state"
 	);
 	await act(async () => {
 		container
-			.querySelector<HTMLButtonElement>('[aria-label^="Open pull request"]')
+			.querySelector<HTMLButtonElement>('[aria-label^="打开拉取请求"]')
 			?.click();
 		Array.from(container.querySelectorAll("button"))
 			.find((b) => b.textContent?.trim() === "build")
@@ -120,7 +120,7 @@ it("distinguishes unavailable checks from a successfully loaded empty list", asy
 		);
 		expect(
 			container.querySelector(
-				`button[aria-label="${checks ? "无 CI 检查" : "CI unavailable"}"]`,
+				`button[aria-label="${checks ? "无 CI 检查" : "CI 不可用"}"]`,
 			),
 		).not.toBeNull();
 	}
@@ -136,9 +136,9 @@ it("keeps the missing-branch fallback and refresh without showing a misleading P
 			/>,
 		),
 	);
-	expect(container.textContent).toContain("Task branch unavailable.");
+	expect(container.textContent).toContain("任务分支不可用。");
 	expect(
-		container.querySelector('[aria-label^="Open pull request"]'),
+		container.querySelector('[aria-label^="打开拉取请求"]'),
 	).toBeNull();
 	expect(
 		container.querySelector('[aria-label="刷新拉取请求状态"]'),
