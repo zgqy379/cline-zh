@@ -153,7 +153,7 @@ describe("WelcomeWorkspaceControls cloud mode", () => {
 		});
 		expect(container.querySelector('[role="switch"]')).toBeNull();
 		await act(async () => {
-			button("Select repository").click();
+			button("选择仓库").click();
 			await Promise.resolve();
 			await Promise.resolve();
 		});
@@ -172,7 +172,7 @@ describe("WelcomeWorkspaceControls cloud mode", () => {
 			onCloudBranchChange,
 		});
 		await act(async () => {
-			button("Select repository").click();
+			button("选择仓库").click();
 			await Promise.resolve();
 			await Promise.resolve();
 		});
@@ -500,7 +500,7 @@ describe("WelcomeWorkspaceControls cloud mode", () => {
 			onListCloudBranches,
 		});
 		await act(async () => {
-			button("Select repository").click();
+			button("选择仓库").click();
 			await Promise.resolve();
 			await Promise.resolve();
 		});
@@ -584,7 +584,7 @@ describe("WelcomeWorkspaceControls cloud mode", () => {
 			onListCloudBranches,
 		});
 		await act(async () => {
-			button("Select repository").click();
+			button("选择仓库").click();
 			await Promise.resolve();
 			await Promise.resolve();
 		});
@@ -622,7 +622,7 @@ describe("WelcomeWorkspaceControls cloud mode", () => {
 			})),
 		});
 		await act(async () => {
-			button("Select repository").click();
+			button("选择仓库").click();
 			await Promise.resolve();
 			await Promise.resolve();
 		});

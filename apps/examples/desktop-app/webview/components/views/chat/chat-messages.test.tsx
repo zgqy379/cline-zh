@@ -785,8 +785,8 @@ describe("ChatMessages tool disclosures", () => {
 			},
 		]);
 
-		expect(container.textContent).toContain("Failed to spawn teammate");
-		expect(container.textContent).not.toContain("Spawned 1 teammate");
+		expect(container.textContent).toContain("生成队友失败");
+		expect(container.textContent).not.toContain("已生成 1 名队友");
 	});
 
 	it("preserves interleaved tool activity order", async () => {
@@ -830,9 +830,9 @@ describe("ChatMessages tool disclosures", () => {
 		const labels = [...container.querySelectorAll(".cline-chat-tool")].map(
 			(row) => row.textContent ?? "",
 		);
-		expect(labels[0]).toContain("Read file before.ts");
-		expect(labels[1]).toContain("Edited file change.ts");
-		expect(labels[2]).toContain("Read file after.ts");
+		expect(labels[0]).toContain("已读取文件 before.ts");
+		expect(labels[1]).toContain("已编辑文件 change.ts");
+		expect(labels[2]).toContain("已读取文件 after.ts");
 	});
 
 	it("starts a new tool group after non-tool content", async () => {
@@ -860,8 +860,8 @@ describe("ChatMessages tool disclosures", () => {
 			tool("second", 3),
 		]);
 
-		expect(container.textContent).toContain("Read file first.ts");
-		expect(container.textContent).toContain("Read file second.ts");
+		expect(container.textContent).toContain("已读取文件 first.ts");
+		expect(container.textContent).toContain("已读取文件 second.ts");
 	});
 
 	it("normalizes payload-backed configured subagent names", async () => {
