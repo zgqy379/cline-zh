@@ -214,7 +214,7 @@ describe("OnboardingView", () => {
 		);
 
 		await act(async () => {
-			buttonByText("Get started").click();
+			buttonByText("开始构建").click();
 		});
 
 		// Cline is selected by default. The inactive API-key card is inert so its
@@ -278,7 +278,7 @@ describe("OnboardingView", () => {
 	it("moves the accent selected state to the chosen setup option", async () => {
 		await render();
 		await act(async () => {
-			buttonByText("Get started").click();
+			buttonByText("开始构建").click();
 		});
 
 		const clineOption = container.querySelector(
@@ -340,7 +340,7 @@ describe("OnboardingView", () => {
 	it("keeps the Cline API key form chevron static while toggling the panel", async () => {
 		await render();
 		await act(async () => {
-			buttonByText("Get started").click();
+			buttonByText("开始构建").click();
 		});
 
 		// The design uses the chevron as a disclosure affordance without rotating
@@ -377,7 +377,7 @@ describe("OnboardingView", () => {
 	it("completes without connecting when skipped", async () => {
 		const onComplete = await render();
 		await act(async () => {
-			buttonByText("Get started").click();
+			buttonByText("开始构建").click();
 		});
 		await act(async () => {
 			buttonByText("跳过").click();
@@ -415,7 +415,7 @@ describe("OnboardingView", () => {
 		});
 		await render();
 		await act(async () => {
-			buttonByText("Get started").click();
+			buttonByText("开始构建").click();
 		});
 		expect(container.textContent).toContain("已登录为");
 
@@ -476,7 +476,7 @@ describe("OnboardingView", () => {
 		});
 		await render();
 		await act(async () => {
-			buttonByText("Get started").click();
+			buttonByText("开始构建").click();
 		});
 		await act(async () => {
 			buttonByText("继续").click();
@@ -499,7 +499,7 @@ describe("OnboardingView", () => {
 		});
 		await render();
 		await act(async () => {
-			buttonByText("Get started").click();
+			buttonByText("开始构建").click();
 		});
 		await act(async () => {
 			buttonByText("继续").click();
@@ -512,7 +512,7 @@ describe("OnboardingView", () => {
 	it("lets the user cancel a pending browser sign-in", async () => {
 		await render();
 		await act(async () => {
-			buttonByText("Get started").click();
+			buttonByText("开始构建").click();
 		});
 
 		// OAuth login that never resolves (browser round-trip abandoned).
@@ -548,7 +548,7 @@ describe("OnboardingView", () => {
 	it("connects with a Cline API key when OAuth sign-in is not used", async () => {
 		const onComplete = await render();
 		await act(async () => {
-			buttonByText("Get started").click();
+			buttonByText("开始构建").click();
 		});
 
 		await act(async () => {
@@ -608,7 +608,7 @@ describe("OnboardingView", () => {
 	it("rejects an invalid Cline API key and rolls back the saved key", async () => {
 		await render();
 		await act(async () => {
-			buttonByText("Get started").click();
+			buttonByText("开始构建").click();
 		});
 		await act(async () => {
 			buttonByText("使用 Cline API key").click();
@@ -655,7 +655,7 @@ describe("OnboardingView", () => {
 	it("keeps Cline sign-in available while API-key setup is expanded", async () => {
 		const onComplete = await render();
 		await act(async () => {
-			buttonByText("Get started").click();
+			buttonByText("开始构建").click();
 		});
 		// Expand the bring-your-own-key form; drive state through the select's
 		// props via the API key path (jsdom cannot open the radix listbox).

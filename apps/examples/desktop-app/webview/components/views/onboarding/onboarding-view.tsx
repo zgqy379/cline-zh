@@ -315,7 +315,7 @@ function WelcomeStep({ onContinue }: { onContinue: () => void }) {
 					type="button"
 					variant="fill"
 				>
-					Get started
+					开始构建
 				</Button>
 				<p className="mt-8 text-xs text-muted-foreground">
 					不到一分钟即可完成。所有内容之后都可以在设置中修改。
