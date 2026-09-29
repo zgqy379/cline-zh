@@ -63,7 +63,7 @@ export function AgentContextUsage({
 	const circumference = 2 * Math.PI * radius;
 
 	return children({
-		triggerLabel: `Context window: ${totalTokens.toLocaleString()} of ${contextWindow.toLocaleString()} tokens used (${percent}%)`,
+		triggerLabel: `上下文窗口：${contextWindow.toLocaleString()} 中已用 ${totalTokens.toLocaleString()} 个令牌（${percent}%）`,
 		ring: (
 			<svg
 				aria-hidden="true"
@@ -96,7 +96,7 @@ export function AgentContextUsage({
 		details: (
 			<div className="px-3 py-3">
 				<div className="flex items-center justify-between gap-4 text-cline-ui-sm">
-					<span className="text-cline-ui-muted-foreground">Context window</span>
+					<span className="text-cline-ui-muted-foreground">上下文窗口</span>
 					<span className="font-cline-ui-mono text-cline-ui-sm text-cline-ui-foreground">
 						{contextUsageLabel}
 					</span>
@@ -131,14 +131,14 @@ export function AgentContextUsage({
 				</div>
 				<div className="mt-3 space-y-2 text-cline-ui-sm">
 					<div className="flex items-center justify-between gap-4">
-						<span className="text-cline-ui-muted-foreground">Input tokens</span>
+						<span className="text-cline-ui-muted-foreground">输入令牌数</span>
 						<span className="font-cline-ui-mono text-cline-ui-foreground">
 							{usage.tokensIn.toLocaleString()}
 						</span>
 					</div>
 					<div className="flex items-center justify-between gap-4">
 						<span className="text-cline-ui-muted-foreground">
-							Output tokens
+							输出令牌数
 						</span>
 						<span className="font-cline-ui-mono text-cline-ui-foreground">
 							{usage.tokensOut.toLocaleString()}
@@ -146,7 +146,7 @@ export function AgentContextUsage({
 					</div>
 					<div className="flex items-center justify-between gap-4">
 						<span className="text-cline-ui-muted-foreground">
-							Cached tokens
+							缓存令牌数
 						</span>
 						<span className="font-cline-ui-mono text-cline-ui-foreground">
 							{usage.cacheReadTokens.toLocaleString()}
@@ -154,7 +154,7 @@ export function AgentContextUsage({
 					</div>
 					{costLabel || costLabel === 0 ? (
 						<div className="flex items-center justify-between gap-4">
-							<span className="text-cline-ui-muted-foreground">Cost</span>
+							<span className="text-cline-ui-muted-foreground">费用</span>
 							<span className="font-cline-ui-mono text-cline-ui-foreground">
 								{costLabel}
 							</span>
