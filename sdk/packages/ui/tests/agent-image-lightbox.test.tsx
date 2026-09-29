@@ -25,13 +25,13 @@ it("renders the original attachment and delegates both close controls without ow
 		expect(container.querySelector("img")?.alt).toBe("Attachment 2");
 		expect(container.querySelector('[role="dialog"]')).toBeNull();
 		const backdrop = container.querySelector<HTMLButtonElement>(
-			'[aria-label="Close expanded attachment"]',
+			'[aria-label="关闭展开的附件"]',
 		);
 		expect(backdrop?.tabIndex).toBe(0);
 		await act(async () => backdrop?.click());
 		await act(async () =>
 			container
-				.querySelector<HTMLButtonElement>('[aria-label="Close image viewer"]')
+				.querySelector<HTMLButtonElement>('[aria-label="关闭图片查看器"]')
 				?.click(),
 		);
 		expect(onClose).toHaveBeenCalledTimes(2);

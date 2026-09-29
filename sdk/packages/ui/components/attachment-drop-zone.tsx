@@ -61,9 +61,9 @@ export const AttachmentDropZone = forwardRef<
 		{
 			children,
 			className,
-			description = "Screenshots and files will be added to your next message",
+			description = "截图和文件将添加到你的下一条消息",
 			disabled = false,
-			label = "Drop to attach",
+			label = "拖放以附加",
 			onAttachFiles,
 			...props
 		},

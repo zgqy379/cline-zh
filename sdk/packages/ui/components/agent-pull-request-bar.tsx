@@ -217,7 +217,7 @@ export function AgentPullRequestBar({
 	return (
 		<section
 			className="cline-ui-pr-bar border-b border-cline-ui-border px-4 py-2 text-cline-ui-xs"
-			aria-label="Pull request status"
+			aria-label="拉取请求状态"
 			data-native-navigation={onNavigate ? true : undefined}
 		>
 			{error && (
@@ -226,7 +226,7 @@ export function AgentPullRequestBar({
 					{onDismissError && (
 						<button
 							type="button"
-							aria-label="Dismiss pull request error"
+							aria-label="关闭拉取请求错误"
 							className="shrink-0 rounded p-1 hover:bg-cline-ui-muted"
 							onClick={onDismissError}
 						>
@@ -309,7 +309,7 @@ export function AgentPullRequestBar({
 											type="button"
 											className="cline-ui-pr-bar__check-trigger flex shrink-0 items-center gap-1.5 rounded-md bg-cline-ui-muted px-2 py-1"
 											aria-label={
-												ci === "none" ? "No CI checks" : checkLabels[ci]
+												ci === "none" ? "无 CI 检查" : checkLabels[ci]
 											}
 										>
 											<span
@@ -332,8 +332,8 @@ export function AgentPullRequestBar({
 					type="button"
 					disabled={loading}
 					onClick={onRefresh}
-					aria-label="Refresh pull request status"
-					title="Refresh pull request status"
+					aria-label="刷新拉取请求状态"
+					title="刷新拉取请求状态"
 					className="cline-ui-pr-bar__refresh shrink-0 rounded p-1 text-cline-ui-muted-foreground hover:bg-cline-ui-muted disabled:opacity-50"
 				>
 					<RefreshCw

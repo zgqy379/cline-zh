@@ -50,7 +50,7 @@ describe("AgentAskQuestion", () => {
 		// The element carries no visible heading — the question itself leads —
 		// but stays labelled for assistive tech.
 		const section = container.querySelector("section");
-		expect(section?.getAttribute("aria-label")).toBe("Follow-up question");
+		expect(section?.getAttribute("aria-label")).toBe("追问");
 		expect(container.querySelector("h2")).toBeNull();
 		expect(container.textContent).toContain("Continue this task?");
 		expect(onAnswer).toHaveBeenCalledWith("request-1", "Stop");

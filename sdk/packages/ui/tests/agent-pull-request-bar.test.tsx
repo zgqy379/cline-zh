@@ -92,7 +92,7 @@ it("delegates native links and refresh to its host without owning popover state"
 			?.click();
 		container
 			.querySelector<HTMLButtonElement>(
-				'[aria-label="Refresh pull request status"]',
+				'[aria-label="刷新拉取请求状态"]',
 			)
 			?.click();
 	});
@@ -120,7 +120,7 @@ it("distinguishes unavailable checks from a successfully loaded empty list", asy
 		);
 		expect(
 			container.querySelector(
-				`button[aria-label="${checks ? "No CI checks" : "CI unavailable"}"]`,
+				`button[aria-label="${checks ? "无 CI 检查" : "CI unavailable"}"]`,
 			),
 		).not.toBeNull();
 	}
@@ -141,6 +141,6 @@ it("keeps the missing-branch fallback and refresh without showing a misleading P
 		container.querySelector('[aria-label^="Open pull request"]'),
 	).toBeNull();
 	expect(
-		container.querySelector('[aria-label="Refresh pull request status"]'),
+		container.querySelector('[aria-label="刷新拉取请求状态"]'),
 	).not.toBeNull();
 });
