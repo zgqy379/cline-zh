@@ -9,9 +9,9 @@ describe("transcription network errors", () => {
 		"Streaming transcription network is too slow to send microphone audio",
 		"connect ECONNREFUSED",
 		"Streaming transcription network connection was lost",
-		"语音转写网络连接中断",
-		"语音转写网络太慢，无法发送麦克风音频",
-		"语音转写连接超时",
+		"流式转录网络连接已断开",
+		"流式转录网络太慢，无法发送麦克风音频",
+		"流式转录连接超时",
 	])("recognizes %s across the sidecar boundary", (message) => {
 		expect(isTranscriptionNetworkError(new Error(message))).toBe(true);
 	});
@@ -23,10 +23,12 @@ describe("transcription network errors", () => {
 		"Model not found",
 		"Permission denied",
 		"Streaming transcription connection failed",
-		"语音转写失败",
-		"语音转写在建立阶段即结束",
-		"语音转写连接尚未打开",
-		"语音转写收尾超时",
+		"流式转录连接失败",
+		"流式转录在收到最终转录结果前已结束 (code 1006)",
+		"流式转录失败",
+		"流式转录在建立阶段即结束",
+		"流式转录连接尚未打开",
+		"流式转录收尾超时",
 	])("does not hide %s", (message) => {
 		expect(isTranscriptionNetworkError(new Error(message))).toBe(false);
 	});

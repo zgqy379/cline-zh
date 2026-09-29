@@ -370,7 +370,9 @@ describe("streaming transcription", () => {
 		const session = await startStreamingTranscription({
 			onTranscript: vi.fn(),
 		});
-		const rejected = expect(session.done).rejects.toThrow("网络连接中断");
+		const rejected = expect(session.done).rejects.toThrow(
+			"流式转录网络连接已断开",
+		);
 		window.dispatchEvent(new Event("offline"));
 		await rejected;
 		expect(stopTrack).toHaveBeenCalled();
@@ -408,7 +410,7 @@ describe("streaming transcription", () => {
 		socket.open();
 		vi.useFakeTimers();
 		try {
-			const rejected = expect(session.done).rejects.toThrow("收尾超时");
+			const rejected = expect(session.done).rejects.toThrow("流式转录收尾超时");
 			session.stop();
 			await vi.advanceTimersByTimeAsync(15_000);
 			await rejected;
@@ -486,7 +488,9 @@ describe("streaming transcription", () => {
 			return FakeWebSocket.instances[0] as FakeWebSocket;
 		});
 		socket.open();
-		const rejected = expect(session.done).rejects.toThrow("网络连接中断");
+		const rejected = expect(session.done).rejects.toThrow(
+			"流式转录网络连接已断开",
+		);
 		socket.dispatchEvent(new Event("error"));
 		socket.onerror?.();
 		await rejected;
