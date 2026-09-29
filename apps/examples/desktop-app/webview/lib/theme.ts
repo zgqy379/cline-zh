@@ -1,8 +1,20 @@
 export const HUB_THEME_STORAGE_KEY = "cline-hub-theme";
 
+/**
+ * 主题偏好。
+ * - `"system"`：跟随操作系统深浅色，实时响应系统切换
+ * - `"light"` / `"dark"`：用户显式锁定，不再跟随系统
+ *
+ * 注意：这是**存储格式**的一部分，值不能翻译或改名。
+ * 旧版本只存 `"light"` / `"dark"`，新增 `"system"` 向后兼容。
+ */
 export type HubTheme = "light" | "dark";
 
+/** 用户的主题偏好，可为 system */
+export type HubThemePreference = HubTheme | "system";
+
 export const DEFAULT_HUB_THEME: HubTheme = "dark";
+export const DEFAULT_HUB_THEME_PREFERENCE: HubThemePreference = "system";
 
 /**
  * Runs from the document head before the webview paints. Keep this
@@ -10,16 +22,20 @@ export const DEFAULT_HUB_THEME: HubTheme = "dark";
  */
 export const HUB_THEME_BOOTSTRAP_SCRIPT = `(() => {
 	const root = document.documentElement;
-	let theme;
+	let preference = ${JSON.stringify(DEFAULT_HUB_THEME_PREFERENCE)};
 
 	try {
 		const stored = window.localStorage.getItem(${JSON.stringify(HUB_THEME_STORAGE_KEY)});
-		if (stored === "light" || stored === "dark") {
-			theme = stored;
+		if (stored === "light" || stored === "dark" || stored === "system") {
+			preference = stored;
 		}
 	} catch {}
 
-	if (!theme) {
+	// "system" 与「无偏好」都走系统媒体查询
+	let theme;
+	if (preference === "light" || preference === "dark") {
+		theme = preference;
+	} else {
 		try {
 			if (typeof window.matchMedia === "function") {
 				if (window.matchMedia("(prefers-color-scheme: light)").matches) {
@@ -38,13 +54,31 @@ export const HUB_THEME_BOOTSTRAP_SCRIPT = `(() => {
 	root.dataset.clineHubTheme = theme;
 })();`;
 
-export function readStoredHubTheme(): HubTheme | null {
+/**
+ * 读取用户存储的主题**偏好**。
+ * 返回 `"system"` 表示跟随系统；返回 null 表示尚未设置（等同 system）。
+ */
+export function readStoredHubThemePreference(): HubThemePreference | null {
 	try {
 		const stored = window.localStorage.getItem(HUB_THEME_STORAGE_KEY);
-		return stored === "light" || stored === "dark" ? stored : null;
+		return stored === "light" || stored === "dark" || stored === "system"
+			? stored
+			: null;
 	} catch {
 		return null;
 	}
+}
+
+/**
+ * 读取当前生效的主题。
+ * 兼容旧调用方：返回具体生效值（light/dark），"system" 会解析为系统当前值。
+ */
+export function readStoredHubTheme(): HubTheme | null {
+	const preference = readStoredHubThemePreference();
+	if (preference === null) {
+		return null;
+	}
+	return preference === "system" ? readSystemHubTheme() : preference;
 }
 
 export function readSystemHubTheme(): HubTheme {
@@ -74,17 +108,39 @@ export function applyHubTheme(theme: HubTheme): HubTheme {
 	return theme;
 }
 
-export function syncHubTheme(): HubTheme {
-	return applyHubTheme(readStoredHubTheme() ?? readSystemHubTheme());
+/** 把「偏好」解析为实际生效的 light/dark */
+export function resolveHubTheme(preference: HubThemePreference): HubTheme {
+	return preference === "system" ? readSystemHubTheme() : preference;
 }
 
-export function setStoredHubTheme(theme: HubTheme): HubTheme {
+export function syncHubTheme(): HubTheme {
+	return applyHubTheme(
+		resolveHubTheme(readStoredHubThemePreference() ?? "system"),
+	);
+}
+
+/**
+ * 保存主题**偏好**并立即应用。
+ * 传入 `"system"` 时解析为系统当前值并实时跟随。
+ * 返回实际生效的 light/dark。
+ */
+export function setStoredHubThemePreference(
+	preference: HubThemePreference,
+): HubTheme {
 	try {
-		window.localStorage.setItem(HUB_THEME_STORAGE_KEY, theme);
+		window.localStorage.setItem(HUB_THEME_STORAGE_KEY, preference);
 	} catch {
 		// Applying still works for this session when persistence is unavailable.
 	}
-	return applyHubTheme(theme);
+	return applyHubTheme(resolveHubTheme(preference));
+}
+
+/**
+ * 兼容旧调用方：只接受具体 light/dark。
+ * 建议新代码改用 setStoredHubThemePreference。
+ */
+export function setStoredHubTheme(theme: HubTheme): HubTheme {
+	return setStoredHubThemePreference(theme);
 }
 
 export const HUB_ACCENT_STORAGE_KEY = "cline.code.accent.v1";
@@ -146,8 +202,18 @@ export function setStoredHubAccent(accent: HubAccent): HubAccent {
 }
 
 /**
- * Follow OS light/dark changes while the user has no stored preference.
- * Returns a cleanup function that removes the listener.
+ * 跟随系统深浅色。
+ *
+ * 触发条件（与设置页语义一致）：
+ *   - 偏好为 `"system"`（显式选择跟随系统）→ 持续跟随
+ *   - 尚无任何偏好（null，等同 system）    → 持续跟随
+ *   - 偏好为 `"light"` / `"dark"`           → 停止跟随（用户已锁定）
+ *
+ * ⚠️ 注意判断用的是 **preference** 而不是生效值：
+ * 若用生效值判断，"system + 当前恰好是深色" 会被误判成"用户锁定了深色"，
+ * 从而永远不再跟随系统——这正是旧实现的 bug。
+ *
+ * 返回清理函数。
  */
 export function watchSystemHubTheme(
 	onChange?: (theme: HubTheme) => void,
@@ -157,8 +223,9 @@ export function watchSystemHubTheme(
 		return () => {};
 	}
 	const handle = () => {
-		if (readStoredHubTheme() !== null) {
-			return;
+		const preference = readStoredHubThemePreference();
+		if (preference !== null && preference !== "system") {
+			return; // 用户锁定了具体主题，不再跟随
 		}
 		onChange?.(applyHubTheme(readSystemHubTheme()));
 	};
