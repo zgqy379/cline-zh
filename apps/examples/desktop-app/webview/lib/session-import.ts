@@ -103,7 +103,7 @@ export function readImportedHistorySummaryActivity(
 		case "started":
 			return {
 				phase: "started",
-				label: `Summarizing the imported ${SESSION_IMPORT_TOOL_LABELS[tool]} history...`,
+				label: `正在总结导入的 ${SESSION_IMPORT_TOOL_LABELS[tool]} 历史…`,
 			};
 		case "completed":
 		case "skipped":

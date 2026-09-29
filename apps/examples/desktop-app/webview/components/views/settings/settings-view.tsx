@@ -570,7 +570,7 @@ export function SettingsView({
 	) : providerCatalogError ? (
 		<div className="flex h-full items-center justify-center">
 			<p className="max-w-xl px-4 text-center text-sm text-destructive">
-				Failed to load providers: {providerCatalogError}
+				加载供应商失败：{providerCatalogError}
 			</p>
 		</div>
 	) : selectedProvider ? (

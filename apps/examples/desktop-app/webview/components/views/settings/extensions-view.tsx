@@ -1631,11 +1631,11 @@ export function CustomizationSectionView({
 			{activeTab === "Skills" && !catalogPrimitive && (
 				<div>
 					<p className="mb-6 text-sm leading-relaxed text-muted-foreground">
-						Skills can be invoked in chat with{" "}
+						可在对话中用{" "}
 						<code className="rounded bg-secondary px-1.5 py-0.5 text-xs font-mono text-foreground">
 							/SKILL
-						</code>
-						.
+						</code>{" "}
+						调用技能。
 					</p>
 
 					<div className="flex flex-col gap-3">

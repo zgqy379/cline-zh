@@ -142,7 +142,7 @@ export async function fetchMarketplaceCatalog(): Promise<MarketplaceCatalog> {
 				headers: { Accept: "application/json" },
 			});
 			if (!response.ok) {
-				throw new Error(`Failed to fetch marketplace: ${response.status}`);
+				throw new Error(`获取市场目录失败：${response.status}`);
 			}
 			data = await response.json();
 			break;
@@ -154,7 +154,7 @@ export async function fetchMarketplaceCatalog(): Promise<MarketplaceCatalog> {
 	if (data === undefined) {
 		throw lastError instanceof Error
 			? lastError
-			: new Error("Failed to fetch marketplace");
+			: new Error("获取市场目录失败");
 	}
 
 	const baseUrl = typeof data?.baseUrl === "string" ? data.baseUrl : undefined;

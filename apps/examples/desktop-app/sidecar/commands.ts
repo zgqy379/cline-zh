@@ -1381,7 +1381,7 @@ async function handleRoutineScheduleCommand(
 		const reply = await clientCommand("schedule.delete", { scheduleId });
 		return { deleted: reply.deleted === true };
 	}
-	throw new Error(`unsupported routine schedule command: ${command}`);
+	throw new Error(`不支持的定时任务命令：${command}`);
 }
 
 // ---------------------------------------------------------------------------

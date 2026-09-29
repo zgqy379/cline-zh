@@ -31,7 +31,7 @@ describe("readImportedHistorySummaryActivity", () => {
 			}),
 		).toEqual({
 			phase: "started",
-			label: "Summarizing the imported Claude Code history...",
+			label: "正在总结导入的 Claude Code 历史…",
 		});
 		expect(
 			readImportedHistorySummaryActivity({

@@ -54,7 +54,7 @@ export async function fetchChangelog(): Promise<ChangelogRelease[]> {
 		headers: { Accept: "application/json" },
 	});
 	if (!response.ok) {
-		throw new Error(`Failed to load changelog: ${response.status}`);
+		throw new Error(`加载更新日志失败：${response.status}`);
 	}
 	const payload = (await response.json()) as Partial<ChangelogResponse>;
 	return Array.isArray(payload.releases) ? payload.releases : [];

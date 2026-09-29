@@ -2404,7 +2404,7 @@ export function useChatSession(environmentId: string) {
 				// signed-out reconnects); show the human text, not the envelope.
 				setError(
 					humanizeCloudSessionError(record.message?.trim() || "") ||
-						"Cloud session history could not be refreshed. Live updates are still connected.",
+						"云端会话历史刷新失败。实时更新连接正常。",
 				);
 			},
 		);
@@ -2596,7 +2596,7 @@ export function useChatSession(environmentId: string) {
 				payload.environmentId !== environmentId
 			) {
 				throw new Error(
-					`Session started in environment ${payload.environmentId}, not ${environmentId}.`,
+					`会话在环境 ${payload.environmentId} 中启动，而非 ${environmentId}。`,
 				);
 			}
 			const id = payload.sessionId;

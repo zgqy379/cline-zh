@@ -683,7 +683,7 @@ class DesktopClient {
 								return;
 							}
 							const error = new Error(
-								`Desktop command timed out waiting for ${command}`,
+								`等待桌面命令 ${command} 响应超时`,
 							);
 							this.reportError({
 								operation: "webview.command_timeout",
