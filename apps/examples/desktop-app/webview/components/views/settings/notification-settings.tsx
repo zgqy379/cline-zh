@@ -143,7 +143,7 @@ export function NotificationSettings() {
 							</div>
 							<div className="flex justify-center">
 								<Switch
-									aria-label={`${copy.label} notifications`}
+									aria-label={`${copy.label}通知`}
 									checked={preference.enabled}
 									onCheckedChange={(checked) =>
 										updatePreference(eventType, "enabled", checked)
@@ -152,7 +152,7 @@ export function NotificationSettings() {
 							</div>
 							<div className="flex justify-center">
 								<Switch
-									aria-label={`${copy.label} sound`}
+									aria-label={`${copy.label}声音`}
 									checked={preference.sound}
 									disabled={!preference.enabled}
 									onCheckedChange={(checked) =>

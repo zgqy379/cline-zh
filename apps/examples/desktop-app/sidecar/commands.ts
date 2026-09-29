@@ -1293,7 +1293,7 @@ async function handleRoutineScheduleCommand(
 		const workspaceRoot = asTrimmedString(args?.workspace_root);
 		if (!name || !timing || !prompt || !workspaceRoot) {
 			throw new Error(
-				"createSchedule requires name, timing, prompt, and workspace_root",
+				"创建定时任务需要 name、timing、prompt 和 workspace_root 参数。",
 			);
 		}
 		const created = await clientCommand("schedule.create", {
@@ -1317,7 +1317,7 @@ async function handleRoutineScheduleCommand(
 		return { schedule: created.schedule ?? null };
 	}
 	const scheduleId = asTrimmedString(args?.schedule_id);
-	if (!scheduleId) throw new Error(`${command} requires schedule_id`);
+	if (!scheduleId) throw new Error(`${command} 需要 schedule_id 参数。`);
 	if (command === "update_routine_schedule") {
 		const mode = readHubScheduleMode(args);
 		const name = asTrimmedString(args?.name);
@@ -1326,7 +1326,7 @@ async function handleRoutineScheduleCommand(
 		const workspaceRoot = asTrimmedString(args?.workspace_root);
 		if (!name || !timing || !prompt || !workspaceRoot) {
 			throw new Error(
-				"updateSchedule requires schedule_id, name, timing, prompt, and workspace_root",
+				"更新定时任务需要 schedule_id、name、timing、prompt 和 workspace_root 参数。",
 			);
 		}
 		const reply = await clientCommand("schedule.update", {
