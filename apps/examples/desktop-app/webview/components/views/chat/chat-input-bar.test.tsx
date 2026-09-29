@@ -659,7 +659,7 @@ describe("ChatInputBar", () => {
 		);
 		await act(async () => modelTrigger?.click());
 		const cloudModel = container.querySelector<HTMLButtonElement>(
-			'[aria-label="Model: cline-test"]',
+			'[aria-label="模型: cline-test"]',
 		);
 		loadProviderModelsMock.mockClear();
 		loadProviderModelCatalogMock.mockClear();
@@ -1311,11 +1311,11 @@ describe("ChatInputBar", () => {
 		expect(compactModelTrigger?.getAttribute("aria-expanded")).toBe("true");
 		expect(
 			container.querySelectorAll<HTMLButtonElement>(
-				'[aria-label^="Provider:"]',
+				'[aria-label^="供应商:"]',
 			),
 		).toHaveLength(2);
 		expect(
-			container.querySelectorAll<HTMLButtonElement>('[aria-label^="Model:"]'),
+			container.querySelectorAll<HTMLButtonElement>('[aria-label^="模型:"]'),
 		).toHaveLength(2);
 		// The picker labels models by display name, not raw id.
 		expect(container.textContent).toContain("Refreshed model");
@@ -1354,7 +1354,7 @@ describe("ChatInputBar", () => {
 
 		expect(onReasoningChange).not.toHaveBeenCalled();
 		const providerTrigger = container.querySelector<HTMLButtonElement>(
-			'[aria-label^="Provider:"]',
+			'[aria-label^="供应商:"]',
 		);
 		expect(providerTrigger?.parentElement?.parentElement?.className).toContain(
 			"max-[560px]:hidden",
@@ -1975,7 +1975,7 @@ describe("ChatInputBar", () => {
 		});
 		// The composer displays the session's model...
 		const modelTrigger = container.querySelector<HTMLButtonElement>(
-			'[aria-label^="Model:"]',
+			'[aria-label^="模型:"]',
 		);
 		expect(modelTrigger?.textContent).toContain("old-session-model");
 		// ...but the remembered selection for new sessions stays intact.
@@ -2085,13 +2085,13 @@ describe("ChatInputBar", () => {
 		// The provider trigger uses the catalog display name, the model
 		// trigger the model's display name.
 		const providerTrigger = container.querySelector<HTMLButtonElement>(
-			'[aria-label^="Provider:"]',
+			'[aria-label^="供应商:"]',
 		);
 		await vi.waitFor(() => {
 			expect(providerTrigger?.textContent).toContain("Cline");
 		});
 		const modelTrigger = container.querySelector<HTMLButtonElement>(
-			'[aria-label^="Model:"]',
+			'[aria-label^="模型:"]',
 		);
 		expect(modelTrigger?.textContent).toContain("Claude Opus 5");
 		expect(loadProviderModelsMock).toHaveBeenCalledTimes(1);
@@ -2171,7 +2171,7 @@ describe("ChatInputBar", () => {
 			await Promise.resolve();
 		});
 		const providerTrigger = container.querySelector<HTMLButtonElement>(
-			'[aria-label^="Provider:"]',
+			'[aria-label^="供应商:"]',
 		);
 		await vi.waitFor(() => {
 			expect(providerTrigger?.textContent).toContain("Cline");
@@ -2344,7 +2344,7 @@ describe("ChatInputBar", () => {
 			expect(loadProviderModelsMock).toHaveBeenCalledWith("cline-pass");
 			expect(onModelChange).not.toHaveBeenCalled();
 			expect(
-				container.querySelector('[aria-label^="Model:"]')?.textContent,
+				container.querySelector('[aria-label^="模型:"]')?.textContent,
 			).toContain(kimi.id);
 
 			await act(async () => {
@@ -2353,7 +2353,7 @@ describe("ChatInputBar", () => {
 			});
 			expect(onModelChange).not.toHaveBeenCalled();
 			expect(
-				container.querySelector('[aria-label^="Model:"]')?.textContent,
+				container.querySelector('[aria-label^="模型:"]')?.textContent,
 			).toContain(outcome === "success" ? kimi.name : kimi.id);
 			expect(
 				parseModelSelectionStorage(
@@ -2367,7 +2367,7 @@ describe("ChatInputBar", () => {
 			loadProviderModelsMock.mockResolvedValue([flash, kimi]);
 			await renderComposer({ model: kimi.id, provider: "cline-pass" });
 			const modelTrigger = container.querySelector<HTMLButtonElement>(
-				'[aria-label^="Model:"]',
+				'[aria-label^="模型:"]',
 			);
 			await vi.waitFor(() => {
 				expect(modelTrigger?.textContent).toContain(kimi.name);
@@ -2409,7 +2409,7 @@ describe("ChatInputBar", () => {
 			});
 			await act(async () =>
 				container
-					.querySelector<HTMLButtonElement>('[aria-label^="Model:"]')
+					.querySelector<HTMLButtonElement>('[aria-label^="模型:"]')
 					?.click(),
 			);
 			const option = [
@@ -2447,7 +2447,7 @@ describe("ChatInputBar", () => {
 				});
 				expect(onModelChange).not.toHaveBeenCalled();
 				expect(
-					container.querySelector('[aria-label^="Model:"]')?.textContent,
+					container.querySelector('[aria-label^="模型:"]')?.textContent,
 				).toContain(kimi.id);
 				await act(async () => resolveModels([flash, kimi]));
 			} else {
@@ -2455,7 +2455,7 @@ describe("ChatInputBar", () => {
 			}
 			expect(onModelChange).not.toHaveBeenCalled();
 			expect(
-				container.querySelector('[aria-label^="Model:"]')?.textContent,
+				container.querySelector('[aria-label^="模型:"]')?.textContent,
 			).toContain(transition === "new chat" ? kimi.name : kimi.id);
 		});
 
@@ -2478,7 +2478,7 @@ describe("ChatInputBar", () => {
 			});
 			await act(async () =>
 				container
-					.querySelector<HTMLButtonElement>('[aria-label^="Provider:"]')
+					.querySelector<HTMLButtonElement>('[aria-label^="供应商:"]')
 					?.click(),
 			);
 			const option = [
@@ -2519,7 +2519,7 @@ describe("ChatInputBar", () => {
 			expect(onModelChange).not.toHaveBeenCalledWith("legacy/stale-model");
 
 			const modelTrigger = container.querySelector<HTMLButtonElement>(
-				'[aria-label^="Model:"]',
+				'[aria-label^="模型:"]',
 			);
 			await act(async () => modelTrigger?.click());
 			const panel = document.querySelector('[role="dialog"]');
@@ -2557,7 +2557,7 @@ describe("ChatInputBar", () => {
 			// The session's configured model stays active…
 			expect(onModelChange).not.toHaveBeenCalled();
 			const modelTrigger = container.querySelector<HTMLButtonElement>(
-				'[aria-label^="Model:"]',
+				'[aria-label^="模型:"]',
 			);
 			await vi.waitFor(() => {
 				expect(modelTrigger?.textContent).toContain("Stale Legacy");
@@ -2587,7 +2587,7 @@ describe("ChatInputBar", () => {
 
 			expect(onModelChange).not.toHaveBeenCalled();
 			const modelTrigger = container.querySelector<HTMLButtonElement>(
-				'[aria-label^="Model:"]',
+				'[aria-label^="模型:"]',
 			);
 			await vi.waitFor(() => {
 				expect(modelTrigger?.textContent).toContain(
@@ -2617,7 +2617,7 @@ describe("ChatInputBar", () => {
 			});
 
 			const providerTrigger = container.querySelector<HTMLButtonElement>(
-				'[aria-label^="Provider:"]',
+				'[aria-label^="供应商:"]',
 			);
 			await act(async () => providerTrigger?.click());
 			const panel = document.querySelector('[role="dialog"]');
