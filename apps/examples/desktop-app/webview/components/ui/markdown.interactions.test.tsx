@@ -91,7 +91,7 @@ describe("MemoizedMarkdown interactions", () => {
 			);
 		});
 
-		await click(getButton("Open link"));
+		await click(getButton("打开链接"));
 		await vi.waitFor(() => {
 			expect(onConfirm).toHaveBeenCalledOnce();
 			expect(onClose).toHaveBeenCalledOnce();
@@ -160,7 +160,7 @@ describe("MemoizedMarkdown interactions", () => {
 		await vi.waitFor(() => {
 			expect(document.querySelector('[role="alertdialog"]')).not.toBeNull();
 		});
-		await click(getButton("Open link"));
+		await click(getButton("打开链接"));
 
 		expect(openWindow).toHaveBeenCalledTimes(1);
 		expect(openWindow).toHaveBeenCalledWith(
@@ -181,7 +181,7 @@ describe("MemoizedMarkdown interactions", () => {
 		for (const url of ["vscode://settings/editor", "ftp://example.com/f"]) {
 			await renderMarkdown({ content: `[Open app](${url})` });
 			await vi.waitFor(() => {
-				expect(container.textContent).toContain("Open app");
+				expect(container.textContent).toContain("Open app [blocked]");
 			});
 			expect(container.querySelector('[data-streamdown="link"]')).toBeNull();
 		}

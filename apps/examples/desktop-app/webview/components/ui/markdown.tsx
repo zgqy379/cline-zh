@@ -26,6 +26,51 @@ import {
 
 const streamdownPlugins = { cjk, code: markdownCodeHighlighter };
 
+/**
+ * streamdown 内置 UI 文案的中文覆盖。
+ *
+ * 该库的按钮文案（复制代码 / 全屏 / 打开链接 / 下载图片 …）硬编码在
+ * dist chunk 里，无法通过改源码汉化；但它开放了 `translations` prop，
+ * 因此用官方途径覆盖，不 fork 依赖、不改 node_modules。
+ *
+ * 键名与默认值取自 streamdown 的 `StreamdownTranslations` 接口，
+ * 新增键时上游会自动补默认值，不影响未覆盖的项。
+ */
+const streamdownTranslations = {
+	close: "关闭",
+	copied: "已复制",
+	copyCode: "复制代码",
+	copyLink: "复制链接",
+	copyTable: "复制表格",
+	copyTableAsCsv: "复制表格为 CSV",
+	copyTableAsMarkdown: "复制表格为 Markdown",
+	copyTableAsTsv: "复制表格为 TSV",
+	downloadDiagram: "下载图表",
+	downloadDiagramAsMmd: "下载图表为 MMD",
+	downloadDiagramAsPng: "下载图表为 PNG",
+	downloadDiagramAsSvg: "下载图表为 SVG",
+	downloadFile: "下载文件",
+	downloadImage: "下载图片",
+	downloadTable: "下载表格",
+	downloadTableAsCsv: "下载表格为 CSV",
+	downloadTableAsMarkdown: "下载表格为 Markdown",
+	exitFullscreen: "退出全屏",
+	externalLinkWarning: "你即将访问一个外部网站。",
+	imageNotAvailable: "图片不可用",
+	mermaidFormatMmd: "MMD",
+	mermaidFormatPng: "PNG",
+	mermaidFormatSvg: "SVG",
+	openExternalLink: "打开外部链接？",
+	openLink: "打开链接",
+	resetView: "重置缩放与平移",
+	tableFormatCsv: "CSV",
+	tableFormatMarkdown: "Markdown",
+	tableFormatTsv: "TSV",
+	viewFullscreen: "全屏查看",
+	zoomIn: "放大",
+	zoomOut: "缩小",
+} satisfies NonNullable<ComponentProps<typeof Streamdown>["translations"]>;
+
 export function MarkdownLinkSafetyModal({
 	isOpen,
 	onClose,
@@ -41,17 +86,17 @@ export function MarkdownLinkSafetyModal({
 		>
 			<AlertDialogContent>
 				<AlertDialogHeader>
-					<AlertDialogTitle>Open external link?</AlertDialogTitle>
+					<AlertDialogTitle>打开外部链接？</AlertDialogTitle>
 					<AlertDialogDescription>
-						You are about to leave Cline and visit this address.
+						你即将离开 Cline 并访问此地址。
 					</AlertDialogDescription>
 				</AlertDialogHeader>
 				<div className="max-h-32 overflow-y-auto wrap-break-word rounded-md bg-muted p-3 font-mono text-sm">
 					{url}
 				</div>
 				<AlertDialogFooter>
-					<AlertDialogCancel>Cancel</AlertDialogCancel>
-					<AlertDialogAction onClick={onConfirm}>Open link</AlertDialogAction>
+					<AlertDialogCancel>取消</AlertDialogCancel>
+					<AlertDialogAction onClick={onConfirm}>打开链接</AlertDialogAction>
 				</AlertDialogFooter>
 			</AlertDialogContent>
 		</AlertDialog>
@@ -314,6 +359,7 @@ export const MemoizedMarkdown = memo(
 			normalizeHtmlIndentation
 			parseIncompleteMarkdown={streaming}
 			plugins={streamdownPlugins}
+			translations={streamdownTranslations}
 		>
 			{content}
 		</Streamdown>

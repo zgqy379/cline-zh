@@ -254,7 +254,7 @@ describe("DiffView hunk rendering", () => {
 		});
 
 		expect(diffContainers()).toHaveLength(0);
-		expect(container.textContent).toContain("No hunk details available.");
+		expect(container.textContent).toContain("没有可显示的差异块详情。");
 	});
 
 	it("removes the diff body when a file is collapsed and restores it on expand", async () => {
