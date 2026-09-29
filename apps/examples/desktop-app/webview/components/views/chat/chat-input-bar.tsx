@@ -1405,7 +1405,7 @@ function ChatInputBarImpl({
 										toast({
 											title: "已切换到浏览器语音识别",
 											description:
-												"The voice provider could not be reached. Click the microphone and repeat any missing speech. Browser recognition may also require internet access.",
+												"无法连接语音供应商。请点击麦克风并重复未识别到的内容。浏览器语音识别可能还需要联网。",
 										})
 									}
 									onProcessingChange={setSpeechInputProcessing}
@@ -1414,7 +1414,7 @@ function ChatInputBarImpl({
 									onStreamingStart={handleStreamingTranscriptionStart}
 									onTranscriptionChange={handleStreamingTranscriptionChange}
 									recordingMode="streaming"
-									title={`Transcribe live with ${transcriptionTarget.providerName} / ${transcriptionTarget.modelName}`}
+									title={`使用 ${transcriptionTarget.providerName} / ${transcriptionTarget.modelName} 实时转录`}
 								/>
 							) : null}
 							{(!isBusy || canSend) && (
@@ -1449,9 +1449,10 @@ function ChatInputBarImpl({
 								className="inline-flex items-center gap-1 rounded-full border border-border bg-muted px-2 py-1 text-sm text-foreground"
 								key={attachment.id}
 							>
-								{attachment.isImage ? "image:" : "file:"} {attachment.name}
+								{attachment.isImage ? "图片：" : "文件："}
+								{attachment.name}
 								<button
-									aria-label={`Remove ${attachment.name}`}
+									aria-label={`移除 ${attachment.name}`}
 									className="rounded-sm p-0.5 text-muted-foreground hover:bg-surface-hover hover:text-foreground"
 									onClick={() => onRemoveAttachment(attachment.id)}
 									type="button"
