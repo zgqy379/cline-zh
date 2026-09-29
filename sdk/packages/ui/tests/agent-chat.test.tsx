@@ -253,17 +253,17 @@ describe("@cline/ui agent chat primitives", () => {
 				durationMilliseconds: 252_000,
 				toolCallCount: 14,
 			}),
-		).toBe("Worked for 4m 12s and made 14 tool calls");
+		).toBe("工作了 4m 12s，共 14 次工具调用");
 		expect(
 			formatWorkActivityLabel({ durationMilliseconds: 800, toolCallCount: 1 }),
-		).toBe("Worked for 1s and made 1 tool call");
+		).toBe("工作了 1s，共 1 次工具调用");
 		expect(formatWorkActivityLabel({ durationMilliseconds: 3_720_000 })).toBe(
-			"Worked for 1h 2m",
+			"工作了 1h 2m",
 		);
 		expect(formatWorkActivityLabel({ toolCallCount: 3 })).toBe(
-			"Made 3 tool calls",
+			"共 3 次工具调用",
 		);
-		expect(formatWorkActivityLabel({})).toBe("Worked");
+		expect(formatWorkActivityLabel({})).toBe("已完成工作");
 	});
 
 	it("toggles the collapsed work summary open and closed", async () => {
@@ -278,7 +278,7 @@ describe("@cline/ui agent chat primitives", () => {
 			"button.cline-chat-work-trigger",
 		) as HTMLButtonElement;
 		expect(trigger.textContent).toContain(
-			"Worked for 1m 5s and made 2 tool calls",
+			"工作了 1m 5s，共 2 次工具调用",
 		);
 		expect(trigger.getAttribute("aria-expanded")).toBe("false");
 		const panel = document.getElementById(
