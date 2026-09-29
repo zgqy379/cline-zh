@@ -57,27 +57,27 @@ export function teamSummary(
 	if (!toolName.startsWith("team_")) return null;
 	if (isError) {
 		const failureLabels: Record<string, string> = {
-			team_attach_outcome_fragment: "Failed to attach outcome fragment",
-			team_await_runs: "Failed while waiting for teammates",
-			team_broadcast: "Failed to broadcast message to teammates",
-			team_cancel_run: "Failed to cancel teammate run",
-			team_cleanup: "Failed to clean up team",
-			team_create_outcome: "Failed to create team outcome",
-			team_finalize_outcome: "Failed to finalize team outcome",
-			team_list_outcomes: "Failed to list team outcomes",
-			team_list_runs: "Failed to list teammate runs",
-			team_mission_log: "Failed to update mission log",
-			team_read_mailbox: "Failed to read team mailbox",
-			team_review_outcome_fragment: "Failed to review outcome fragment",
-			team_run_task: "Failed to assign team task",
-			team_send_message: "Failed to send message",
-			team_shutdown_teammate: "Failed to stop teammate",
-			team_spawn_teammate: "Failed to spawn teammate",
-			team_status: "Failed to check team status",
-			team_task: "Failed to update team task",
+			team_attach_outcome_fragment: "未能附加成果片段",
+			team_await_runs: "等待队友时失败",
+			team_broadcast: "向队友广播消息失败",
+			team_cancel_run: "取消队友运行失败",
+			team_cleanup: "清理团队失败",
+			team_create_outcome: "创建团队成果失败",
+			team_finalize_outcome: "确定团队成果失败",
+			team_list_outcomes: "列出团队成果失败",
+			team_list_runs: "列出队友运行失败",
+			team_mission_log: "更新任务日志失败",
+			team_read_mailbox: "读取团队邮箱失败",
+			team_review_outcome_fragment: "复核成果片段失败",
+			team_run_task: "分配团队任务失败",
+			team_send_message: "发送消息失败",
+			team_shutdown_teammate: "停止队友失败",
+			team_spawn_teammate: "生成队友失败",
+			team_status: "检查团队状态失败",
+			team_task: "更新团队任务失败",
 		};
 		return {
-			label: failureLabels[toolName] ?? `Failed ${toolName}`,
+			label: failureLabels[toolName] ?? `${toolName} 失败`,
 			details: [],
 		};
 	}
@@ -118,10 +118,11 @@ export function teamSummary(
 		case "team_spawn_teammate":
 			return aggregate(
 				"team-spawn",
-				"teammate",
-				"Spawned",
-				"Spawning",
+				"名队友",
+				"已生成",
+				"正在生成",
 				agentId ? [agentId] : [],
+				"名队友",
 			);
 		case "team_run_task": {
 			const mode = recordString(
@@ -134,13 +135,13 @@ export function teamSummary(
 				: recordString(resultRecord, "status", "assigned");
 			return aggregate(
 				"team-run-task",
-				"team task",
-				"Assigned",
-				"Assigning",
+				"项团队任务",
+				"已分配",
+				"正在分配",
 				[mode, agentId, status].filter(Boolean).join(" ")
-					? [[mode, agentId, status].filter(Boolean).join(" ")]
-					: [],
-				"team tasks",
+				? [[mode, agentId, status].filter(Boolean).join(" ")]
+				: [],
+				"项团队任务",
 			);
 		}
 		case "team_await_runs": {
@@ -153,17 +154,18 @@ export function teamSummary(
 					.join(" "),
 			);
 			return {
-				label: inProgress ? "Waiting for teammates" : "Waited for teammates",
+				label: inProgress ? "正在等待队友" : "已等待队友",
 				details,
 			};
 		}
 		case "team_shutdown_teammate":
 			return aggregate(
 				"team-shutdown",
-				"teammate",
-				"Stopped",
-				"Stopping",
+				"名队友",
+				"已停止",
+				"正在停止",
 				agentId ? [agentId] : [],
+				"名队友",
 			);
 		case "team_status": {
 			const members = Array.isArray(resultRecord?.members)
@@ -172,7 +174,7 @@ export function teamSummary(
 						.filter((item): item is Record<string, unknown> => item !== null)
 				: [];
 			return {
-				label: inProgress ? "Checking team status" : "Checked team status",
+				label: inProgress ? "正在检查团队状态" : "已检查团队状态",
 				details: members.map((member) =>
 					[recordString(member, "agentId"), recordString(member, "status")]
 						.filter(Boolean)
@@ -187,15 +189,15 @@ export function teamSummary(
 				recordString(resultRecord, "action", "update"),
 			);
 			const verbs: Record<string, [string, string]> = {
-				create: ["Created", "Creating"],
-				list: ["Listed", "Listing"],
-				claim: ["Claimed", "Claiming"],
-				complete: ["Completed", "Completing"],
-				block: ["Blocked", "Blocking"],
+				create: ["已创建", "正在创建"],
+				list: ["已列出", "正在列出"],
+				claim: ["已认领", "正在认领"],
+				complete: ["已完成", "正在完成"],
+				block: ["已阻塞", "正在阻塞"],
 			};
 			const [completedVerb, progressVerb] = verbs[action] ?? [
-				"Updated",
-				"Updating",
+				"已更新",
+				"正在更新",
 			];
 			const tasks = Array.isArray(resultRecord?.tasks)
 				? resultRecord.tasks
@@ -217,19 +219,19 @@ export function teamSummary(
 			);
 			return aggregate(
 				`team-task-${action}`,
-				"team task",
+				"项团队任务",
 				completedVerb,
 				progressVerb,
 				details,
-				undefined,
+				"项团队任务",
 				action === "list" ? tasks.length : 1,
 			);
 		}
 		case "team_list_runs":
 			return {
 				label: inProgress
-					? "Listing teammate runs"
-					: `Listed ${pluralize(records.length, "teammate run")}`,
+					? "正在列出队友运行"
+					: `已列出 ${pluralize(records.length, "次队友运行", "次队友运行")}`,
 				details: records.map((run) =>
 					[recordString(run, "agentId"), recordString(run, "status")]
 						.filter(Boolean)
@@ -239,8 +241,8 @@ export function teamSummary(
 		case "team_cancel_run":
 			return {
 				label: inProgress
-					? "Cancelling teammate run"
-					: "Cancelled teammate run",
+					? "正在取消队友运行"
+					: "已取消队友运行",
 				details: [
 					[
 						recordString(
@@ -262,24 +264,25 @@ export function teamSummary(
 			);
 			return aggregate(
 				"team-send-message",
-				"message",
-				"Sent",
-				"Sending",
+				"条消息",
+				"已发送",
+				"正在发送",
 				[recipient, recordString(inputRecord, "subject")].filter(Boolean).length
-					? [
-							[recipient, recordString(inputRecord, "subject")]
-								.filter(Boolean)
-								.join(" "),
-						]
-					: [],
+				? [
+					[recipient, recordString(inputRecord, "subject")]
+						.filter(Boolean)
+						.join(" "),
+					]
+				: [],
+				"条消息",
 			);
 		}
 		case "team_broadcast": {
 			const delivered = resultRecord?.delivered;
 			return {
 				label: inProgress
-					? "Broadcasting message to teammates"
-					: `Broadcast message to ${pluralize(typeof delivered === "number" ? delivered : 0, "teammate")}`,
+					? "正在向队友广播消息"
+					: `已向 ${pluralize(typeof delivered === "number" ? delivered : 0, "名队友", "名队友")} 广播消息`,
 				details: recordString(inputRecord, "subject")
 					? [recordString(inputRecord, "subject")]
 					: [],
@@ -288,8 +291,8 @@ export function teamSummary(
 		case "team_read_mailbox":
 			return {
 				label: inProgress
-					? "Reading team mailbox"
-					: `Read ${pluralize(records.length, "team message")}`,
+					? "正在读取团队邮箱"
+					: `已读取 ${pluralize(records.length, "条团队消息", "条团队消息")}`,
 				details: records.map((message) =>
 					[
 						recordString(message, "fromAgentId"),
@@ -301,7 +304,7 @@ export function teamSummary(
 			};
 		case "team_mission_log":
 			return {
-				label: inProgress ? "Updating mission log" : "Updated mission log",
+				label: inProgress ? "正在更新任务日志" : "已更新任务日志",
 				details: [
 					[
 						recordString(inputRecord, "kind"),
@@ -313,14 +316,14 @@ export function teamSummary(
 			};
 		case "team_cleanup":
 			return {
-				label: inProgress ? "Cleaning up team" : "Cleaned up team",
+				label: inProgress ? "正在清理团队" : "已清理团队",
 				details: recordString(resultRecord, "status")
 					? [recordString(resultRecord, "status")]
 					: [],
 			};
 		case "team_create_outcome":
 			return {
-				label: inProgress ? "Creating team outcome" : "Created team outcome",
+				label: inProgress ? "正在创建团队成果" : "已创建团队成果",
 				details: [
 					[
 						recordString(resultRecord, "outcomeId"),
@@ -334,8 +337,8 @@ export function teamSummary(
 		case "team_attach_outcome_fragment":
 			return {
 				label: inProgress
-					? "Attaching outcome fragment"
-					: "Attached outcome fragment",
+					? "正在附加成果片段"
+					: "已附加成果片段",
 				details: [
 					[
 						recordString(inputRecord, "section"),
@@ -348,15 +351,15 @@ export function teamSummary(
 		case "team_review_outcome_fragment":
 			return {
 				label: inProgress
-					? "Reviewing outcome fragment"
-					: "Reviewed outcome fragment",
+					? "正在复核成果片段"
+					: "已复核成果片段",
 				details: [
 					[
 						recordString(inputRecord, "fragmentId"),
 						typeof inputRecord?.approved === "boolean"
 							? inputRecord.approved
-								? "approved"
-								: "rejected"
+								? "已批准"
+								: "已拒绝"
 							: recordString(resultRecord, "status"),
 					]
 						.filter(Boolean)
@@ -366,8 +369,8 @@ export function teamSummary(
 		case "team_finalize_outcome":
 			return {
 				label: inProgress
-					? "Finalizing team outcome"
-					: "Finalized team outcome",
+					? "正在确定团队成果"
+					: "已确定团队成果",
 				details: [
 					[
 						recordString(
@@ -384,8 +387,8 @@ export function teamSummary(
 		case "team_list_outcomes":
 			return {
 				label: inProgress
-					? "Listing team outcomes"
-					: `Listed ${pluralize(records.length, "team outcome")}`,
+					? "正在列出团队成果"
+					: `已列出 ${pluralize(records.length, "份团队成果", "份团队成果")}`,
 				details: records.map((outcome) =>
 					[
 						recordString(outcome, "title", recordString(outcome, "id")),

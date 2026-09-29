@@ -489,7 +489,7 @@ describe("team summaries", () => {
 			toolName: "team_spawn_teammate",
 			result: { agentId: "researcher-1" },
 		});
-		expect(summary.label).toBe("Spawned 1 teammate");
+		expect(summary.label).toBe("已生成 1 名队友");
 		expect(summary.details).toEqual(["researcher-1"]);
 		expect(summary.kind).toBe("team");
 	});
@@ -499,7 +499,7 @@ describe("team summaries", () => {
 			toolName: "team_broadcast",
 			isError: true,
 		});
-		expect(summary.label).toBe("Failed to broadcast message to teammates");
+		expect(summary.label).toBe("向队友广播消息失败");
 	});
 });
 
