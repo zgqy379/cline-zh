@@ -54,9 +54,9 @@ describe("sidebar session organization", () => {
 
 	it("labels chat workspace groups as Chat", () => {
 		const path = "/home/host/.cline/data/workspaces/chat";
-		expect(workspaceDisplayName(path)).toBe("Chat");
+		expect(workspaceDisplayName(path)).toBe("对话");
 		expect(groupThreadsByProject([thread("temp", path)])[0]?.label).toBe(
-			"Chat",
+			"对话",
 		);
 	});
 

@@ -173,7 +173,7 @@ describe("RemoteEnvironmentsContent", () => {
 			"管理你的远程 SSH 主机及其配置。",
 		);
 		expect(container.textContent).toContain(
-			"Password sign-in is not supported.",
+			"不支持密码登录。",
 		);
 
 		await type(inputById("remote-name"), "Build box 2");

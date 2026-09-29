@@ -1087,7 +1087,7 @@ async function handleAttach(
 	const manager = binding.sessionManager;
 	const session = await manager.get(sessionId);
 	if (!session) {
-		throw new Error(`Session ${sessionId} not found`);
+		throw new Error(`未找到会话 ${sessionId}`);
 	}
 
 	const metadata =

@@ -2554,9 +2554,9 @@ export async function handleCommand(
 			return true;
 		}
 		const binding = await getCommandSessionBinding(ctx, sessionId, args);
-		if (!binding) throw new Error(`Session ${sessionId} not found`);
+		if (!binding) throw new Error(`未找到会话 ${sessionId}`);
 		const result = await binding.sessionManager.update(sessionId, { title });
-		if (!result.updated) throw new Error(`Session ${sessionId} not found`);
+		if (!result.updated) throw new Error(`未找到会话 ${sessionId}`);
 		const liveSession = ctx.liveSessions.get(sessionId);
 		if (liveSession) liveSession.title = title;
 		return true;
@@ -2572,7 +2572,7 @@ export async function handleCommand(
 		// the manifest, so merge over what each already holds. A null value
 		// removes the key, which is how callers clear a flag.
 		const binding = await getCommandSessionBinding(ctx, sessionId, args);
-		if (!binding) throw new Error(`Session ${sessionId} not found`);
+		if (!binding) throw new Error(`未找到会话 ${sessionId}`);
 		const store = new SqliteSessionStore();
 		const asRecord = (value: unknown): JsonRecord =>
 			value && typeof value === "object" && !Array.isArray(value)
@@ -2595,7 +2595,7 @@ export async function handleCommand(
 		const result = await binding.sessionManager.update(sessionId, {
 			metadata: merged,
 		});
-		if (!result.updated) throw new Error(`Session ${sessionId} not found`);
+		if (!result.updated) throw new Error(`未找到会话 ${sessionId}`);
 		// Annotating a session is not session activity. updateSession stamps
 		// updated_at, which clients sort and label rows by, so a pin would
 		// otherwise make an old session look like it just ran.

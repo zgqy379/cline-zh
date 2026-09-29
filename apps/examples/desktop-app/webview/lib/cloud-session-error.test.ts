@@ -5,11 +5,11 @@ describe("parseCloudSessionError", () => {
 	it("parses environment-aware GitHub connection guidance", () => {
 		expect(
 			parseCloudSessionError(
-				'CLOUD_SESSION_ERROR:{"code":"github_not_connected","message":"Connect GitHub","connectUrl":"https://app.cline.bot/dashboard/integrations"}',
+				'CLOUD_SESSION_ERROR:{"code":"github_not_connected","message":"连接 GitHub","connectUrl":"https://app.cline.bot/dashboard/integrations"}',
 			),
 		).toEqual({
 			code: "github_not_connected",
-			message: "Connect GitHub",
+			message: "连接 GitHub",
 			connectUrl: "https://app.cline.bot/dashboard/integrations",
 		});
 	});
@@ -17,7 +17,7 @@ describe("parseCloudSessionError", () => {
 	it("accepts connect URLs from every known Cline app environment", () => {
 		expect(
 			parseCloudSessionError(
-				'CLOUD_SESSION_ERROR:{"code":"github_not_connected","message":"Connect GitHub","connectUrl":"https://staging-app.cline.bot/dashboard/organization/integrations"}',
+				'CLOUD_SESSION_ERROR:{"code":"github_not_connected","message":"连接 GitHub","connectUrl":"https://staging-app.cline.bot/dashboard/organization/integrations"}',
 			)?.connectUrl,
 		).toBe("https://staging-app.cline.bot/dashboard/organization/integrations");
 	});

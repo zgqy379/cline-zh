@@ -99,8 +99,8 @@ describe("desktop notifications", () => {
 
 		await vi.waitFor(() => expect(mocks.invoke).toHaveBeenCalledOnce());
 		expect(mocks.invoke).toHaveBeenCalledWith("show_session_notification", {
-			title: "Approval needed",
-			body: "run_commands is waiting for your approval.",
+			title: "需要你批准",
+			body: "run_commands 正在等待你的批准。",
 			sessionId: "session-1",
 			sound: undefined,
 		});
@@ -125,7 +125,7 @@ describe("desktop notifications", () => {
 		expect(mocks.invoke).toHaveBeenCalledWith(
 			"show_session_notification",
 			expect.objectContaining({
-				title: "Task completed",
+				title: "任务已完成",
 				sessionId: "session-2",
 			}),
 		);
@@ -171,10 +171,10 @@ describe("desktop notifications", () => {
 
 		await vi.waitFor(() =>
 			expect(mocks.invoke).toHaveBeenCalledWith("show_session_notification", {
-				title: "Cline has a question",
+				title: "Cline 有一个问题",
 				body: "Which branch should I use?",
 				sessionId: "session-4",
-				sound: "Default",
+				sound: "默认",
 			}),
 		);
 		stop();
@@ -209,7 +209,7 @@ describe("desktop notifications", () => {
 		expect(mocks.invoke).toHaveBeenCalledWith(
 			"show_session_notification",
 			expect.objectContaining({
-				title: "Task failed",
+				title: "任务失败",
 				body: "The provider is unavailable.",
 				sessionId: "session-5",
 			}),

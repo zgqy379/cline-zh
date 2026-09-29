@@ -260,12 +260,12 @@ export function resolveCredentialError(
 export function resolveCredentialFailureHint(providerId: string): string {
 	const cli = resolveProviderLocalCli(providerId);
 	if (cli) {
-		return `Sign in again with the \`${cli.command}\` CLI in a terminal, then try again.`;
+		return `请在终端中用 \`${cli.command}\` CLI 重新登录，然后重试。`;
 	}
 	if (normalizeProviderId(providerId) === "cline") {
-		return "Sign in to Cline again in Settings → Account, then try again.";
+		return "请在「设置 → 账户」中重新登录 Cline，然后重试。";
 	}
-	return "Check your model connection in Settings → Providers (or sign in with Cline), then try again.";
+	return "请在「设置 → 供应商」中检查你的模型连接（或使用 Cline 登录），然后重试。";
 }
 
 /**
