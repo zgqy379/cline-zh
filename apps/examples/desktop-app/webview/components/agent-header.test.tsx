@@ -372,7 +372,7 @@ describe("AgentHeader agent roster popover", () => {
 	it("shows a loading state while the roster is still being fetched", async () => {
 		await renderHeader({ agents: [], agentsLoading: true });
 		const panel = await openPanel();
-		expect(panel?.textContent).toContain("Loading agents...");
+		expect(panel?.textContent).toContain("正在加载智能体");
 	});
 
 	it("says the list is stale when a refresh failed but agents remain", async () => {
