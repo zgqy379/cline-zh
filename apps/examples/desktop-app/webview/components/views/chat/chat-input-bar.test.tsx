@@ -1761,15 +1761,15 @@ describe("ChatInputBar", () => {
 		expect(queuedPrompts?.textContent).toContain("Use the shorter title");
 		expect(queuedPrompts?.textContent).toContain("Next turn");
 		expect(
-			container.querySelector('[aria-label="Edit queued prompt"]'),
+			container.querySelector('[aria-label="编辑排队的提示"]'),
 		).not.toBeNull();
 		expect(
-			container.querySelector('[aria-label="Remove queued prompt"]'),
+			container.querySelector('[aria-label="移除排队的提示"]'),
 		).not.toBeNull();
 
 		await act(async () => {
 			container
-				.querySelector<HTMLButtonElement>('[aria-label="Steer queued prompt"]')
+				.querySelector<HTMLButtonElement>('[aria-label="引导排队的提示"]')
 				?.click();
 			await Promise.resolve();
 		});
@@ -1781,16 +1781,16 @@ describe("ChatInputBar", () => {
 
 		await act(async () => {
 			container
-				.querySelector<HTMLButtonElement>('[aria-label="Edit queued prompt"]')
+				.querySelector<HTMLButtonElement>('[aria-label="编辑排队的提示"]')
 				?.click();
 		});
 		const editor = container.querySelector<HTMLTextAreaElement>(
-			'[aria-label="Edit queued prompt"]',
+			'[aria-label="编辑排队的提示"]',
 		);
 		expect(editor).not.toBeNull();
 		await act(async () => {
 			container
-				.querySelector<HTMLButtonElement>('[aria-label="Save queued prompt"]')
+				.querySelector<HTMLButtonElement>('[aria-label="保存排队的提示"]')
 				?.click();
 			await Promise.resolve();
 		});
@@ -1807,14 +1807,14 @@ describe("ChatInputBar", () => {
 		await act(async () => {
 			container
 				.querySelector<HTMLButtonElement>(
-					'[aria-label="Cancel editing queued prompt"]',
+					'[aria-label="取消编辑排队的提示"]',
 				)
 				?.click();
 		});
 
 		await act(async () => {
 			container
-				.querySelector<HTMLButtonElement>('[aria-label="Remove queued prompt"]')
+				.querySelector<HTMLButtonElement>('[aria-label="移除排队的提示"]')
 				?.click();
 			await Promise.resolve();
 		});
@@ -1894,11 +1894,11 @@ describe("ChatInputBar", () => {
 		// Editing prefills the slash form; the sidecar re-resolves it on save.
 		await act(async () => {
 			container
-				.querySelector<HTMLButtonElement>('[aria-label="Edit queued prompt"]')
+				.querySelector<HTMLButtonElement>('[aria-label="编辑排队的提示"]')
 				?.click();
 		});
 		const editor = container.querySelector<HTMLTextAreaElement>(
-			'[aria-label="Edit queued prompt"]',
+			'[aria-label="编辑排队的提示"]',
 		);
 		expect(editor?.value).toBe("/team inspect the app");
 	});
