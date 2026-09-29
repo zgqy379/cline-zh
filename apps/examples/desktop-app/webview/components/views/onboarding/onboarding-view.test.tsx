@@ -194,7 +194,7 @@ describe("OnboardingView", () => {
 		// The welcome step layers the standalone bot over a separate interactive
 		// full-bleed grid. These data attributes protect that visual composition
 		// without coupling the test to generated SVG markup.
-		expect(container.textContent).toContain("Build software your way");
+		expect(container.textContent).toContain("按你的方式构建软件");
 		const welcomeBot = container.querySelector(
 			'[data-welcome-hero-variant="bot-only"]',
 		);
@@ -314,7 +314,7 @@ describe("OnboardingView", () => {
 				?.hasAttribute("inert"),
 		).toBe(false);
 		expect(apiKeyForm?.getAttribute("aria-hidden")).toBe("false");
-		expect(document.activeElement?.getAttribute("aria-label")).toBe("Provider");
+		expect(document.activeElement?.getAttribute("aria-label")).toBe("服务商");
 		expect(
 			container.querySelector('button[aria-label="使用自己的 API key"]'),
 		).toBeNull();
@@ -417,7 +417,7 @@ describe("OnboardingView", () => {
 		await act(async () => {
 			buttonByText("Get started").click();
 		});
-		expect(container.textContent).toContain("Signed in as");
+		expect(container.textContent).toContain("已登录为");
 
 		await act(async () => {
 			buttonByText("继续").click();
@@ -429,7 +429,7 @@ describe("OnboardingView", () => {
 		});
 		// The redesigned completion step places transparent content over a static,
 		// wide version of the hero grid.
-		expect(container.textContent).toContain("You're all set");
+		expect(container.textContent).toContain("全部就绪");
 		// A Cline sign-in ends on the current free models plus the ClinePass upsell.
 		const clineModels = container.querySelector(
 			"[data-onboarding-cline-models]",
@@ -482,7 +482,7 @@ describe("OnboardingView", () => {
 			buttonByText("继续").click();
 		});
 		expect(container.textContent).not.toContain("连接 GitHub");
-		expect(container.textContent).toContain("You're all set");
+		expect(container.textContent).toContain("全部就绪");
 	});
 
 	it("bypasses the GitHub step when the rollout flag is off", async () => {
@@ -506,7 +506,7 @@ describe("OnboardingView", () => {
 		});
 		expect(invoke).toHaveBeenCalledWith("get_feature_flags");
 		expect(container.textContent).not.toContain("连接 GitHub");
-		expect(container.textContent).toContain("You're all set");
+		expect(container.textContent).toContain("全部就绪");
 	});
 
 	it("lets the user cancel a pending browser sign-in", async () => {
@@ -531,12 +531,12 @@ describe("OnboardingView", () => {
 		await act(async () => {
 			buttonByText("登录").click();
 		});
-		expect(container.textContent).toContain("等待浏览器…");
+		expect(container.textContent).toContain("正在等待浏览器...");
 
 		await act(async () => {
 			buttonByText("取消").click();
 		});
-		expect(container.textContent).not.toContain("等待浏览器…");
+		expect(container.textContent).not.toContain("正在等待浏览器...");
 		expect(buttonByText("登录")).toBeDefined();
 		// Cancelling must also stop the backend browser round-trip so a
 		// later-completed authorization can never persist credentials.
@@ -555,7 +555,7 @@ describe("OnboardingView", () => {
 			buttonByText("使用 Cline API key").click();
 		});
 		const keyInput = container.querySelector<HTMLInputElement>(
-			'input[aria-label="Cline API key"]',
+			'input[aria-label="Cline API 密钥"]',
 		);
 		expect(keyInput).not.toBeNull();
 
@@ -591,8 +591,8 @@ describe("OnboardingView", () => {
 		await act(async () => {
 			buttonByText("暂时跳过").click();
 		});
-		expect(container.textContent).toContain("You're all set");
-		expect(container.textContent).toContain("Your Cline account is connected");
+		expect(container.textContent).toContain("全部就绪");
+		expect(container.textContent).toContain("你的 Cline 账户已连接。");
 		expect(
 			parseModelSelectionStorage(
 				window.localStorage.getItem(MODEL_SELECTION_STORAGE_KEY),
@@ -614,7 +614,7 @@ describe("OnboardingView", () => {
 			buttonByText("使用 Cline API key").click();
 		});
 		const keyInput = container.querySelector<HTMLInputElement>(
-			'input[aria-label="Cline API key"]',
+			'input[aria-label="Cline API 密钥"]',
 		);
 
 		const savedKeys: Array<string | undefined> = [];
@@ -645,9 +645,9 @@ describe("OnboardingView", () => {
 		});
 
 		// Stays on the connect step with an error instead of advancing.
-		expect(container.textContent).not.toContain("You're all set");
-		expect(container.textContent).toContain("Failed to save API key");
-		expect(container.textContent).toContain("could not be verified");
+		expect(container.textContent).not.toContain("全部就绪");
+		expect(container.textContent).toContain("保存 API key 失败");
+		expect(container.textContent).toContain("密钥无法通过验证");
 		// The rejected key was persisted for verification, then rolled back.
 		expect(savedKeys).toEqual(["bad_key", ""]);
 	});
@@ -700,7 +700,7 @@ describe("OnboardingView", () => {
 		await act(async () => {
 			buttonByText("暂时跳过").click();
 		});
-		expect(container.textContent).toContain("You're all set");
+		expect(container.textContent).toContain("全部就绪");
 		expect(
 			parseModelSelectionStorage(
 				window.localStorage.getItem(MODEL_SELECTION_STORAGE_KEY),

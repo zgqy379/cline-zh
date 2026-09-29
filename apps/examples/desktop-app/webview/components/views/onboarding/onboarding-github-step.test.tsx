@@ -129,7 +129,7 @@ describe("GitHubConnectStep", () => {
 			"https://github.com/apps/cline/installations/new?state=abc",
 		);
 		expect(container.textContent).toContain(
-			"Finish installing the Cline GitHub App in your browser",
+			"请在浏览器中完成 Cline GitHub App 的安装",
 		);
 
 		// First poll: still not installed.
@@ -167,7 +167,7 @@ describe("GitHubConnectStep", () => {
 			buttonByText("连接 GitHub").click();
 		});
 		expect(container.textContent).toContain(
-			"Failed to start the GitHub connection",
+			"启动 GitHub 连接失败",
 		);
 		expect(container.textContent).toContain("authentication required");
 		expect(openExternalUrl).not.toHaveBeenCalled();
@@ -184,12 +184,12 @@ describe("GitHubConnectStep", () => {
 		await act(async () => {
 			buttonByText("连接 GitHub").click();
 		});
-		expect(container.textContent).toContain("Finish installing");
+		expect(container.textContent).toContain("请在浏览器中完成 Cline GitHub App 的安装");
 
 		await act(async () => {
 			buttonByText("取消").click();
 		});
-		expect(container.textContent).not.toContain("Finish installing");
+		expect(container.textContent).not.toContain("请在浏览器中完成 Cline GitHub App 的安装");
 		expect(buttonByText("连接 GitHub")).toBeDefined();
 	});
 
@@ -233,7 +233,7 @@ describe("GitHubConnectStep", () => {
 		await act(async () => {
 			buttonByText("连接 GitHub").click();
 		});
-		expect(container.textContent).toContain("Finish installing");
+		expect(container.textContent).toContain("请在浏览器中完成 Cline GitHub App 的安装");
 
 		signedOut = true;
 		await act(async () => {
@@ -241,8 +241,8 @@ describe("GitHubConnectStep", () => {
 		});
 
 		// Back to the actionable connect state, not a permanent spinner.
-		expect(container.textContent).not.toContain("Finish installing");
-		expect(container.textContent).toContain("Your Cline account session ended");
+		expect(container.textContent).not.toContain("请在浏览器中完成 Cline GitHub App 的安装");
+		expect(container.textContent).toContain("你的 Cline 账户会话已结束");
 		expect(buttonByText("连接 GitHub")).toBeDefined();
 
 		const callsAfterSignOut = invoke.mock.calls.length;
