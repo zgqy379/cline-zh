@@ -331,15 +331,15 @@ export function watchDesktopNotifications(): () => void {
 				eventType: "taskCompletion",
 				sessionId,
 				title: "任务已完成",
-				body: "Cline finished working and the result is ready.",
+				body: "Cline 已完成工作，结果已就绪。",
 			});
 			return;
 		}
 		void notify({
 			eventType: "sessionError",
 			sessionId,
-			title: "Task failed",
-			body: detail || "Cline encountered an error while running this task.",
+			title: "任务失败",
+			body: detail || "Cline 在运行此任务时遇到错误。",
 		});
 	};
 
@@ -420,12 +420,12 @@ export function watchDesktopNotifications(): () => void {
 				) {
 					continue;
 				}
-				const toolName = asNonEmptyString(item.toolName) || "A tool";
+				const toolName = asNonEmptyString(item.toolName) || "某个工具";
 				void notify({
 					eventType: "approvalNeeded",
 					sessionId,
-					title: "Approval needed",
-					body: `${toolName} is waiting for your approval.`,
+					title: "需要你批准",
+					body: `${toolName} 正在等待你的批准。`,
 				});
 			}
 		}),
@@ -450,10 +450,10 @@ export function watchDesktopNotifications(): () => void {
 			void notify({
 				eventType: "questionAsked",
 				sessionId,
-				title: "Cline has a question",
+				title: "Cline 有一个问题",
 				body:
 					asNonEmptyString(item.question) ||
-					"Open this task to answer Cline's question.",
+					"打开此任务以回答 Cline 的问题。",
 			});
 		}),
 	];

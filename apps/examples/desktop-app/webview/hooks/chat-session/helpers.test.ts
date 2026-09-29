@@ -135,7 +135,7 @@ describe("resolveCredentialFailureHint", () => {
 
 	it("points Cline at signing in again from Settings → Account", () => {
 		expect(resolveCredentialFailureHint("cline")).toBe(
-			"Sign in to Cline again in Settings → Account, then try again.",
+			"请在「设置 → 账户」中重新登录 Cline，然后重试。",
 		);
 	});
 
@@ -155,7 +155,7 @@ describe("resolveCredentialFailureAction", () => {
 
 	it("sends Cline to the Account page and other providers to Models", () => {
 		expect(resolveCredentialFailureAction("cline")).toEqual({
-			label: "Sign in to Cline",
+			label: "登录 Cline",
 			target: "account",
 		});
 		expect(resolveCredentialFailureAction("anthropic")).toEqual({

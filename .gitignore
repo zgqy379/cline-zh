@@ -97,3 +97,6 @@ apps/examples/desktop-app/.cursor/settings.json
 
 # bun build cache
 apps/examples/desktop-app/.bun-cache/
+
+# agent scan artifacts
+.mimosa/

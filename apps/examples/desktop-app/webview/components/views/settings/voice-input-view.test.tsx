@@ -251,7 +251,7 @@ describe("VoiceInputContent", () => {
 		});
 		await render();
 		expect(container.querySelector('[role="alert"]')?.textContent).toContain(
-			"Could not verify voice models for Vercel AI Gateway",
+			"无法验证 Vercel AI Gateway 的语音模型。",
 		);
 		expect(container.querySelectorAll('[role="radio"]').length).toBe(1);
 		expect(

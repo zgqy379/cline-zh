@@ -292,7 +292,7 @@ describe("transcription model selection", () => {
 		expect(
 			isChatModel({
 				id: "chat",
-				name: "Chat",
+				name: "对话",
 				inputModalities: ["text", "audio"],
 				outputModalities: ["text"],
 			}),

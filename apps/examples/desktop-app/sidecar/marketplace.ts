@@ -370,10 +370,10 @@ function assertUrl(value: string): void {
 	try {
 		parsed = new URL(value);
 	} catch {
-		throw new Error(`Invalid MCP server URL: ${value}`);
+		throw new Error(`无效的 MCP 服务器 URL：${value}`);
 	}
 	if (parsed.protocol !== "http:" && parsed.protocol !== "https:") {
-		throw new Error(`Invalid MCP server URL: ${value}`);
+		throw new Error(`无效的 MCP 服务器 URL：${value}`);
 	}
 }
 
@@ -509,7 +509,7 @@ export async function uninstallLocalPrimitive(
 			id: input.id,
 			type: input.type,
 			status: "uninstalled",
-			message: `Uninstalled ${name}.`,
+			message: `已卸载 ${name}。`,
 			details: { mcp: response },
 		};
 	}
@@ -523,7 +523,7 @@ export async function uninstallLocalPrimitive(
 			id: input.id,
 			type: input.type,
 			status: "uninstalled",
-			message: `Uninstalled ${result.name}.`,
+			message: `已卸载 ${result.name}。`,
 			details: result as unknown as JsonRecord,
 		};
 	}
@@ -545,11 +545,11 @@ export async function uninstallLocalPrimitive(
 			id: input.id,
 			type: input.type,
 			status: "uninstalled",
-			message: `Uninstalled ${input.name ?? basename(target)}.`,
+			message: `已卸载 ${input.name ?? basename(target)}。`,
 			details: { path: target },
 		};
 	}
-	throw new Error(`Unsupported local uninstall type: ${input.type}`);
+	throw new Error(`不支持的本地卸载类型：${input.type}`);
 }
 
 function hashSource(source: string): string {
@@ -797,7 +797,7 @@ async function installSkill(
 	}
 	const output = commandOutput(result);
 	if (/\bFailed to install\b/i.test(output ?? "")) {
-		throw new Error(`Skill install failed${output ? `:\n${output}` : ""}`);
+		throw new Error(`技能安装失败${output ? `:\n${output}` : ""}`);
 	}
 	if (!isGlobalSkillInstalled(entry)) {
 		throw new Error(
@@ -808,7 +808,7 @@ async function installSkill(
 		id: entry.id,
 		type: entry.type,
 		status: "installed",
-		message: `Installed ${entry.name ?? entry.id} globally for Cline.`,
+		message: `已为 Cline 全局安装 ${entry.name ?? entry.id}。`,
 		output,
 	};
 }
@@ -853,7 +853,7 @@ async function installPlugin(
 		id: entry.id,
 		type: entry.type,
 		status: "installed",
-		message: `Installed ${entry.name ?? entry.id}.`,
+		message: `已安装 ${entry.name ?? entry.id}。`,
 		details: {
 			source: result.source,
 			installPath: result.installPath,
@@ -880,7 +880,7 @@ export async function installMarketplaceEntry(
 			id: entry.id,
 			type: entry.type,
 			status: "installed",
-			message: `Installed ${entry.name ?? entry.id}.`,
+			message: `已安装 ${entry.name ?? entry.id}。`,
 			details: result as unknown as JsonRecord,
 			output:
 				result.warnings.length > 0 ? result.warnings.join("\n") : undefined,
@@ -892,7 +892,7 @@ export async function installMarketplaceEntry(
 	if (entry.type === "plugin") {
 		return installPlugin(entry);
 	}
-	throw new Error(`Unsupported marketplace entry type: ${entry.type}`);
+	throw new Error(`不支持的市场条目类型：${entry.type}`);
 }
 
 export async function uninstallMarketplaceEntry(

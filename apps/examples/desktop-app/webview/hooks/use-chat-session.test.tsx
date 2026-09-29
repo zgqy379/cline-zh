@@ -143,13 +143,13 @@ describe("mergeCloudSnapshotWithLive", () => {
 		]);
 		const merged = mergeCloudSnapshotWithLive(
 			[
-				message("old-saved", "user", "Continue", 1),
-				message("new-saved", "user", "Continue", 3),
+				message("old-saved", "user", "继续", 1),
+				message("new-saved", "user", "继续", 3),
 			],
 			[
-				message("old-saved", "user", "Continue", 1),
+				message("old-saved", "user", "继续", 1),
 				{
-					...message("pending-new", "user", "Continue", 2),
+					...message("pending-new", "user", "继续", 2),
 					images: [
 						{ id: "img", mediaType: "image/png" as const, data: "AQID" },
 					],
@@ -303,15 +303,15 @@ describe("mergeCloudSnapshotWithLive", () => {
 		const hydrated = Array.from({ length: 799 }, (_, index) =>
 			message(`filler-${index}`, "user", `filler-${index}`, index + 1),
 		);
-		hydrated.push(message("canonical-new", "user", "Continue", 800));
+		hydrated.push(message("canonical-new", "user", "继续", 800));
 		const optimisticStates = new Map([
 			["optimistic-new", { sessionId: "ses-cloud", state: "pending" as const }],
 		]);
 		const merged = mergeCloudSnapshotWithLive(
 			hydrated,
 			[
-				message("old", "user", "Continue", 1),
-				message("optimistic-new", "user", "Continue", 1001),
+				message("old", "user", "继续", 1),
+				message("optimistic-new", "user", "继续", 1001),
 			],
 			snapshotOptions({
 				previousUserIds: new Set(["old"]),
@@ -445,7 +445,7 @@ describe("useChatSession", () => {
 							id: "old-user",
 							sessionId,
 							role: "user",
-							content: "Continue",
+							content: "继续",
 							createdAt: 1,
 						},
 					];
@@ -480,7 +480,7 @@ describe("useChatSession", () => {
 						id: "new-user",
 						sessionId,
 						role: "user",
-						content: "Continue",
+						content: "继续",
 						createdAt: 2,
 					},
 				],
@@ -5540,11 +5540,11 @@ describe("useChatSession", () => {
 
 		let retryPromise: Promise<boolean> | undefined;
 		await act(async () => {
-			retryPromise = current.sendPrompt("Retry");
+			retryPromise = current.sendPrompt("重试");
 			if (queuedRpcReject) await Promise.resolve();
 		});
 		expect(current.promptsInQueue.map((item) => item.prompt)).toEqual([
-			"Retry",
+			"重试",
 		]);
 		if (startRetry) {
 			if (testSecondFailure) {
@@ -5565,7 +5565,7 @@ describe("useChatSession", () => {
 								id: "canonical-b",
 								sessionId: current.sessionId,
 								role: "user",
-								content: "Retry",
+								content: "重试",
 								createdAt: 2,
 							},
 						],
@@ -5581,7 +5581,7 @@ describe("useChatSession", () => {
 					stream: "chat_queued_prompt_start",
 					chunk: JSON.stringify({
 						promptId: queuedRpcReject === "other" ? "other" : "queued-retry",
-						prompt: queuedRpcReject === "other" ? "Other prompt" : "Retry",
+						prompt: queuedRpcReject === "other" ? "Other prompt" : "重试",
 						transcriptReflected: testSecondFailure,
 					}),
 					ts: Date.now(),
@@ -5591,7 +5591,7 @@ describe("useChatSession", () => {
 			expect(current.status).toBe("running");
 			if (queuedRpcReject === "other") {
 				expect(current.promptsInQueue.map((item) => item.prompt)).toEqual([
-					"Retry",
+					"重试",
 				]);
 			}
 			if (queuedRpcReject) {
@@ -6069,7 +6069,7 @@ describe("useChatSession", () => {
 
 		await act(async () => current.sendPrompt("First attempt"));
 		expect(current.status).toBe("error");
-		await act(async () => current.sendPrompt("Retry"));
+		await act(async () => current.sendPrompt("重试"));
 
 		expect(actions.filter((action) => action !== "pending_prompts")).toEqual([
 			"start",
@@ -7082,11 +7082,11 @@ describe("cloud snapshot replay", () => {
 				repoUrl: "https://github.com/cline/test",
 			}),
 		);
-		await act(async () => current.sendPrompt("Continue"));
+		await act(async () => current.sendPrompt("继续"));
 		expect(current.status).toBe("completed");
 		let pending!: Promise<boolean>;
 		await act(async () => {
-			pending = current.sendPrompt("Continue");
+			pending = current.sendPrompt("继续");
 			await secondDispatched.promise;
 		});
 		expect(sends).toBe(2);
@@ -7105,7 +7105,7 @@ describe("cloud snapshot replay", () => {
 						id: "canonical-first",
 						sessionId: "ses-replay",
 						role: "user",
-						content: "Continue",
+						content: "继续",
 						createdAt: 1,
 					},
 				],

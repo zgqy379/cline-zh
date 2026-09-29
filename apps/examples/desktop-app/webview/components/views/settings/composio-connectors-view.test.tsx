@@ -104,7 +104,7 @@ describe("Customize connector catalog", () => {
 			})),
 		});
 		await render();
-		expect(container.textContent).toContain("search to find 1 more");
+		expect(container.textContent).toContain("搜索还可找到 1 个");
 		expect(container.textContent).not.toContain("App 24");
 		const input = container.querySelector(
 			'input[aria-label="搜索连接器"]',
@@ -158,7 +158,7 @@ describe("installed connectors", () => {
 		);
 		await act(async () => button("查看")?.click());
 		const dialog = document.querySelector('[role="dialog"]');
-		expect(dialog?.textContent).toContain("47 available in new sessions");
+		expect(dialog?.textContent).toContain("47 在新会话中可用");
 		expect(dialog?.textContent).not.toContain("47/47");
 		expect(
 			[...(dialog?.querySelectorAll("li") ?? [])].map(
@@ -176,7 +176,7 @@ describe("installed connectors", () => {
 		await render();
 		await act(async () => button("查看")?.click());
 		expect(document.querySelector('[role="dialog"]')?.textContent).toContain(
-			"1/47 available in new sessions",
+			"1/47 在新会话中可用",
 		);
 	});
 

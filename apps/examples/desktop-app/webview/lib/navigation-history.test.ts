@@ -7,7 +7,7 @@ import {
 type Location = {
 	view: "chat" | "settings";
 	thread: string;
-	settingsSection: "General" | "Account";
+	settingsSection: "General" | "账户";
 };
 
 const welcome: Location = {
@@ -18,12 +18,12 @@ const welcome: Location = {
 const account: Location = {
 	view: "settings",
 	thread: "welcome",
-	settingsSection: "Account",
+	settingsSection: "账户",
 };
 const oldSession: Location = {
 	view: "chat",
 	thread: "old-session",
-	settingsSection: "Account",
+	settingsSection: "账户",
 };
 
 describe("navigationHistoryReducer", () => {
