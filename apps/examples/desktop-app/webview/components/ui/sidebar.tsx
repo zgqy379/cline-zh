@@ -361,7 +361,7 @@ function SidebarTrigger({
 			{...props}
 		>
 			<PanelLeftIcon className="size-3.5" />
-			<span className="sr-only">Toggle Sidebar</span>
+			<span className="sr-only">切换侧边栏</span>
 		</Button>
 	);
 }
