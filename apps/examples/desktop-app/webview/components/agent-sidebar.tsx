@@ -174,11 +174,30 @@ const SETTINGS_SECTION_ICONS = {
 // The Customize section is the installed inventory, so its nav row reads
 // "Installed" (it sits under a "自定义" group header / next to the
 // Marketplace row, which supplies the context).
+// 侧边栏设置导航的中文显示映射：枚举值（路由/比较用）保持英文，
+// 仅在渲染处翻译——与 sections.ts 禁改约束、FILTER_LABELS/TAB_LABELS 先例一致。
+const SETTINGS_SECTION_LABELS_ZH: Partial<
+	Record<SettingsSection, string>
+> = {
+	General: "通用",
+	Providers: "供应商",
+	Voice: "语音",
+	Schedules: "定时任务",
+	Import: "导入",
+	Remote: "远程",
+	Account: "账户",
+	About: "关于",
+	Customize: "已安装",
+	Marketplace: "市场",
+};
+
 function settingsSectionLabel(section: SettingsSection): string {
 	return (
+		SETTINGS_SECTION_LABELS_ZH[section] ??
 		CUSTOMIZATION_SECTION_LABELS[
 			section as keyof typeof CUSTOMIZATION_SECTION_LABELS
-		] ?? section
+		] ??
+		section
 	);
 }
 
@@ -780,7 +799,7 @@ export function AgentSidebar({
 				</>
 			) : (
 				<>
-					Show more
+					显示更多
 					<ChevronDown className="size-3" />
 				</>
 			)}
@@ -1116,7 +1135,7 @@ export function AgentSidebar({
 																		type="button"
 																		variant="sidebarText"
 																	>
-																		Show more
+																		显示更多
 																		<ChevronDown className="size-3" />
 																	</Button>
 																) : null}
@@ -1165,7 +1184,7 @@ export function AgentSidebar({
 																	variant="sidebarText"
 																>
 																	<span className="min-w-0 truncate">
-																		Show more in {project.label}
+																		显示更多（{project.label}）
 																	</span>
 																	<ChevronDown className="size-3" />
 																</Button>
@@ -1205,7 +1224,7 @@ export function AgentSidebar({
 													</>
 												) : (
 													<>
-														Show more
+														显示更多
 														<ChevronDown className="size-3" />
 													</>
 												)}
@@ -1595,7 +1614,7 @@ function ThreadItem({
 							}
 							action={
 								<Button
-									aria-label={`Delete ${title}`}
+									aria-label={`删除 ${title}`}
 									className="absolute top-1/2 right-1 size-6 -translate-y-1/2 justify-center px-0 text-muted-foreground opacity-0 group-hover/row:opacity-100 hover:text-destructive focus-visible:opacity-100"
 									disabled={pending}
 									onClick={(event) => {
@@ -1652,7 +1671,7 @@ export function getSessionOverviewItems(
 	// Updated time is already visible in the sidebar item.
 	const workspacePath = thread.workspacePath || thread.codebase;
 	const items: Array<[string, string | null | undefined, string?]> = [
-		["Schedule", thread.scheduleName],
+		["定时", thread.scheduleName],
 		["运行", thread.scheduleRunNumber ? String(thread.scheduleRunNumber) : null],
 		[
 			thread.origin === "cloud" ? "仓库" : "工作区",
