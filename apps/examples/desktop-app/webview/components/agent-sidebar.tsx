@@ -1198,7 +1198,7 @@ export function AgentSidebar({
 												? filteredThreads.length === 0
 												: projectGroups.length === 0) && (
 												<div className="px-2 py-4 text-sm text-muted-foreground">
-													No sessions found in history.
+													历史中未找到会话。
 												</div>
 											)}
 										</>

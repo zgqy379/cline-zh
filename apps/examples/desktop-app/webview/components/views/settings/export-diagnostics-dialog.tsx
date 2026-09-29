@@ -89,7 +89,7 @@ export function ExportDiagnosticsDialog({
 				{ sessionIds: [...selected] },
 			);
 			toast({
-				title: "Diagnostics exported",
+				title: "诊断信息已导出",
 				description: result.path,
 			});
 			onOpenChange(false);
@@ -104,23 +104,22 @@ export function ExportDiagnosticsDialog({
 		<Dialog onOpenChange={onOpenChange} open={open}>
 			<DialogContent className="grid max-h-[min(640px,calc(100dvh-2rem))] w-[min(560px,calc(100vw-2rem))] max-w-none grid-cols-[minmax(0,1fr)] grid-rows-[auto_minmax(0,1fr)_auto] gap-4 sm:max-w-none">
 				<DialogHeader className="min-w-0">
-					<DialogTitle>Export diagnostics</DialogTitle>
+					<DialogTitle>导出诊断信息</DialogTitle>
 					<DialogDescription>
-						Saves a text file with app info, recent logs, and the metadata of
-						the sessions you pick. Prompts, conversation contents, and API keys
-						are never included.
+						保存一个文本文件，包含应用信息、近期日志以及你所选会话的元数据。
+						绝不会包含提示词、对话内容和 API 密钥。
 					</DialogDescription>
 				</DialogHeader>
 				<div className="flex min-h-0 min-w-0 flex-col gap-2">
-					<p className="text-sm font-medium text-foreground">Sessions</p>
+					<p className="text-sm font-medium text-foreground">会话</p>
 					{loading ? (
 						<div className="flex items-center gap-2 py-6 text-sm text-muted-foreground">
 							<Loader2 className="size-4 animate-spin" />
-							Loading sessions…
+							正在加载会话…
 						</div>
 					) : sessions.length === 0 ? (
 						<p className="py-6 text-sm text-muted-foreground">
-							No local sessions on this machine yet.
+							此电脑上还没有本地会话。
 						</p>
 					) : (
 						<div className="min-h-0 overflow-y-auto rounded-md border">
@@ -168,11 +167,11 @@ export function ExportDiagnosticsDialog({
 						onClick={() => onOpenChange(false)}
 						variant="outline"
 					>
-						Cancel
+						取消
 					</Button>
 					<Button disabled={exporting || loading} onClick={exportBundle}>
 						{exporting ? <Loader2 className="size-4 animate-spin" /> : null}
-						Export
+						导出
 					</Button>
 				</DialogFooter>
 			</DialogContent>

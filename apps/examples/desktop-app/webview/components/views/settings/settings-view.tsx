@@ -550,7 +550,7 @@ export function SettingsView({
 				<DialogHeader>
 					<DialogTitle>添加供应商</DialogTitle>
 					<DialogDescription>
-						Add an OpenAI-compatible provider and choose its available models.
+						添加一个 OpenAI 兼容服务商并选择其可用模型。
 					</DialogDescription>
 				</DialogHeader>
 				<AddProviderContent
@@ -1268,11 +1268,10 @@ function GeneralSettingsContent({
 				<div className="flex py-4 items-center justify-between gap-5 border-b max-[720px]:flex-col max-[720px]:items-stretch max-[720px]:py-4">
 					<div className="flex flex-col gap-1">
 						<p className="text-base font-semibold text-foreground">
-							New user experience
+							新手引导体验
 						</p>
 						<p className="text-sm text-muted-foreground">
-							Replay the first-run experience new users see when they open Cline
-							for the first time.
+							重放新用户首次打开 Cline 时看到的首次运行引导。
 						</p>
 					</div>
 					<Button
@@ -1283,17 +1282,16 @@ function GeneralSettingsContent({
 						variant="outline"
 					>
 						<RotateCcw className="size-3" />
-						Replay
+						重放
 					</Button>
 				</div>
 				<div className="flex py-4 items-center justify-between gap-5 max-[720px]:flex-col max-[720px]:items-stretch max-[720px]:py-4">
 					<div className="flex flex-col gap-1">
 						<p className="text-base font-semibold text-foreground">
-							Diagnostics
+							诊断信息
 						</p>
 						<p className="text-sm text-muted-foreground">
-							Export app info, recent logs, and the metadata of sessions you
-							choose as a file you can attach when reporting a problem.
+							导出应用信息、近期日志以及你所选会话的元数据，生成可随问题反馈一起附上的文件。
 						</p>
 					</div>
 					<Button
@@ -1304,7 +1302,7 @@ function GeneralSettingsContent({
 						variant="outline"
 					>
 						<Download className="size-3" />
-						Export…
+						导出…
 					</Button>
 				</div>
 			</section>
