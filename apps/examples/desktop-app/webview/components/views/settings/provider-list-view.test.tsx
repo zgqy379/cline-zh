@@ -66,27 +66,27 @@ describe("ProviderDetailContent models", () => {
 
 		await act(async () => {
 			container
-				.querySelector<HTMLButtonElement>('[aria-label="Favorite Beta"]')
+				.querySelector<HTMLButtonElement>('[aria-label="收藏 测试版"]')
 				?.click();
 		});
 		expect(
 			Array.from(
 				container.querySelectorAll<HTMLButtonElement>(
-					'[aria-label^="Copy model ID"]',
+					'[aria-label^="复制模型 ID"]',
 				),
 			).map((button) => button.getAttribute("aria-label")),
-		).toEqual(["Copy model ID beta", "Copy model ID alpha"]);
+		).toEqual(["复制模型 ID beta", "复制模型 ID alpha"]);
 		expect(
-			container.querySelector('[aria-label="Unfavorite Beta"] svg')?.classList,
+			container.querySelector('[aria-label="取消收藏 测试版"] svg')?.classList,
 		).toContain("fill-current");
 
 		await act(async () => {
 			container
-				.querySelector<HTMLButtonElement>('[aria-label="Add model"]')
+				.querySelector<HTMLButtonElement>('[aria-label="添加模型"]')
 				?.click();
 		});
 		const input = container.querySelector<HTMLInputElement>(
-			'[aria-label="New model ID"]',
+			'[aria-label="新的模型 ID"]',
 		);
 		await act(async () => {
 			const setter = Object.getOwnPropertyDescriptor(
@@ -99,7 +99,7 @@ describe("ProviderDetailContent models", () => {
 		await act(async () => {
 			container
 				.querySelector<HTMLButtonElement>(
-					'[aria-label="New model ID"] + button',
+					'[aria-label="新的模型 ID"] + button',
 				)
 				?.click();
 		});
@@ -207,10 +207,10 @@ describe("ProviderListContent", () => {
 		const headings = Array.from(container.querySelectorAll("h2")).map(
 			(heading) => heading.textContent,
 		);
-		expect(headings).toEqual(["Configured", "Popular", "All providers"]);
+		expect(headings).toEqual(["已配置", "热门", "所有供应商"]);
 		// No per-provider enable toggles anymore.
 		expect(container.querySelector('[role="switch"]')).toBeNull();
-		expect(container.textContent).toContain("1 configured");
+		expect(container.textContent).toContain("1 个已配置");
 
 		const rows = Array.from(container.querySelectorAll("button")).filter(
 			(button) => button.textContent?.includes("Anthropic"),
@@ -234,9 +234,9 @@ describe("ProviderListContent", () => {
 			Array.from(container.querySelectorAll("button")).find((button) =>
 				button.textContent?.includes(name),
 			);
-		expect(rowFor("Anthropic")?.textContent).toContain("Configured");
+		expect(rowFor("Anthropic")?.textContent).toContain("已配置");
 		expect(rowFor("Cline")?.textContent).toContain("登录");
-		expect(rowFor("ElevenLabs")?.textContent).toContain("API key");
+		expect(rowFor("ElevenLabs")?.textContent).toContain("API 密钥");
 	});
 
 	it("filters providers by search across every group", async () => {
@@ -251,7 +251,7 @@ describe("ProviderListContent", () => {
 		});
 
 		const search = container.querySelector<HTMLInputElement>(
-			'[aria-label="Search model providers"]',
+			'[aria-label="搜索模型供应商"]',
 		);
 		await act(async () => {
 			const setter = Object.getOwnPropertyDescriptor(
@@ -318,19 +318,19 @@ describe("ProviderDetailContent auth flows", () => {
 			);
 		});
 
-		expect(container.textContent).toContain("Sign in with browser");
-		expect(container.textContent).toContain("Not configured");
+		expect(container.textContent).toContain("使用浏览器登录");
+		expect(container.textContent).toContain("未配置");
 		// The API key input stays collapsed until explicitly requested.
 		expect(container.querySelector('input[type="password"]')).toBeNull();
 
 		const signIn = Array.from(container.querySelectorAll("button")).find(
-			(button) => button.textContent?.includes("Sign in with browser"),
+			(button) => button.textContent?.includes("使用浏览器登录"),
 		);
 		await act(async () => signIn?.click());
 		expect(onOAuthLogin).toHaveBeenCalledOnce();
 
 		const manualKey = Array.from(container.querySelectorAll("button")).find(
-			(button) => button.textContent?.includes("Use an API key instead"),
+			(button) => button.textContent?.includes("改用 API 密钥"),
 		);
 		await act(async () => manualKey?.click());
 		expect(container.querySelector('input[type="password"]')).not.toBeNull();
@@ -353,10 +353,10 @@ describe("ProviderDetailContent auth flows", () => {
 			);
 		});
 
-		expect(container.textContent).toContain("Signed in via browser");
-		expect(container.textContent).toContain("Configured");
+		expect(container.textContent).toContain("已通过浏览器登录");
+		expect(container.textContent).toContain("已配置");
 		const signOut = Array.from(container.querySelectorAll("button")).find(
-			(button) => button.textContent === "Sign out",
+			(button) => button.textContent === "退出登录",
 		);
 		await act(async () => signOut?.click());
 		expect(onDisconnect).toHaveBeenCalledOnce();
@@ -392,7 +392,7 @@ describe("ProviderDetailContent auth flows", () => {
 			);
 		});
 		const disconnect = Array.from(container.querySelectorAll("button")).find(
-			(button) => button.textContent === "Disconnect",
+			(button) => button.textContent === "断开连接",
 		);
 		await act(async () => disconnect?.click());
 		expect(onDisconnect).toHaveBeenCalledOnce();
@@ -451,7 +451,7 @@ describe("ProviderDetailContent audio capabilities", () => {
 
 		expect(
 			container.querySelectorAll(
-				'[role="img"][aria-label="Audio support"] .lucide-mic',
+				'[role="img"][aria-label="音频支持"] .lucide-mic',
 			),
 		).toHaveLength(1);
 	});
@@ -654,11 +654,11 @@ describe("ProviderDetailContent audio capabilities", () => {
 		const addModel = async (modelId: string) => {
 			await act(async () => {
 				container
-					.querySelector<HTMLButtonElement>('[aria-label="Add model"]')
+					.querySelector<HTMLButtonElement>('[aria-label="添加模型"]')
 					?.click();
 			});
 			const input = container.querySelector<HTMLInputElement>(
-				'[aria-label="New model ID"]',
+				'[aria-label="新的模型 ID"]',
 			);
 			await act(async () => {
 				const setter = Object.getOwnPropertyDescriptor(
@@ -671,7 +671,7 @@ describe("ProviderDetailContent audio capabilities", () => {
 			await act(async () => {
 				container
 					.querySelector<HTMLButtonElement>(
-						'[aria-label="New model ID"] + button',
+						'[aria-label="新的模型 ID"] + button',
 					)
 					?.click();
 			});
@@ -754,6 +754,6 @@ describe("ProviderDetailContent audio capabilities", () => {
 		const badgeTexts = Array.from(
 			container.querySelectorAll(".uppercase.tracking-wide"),
 		).map((badge) => badge.textContent);
-		expect(badgeTexts).toEqual(["推荐", "NEW", "Free"]);
+		expect(badgeTexts).toEqual(["推荐", "NEW", "免费"]);
 	});
 });
