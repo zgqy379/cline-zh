@@ -100,3 +100,6 @@ apps/examples/desktop-app/.bun-cache/
 
 # agent scan artifacts
 .mimosa/
+
+# apply-zh 生成的备份文件，勿入库
+*.bak
