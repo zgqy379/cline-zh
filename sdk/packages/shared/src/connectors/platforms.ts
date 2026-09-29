@@ -289,19 +289,19 @@ export function connectorChannelsFromPlatforms(
 function validateTelegramUserId(value: string): string | undefined {
 	return /^\d+$/.test(value)
 		? undefined
-		: "Telegram user ID must contain digits only";
+		: "Telegram 用户 ID 只能包含数字";
 }
 
 function validateSlackTeamId(value: string): string | undefined {
 	return /^T[A-Z0-9]+$/.test(value)
 		? undefined
-		: "Slack workspace ID must start with T and contain uppercase letters or digits only";
+		: "Slack 工作区 ID 需以 T 开头，且只能包含大写字母或数字";
 }
 
 function validateSlackUserId(value: string): string | undefined {
 	return /^[UW][A-Z0-9]+$/.test(value)
 		? undefined
-		: "Slack member ID must start with U or W and contain uppercase letters or digits only";
+		: "Slack 成员 ID 需以 U 或 W 开头，且只能包含大写字母或数字";
 }
 
 export const CONNECTOR_PLATFORMS: ConnectorPlatformDef[] = [
@@ -309,36 +309,36 @@ export const CONNECTOR_PLATFORMS: ConnectorPlatformDef[] = [
 		id: "telegram",
 		name: "Telegram",
 		type: "polling",
-		hint: "Easiest to set up. No public URL needed.",
+		hint: "最易配置，无需公网 URL。",
 		derivedReconnectFlags: ["-m", "--bot-username"],
 		fields: [
 			{
 				flag: "-k",
 				aliases: ["--bot-token"],
-				label: "Bot token",
+				label: "机器人令牌",
 				placeholder: "7123456789:AAH...",
 				required: true,
 				help: [
-					"Open Telegram and start a chat with @BotFather",
-					"Send /newbot and follow the prompts",
-					"BotFather gives you this after creating the bot",
-					"It looks like 7123456789:AAHxxx...",
+					"打开 Telegram，与 @BotFather 开始对话",
+					"发送 /newbot 并按提示操作",
+					"创建机器人后 BotFather 会返回这个令牌",
+					"形如 7123456789:AAHxxx...",
 				],
 			},
 		],
 		security: {
 			prompt:
-				"By default, anyone who finds your bot can message it and run tasks on your machine. Restrict access to your Telegram user ID?",
+				"默认情况下，任何找到该机器人都能向它发消息并在你的机器上运行任务。是否限制为仅你的 Telegram 用户 ID 可用？",
 			fields: [
 				{
 					key: "userId",
-					label: "Your Telegram user ID",
+					label: "你的 Telegram 用户 ID",
 					placeholder: "123456789",
 					help: [
-						"Message @userinfobot on Telegram",
-						"It will reply with your numeric user ID",
+						"在 Telegram 上给 @userinfobot 发消息",
+						"它会回复你的数字用户 ID",
 					],
-					requiredMessage: "User ID is required to restrict access",
+					requiredMessage: "限制访问范围时必须填写用户 ID",
 					validate: validateTelegramUserId,
 				},
 			],
@@ -350,70 +350,70 @@ export const CONNECTOR_PLATFORMS: ConnectorPlatformDef[] = [
 		id: "slack",
 		name: "Slack",
 		type: "hybrid",
-		hint: "Public URL for webhook mode; leave blank for socket mode.",
+		hint: "Webhook 模式需公网 URL；留空则用 socket 模式。",
 		fields: [
 			{
 				flag: "--bot-token",
-				label: "Bot token",
+				label: "机器人令牌",
 				placeholder: "xoxb-...",
 				required: true,
 				help: [
-					"Go to api.slack.com/apps and create a new app",
-					"Add Bot Token Scopes: chat:write, app_mentions:read, channels:history, channels:read, im:history, im:read, im:write, users:read",
-					"Install to workspace and copy the Bot Token",
+					"前往 api.slack.com/apps 新建一个应用",
+					"添加 Bot Token Scopes：chat:write、app_mentions:read、channels:history、channels:read、im:history、im:read、im:write、users:read",
+					"安装到工作区并复制 Bot Token",
 				],
 			},
 			{
 				flag: "--base-url",
-				label: "Public base URL",
-				placeholder: "leave blank for socket mode",
+				label: "公网基础 URL",
+				placeholder: "留空则使用 socket 模式",
 				help: [
-					"Enter a publicly accessible URL for webhook mode",
-					"Leave blank to use Slack socket mode instead",
+					"为 webhook 模式填写一个可公网访问的 URL",
+					"留空则改用 Slack socket 模式",
 				],
 			},
 			{
 				flag: "--signing-secret",
-				label: "Signing secret",
+				label: "签名密钥",
 				required: true,
-				help: ["Found in your app's Basic Information page"],
+				help: ["在应用的 Basic Information 页面可找到"],
 				includeWhen: { flag: "--base-url", notEquals: "" },
 			},
 			{
 				flag: "--app-token",
-				label: "App-level token",
+				label: "应用级令牌",
 				placeholder: "xapp-...",
 				required: true,
 				help: [
-					"Enable Socket Mode in the Slack app",
-					"Generate an app-level token with the connections:write scope",
+					"在 Slack 应用中启用 Socket Mode",
+					"生成带有 connections:write 权限范围的应用级令牌",
 				],
 				includeWhen: { flag: "--base-url", equals: "" },
 			},
 		],
 		security: {
-			prompt: "Restrict which Slack users can interact with the bot?",
+			prompt: "是否限制可与机器人交互的 Slack 用户？",
 			fields: [
 				{
 					key: "teamId",
-					label: "Allowed Slack workspace ID",
+					label: "允许的 Slack 工作区 ID",
 					placeholder: "T01ABC123",
 					help: [
-						"Open your Slack workspace URL in a browser",
-						"The workspace ID is the segment after /client/, for example T01ABC123",
+						"在浏览器中打开你的 Slack 工作区 URL",
+						"工作区 ID 是 /client/ 之后的那一段，例如 T01ABC123",
 					],
-					requiredMessage: "Workspace ID is required to restrict access",
+					requiredMessage: "限制访问范围时必须填写工作区 ID",
 					validate: validateSlackTeamId,
 				},
 				{
 					key: "userId",
-					label: "Allowed Slack member ID",
+					label: "允许的 Slack 成员 ID",
 					placeholder: "U01ABC123",
 					help: [
-						"Click a user's name in Slack, then View full profile",
-						"Click ... and Copy member ID",
+						"在 Slack 中点击某个用户的名字，再查看完整资料",
+						"点击“...”并复制成员 ID",
 					],
-					requiredMessage: "Member ID is required to restrict access",
+					requiredMessage: "限制访问范围时必须填写成员 ID",
 					validate: validateSlackUserId,
 				},
 			],
@@ -428,39 +428,39 @@ export const CONNECTOR_PLATFORMS: ConnectorPlatformDef[] = [
 		id: "discord",
 		name: "Discord",
 		type: "webhook",
-		hint: "Requires a Discord app and public URL.",
+		hint: "需要一个 Discord 应用和公网 URL。",
 		fields: [
 			{
 				flag: "--application-id",
 				aliases: ["--app-id"],
-				label: "Application ID",
+				label: "应用 ID",
 				required: true,
 				help: [
-					"Go to discord.com/developers/applications",
-					"Create a new app, copy the Application ID",
+					"前往 discord.com/developers/applications",
+					"新建一个应用并复制 Application ID",
 				],
 			},
 			{
 				flag: "--bot-token",
 				aliases: ["--token"],
-				label: "Bot token",
+				label: "机器人令牌",
 				required: true,
-				help: ["Go to Bot section, create a bot, copy the token"],
+				help: ["进入 Bot 分区，创建机器人并复制令牌"],
 			},
 			{
 				flag: "--public-key",
-				label: "Public key",
+				label: "公钥",
 				required: true,
-				help: ["Found in General Information of your app"],
+				help: ["在应用的 General Information 中可找到"],
 			},
 			{
 				flag: "--base-url",
-				label: "Public base URL",
+				label: "公网基础 URL",
 				placeholder: "https://example.com",
 				required: true,
 				help: [
-					"Base URL for the connector",
-					"For Discord, set the Interactions Endpoint URL to <base-url>/api/webhooks/discord",
+					"连接器的基础 URL",
+					"Discord 需把 Interactions Endpoint URL 设为 <base-url>/api/webhooks/discord",
 				],
 			},
 		],
@@ -469,36 +469,36 @@ export const CONNECTOR_PLATFORMS: ConnectorPlatformDef[] = [
 		id: "whatsapp",
 		name: "WhatsApp",
 		type: "webhook",
-		hint: "Requires Meta developer account and public URL.",
+		hint: "需要 Meta 开发者账号和公网 URL。",
 		fields: [
 			{
 				flag: "--phone-number-id",
-				label: "Phone number ID",
+				label: "电话号码 ID",
 				required: true,
-				help: ["From your WhatsApp Business account in Meta Developer portal"],
+				help: ["在 Meta 开发者后台的 WhatsApp Business 账号中获取"],
 			},
 			{
 				flag: "--access-token",
-				label: "Access token",
+				label: "访问令牌",
 				required: true,
-				help: ["Generate a permanent token in Meta Developer portal"],
+				help: ["在 Meta 开发者后台生成永久令牌"],
 			},
 			{
 				flag: "--app-secret",
-				label: "App secret",
+				label: "应用密钥",
 				required: true,
-				help: ["Found in App Settings > Basic"],
+				help: ["在 App Settings > Basic 中可找到"],
 			},
 			{
 				flag: "--verify-token",
-				label: "Webhook verify token",
+				label: "Webhook 校验令牌",
 				placeholder: "my-verify-token",
 				required: true,
-				help: ["Any string you choose, used to verify webhook setup"],
+				help: ["任意自选字符串，用于校验 webhook 配置"],
 			},
 			{
 				flag: "--base-url",
-				label: "Public base URL",
+				label: "公网基础 URL",
 				placeholder: "https://example.com",
 				required: true,
 			},
@@ -508,21 +508,21 @@ export const CONNECTOR_PLATFORMS: ConnectorPlatformDef[] = [
 		id: "gchat",
 		name: "Google Chat",
 		type: "webhook",
-		hint: "Requires Google Cloud project and public URL.",
+		hint: "需要 Google Cloud 项目和公网 URL。",
 		fields: [
 			{
 				flag: "--credentials-json",
-				label: "Service account credentials JSON",
+				label: "服务账号凭据 JSON",
 				required: true,
 				help: [
-					"Create a service account in Google Cloud Console",
-					"Download the credentials JSON file",
-					"Paste the JSON content here",
+					"在 Google Cloud Console 创建服务账号",
+					"下载凭据 JSON 文件",
+					"在此粘贴 JSON 内容",
 				],
 			},
 			{
 				flag: "--base-url",
-				label: "Public base URL",
+				label: "公网基础 URL",
 				placeholder: "https://example.com",
 				required: true,
 			},
@@ -532,26 +532,26 @@ export const CONNECTOR_PLATFORMS: ConnectorPlatformDef[] = [
 		id: "linear",
 		name: "Linear",
 		type: "webhook",
-		hint: "React to Linear issues and comments.",
+		hint: "响应 Linear 议题与评论。",
 		fields: [
 			{
 				flag: "--api-key",
-				label: "API key",
+				label: "API 密钥",
 				required: true,
-				help: ["Go to Linear Settings > API > Personal API keys"],
+				help: ["前往 Linear 设置 > API > 个人 API 密钥"],
 			},
 			{
 				flag: "--webhook-secret",
-				label: "Webhook signing secret",
+				label: "Webhook 签名密钥",
 				required: true,
 				help: [
-					"Go to Settings > API > Webhooks, create one",
-					"Copy the signing secret",
+					"前往设置 > API > Webhooks，新建一个",
+					"复制签名密钥",
 				],
 			},
 			{
 				flag: "--base-url",
-				label: "Public base URL",
+				label: "公网基础 URL",
 				placeholder: "https://example.com",
 				required: true,
 			},

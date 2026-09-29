@@ -5,7 +5,7 @@ describe("connect wizard platform security fields", () => {
 	it("does not ask Telegram users to re-enter the bot username", () => {
 		const telegram = PLATFORMS.find((platform) => platform.id === "telegram");
 
-		expect(telegram?.fields.map((field) => field.label)).toEqual(["Bot token"]);
+		expect(telegram?.fields.map((field) => field.label)).toEqual(["机器人令牌"]);
 		expect(telegram?.fields.map((field) => field.flag)).toEqual(["-k"]);
 	});
 
@@ -24,11 +24,11 @@ describe("connect wizard platform security fields", () => {
 		);
 
 		expect(telegramUser?.validate?.("123456")).toBeUndefined();
-		expect(telegramUser?.validate?.("123; rm -rf /")).toContain("digits");
+		expect(telegramUser?.validate?.("123; rm -rf /")).toContain("只能包含数字");
 		expect(slackTeam?.validate?.("T01ABC123")).toBeUndefined();
-		expect(slackTeam?.validate?.("T01;bad")).toContain("Slack workspace");
+		expect(slackTeam?.validate?.("T01;bad")).toContain("Slack 工作区");
 		expect(slackUser?.validate?.("U01ABC123")).toBeUndefined();
-		expect(slackUser?.validate?.("U01$(bad)")).toContain("Slack member");
+		expect(slackUser?.validate?.("U01$(bad)")).toContain("Slack 成员");
 	});
 
 	it("uses the Telegram allowed user ID flag for wizard security", () => {
