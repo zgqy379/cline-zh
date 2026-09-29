@@ -733,12 +733,12 @@ describe("getThoughtDurationMilliseconds", () => {
 
 describe("formatThoughtLabel", () => {
 	it("falls back to a plain label without a duration", () => {
-		expect(formatThoughtLabel(undefined)).toBe("Thinking");
+		expect(formatThoughtLabel(undefined)).toBe("思考中");
 	});
 
 	it("rounds to seconds with a one-second floor for nonzero durations", () => {
-		expect(formatThoughtLabel(0)).toBe("Thought for 0s");
-		expect(formatThoughtLabel(120)).toBe("Thought for 1s");
-		expect(formatThoughtLabel(2_600)).toBe("Thought for 3s");
+		expect(formatThoughtLabel(0)).toBe("思考了 0 秒");
+		expect(formatThoughtLabel(120)).toBe("思考了 1 秒");
+		expect(formatThoughtLabel(2_600)).toBe("思考了 3 秒");
 	});
 });
