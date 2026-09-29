@@ -1073,7 +1073,7 @@ export function AgentSidebar({
 									    "No sessions found" would read as lost history. */}
 									{!hasLoadedHistory && threads.length === 0 ? (
 										<div className="p-4 text-sm text-muted-foreground">
-											Loading session history...
+											正在加载会话历史…
 										</div>
 									) : (
 										<>
