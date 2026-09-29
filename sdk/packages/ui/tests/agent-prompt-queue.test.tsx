@@ -56,7 +56,7 @@ describe("AgentPromptQueue", () => {
 
 		await act(async () => {
 			container
-				.querySelector<HTMLButtonElement>('[aria-label="Steer queued prompt"]')
+				.querySelector<HTMLButtonElement>('[aria-label="引导排队的提示"]')
 				?.click();
 			await Promise.resolve();
 		});
@@ -64,7 +64,7 @@ describe("AgentPromptQueue", () => {
 
 		await act(async () => {
 			container
-				.querySelector<HTMLButtonElement>('[aria-label="Remove queued prompt"]')
+				.querySelector<HTMLButtonElement>('[aria-label="移除排队的提示"]')
 				?.click();
 			await Promise.resolve();
 		});
@@ -90,12 +90,12 @@ describe("AgentPromptQueue", () => {
 		);
 		await act(async () =>
 			container
-				.querySelector<HTMLButtonElement>('[aria-label="Edit queued prompt"]')
+				.querySelector<HTMLButtonElement>('[aria-label="编辑排队的提示"]')
 				?.click(),
 		);
 
 		const editor = container.querySelector<HTMLTextAreaElement>(
-			'[aria-label="Edit queued prompt"]',
+			'[aria-label="编辑排队的提示"]',
 		);
 		expect(editor?.value).toBe("Original");
 		await act(async () => {
@@ -117,7 +117,7 @@ describe("AgentPromptQueue", () => {
 		expect(onEdit).not.toHaveBeenCalled();
 		await act(async () => {
 			container
-				.querySelector<HTMLButtonElement>('[aria-label="Save queued prompt"]')
+				.querySelector<HTMLButtonElement>('[aria-label="保存排队的提示"]')
 				?.click();
 			await Promise.resolve();
 		});
@@ -147,12 +147,12 @@ describe("AgentPromptQueue", () => {
 		);
 		await act(async () =>
 			container
-				.querySelector<HTMLButtonElement>('[aria-label="Edit queued prompt"]')
+				.querySelector<HTMLButtonElement>('[aria-label="编辑排队的提示"]')
 				?.click(),
 		);
 
 		const editor = container.querySelector<HTMLTextAreaElement>(
-			'[aria-label="Edit queued prompt"]',
+			'[aria-label="编辑排队的提示"]',
 		);
 		await act(async () => {
 			if (!editor) return;
@@ -165,7 +165,7 @@ describe("AgentPromptQueue", () => {
 		});
 		await act(async () => {
 			container
-				.querySelector<HTMLButtonElement>('[aria-label="Save queued prompt"]')
+				.querySelector<HTMLButtonElement>('[aria-label="保存排队的提示"]')
 				?.click();
 			await Promise.resolve();
 		});
@@ -173,12 +173,12 @@ describe("AgentPromptQueue", () => {
 		expect(onEdit).toHaveBeenCalledWith("one", "Keep this draft");
 		expect(
 			container.querySelector<HTMLTextAreaElement>(
-				'[aria-label="Edit queued prompt"]',
+				'[aria-label="编辑排队的提示"]',
 			)?.value,
 		).toBe("Keep this draft");
 		expect(
 			container.querySelector<HTMLButtonElement>(
-				'[aria-label="Save queued prompt"]',
+				'[aria-label="保存排队的提示"]',
 			)?.disabled,
 		).toBe(false);
 		expect(container.querySelector('[role="alert"]')?.textContent).toBe(
@@ -209,7 +209,7 @@ describe("AgentPromptQueue", () => {
 
 		const removeButton = () =>
 			container.querySelector<HTMLButtonElement>(
-				'[aria-label="Remove queued prompt"]',
+				'[aria-label="移除排队的提示"]',
 			);
 		await act(async () => {
 			removeButton()?.click();
