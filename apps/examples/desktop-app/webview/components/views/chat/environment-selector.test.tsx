@@ -145,9 +145,9 @@ describe("EnvironmentSelector", () => {
 
 		expect(trigger().textContent?.trim()).toBe("");
 		expect(trigger().getAttribute("aria-label")).toBe(
-			"Environment: Raspberry Pi",
+			"环境：Raspberry Pi",
 		);
-		expect(trigger().title).toBe("Environment: Raspberry Pi");
+		expect(trigger().title).toBe("环境：Raspberry Pi");
 		expect(document.body.textContent).not.toContain("Raspberry Pi");
 		await pointerDown(trigger());
 		expect(document.body.textContent).toContain("Raspberry Pi");
@@ -224,7 +224,7 @@ describe("EnvironmentSelector", () => {
 				/>,
 			),
 		);
-		expect(trigger().title).toBe("Environment: Cloud");
+		expect(trigger().title).toBe("环境：Cloud");
 		await pointerDown(trigger());
 		expect(menuItemContaining("云端").getAttribute("aria-current")).toBe(
 			"true",
