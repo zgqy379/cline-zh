@@ -1274,7 +1274,7 @@ async function rebuildSessionForProviderChange(
 		} catch (rollbackError) {
 			throw new AggregateError(
 				[replacementError, rollbackError],
-				"Provider switch and rollback both failed",
+				"供应商切换与回滚均失败",
 			);
 		}
 		throw replacementError;
@@ -1416,7 +1416,7 @@ async function handleSend(
 			(request.attachments?.userFiles?.length ?? 0) > 0
 		) {
 			throw new Error(
-				"File attachments are not available in the SSH proof of concept yet. Images and text prompts are supported.",
+				"SSH 概念验证版暂不支持文件附件，可正常使用图片和文本提示。",
 			);
 		}
 		const userFiles = materializeUserFiles(
@@ -2132,9 +2132,7 @@ export async function handleChatSessionCommand(
 				}
 				// Gate new sessions only; existing cloud sessions must remain usable.
 				if (!isCloudAgentsEnabled()) {
-					throw new Error(
-						"Cloud sessions are not enabled for this account yet.",
-					);
+					throw new Error("当前账号尚未启用云端会话。");
 				}
 				const repoUrl = String(request.config?.repoUrl ?? "").trim();
 				const modelId = String(

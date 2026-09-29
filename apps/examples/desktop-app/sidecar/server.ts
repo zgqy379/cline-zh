@@ -199,7 +199,7 @@ export function startServer(
 	}
 
 	if (!server) {
-		throw lastError ?? new Error("Failed to start sidecar server");
+		throw lastError ?? new Error("sidecar 服务启动失败");
 	}
 
 	return { port: server.port, approvalToken };
@@ -257,7 +257,7 @@ export function createFetchHandler(
 					error:
 						error instanceof Error
 							? error.message
-							: "Failed to fetch marketplace catalog",
+							: "获取市场目录失败",
 				});
 			}
 		}

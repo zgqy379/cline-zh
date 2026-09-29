@@ -193,7 +193,7 @@ describe("Cloud sessions sidecar wiring", () => {
 						model: "anthropic/claude-sonnet-5",
 					},
 				}),
-			).rejects.toThrow(/not enabled/);
+			).rejects.toThrow(/尚未启用云端会话/);
 			expect(create).not.toHaveBeenCalled();
 			expect(connect).not.toHaveBeenCalled();
 			expect(hub.commands).toEqual([]);
@@ -326,7 +326,7 @@ describe("Cloud sessions sidecar wiring", () => {
 				attachments: { userImages: ["", "   "] },
 				config: { executionTarget: "cloud" },
 			}),
-		).rejects.toThrow("prompt or image is required");
+		).rejects.toThrow("提示词或图片为必填项");
 		expect(hub.commands).toHaveLength(commandsBeforeInvalidPrompt);
 
 		await handleChatSessionCommand(ctx, {

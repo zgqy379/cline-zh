@@ -306,7 +306,7 @@ const ToolCallRow = memo(function ToolCallRow({
 				{inputPreview ? (
 					<div className="space-y-1">
 						<div className="text-[11px] uppercase tracking-wide text-muted-foreground/80">
-							Input
+							输入
 						</div>
 						<ToolActivityCode className="text-sm">
 							{inputPreview}

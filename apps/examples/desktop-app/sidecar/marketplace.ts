@@ -409,18 +409,18 @@ export function buildMarketplaceMcpInput(args: string[]): JsonRecord {
 		) {
 			const rawHeader =
 				arg === "--header" ? rest[++index] : arg.slice("--header=".length);
-			if (!rawHeader) throw new Error("--header requires a value");
+			if (!rawHeader) throw new Error("--header 需要提供一个值");
 			const separatorIndex = rawHeader.indexOf(":");
 			if (separatorIndex <= 0) {
 				throw new Error(
-					`Invalid MCP header "${rawHeader}". Expected "Header-Name: header value".`,
+					`MCP 请求头 "${rawHeader}" 无效，期望格式为 "Header-Name: header value"。`,
 				);
 			}
 			const headerName = rawHeader.slice(0, separatorIndex).trim();
 			const headerValue = rawHeader.slice(separatorIndex + 1).trim();
 			if (!headerName || !headerValue) {
 				throw new Error(
-					`Invalid MCP header "${rawHeader}". Expected "Header-Name: header value".`,
+					`MCP 请求头 "${rawHeader}" 无效，期望格式为 "Header-Name: header value"。`,
 				);
 			}
 			headers[headerName] = headerValue;
@@ -819,7 +819,7 @@ async function installPlugin(
 	const installArgs = entry.install.args ?? [];
 	if (installArgs.length !== 1) {
 		throw new Error(
-			"Plugin marketplace installs currently support exactly one source argument.",
+			"插件市场安装目前仅支持恰好一个来源参数。",
 		);
 	}
 	const installState = getOfficialPluginInstallState(entry);

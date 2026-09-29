@@ -795,7 +795,7 @@ async function withSearchDeadline<T>(
 			promise,
 			new Promise<never>((_, reject) => {
 				timer = setTimeout(
-					() => reject(new Error("Session search timed out")),
+					() => reject(new Error("会话搜索超时")),
 					timeoutMs,
 				);
 			}),
@@ -1820,7 +1820,7 @@ async function openFileInCodeEditor(
 		WINDOWS_CMD_UNSAFE_PATTERN.test(filePath)
 	) {
 		throw new Error(
-			"File path contains characters that cannot be passed safely to the Windows shell",
+			"文件路径中包含无法安全传给 Windows shell 的字符",
 		);
 	}
 	if (editorId && editorId !== "default") {
@@ -2091,7 +2091,7 @@ export async function handleCommand(
 		);
 		if (!reply.ok) {
 			throw new Error(
-				reply.error?.message ?? "Could not proceed while command is running.",
+				reply.error?.message ?? "命令运行期间无法继续。",
 			);
 		}
 		return {
@@ -2129,7 +2129,7 @@ export async function handleCommand(
 		const binding = await getCommandSessionBinding(ctx, sessionId, args);
 		if (binding?.kind === "ssh") {
 			throw new Error(
-				"Remote session hook artifacts are not available through the SSH runtime yet.",
+				"SSH 运行时暂不支持读取远程会话的 hook 产物。",
 			);
 		}
 		return await readSessionHooks(
@@ -2142,7 +2142,7 @@ export async function handleCommand(
 		const binding = await getCommandSessionBinding(ctx, sessionId, args);
 		if (binding?.kind === "ssh") {
 			throw new Error(
-				"Remote session agent artifacts are not available through the SSH runtime yet.",
+				"SSH 运行时暂不支持读取远程会话的 agent 产物。",
 			);
 		}
 		return listSessionAgents(
@@ -2247,12 +2247,12 @@ export async function handleCommand(
 		});
 		if (result.outcome === "hub_not_older") {
 			throw new Error(
-				"The running Cline Hub is newer than this app, so it was not replaced. Update Cline instead.",
+				"正在运行的 Cline Hub 版本比本应用更新，因此未被替换。请改为更新 Cline。",
 			);
 		}
 		if (result.outcome === "still_busy") {
 			throw new Error(
-				"The running Cline Hub picked up new sessions before it could be replaced, so it was left running. Try again.",
+				"正在运行的 Cline Hub 在被替换前接入了新的会话，因此保持运行。请重试。",
 			);
 		}
 		// The mismatch is resolved: a null broadcast closes the dialog in
@@ -3709,7 +3709,7 @@ export async function handleCommand(
 	if (command === "open_file_in_editor") {
 		if (getCommandRuntimeBinding(ctx, args).kind === "ssh") {
 			throw new Error(
-				"Opening remote files in a local editor is not available in the SSH proof of concept yet.",
+				"SSH 概念验证版暂不支持在本地编辑器中打开远程文件。",
 			);
 		}
 		const rawPath = String(args?.path ?? "").trim();
