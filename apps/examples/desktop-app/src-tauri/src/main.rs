@@ -162,12 +162,12 @@ impl UpdateState {
 
 fn tray_status_text(update_status: &UpdateStatus, hub_healthy: bool) -> &'static str {
     match update_status.state.as_str() {
-        "checking" => "Status: Checking for Updates",
-        "downloading" => "Status: Downloading Update",
-        "ready" => "Status: Update Available",
-        "error" => "Status: Update Check Failed",
-        _ if hub_healthy => "Status: Healthy",
-        _ => "Status: Hub Disconnected",
+        "checking" => "状态：正在检查更新",
+        "downloading" => "状态：正在下载更新",
+        "ready" => "状态：有可用更新",
+        "error" => "状态：检查更新失败",
+        _ if hub_healthy => "状态：运行正常",
+        _ => "状态：Hub 已断开",
     }
 }
 
@@ -1365,7 +1365,9 @@ fn setup_tray_icon(
     app: &tauri::App,
     check_for_updates: Option<MenuItem<tauri::Wry>>,
 ) -> tauri::Result<()> {
-    let status = MenuItem::new(app, "Status: Healthy", false, None::<&str>)?;
+    // 复用 tray_status_text，避免托盘初始状态与状态文案翻译不同步
+    let initial_status = tray_status_text(&UpdateStatus::default(), true);
+    let status = MenuItem::new(app, initial_status, false, None::<&str>)?;
     let running_sessions = MenuItem::new(app, running_sessions_text(0), false, None::<&str>)?;
     let mut menu = MenuBuilder::new(app)
         .text(
@@ -1726,26 +1728,26 @@ mod tests {
             error: None,
         };
 
-        assert_eq!(tray_status_text(&status("idle"), true), "Status: Healthy");
+        assert_eq!(tray_status_text(&status("idle"), true), "状态：运行正常");
         assert_eq!(
             tray_status_text(&status("idle"), false),
-            "Status: Hub Disconnected"
+            "状态：Hub 已断开"
         );
         assert_eq!(
             tray_status_text(&status("checking"), false),
-            "Status: Checking for Updates"
+            "状态：正在检查更新"
         );
         assert_eq!(
             tray_status_text(&status("downloading"), false),
-            "Status: Downloading Update"
+            "状态：正在下载更新"
         );
         assert_eq!(
             tray_status_text(&status("ready"), false),
-            "Status: Update Available"
+            "状态：有可用更新"
         );
         assert_eq!(
             tray_status_text(&status("error"), false),
-            "Status: Update Check Failed"
+            "状态：检查更新失败"
         );
     }
 
