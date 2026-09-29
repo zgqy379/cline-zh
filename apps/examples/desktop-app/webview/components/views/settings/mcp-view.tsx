@@ -975,7 +975,7 @@ export function McpServersContent({
 													onChange={(event) =>
 														updateEnvEntry(entry.id, "key", event.target.value)
 													}
-													placeholder="KEY"
+													placeholder="键"
 												/>
 												<Input
 													type="password"
@@ -987,7 +987,7 @@ export function McpServersContent({
 															event.target.value,
 														)
 													}
-													placeholder="VALUE"
+													placeholder="值"
 												/>
 											</div>
 										))}
@@ -1021,7 +1021,7 @@ export function McpServersContent({
 												headersText: event.target.value,
 											}))
 										}
-										placeholder="Authorization=Bearer token"
+										placeholder="Authorization=Bearer 令牌"
 									/>
 								</div>
 								<div className="grid gap-2">

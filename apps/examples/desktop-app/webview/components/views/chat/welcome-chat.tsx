@@ -268,7 +268,7 @@ export function WelcomeScreen({
 				label: task.title,
 				description:
 					task.description ||
-					`${task.type === "follow-up" ? "Follow-up" : task.type === "reminder" ? "Reminder" : "Suggestion"} · P${task.priority}`,
+					`${task.type === "follow-up" ? "跟进" : task.type === "reminder" ? "提醒" : "建议"} · P${task.priority}`,
 				value: task.instructions,
 			})),
 		[quickActionTasks],

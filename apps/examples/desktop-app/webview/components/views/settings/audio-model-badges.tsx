@@ -9,7 +9,7 @@ export function AudioModelBadges({ model }: { model: ProviderModel }) {
 		(transcription && model.operationModes?.includes("streaming"));
 	if (!transcription && !realtime) return null;
 	const Icon = realtime ? AudioWaveform : Mic;
-	const label = realtime ? "Realtime" : "Transcription";
+	const label = realtime ? "实时" : "转录";
 	return (
 		<>
 			<span
