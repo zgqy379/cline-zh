@@ -1229,7 +1229,7 @@ describe("ChatMessages tool disclosures", () => {
 
 		const trigger = [
 			...container.querySelectorAll<HTMLButtonElement>("button"),
-		].find((button) => button.textContent?.includes("Worked"));
+		].find((button) => button.textContent?.includes("工作"));
 		expect(trigger).toBeDefined();
 		await act(async () => trigger?.click());
 		expect(container.textContent).not.toContain(
@@ -1456,7 +1456,7 @@ describe("ChatMessages tool disclosures", () => {
 			MAX_LIVE_COMMAND_OUTPUT_CHARS,
 		);
 		expect(output?.textContent).toContain("newest-tail");
-		expect(output?.textContent).toContain("Earlier command output truncated");
+		expect(output?.textContent).toContain("此前的命令输出已截断");
 	});
 });
 
@@ -2030,7 +2030,7 @@ describe("ChatMessages work collapse", () => {
 			"button.cline-chat-work-trigger",
 		) as HTMLButtonElement | null;
 		expect(trigger?.textContent).toContain(
-			"Worked for 4s and made 2 tool calls",
+			"工作了 4s，共 2 次工具调用",
 		);
 		expect(trigger?.getAttribute("aria-expanded")).toBe("false");
 		// Collapsed content is lazy: the tool rows do not render until opened.

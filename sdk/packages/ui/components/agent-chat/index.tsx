@@ -855,15 +855,15 @@ export function formatWorkActivityLabel({
 		durationMilliseconds !== undefined &&
 		Number.isFinite(durationMilliseconds) &&
 		durationMilliseconds >= 0
-			? `Worked for ${formatWorkDuration(durationMilliseconds)}`
+			? `工作了 ${formatWorkDuration(durationMilliseconds)}`
 			: undefined;
 	const calls = toolCallCount
-		? `${toolCallCount} ${toolCallCount === 1 ? "tool call" : "tool calls"}`
+		? `${toolCallCount} 次工具调用`
 		: undefined;
-	if (worked && calls) return `${worked} and made ${calls}`;
+	if (worked && calls) return `${worked}，共 ${calls}`;
 	if (worked) return worked;
-	if (calls) return `Made ${calls}`;
-	return "Worked";
+	if (calls) return `共 ${calls}`;
+	return "已完成工作";
 }
 
 export type WorkActivityProps = Omit<
