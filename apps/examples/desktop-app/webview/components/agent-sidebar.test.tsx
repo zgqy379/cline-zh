@@ -789,7 +789,7 @@ describe("AgentSidebar session organization", () => {
 		// Before the backend has answered, an empty list means "still loading",
 		// never "no sessions": the definitive copy would read as lost history.
 		expect(container.textContent).toContain("正在加载会话历史…");
-		expect(container.textContent).not.toContain("No sessions found in history");
+		expect(container.textContent).not.toContain("历史中未找到会话");
 	});
 
 	it("shows the empty state only after the backend answered with zero sessions", async () => {
@@ -811,7 +811,7 @@ describe("AgentSidebar session organization", () => {
 			);
 		});
 
-		expect(container.textContent).toContain("No sessions found in history");
+		expect(container.textContent).toContain("历史中未找到会话");
 		expect(container.textContent).not.toContain("正在加载会话历史…");
 	});
 

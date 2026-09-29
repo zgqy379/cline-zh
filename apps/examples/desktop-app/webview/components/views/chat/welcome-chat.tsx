@@ -506,8 +506,7 @@ export function WelcomeScreen({
 					{active && cloudModeActive && !showCloudOnboarding ? (
 						<p className="mt-3 flex items-center justify-center gap-1.5 text-center text-xs text-muted-foreground">
 							<Cloud aria-hidden="true" className="size-3 shrink-0" />
-							Cloud sessions run on a secure sandbox, work on a branch, and keep
-							going even when you close the app.
+							云端会话在安全沙箱中运行、在分支上工作，即使关闭应用也会继续执行。
 						</p>
 					) : null}
 				</div>

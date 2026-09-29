@@ -1088,7 +1088,7 @@ export function CustomizationSectionView({
 						}
 					>
 						<Copy className="size-4" />
-						Copy path
+						复制路径
 					</DropdownMenuItem>
 					{showDelete ? (
 						<DropdownMenuItem
@@ -1135,7 +1135,7 @@ export function CustomizationSectionView({
 					) : null}
 					{context?.matchedEntries?.length ? (
 						<Badge variant="outline" className="shrink-0 text-muted-foreground">
-							Marketplace
+							市场
 						</Badge>
 					) : null}
 					<Switch
@@ -1223,7 +1223,7 @@ export function CustomizationSectionView({
 					</Badge>
 					{context?.matchedEntries?.length ? (
 						<Badge variant="outline" className="shrink-0 text-muted-foreground">
-							Marketplace
+							市场
 						</Badge>
 					) : null}
 					<Switch
@@ -1261,13 +1261,13 @@ export function CustomizationSectionView({
 					) : null}
 					{plugin.contributions?.inspectionStatus === "disabled" ? (
 						<p className="mb-2 text-xs text-muted-foreground">
-							Enable this plugin to inspect its dynamic contributions.
+							启用此插件以查看其动态贡献项。
 						</p>
 					) : null}
 					{contributionGroups.length > 0 ? (
 						<div>
 							<div className="flex flex-wrap items-center gap-2 py-2 text-xs font-medium text-foreground">
-								<span className="mr-1">Contributions</span>
+								<span className="mr-1">贡献项</span>
 								{contributionGroups.map((group) => (
 									<Badge key={group.label} variant="outline">
 										{group.label} {group.items.length}
@@ -1293,7 +1293,7 @@ export function CustomizationSectionView({
 						</div>
 					) : (
 						<p className="text-xs text-muted-foreground">
-							No plugin contributions found.
+							未找到插件贡献项。
 						</p>
 					)}
 				</div>
@@ -1338,12 +1338,12 @@ export function CustomizationSectionView({
 					</Badge>
 					{context?.matchedEntries?.length ? (
 						<Badge variant="outline" className="shrink-0 text-muted-foreground">
-							Marketplace
+							市场
 						</Badge>
 					) : null}
 					{server.disabled ? (
 						<Badge variant="outline" className="shrink-0 text-muted-foreground">
-							Disabled
+							已禁用
 						</Badge>
 					) : null}
 				</div>
@@ -1459,7 +1459,7 @@ export function CustomizationSectionView({
 
 			{errorMessage && (
 				<div className="mb-4 rounded-lg border border-destructive/40 bg-destructive/10 px-4 py-3 text-sm text-destructive">
-					Failed to load configuration lists: {errorMessage}
+					加载配置列表失败：{errorMessage}
 				</div>
 			)}
 
@@ -1467,7 +1467,7 @@ export function CustomizationSectionView({
 				<div className="mb-4 rounded-lg border border-yellow-500/40 bg-yellow-500/10 px-4 py-3 text-sm text-yellow-700 dark:text-yellow-300">
 					<div className="mb-2 flex items-center gap-2 font-medium">
 						<TriangleAlert className="h-4 w-4" />
-						Partial results
+						部分结果
 					</div>
 					<ul className="list-disc space-y-1 pl-5">
 						{warnings.map((warning) => (
@@ -1492,7 +1492,7 @@ export function CustomizationSectionView({
 					<div className="grid gap-3">
 						<div className="flex items-center justify-between gap-3">
 							<h3 className="text-base font-semibold text-foreground">
-								Installed
+								已安装
 							</h3>
 							<span className="text-sm text-muted-foreground">
 								{scopedRules.length}
@@ -1535,7 +1535,7 @@ export function CustomizationSectionView({
 							))}
 							{scopedRules.length === 0 && (
 								<p className="rounded-lg border border-dashed border-border px-4 py-3 text-sm text-muted-foreground">
-									No rules found.
+									未找到规则。
 								</p>
 							)}
 						</div>
@@ -1547,7 +1547,7 @@ export function CustomizationSectionView({
 				<div>
 					{hookExecutionLoading && hookExecutionSessionId && (
 						<p className="mb-4 text-xs text-muted-foreground">
-							Execution status is based on hook events in session{" "}
+							执行状态依据此会话中的钩子事件{" "}
 							<span className="font-mono">{hookExecutionSessionId}</span>.
 						</p>
 					)}
@@ -1555,7 +1555,7 @@ export function CustomizationSectionView({
 					<div className="grid gap-3">
 						<div className="flex items-center justify-between gap-3">
 							<h3 className="text-base font-semibold text-foreground">
-								Installed
+								已安装
 							</h3>
 							<span className="text-sm text-muted-foreground">
 								{scopedHooks.length}
@@ -1620,7 +1620,7 @@ export function CustomizationSectionView({
 							))}
 							{scopedHooks.length === 0 && (
 								<p className="rounded-lg border border-dashed border-border px-4 py-3 text-sm text-muted-foreground">
-									No hooks found.
+									未找到钩子。
 								</p>
 							)}
 						</div>
@@ -1667,7 +1667,7 @@ export function CustomizationSectionView({
 						))}
 						{commandItems.length === 0 && (
 							<p className="rounded-lg border border-dashed border-border px-4 py-3 text-sm text-muted-foreground">
-								No enabled skills or workflows found.
+								未找到已启用的技能或工作流。
 							</p>
 						)}
 					</div>
@@ -1677,8 +1677,7 @@ export function CustomizationSectionView({
 			{activeTab === "Agents" && (
 				<div>
 					<p className="mb-6 text-sm leading-relaxed text-muted-foreground">
-						Configured agents discovered from Documents and settings
-						directories.
+						从「文档」与设置目录中发现的已配置智能体。
 					</p>
 
 					<div className="flex flex-col gap-3">
@@ -1700,7 +1699,7 @@ export function CustomizationSectionView({
 						))}
 						{agents.length === 0 && (
 							<p className="rounded-lg border border-dashed border-border px-4 py-3 text-sm text-muted-foreground">
-								No configured agents found.
+								未找到已配置的智能体。
 							</p>
 						)}
 					</div>
@@ -1710,19 +1709,19 @@ export function CustomizationSectionView({
 			{activeTab === "Plugins" && !catalogPrimitive && (
 				<div>
 					<p className="mb-6 text-sm leading-relaxed text-muted-foreground">
-						Cline and portable Agent Plugins discovered by the shared Hub.
-						Changes apply when a session is rebuilt or started.
+						由共享 Hub 发现的 Cline 插件与可移植智能体插件。
+						变更会在会话重建或启动时生效。
 					</p>
 
 					<div className="mb-6">
 						<h3 className="mb-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-							Cline Plugins ({clinePlugins.length})
+							Cline 插件（{clinePlugins.length}）
 						</h3>
 						<div className="flex flex-col gap-3">
 							{clinePlugins.map((plugin) => renderPluginCard(plugin))}
 							{clinePlugins.length === 0 && (
 								<p className="rounded-lg border border-dashed border-border px-4 py-3 text-sm text-muted-foreground">
-									No Cline Plugins found.
+									未找到 Cline 插件。
 								</p>
 							)}
 						</div>
@@ -1730,13 +1729,13 @@ export function CustomizationSectionView({
 
 					<div>
 						<h3 className="mb-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-							Agent Plugins ({agentPlugins.length})
+							智能体插件（{agentPlugins.length}）
 						</h3>
 						<div className="flex flex-col gap-3">
 							{agentPlugins.map((plugin) => renderPluginCard(plugin))}
 							{agentPlugins.length === 0 && (
 								<p className="rounded-lg border border-dashed border-border px-4 py-3 text-sm text-muted-foreground">
-									No Agent Plugins found.
+									未找到智能体插件。
 								</p>
 							)}
 						</div>

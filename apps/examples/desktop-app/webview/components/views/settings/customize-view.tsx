@@ -140,7 +140,7 @@ export function CustomizeView({
 							variant="outline"
 						>
 							<Store className="size-4" />
-							Marketplace
+							市场
 						</Button>
 					) : undefined
 				}
