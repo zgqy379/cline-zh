@@ -335,8 +335,8 @@ function getPathScope(path: string, workspaceRoot: string): ItemScope {
 	const normalizedRoot = normalizePath(workspaceRoot);
 	const normalized = normalizePath(path);
 	return normalizedRoot && normalized.startsWith(`${normalizedRoot}/`)
-		? "项目"
-		: "全局";
+		? "Project"
+		: "Global";
 }
 
 function ScopeBadge({ scope }: { scope: ItemScope }) {
