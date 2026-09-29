@@ -38,11 +38,11 @@ export async function fetchGitHubInstallUrl(): Promise<string> {
 		operation: "githubInstallUrl",
 	});
 	if (isClineAccountNotAuthenticatedResult(result)) {
-		throw new Error("sign in to your Cline account first");
+		throw new Error("请先登录你的 Cline 账户");
 	}
 	const url = (result as { url?: unknown } | null)?.url;
 	if (typeof url !== "string" || !url.trim()) {
-		throw new Error("no GitHub install URL was returned");
+		throw new Error("未返回 GitHub 安装链接");
 	}
 	return url;
 }
