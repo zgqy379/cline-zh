@@ -38,7 +38,7 @@ function errorMessage(error: unknown): string {
 			// Fall through to the generic message.
 		}
 	}
-	return typeof error === "string" ? error : "Streaming transcription failed";
+	return typeof error === "string" ? error : "语音转写失败";
 }
 
 function floatsToPcm16(samples: Float32Array): Uint8Array {
@@ -212,7 +212,7 @@ export async function startStreamingTranscription(options: {
 				/(Connection error on AI Gateway transcription stream|AI Gateway transcription stream closed before a finish part was received|OpenAI realtime transcription error)$/.test(
 					errorMessage(error),
 				))
-				? new Error("Streaming transcription network connection was lost", {
+				? new Error("语音转写网络连接中断", {
 						cause: error,
 					})
 				: error instanceof Error
@@ -228,8 +228,7 @@ export async function startStreamingTranscription(options: {
 			metadata: { transport: credentials.transport },
 		});
 	};
-	const handleOffline = () =>
-		fail(new Error("Streaming transcription network connection was lost"));
+	const handleOffline = () => fail(new Error("语音转写网络连接中断"));
 	window.addEventListener("offline", handleOffline);
 	const complete = (text: string) => {
 		if (finished) return;
@@ -358,7 +357,7 @@ export async function startStreamingTranscription(options: {
 			const connected = new Promise<void>((resolve, reject) => {
 				rejectConnection = reject;
 				connectionTimeout = setTimeout(
-					() => fail(new Error("Streaming transcription connection timed out")),
+					() => fail(new Error("语音转写连接超时")),
 					15_000,
 				);
 				activeSocket.onopen = () => {
@@ -408,7 +407,7 @@ export async function startStreamingTranscription(options: {
 			await connected;
 			if (finished) {
 				await done;
-				throw new Error("Streaming transcription ended during setup");
+				throw new Error("语音转写在建立阶段即结束");
 			}
 		}
 		const startedCapture = await startPcmCapture(
@@ -418,11 +417,7 @@ export async function startStreamingTranscription(options: {
 				if (stopped || finished) return;
 				if (audioController) {
 					if ((audioController.desiredSize ?? 0) < bytes.byteLength) {
-						fail(
-							new Error(
-								"Streaming transcription network is too slow to send microphone audio",
-							),
-						);
+						fail(new Error("语音转写网络太慢，无法发送麦克风音频"));
 					} else audioController.enqueue(bytes);
 				} else if (socket?.readyState === WebSocket.OPEN) {
 					socket.send(
@@ -470,12 +465,11 @@ export async function startStreamingTranscription(options: {
 					}),
 				);
 			} else {
-				fail(new Error("Streaming transcription connection is not open"));
+				fail(new Error("语音转写连接尚未打开"));
 				return;
 			}
 			finishTimeout = setTimeout(
-				() =>
-					fail(new Error("Streaming transcription timed out while finalizing")),
+				() => fail(new Error("语音转写收尾超时")),
 				STREAM_FINISH_TIMEOUT_MS,
 			);
 		},
