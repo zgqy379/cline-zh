@@ -91,29 +91,23 @@ async function requestConnectorsApi<T>(
 ): Promise<T> {
 	const accountId = options.ctx?.accountId ?? getClineAccountId();
 	if (!accountId || getClineAccountId() !== accountId) {
-		throw new ConnectorsApiError("The signed-in Cline account changed.", 401);
+		throw new ConnectorsApiError("登录的 Cline 账户已发生变化。", 401);
 	}
 	const auth = await resolveConnectorsApiAuth(options.ctx);
 	if (!auth) {
-		throw new ConnectorsApiError(
-			"Sign in to your Cline account to use connectors.",
-			401,
-		);
+		throw new ConnectorsApiError("请登录 Cline 账户以使用连接器。", 401);
 	}
 	// Revocation remains available for cleanup after beta access is removed.
 	if (
 		method !== "DELETE" &&
 		!(await isClineAccountFeatureEnabled(FeatureFlag.CLINE_COMPOSIO_BETA))
 	) {
-		throw new ConnectorsApiError(
-			"Composio connectors are not enabled for this account.",
-			403,
-		);
+		throw new ConnectorsApiError("此账户未启用 Composio 连接器。", 403);
 	}
 	// Auth resolution and flag evaluation can yield while the user signs out
 	// or switches accounts. Never submit an old operation with the new token.
 	if (getClineAccountId() !== accountId || auth.accountId !== accountId) {
-		throw new ConnectorsApiError("The signed-in Cline account changed.", 401);
+		throw new ConnectorsApiError("登录的 Cline 账户已发生变化。", 401);
 	}
 	let response: Response;
 	try {
@@ -131,7 +125,7 @@ async function requestConnectorsApi<T>(
 		});
 	} catch (error) {
 		throw new ConnectorsApiError(
-			`Cline API request failed: ${error instanceof Error ? error.message : String(error)}`,
+			`Cline API 请求失败：${error instanceof Error ? error.message : String(error)}`,
 		);
 	}
 	const text = await response.text();
@@ -151,7 +145,7 @@ async function requestConnectorsApi<T>(
 				(body as { error: string }).error) ||
 			(typeof (body as { message?: unknown }).message === "string" &&
 				(body as { message: string }).message) ||
-			`Cline API returned HTTP ${response.status} for ${method} ${path}`;
+			`Cline API 针对 ${method} ${path} 返回了 HTTP ${response.status}`;
 		throw new ConnectorsApiError(message, response.status);
 	}
 	if (method === "DELETE" && response.status === 204) {
@@ -168,7 +162,7 @@ async function requestConnectorsApi<T>(
 		return (parsed as { data: T }).data;
 	}
 	throw new ConnectorsApiError(
-		`Invalid connectors response for ${method} ${path}`,
+		`无效的连接器响应：${method} ${path}`,
 	);
 }
 
@@ -223,9 +217,7 @@ async function listAllConnectorPages<T>(
 		items.push(...page.items);
 		cursor = page.nextToken;
 		if (cursor && seenCursors.has(cursor)) {
-			throw new ConnectorsApiError(
-				"Connectors pagination returned a repeated cursor.",
-			);
+			throw new ConnectorsApiError("连接器分页返回了重复的游标。");
 		}
 		seenCursors.add(cursor);
 	} while (cursor);
@@ -244,7 +236,7 @@ async function requestConnectorPage<T>(
 		!Array.isArray(page.items) ||
 		typeof page.nextToken !== "string"
 	) {
-		throw new ConnectorsApiError(`Invalid connectors page for ${path}`);
+		throw new ConnectorsApiError(`无效的连接器分页数据：${path}`);
 	}
 	return page;
 }
@@ -306,7 +298,7 @@ export async function waitForConnectionActive(
 	const deadline = Date.now() + options.timeoutMs;
 	while (Date.now() < deadline) {
 		if (options.shouldContinue && !options.shouldContinue()) {
-			throw new ConnectorsApiError("Connection attempt was superseded.");
+			throw new ConnectorsApiError("连接尝试已被新的尝试取代。");
 		}
 		try {
 			const connections = await listConnections(options.ctx);
@@ -330,7 +322,5 @@ export async function waitForConnectionActive(
 		}
 		await new Promise((resolve) => setTimeout(resolve, pollIntervalMs));
 	}
-	throw new ConnectorsApiError(
-		"Timed out waiting for the connection to be authorized.",
-	);
+	throw new ConnectorsApiError("等待连接完成授权超时。");
 }
