@@ -504,7 +504,7 @@ export default function Home() {
 					!homeDir
 				) {
 					throw new Error(
-						"The SSH host connected without a valid environment identity or home directory.",
+						"SSH 主机已连接，但缺少有效的环境标识或主目录。",
 					);
 				}
 
@@ -2503,7 +2503,7 @@ function ChatThreadPane({
 						displayedIsSwitching &&
 						displayedMessages.length === 0 ? (
 							// Keep opening an existing cloud session visually continuous.
-							<CloudProvisioningPane phase="Opening session..." />
+							<CloudProvisioningPane phase="正在打开会话…" />
 						) : showDiffView && !isCloudSession ? (
 							<DiffView
 								cwd={config.cwd || config.workspaceRoot}

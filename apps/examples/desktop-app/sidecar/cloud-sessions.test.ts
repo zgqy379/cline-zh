@@ -359,7 +359,7 @@ describe("Cloud sessions sidecar wiring", () => {
 				},
 				config: { executionTarget: "cloud" },
 			}),
-		).rejects.toThrow("File attachments are not supported in cloud sessions");
+		).rejects.toThrow("云端会话不支持文件附件。");
 	});
 
 	it("leaves cloud approvals pending on app shutdown instead of denying them", async () => {
