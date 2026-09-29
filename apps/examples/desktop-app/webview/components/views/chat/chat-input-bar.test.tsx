@@ -2102,8 +2102,8 @@ describe("ChatInputBar", () => {
 		expect(loadProviderModelsMock).toHaveBeenLastCalledWith("cline");
 		const panel = document.querySelector('[role="dialog"]');
 		expect(panel?.textContent).toContain("推荐");
-		expect(panel?.textContent).toContain("Free");
-		expect(panel?.textContent).toContain("All models");
+		expect(panel?.textContent).toContain("免费");
+		expect(panel?.textContent).toContain("所有模型");
 		expect(panel?.textContent).toContain("Most intelligent model");
 		expect(
 			panel?.querySelector(".cline-ui-search-combobox__badge")?.textContent,

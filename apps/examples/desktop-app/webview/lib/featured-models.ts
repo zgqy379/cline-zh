@@ -96,13 +96,13 @@ export function buildModelPickerData(
 		return {
 			options: [...recommended, ...free, ...rest],
 			sections: [
-				{ id: "recommended", label: "Recommended" },
+				{ id: "recommended", label: "推荐" },
 				{
 					description: FREE_SECTION_DESCRIPTION,
 					id: "free",
-					label: "Free",
+					label: "免费",
 				},
-				{ id: "all", label: "All models" },
+				{ id: "all", label: "所有模型" },
 			],
 		};
 	}
@@ -133,7 +133,7 @@ export function buildModelPickerData(
 				{
 					description: CLINE_PASS_FREE_SECTION_DESCRIPTION,
 					id: "free",
-					label: "Free",
+					label: "免费",
 				},
 			],
 		};
