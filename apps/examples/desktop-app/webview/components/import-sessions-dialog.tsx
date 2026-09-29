@@ -258,8 +258,7 @@ export function ImportSessionsDialog({
 									未找到会话
 								</p>
 								<p className="max-w-sm text-sm text-muted-foreground">
-									Cline looks for local history from Claude Code, Codex, and
-										本地历史记录，但本机上没有找到可导入的内容。
+									Cline 会查找 Claude Code、Codex 和 opencode 的本地历史记录，但本机上没有找到可导入的内容。
 								</p>
 							</div>
 						) : null}

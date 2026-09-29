@@ -44,30 +44,30 @@ export type WhatsNewRelease = {
 export const WHATS_NEW_RELEASES: WhatsNewRelease[] = [
 	{
 		id: "2026-09-remote-and-parallel",
-		title: "Work anywhere, in parallel",
+		title: "随时随地，并行工作",
 		highlights: [
 			{
-				title: "SSH remotes",
+				title: "SSH 远程主机",
 				description:
-					"The app stays on your laptop while Cline works on any machine you can SSH into.",
+					"应用留在你的笔记本上，Cline 则在你可 SSH 登录的任意机器上工作。",
 				icon: Network,
 			},
 			{
-				title: "Worktrees",
+				title: "工作树",
 				description:
-					"Each task gets its own branch under ~/.cline/worktrees, so parallel work never collides.",
+					"每个任务在 ~/.cline/worktrees 下拥有独立分支，并行工作互不干扰。",
 				icon: GitBranchPlus,
 			},
 			{
-				title: "Pull request status",
+				title: "Pull Request 状态",
 				description:
-					"Your branch's PR, merge state, and CI checks, right in the composer.",
+					"在输入框即可查看分支的 PR、合并状态与 CI 检查。",
 				icon: GitPullRequest,
 			},
 			{
-				title: "Parallel sub-agents",
+				title: "并行子智能体",
 				description:
-					"Delegate several tasks in one session and they run at the same time.",
+					"在一个会话里派发多个任务，它们会同时运行。",
 				icon: Users,
 			},
 		],

@@ -30,7 +30,7 @@ async function runCheck(status: unknown) {
 	expect(mocks.invoke).toHaveBeenCalledWith("check_for_update_now");
 	expect(mocks.toast).toHaveBeenNthCalledWith(
 		1,
-		expect.objectContaining({ title: "Checking for updates..." }),
+		expect.objectContaining({ title: "正在检查更新…" }),
 	);
 	expect(mocks.dismiss).toHaveBeenCalledOnce();
 	return mocks.toast.mock.calls[1]?.[0];
@@ -40,14 +40,14 @@ describe("checkForUpdateAndNotify", () => {
 	it("offers a restart when the check staged an update", async () => {
 		const result = await runCheck({ state: "ready", version: "1.2.3" });
 
-		expect(result).toMatchObject({ title: "Update ready: v1.2.3" });
+		expect(result).toMatchObject({ title: "更新已就绪：v1.2.3" });
 		expect(result.action).toBeTruthy();
 	});
 
 	it("confirms when no update is available", async () => {
 		const result = await runCheck({ state: "idle" });
 
-		expect(result).toMatchObject({ title: "You're up to date" });
+		expect(result).toMatchObject({ title: "你已是最新版本" });
 	});
 
 	it("surfaces a failed check", async () => {
@@ -55,7 +55,7 @@ describe("checkForUpdateAndNotify", () => {
 
 		expect(result).toMatchObject({
 			variant: "destructive",
-			title: "Update check failed",
+			title: "检查更新失败",
 			description: "offline",
 		});
 	});
@@ -69,7 +69,7 @@ describe("checkForUpdateAndNotify", () => {
 		expect(mocks.toast).toHaveBeenLastCalledWith(
 			expect.objectContaining({
 				variant: "destructive",
-				title: "Unable to check for updates",
+				title: "无法检查更新",
 			}),
 		);
 	});
