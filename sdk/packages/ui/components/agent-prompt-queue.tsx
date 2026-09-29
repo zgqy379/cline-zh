@@ -152,7 +152,7 @@ export function AgentPromptQueue({
 				const message = await runHostCallback(
 					() => (action === "steer" ? onSteer(item.id) : onRemove(item.id)),
 					action === "steer"
-						? "Could not steer the queued prompt."
+						? "无法引导队列中的提示。"
 						: "Could not remove the queued prompt.",
 				);
 				if (message) setActionError({ id: item.id, message });
@@ -233,7 +233,7 @@ export function AgentPromptQueue({
 							<div className="cline-ui-agent-prompt-queue__content min-w-0 flex-1">
 								{isEditing ? (
 									<textarea
-										aria-label="Edit queued prompt"
+										aria-label="编辑排队的提示"
 										className="cline-ui-agent-prompt-queue__editor block min-h-8 w-full resize-none rounded-cline-ui-md border border-cline-ui-border bg-cline-ui-background px-2 py-1.5 text-cline-ui-foreground text-cline-ui-xs leading-4 outline-none focus:border-[color-mix(in_oklab,var(--cline-ui-primary)_50%,transparent)] focus:shadow-[0_0_0_1px_color-mix(in_oklab,var(--cline-ui-primary)_20%,transparent)]"
 										disabled={isPending}
 										onChange={(event) => setEditingValue(event.target.value)}
@@ -285,7 +285,7 @@ export function AgentPromptQueue({
 								{isEditing ? (
 									<>
 										<button
-											aria-label="Save queued prompt"
+											aria-label="保存排队的提示"
 											className={ACTION_CLASS_NAME}
 											disabled={isBusy || editingValue.trim().length === 0}
 											onClick={() => void submitEdit(item)}
@@ -294,7 +294,7 @@ export function AgentPromptQueue({
 											<Icon name="check" />
 										</button>
 										<button
-											aria-label="Cancel editing queued prompt"
+											aria-label="取消编辑排队的提示"
 											className={ACTION_CLASS_NAME}
 											disabled={isBusy}
 											onClick={cancelEdit}
@@ -307,18 +307,18 @@ export function AgentPromptQueue({
 									<>
 										{!item.steer ? (
 											<button
-												aria-label="Steer queued prompt"
+												aria-label="引导排队的提示"
 												className={ACTION_CLASS_NAME}
 												disabled={isBusy}
 												onClick={() => void runAction(item, "steer")}
-												title="Steer"
+												title="引导"
 												type="button"
 											>
 												<Icon name="corner-down-left" />
 											</button>
 										) : null}
 										<button
-											aria-label="Edit queued prompt"
+											aria-label="编辑排队的提示"
 											className={ACTION_CLASS_NAME}
 											disabled={isBusy}
 											onClick={() => {
@@ -330,7 +330,7 @@ export function AgentPromptQueue({
 											<Icon name="pencil" />
 										</button>
 										<button
-											aria-label="Remove queued prompt"
+											aria-label="移除排队的提示"
 											className={ACTION_CLASS_NAME}
 											disabled={isBusy}
 											onClick={() => void runAction(item, "remove")}

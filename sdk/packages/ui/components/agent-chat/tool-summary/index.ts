@@ -290,23 +290,23 @@ function extractErrorText(
 function fallbackLabel(kind: ToolKind, toolName: string, inProgress: boolean) {
 	switch (kind) {
 		case "read":
-			return inProgress ? "Reading file" : "Read file";
+			return inProgress ? "正在读取文件" : "已读取文件";
 		case "edit":
-			return inProgress ? "Editing file" : "Edited file";
+			return inProgress ? "正在编辑文件" : "已编辑文件";
 		case "command":
-			return inProgress ? "Running command" : "Ran command";
+			return inProgress ? "正在运行命令" : "已运行命令";
 		case "search":
-			return inProgress ? "Searching" : "Searched";
+			return inProgress ? "正在搜索" : "已搜索";
 		case "web":
-			return inProgress ? "Fetching web content" : "Fetched web content";
+			return inProgress ? "正在获取网页内容" : "已获取网页内容";
 		case "spawn":
-			return inProgress ? "Spawning agent" : "Spawned agent";
+			return inProgress ? "正在创建智能体" : "已创建智能体";
 		case "skill":
-			return inProgress ? "Using skill" : "Used skill";
+			return inProgress ? "正在使用技能" : "已使用技能";
 		case "question":
-			return inProgress ? "Asking a question" : "Asked a question";
+			return inProgress ? "正在提问" : "已提问";
 		case "mcp":
-			return inProgress ? "Calling MCP tool" : "Called MCP tool";
+			return inProgress ? "正在调用 MCP 工具" : "已调用 MCP 工具";
 		default:
 			return inProgress
 				? `Running ${humanizeToolName(toolName)}`
@@ -317,39 +317,39 @@ function fallbackLabel(kind: ToolKind, toolName: string, inProgress: boolean) {
 const READ_AGGREGATE = {
 	key: "read-files",
 	noun: "file",
-	completedVerb: "Read",
-	progressVerb: "Reading",
+	completedVerb: "已读取",
+	progressVerb: "正在读取",
 } as const;
 const EDIT_AGGREGATE = {
 	key: "edited-files",
 	noun: "file",
-	completedVerb: "Edited",
-	progressVerb: "Editing",
+	completedVerb: "已编辑",
+	progressVerb: "正在编辑",
 } as const;
 const COMMAND_AGGREGATE = {
 	key: "commands",
 	noun: "command",
-	completedVerb: "Ran",
-	progressVerb: "Running",
+	completedVerb: "已运行",
+	progressVerb: "正在运行",
 } as const;
 const SEARCH_AGGREGATE = {
 	key: "searches",
 	noun: "search",
 	pluralNoun: "searches",
-	completedVerb: "Explored",
-	progressVerb: "Exploring",
+	completedVerb: "已探查",
+	progressVerb: "正在探查",
 } as const;
 const WEB_AGGREGATE = {
 	key: "links",
 	noun: "link",
-	completedVerb: "Explored",
-	progressVerb: "Exploring",
+	completedVerb: "已探查",
+	progressVerb: "正在探查",
 } as const;
 const SPAWN_AGGREGATE = {
 	key: "spawned-agents",
 	noun: "agent",
-	completedVerb: "Spawned",
-	progressVerb: "Spawning",
+	completedVerb: "已创建",
+	progressVerb: "正在创建",
 } as const;
 
 function aggregateLabel(
@@ -452,7 +452,7 @@ export function buildToolSummary(
 				...labeled(
 					single
 						? [
-								{ text: `${inProgress ? "Reading" : "Read"} file ` },
+								{ text: `${inProgress ? "正在读取" : "已读取"} file ` },
 								{
 									text: `${displayFileName(single.path)}${lineRangeLabelSuffix(single.startLine, single.endLine)}`,
 									code: true,
@@ -492,7 +492,7 @@ export function buildToolSummary(
 				...labeled(
 					singleInline !== null
 						? [
-								{ text: `${inProgress ? "Running" : "Ran"} command ` },
+								{ text: `${inProgress ? "正在运行" : "已运行"} command ` },
 								{ text: singleInline, code: true },
 							]
 						: [
@@ -525,7 +525,7 @@ export function buildToolSummary(
 				...labeled(
 					info.queries.length === 1
 						? [
-								{ text: `${inProgress ? "Searching" : "Searched"} ` },
+								{ text: `${inProgress ? "正在搜索" : "已搜索"} ` },
 								{
 									text: truncate(info.queries[0], opts.maxInlineChars),
 									code: true,
@@ -556,7 +556,7 @@ export function buildToolSummary(
 				...labeled(
 					info.urls.length === 1
 						? [
-								{ text: `${inProgress ? "Fetching" : "Fetched"} ` },
+								{ text: `${inProgress ? "正在获取" : "已获取"} ` },
 								{
 									text: truncate(info.urls[0], opts.maxInlineChars),
 									code: true,
@@ -586,15 +586,15 @@ export function buildToolSummary(
 			const actionVerb = (action: "add" | "update" | "delete") =>
 				action === "add"
 					? inProgress
-						? "Creating file"
-						: "Created file"
+						? "正在创建文件"
+						: "已创建文件"
 					: action === "delete"
 						? inProgress
-							? "Deleting file"
-							: "Deleted file"
+							? "正在删除文件"
+							: "已删除文件"
 						: inProgress
-							? "Editing file"
-							: "Edited file";
+							? "正在编辑文件"
+							: "已编辑文件";
 			// Renames display as `old → new`.
 			const fileLabel = (file: (typeof info.files)[number]) =>
 				file.movedTo
@@ -659,7 +659,7 @@ export function buildToolSummary(
 		}
 		return {
 			...base,
-			...labeled([{ text: inProgress ? "Applying patch" : "Applied patch" }]),
+			...labeled([{ text: inProgress ? "正在应用补丁" : "已应用补丁" }]),
 			aggregate: { ...EDIT_AGGREGATE, count: 1 },
 		};
 	}
@@ -683,15 +683,15 @@ export function buildToolSummary(
 							: "edit";
 		const verb = inProgress
 			? command === "create"
-				? "Creating file"
+				? "正在创建文件"
 				: command === "insert"
-					? "Inserting into"
-					: "Editing file"
+					? "正在插入到"
+					: "正在编辑文件"
 			: command === "create"
-				? "Created file"
+				? "已创建文件"
 				: command === "insert"
-					? "Inserted into"
-					: "Edited file";
+					? "已插入到"
+					: "已编辑文件";
 
 		let diff: ToolSummary["diff"];
 		let diffText: string | undefined;
@@ -748,7 +748,7 @@ export function buildToolSummary(
 			return {
 				...base,
 				...labeled([
-					{ text: `${inProgress ? "Spawning" : "Spawned"} agent: ` },
+					{ text: `${inProgress ? "正在创建" : "已创建"} agent: ` },
 					{ text: truncate(info.task, opts.maxInlineChars) },
 				]),
 				aggregate: { ...SPAWN_AGGREGATE, count: 1 },
