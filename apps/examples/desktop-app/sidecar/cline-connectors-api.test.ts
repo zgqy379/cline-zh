@@ -196,14 +196,14 @@ describe("connector router contract", () => {
 		{ items: [], nextToken: "" },
 	])("rejects malformed pages rather than interpreting them as revoked accounts: %j", async (body) => {
 		mockFetchOnce(200, JSON.stringify(body));
-		await expect(listConnections()).rejects.toThrow(/Invalid connectors/);
+		await expect(listConnections()).rejects.toThrow(/无效的连接器/);
 	});
 
 	it("rejects cyclic pagination", async () => {
 		global.fetch = vi.fn(async () =>
 			page([account], "same"),
 		) as unknown as typeof fetch;
-		await expect(listConnections()).rejects.toThrow(/repeated cursor/);
+		await expect(listConnections()).rejects.toThrow(/重复的游标/);
 		expect(global.fetch).toHaveBeenCalledTimes(2);
 	});
 
@@ -260,7 +260,7 @@ describe("connector router contract", () => {
 		global.fetch = vi.fn(async () =>
 			page([], "same"),
 		) as unknown as typeof fetch;
-		await expect(fetchConnectableToolkits()).rejects.toThrow(/repeated cursor/);
+		await expect(fetchConnectableToolkits()).rejects.toThrow(/重复的游标/);
 		expect(global.fetch).toHaveBeenCalledTimes(2);
 	});
 
@@ -339,7 +339,7 @@ describe("connector router contract", () => {
 				Response.json({ success: true, data: { items: [] } }),
 			) as unknown as typeof fetch;
 		await expect(listToolkitTools("gmail")).rejects.toThrow(
-			/Invalid connectors page/,
+			/无效的连接器分页数据/,
 		);
 	});
 
@@ -347,7 +347,7 @@ describe("connector router contract", () => {
 		global.fetch = vi.fn(async () =>
 			page([{ slug: "GMAIL_SEND_EMAIL" }], "same"),
 		) as unknown as typeof fetch;
-		await expect(listToolkitTools("gmail")).rejects.toThrow(/repeated cursor/);
+		await expect(listToolkitTools("gmail")).rejects.toThrow(/重复的游标/);
 		expect(global.fetch).toHaveBeenCalledTimes(2);
 	});
 
