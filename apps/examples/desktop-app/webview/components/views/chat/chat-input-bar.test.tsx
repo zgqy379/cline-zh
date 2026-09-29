@@ -2943,10 +2943,10 @@ describe("ChatInputBar token ring", () => {
 
 		const panel = document.querySelector("#token-usage-panel");
 		expect(panel?.textContent).toContain("Context window500.5k / 1.0M (50%)");
-		expect(panel?.textContent).toContain("Input tokens500,000");
-		expect(panel?.textContent).toContain("Output tokens500");
-		expect(panel?.textContent).toContain("Cached tokens125,000");
-		expect(panel?.textContent).toContain("Cost$0.014");
+		expect(panel?.textContent).toContain("输入令牌数500,000");
+		expect(panel?.textContent).toContain("输出令牌数500");
+		expect(panel?.textContent).toContain("缓存令牌数125,000");
+		expect(panel?.textContent).toContain("费用$0.014");
 		const uncachedSegment = panel?.querySelector<HTMLElement>(
 			'[data-token-kind="uncached-input"]',
 		);

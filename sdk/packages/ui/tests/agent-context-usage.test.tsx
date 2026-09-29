@@ -58,7 +58,7 @@ describe("AgentContextUsage", () => {
 	it("uses current input plus output for the ring, with cost provided by the host", () => {
 		const markup = render(usage, "$0.014");
 		expect(markup).toContain(
-			'aria-label="Context window: 1,500 of 2,000 tokens used (75%)"',
+			'aria-label="上下文窗口：2,000 中已用 1,500 个令牌（75%）"',
 		);
 		expect(markup).toContain("1.5k / 2k (75%)");
 		expect(markup).toContain("$0.014");
@@ -80,12 +80,12 @@ describe("AgentContextUsage", () => {
 	] as const)("preserves cost-row visibility for %p", (costLabel, visible) => {
 		const markup = render(usage, costLabel);
 		if (visible) {
-			expect(markup).toContain(">Cost<");
+			expect(markup).toContain(">费用<");
 		} else {
-			expect(markup).not.toContain(">Cost<");
+			expect(markup).not.toContain(">费用<");
 		}
 		if (costLabel === 0) {
-			expect(markup).toMatch(/>Cost<\/span><span[^>]*>0<\/span>/);
+			expect(markup).toMatch(/>费用<\/span><span[^>]*>0<\/span>/);
 		}
 	});
 
@@ -95,7 +95,7 @@ describe("AgentContextUsage", () => {
 			contextWindow: 750,
 			cacheReadTokens: 2_000,
 		});
-		expect(markup).toContain("tokens used (100%)");
+		expect(markup).toContain("个令牌（100%）");
 		expect(markup).toContain('stroke-dashoffset="0"');
 		expect(markup).toContain(
 			'data-token-kind="uncached-input" style="width:0%"',
@@ -108,7 +108,7 @@ describe("AgentContextUsage", () => {
 
 	it("supports output-only usage and keeps the established million-token label", () => {
 		expect(render({ ...usage, tokensIn: 0, tokensOut: 500 })).toContain(
-			"500 of 2,000 tokens used (25%)",
+			"2,000 中已用 500 个令牌（25%）",
 		);
 		expect(render({ ...usage, contextWindow: 1_000_000 })).toContain(
 			"1.5k / 1.0M (0%)",
