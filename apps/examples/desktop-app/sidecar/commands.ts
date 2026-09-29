@@ -858,7 +858,7 @@ async function listGitBranches(
 	const targetCwd = cwd?.trim() || binding.workspaceRoot;
 	if (binding.kind === "ssh") {
 		const remote = ctx.remoteEnvironments;
-		if (!remote) throw new Error("Remote environment service is unavailable");
+		if (!remote) throw new Error("远程环境服务不可用");
 		const [currentResult, branchesResult] = await Promise.all([
 			remote
 				.run(binding.environmentId, {
@@ -1113,7 +1113,7 @@ async function listWorkspaceDirectories(
 	}
 
 	const remote = ctx.remoteEnvironments;
-	if (!remote) throw new Error("Remote environment service is unavailable");
+	if (!remote) throw new Error("远程环境服务不可用");
 	const home = binding.remote?.homeDir ?? binding.workspaceRoot;
 	const canonicalResult = await remote.run(binding.environmentId, {
 		command: "pwd",
@@ -1122,7 +1122,7 @@ async function listWorkspaceDirectories(
 	});
 	const currentPath = canonicalResult.stdout.replace(/\r?\n$/, "");
 	if (!currentPath.startsWith("/") || /[\0\r\n]/.test(currentPath)) {
-		throw new Error("SSH host returned an invalid canonical directory path");
+		throw new Error("SSH 主机返回了无效的规范目录路径");
 	}
 	const listResult = await remote.run(binding.environmentId, {
 		command: "sh",
@@ -1892,7 +1892,7 @@ export async function handleCommand(
 	if (command === "upsert_remote_environment") {
 		const profile = args?.profile;
 		if (!profile || typeof profile !== "object" || Array.isArray(profile)) {
-			throw new Error("profile is required");
+			throw new Error("配置文件为必填项");
 		}
 		const saved = await getRemoteEnvironmentService(ctx).upsert(
 			profile as RemoteEnvironmentInput,
@@ -1903,7 +1903,7 @@ export async function handleCommand(
 	if (command === "test_remote_environment") {
 		const id = String(args?.id ?? "").trim();
 		if (!id) {
-			throw new Error("remote environment id is required");
+			throw new Error("远程环境 ID 为必填项");
 		}
 		const service = getRemoteEnvironmentService(ctx);
 		const profile = (await service.list()).find((item) => item.id === id);
@@ -1919,7 +1919,7 @@ export async function handleCommand(
 	if (command === "connect_remote_environment") {
 		const id = String(args?.id ?? "").trim();
 		if (!id) {
-			throw new Error("remote environment id is required");
+			throw new Error("远程环境 ID 为必填项");
 		}
 		return await withRemoteEnvironmentTransition(ctx, async () => {
 			const service = getRemoteEnvironmentService(ctx);
@@ -2037,7 +2037,7 @@ export async function handleCommand(
 	if (command === "delete_remote_environment") {
 		const id = String(args?.id ?? "").trim();
 		if (!id) {
-			throw new Error("remote environment id is required");
+			throw new Error("远程环境 ID 为必填项");
 		}
 		return await withRemoteEnvironmentTransition(ctx, async () => {
 			const service = getRemoteEnvironmentService(ctx);
@@ -2056,7 +2056,7 @@ export async function handleCommand(
 	if (command === "list_workspace_directories") {
 		const environmentId = requestedEnvironmentId(args);
 		if (!environmentId) {
-			throw new Error("environmentId is required");
+			throw new Error("environmentId 为必填项");
 		}
 		return await listWorkspaceDirectories(
 			ctx,
@@ -2077,7 +2077,7 @@ export async function handleCommand(
 	if (command === "proceed_while_running") {
 		const sessionId = String(args?.sessionId ?? "").trim();
 		if (!sessionId) {
-			throw new Error("sessionId is required");
+			throw new Error("sessionId 为必填项");
 		}
 		const toolCallId = asTrimmedString(args?.toolCallId);
 		const binding =
@@ -2234,7 +2234,7 @@ export async function handleCommand(
 		// only the webview connection dialed with the approval token may ask,
 		// never an arbitrary local WebSocket client.
 		if (!options?.connection?.data?.canApproveTools) {
-			throw new Error("hub upgrade requires a trusted desktop connection");
+			throw new Error("Hub 升级需要受信任的桌面连接");
 		}
 		// Only reached after the user accepted the blocking "Hub update
 		// required" dialog, so force: the old Hub is replaced even though it
@@ -2271,7 +2271,7 @@ export async function handleCommand(
 		const sessionId = String(args?.sessionId ?? "").trim();
 		const connection = options?.connection;
 		if (!connection?.data?.canApproveTools) {
-			throw new Error("tool approvals require a trusted desktop connection");
+			throw new Error("工具审批需要受信任的桌面连接");
 		}
 		return Array.from(ctx.pendingApprovals.values())
 			.filter(
@@ -2285,18 +2285,18 @@ export async function handleCommand(
 		const sessionId = String(args?.sessionId ?? "").trim();
 		const requestId = String(args?.requestId ?? "").trim();
 		if (!sessionId || !requestId) {
-			throw new Error("sessionId and requestId are required");
+			throw new Error("sessionId 和 requestId 为必填项");
 		}
 		const connection = options?.connection;
 		if (!connection?.data?.canApproveTools) {
-			throw new Error("tool approvals require a trusted desktop connection");
+			throw new Error("工具审批需要受信任的桌面连接");
 		}
 		const pending = ctx.pendingApprovals.get(requestId);
 		if (!pending || (pending.owner && pending.owner !== connection)) {
-			throw new Error("tool approval does not belong to this connection");
+			throw new Error("工具审批不属于此连接");
 		}
 		if (pending.item.sessionId !== sessionId) {
-			throw new Error("tool approval does not belong to this session");
+			throw new Error("工具审批不属于此会话");
 		}
 		await pending.resolve({
 			approved: Boolean(args?.approved),
@@ -2327,7 +2327,7 @@ export async function handleCommand(
 	if (command === "respond_ask_question") {
 		const requestId = String(args?.requestId ?? "").trim();
 		if (!requestId) {
-			throw new Error("requestId is required");
+			throw new Error("requestId 为必填项");
 		}
 		const answer = String(args?.answer ?? "").trim();
 		const resolved = resolveSidecarAskQuestion(ctx, requestId, answer);
@@ -2464,7 +2464,7 @@ export async function handleCommand(
 	}
 	if (command === "get_discovered_session") {
 		const sessionId = String(args?.sessionId ?? args?.session_id ?? "").trim();
-		if (!sessionId) throw new Error("session id is required");
+		if (!sessionId) throw new Error("会话 ID 为必填项");
 		const cloud = getCloudSessionManager(ctx);
 		if (cloud.isCloudSession(sessionId)) {
 			// The active-scope list can omit a session created under another
@@ -2518,7 +2518,7 @@ export async function handleCommand(
 			requests.push({ tool: tool as SessionImportTool, sourceId });
 		}
 		if (requests.length === 0) {
-			throw new Error("at least one { tool, sourceId } selection is required");
+			throw new Error("至少需要选择一个 { tool, sourceId }");
 		}
 		const backend = await resolveSessionBackend({ backendMode: "local" });
 		const importer = new SessionImportService(backend);
@@ -2545,11 +2545,11 @@ export async function handleCommand(
 	}
 	if (command === "update_chat_session_title") {
 		const sessionId = String(args?.sessionId ?? "").trim();
-		if (!sessionId) throw new Error("session id is required");
+		if (!sessionId) throw new Error("会话 ID 为必填项");
 		const title = normalizeSessionTitle(String(args?.title ?? ""));
 		const cloud = getCloudSessionManager(ctx);
 		if (cloud.isCloudSession(sessionId)) {
-			if (!title) throw new Error("title is required");
+			if (!title) throw new Error("标题为必填项");
 			await cloud.updateTitle(sessionId, title);
 			return true;
 		}
@@ -2563,10 +2563,10 @@ export async function handleCommand(
 	}
 	if (command === "update_chat_session_metadata") {
 		const sessionId = String(args?.sessionId ?? args?.session_id ?? "").trim();
-		if (!sessionId) throw new Error("session id is required");
+		if (!sessionId) throw new Error("会话 ID 为必填项");
 		const patch = args?.metadata;
 		if (!patch || typeof patch !== "object" || Array.isArray(patch)) {
-			throw new Error("metadata patch is required");
+			throw new Error("元数据补丁为必填项");
 		}
 		// updateSession replaces metadata wholesale in both the session row and
 		// the manifest, so merge over what each already holds. A null value
@@ -2609,7 +2609,7 @@ export async function handleCommand(
 	}
 	if (command === "delete_chat_session" || command === "delete_cli_session") {
 		const sessionId = String(args?.sessionId ?? args?.session_id ?? "").trim();
-		if (!sessionId) throw new Error("session id is required");
+		if (!sessionId) throw new Error("会话 ID 为必填项");
 		const cloud = getCloudSessionManager(ctx);
 		if (cloud.isCloudSession(sessionId)) {
 			await cloud.delete(sessionId);
@@ -2770,7 +2770,7 @@ export async function handleCommand(
 	// ── Cline account ──────────────────────────────────────────────────
 	if (command === "cline_account") {
 		const operation = String(args?.operation ?? "").trim();
-		if (!operation) throw new Error("operation is required");
+		if (!operation) throw new Error("操作为必填项");
 		const manager = new ProviderSettingsManager();
 		// Signed out is an expected state, not a command failure: resolve the
 		// token up front and return a typed result the webview can act on
@@ -2808,7 +2808,7 @@ export async function handleCommand(
 	// ── Cline integrations (GitHub App) ────────────────────────────────
 	if (command === "cline_integrations") {
 		const operation = String(args?.operation ?? "").trim();
-		if (!operation) throw new Error("operation is required");
+		if (!operation) throw new Error("操作为必填项");
 		const manager = new ProviderSettingsManager();
 
 		const authToken = await resolveFreshClineAuthToken(manager, ctx);
@@ -2839,7 +2839,7 @@ export async function handleCommand(
 	// ── Composio connectors (Gmail / Google Calendar / GitHub / catalog) ─
 	if (command === "composio_integrations") {
 		const operation = String(args?.operation ?? "").trim();
-		if (!operation) throw new Error("operation is required");
+		if (!operation) throw new Error("操作为必填项");
 
 		switch (operation) {
 			case "status":
@@ -2969,7 +2969,7 @@ export async function handleCommand(
 		const audioBase64 = String(args?.audioBase64 ?? "");
 		const mediaType = String(args?.mediaType ?? "").trim() || undefined;
 		if (!isCanonicalBase64(audioBase64)) {
-			throw new Error("recorded audio must be canonical base64");
+			throw new Error("录制的音频必须是规范的 base64");
 		}
 		const decodedBytes =
 			Math.floor((audioBase64.length * 3) / 4) -
@@ -3194,14 +3194,14 @@ export async function handleCommand(
 	}
 	if (command === "set_telemetry_opt_out") {
 		if (typeof args?.telemetry_opt_out !== "boolean") {
-			throw new Error("telemetry_opt_out must be a boolean");
+			throw new Error("telemetry_opt_out 必须为布尔值");
 		}
 		setTelemetryOptOutGlobally(args.telemetry_opt_out);
 		return readGlobalSettings();
 	}
 	if (command === "set_auto_update_enabled") {
 		if (typeof args?.auto_update_enabled !== "boolean") {
-			throw new Error("auto_update_enabled must be a boolean");
+			throw new Error("auto_update_enabled 必须为布尔值");
 		}
 		setAutoUpdateEnabledGlobally(args.auto_update_enabled);
 		return readGlobalSettings();
@@ -3221,7 +3221,7 @@ export async function handleCommand(
 	}
 	if (command === "set_cloud_sessions_enabled") {
 		if (typeof args?.cloud_sessions_enabled !== "boolean") {
-			throw new Error("cloud_sessions_enabled must be a boolean");
+			throw new Error("cloud_sessions_enabled 必须为布尔值");
 		}
 		const settings = setCloudSessionsEnabled(args.cloud_sessions_enabled);
 		broadcastEvent(ctx, "cloud_sessions_changed", {});
@@ -3233,7 +3233,7 @@ export async function handleCommand(
 	}
 	if (command === "set_web_search_enabled") {
 		if (typeof args?.web_search_enabled !== "boolean") {
-			throw new Error("web_search_enabled must be a boolean");
+			throw new Error("web_search_enabled 必须为布尔值");
 		}
 		setModelToolEnabledGlobally("web_search", args.web_search_enabled);
 		return readGlobalSettings();
@@ -3256,7 +3256,7 @@ export async function handleCommand(
 	}
 	if (command === "authorize_mcp_server_oauth") {
 		const name = String(args?.name ?? "").trim();
-		if (!name) throw new Error("server name is required");
+		if (!name) throw new Error("服务器名称为必填项");
 		const settingsPath = resolveMcpSettingsPath();
 		const registration = resolveMcpServerRegistration(name, {
 			filePath: settingsPath,
@@ -3298,7 +3298,7 @@ export async function handleCommand(
 	}
 	if (command === "cancel_mcp_server_oauth") {
 		const name = String(args?.name ?? "").trim();
-		if (!name) throw new Error("server name is required");
+		if (!name) throw new Error("服务器名称为必填项");
 		cancelMcpOAuthAuthorizationForReason(name, "user");
 		return readMcpServersResponse();
 	}
@@ -3334,7 +3334,7 @@ export async function handleCommand(
 				? (args.input as JsonRecord)
 				: (args as JsonRecord);
 		const name = String(input.name ?? "").trim();
-		if (!name) throw new Error("server name is required");
+		if (!name) throw new Error("服务器名称为必填项");
 		const previousName = String(
 			input.previousName ?? input.previous_name ?? "",
 		).trim();
@@ -3487,12 +3487,12 @@ export async function handleCommand(
 	if (command === "checkout_git_branch") {
 		const cwd = typeof args?.cwd === "string" ? args.cwd : undefined;
 		const branch = String(args?.branch ?? "").trim();
-		if (!branch) throw new Error("branch is required");
+		if (!branch) throw new Error("分支为必填项");
 		const binding = getCommandRuntimeBinding(ctx, args);
 		const targetCwd = cwd?.trim() || binding.workspaceRoot;
 		if (binding.kind === "ssh") {
 			if (!ctx.remoteEnvironments) {
-				throw new Error("Remote environment service is unavailable");
+				throw new Error("远程环境服务不可用");
 			}
 			await ctx.remoteEnvironments.run(binding.environmentId, {
 				command: "git",
@@ -3511,7 +3511,7 @@ export async function handleCommand(
 	}
 	if (command === "create_git_worktree") {
 		const cwd = typeof args?.cwd === "string" ? args.cwd.trim() : "";
-		if (!cwd) throw new Error("cwd is required");
+		if (!cwd) throw new Error("cwd 为必填项");
 		return await createGitWorktree(cwd);
 	}
 
@@ -3545,7 +3545,7 @@ export async function handleCommand(
 			AGENDA_TASK_EXECUTION_COMMANDS.has(command) &&
 			!options?.connection?.data?.canApproveTools
 		) {
-			throw new Error("task execution requires a trusted desktop connection");
+			throw new Error("任务执行需要受信任的桌面连接");
 		}
 		return await handleAgendaTaskCommand(ctx, command, args);
 	}
@@ -3629,7 +3629,7 @@ export async function handleCommand(
 	if (command === "set_plugin_disabled") {
 		const pluginPath = String(args?.path ?? "").trim();
 		if (!pluginPath) {
-			throw new Error("plugin path is required");
+			throw new Error("插件路径为必填项");
 		}
 		const snapshot = await toggleHubSetting(ctx, {
 			type: "plugins",
@@ -3641,7 +3641,7 @@ export async function handleCommand(
 	if (command === "set_skill_disabled") {
 		const skillPath = String(args?.path ?? "").trim();
 		if (!skillPath) {
-			throw new Error("skill path is required");
+			throw new Error("技能路径为必填项");
 		}
 		const snapshot = await toggleHubSetting(ctx, {
 			type: "skills",
@@ -3661,7 +3661,7 @@ export async function handleCommand(
 		if (binding.kind === "ssh") {
 			try {
 				if (!ctx.remoteEnvironments) {
-					throw new Error("Remote environment service is unavailable");
+					throw new Error("远程环境服务不可用");
 				}
 				await ctx.remoteEnvironments.run(binding.environmentId, {
 					command: "test",
@@ -3713,7 +3713,7 @@ export async function handleCommand(
 			);
 		}
 		const rawPath = String(args?.path ?? "").trim();
-		if (!rawPath) throw new Error("path is required");
+		if (!rawPath) throw new Error("路径为必填项");
 		const baseDir =
 			typeof args?.cwd === "string" && args.cwd.trim()
 				? args.cwd.trim()

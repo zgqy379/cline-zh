@@ -57,7 +57,7 @@ export async function runCancellableMcpOAuthAuthorization(
 ): Promise<AuthorizeMcpServerOAuthResult> {
 	const serverName = options.serverName.trim();
 	if (!serverName) {
-		throw new Error("MCP server name cannot be empty.");
+		throw new Error("MCP 服务器名称不能为空。");
 	}
 
 	cancelMcpOAuthAuthorizationForReason(serverName, "superseded");

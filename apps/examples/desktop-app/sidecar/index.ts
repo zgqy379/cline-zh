@@ -55,7 +55,7 @@ function withTimeout<T>(promise: Promise<T>, timeoutMs: number): Promise<T> {
 
 async function main() {
 	if (!BunRuntime) {
-		throw new Error("sidecar must be run with Bun");
+		throw new Error("sidecar 必须使用 Bun 运行");
 	}
 
 	// When launched from Finder/the Dock the app inherits launchd's minimal

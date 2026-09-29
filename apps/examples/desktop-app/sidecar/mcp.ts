@@ -183,7 +183,7 @@ export function setMcpServerDisabled(
 
 export function upsertMcpServer(input: JsonRecord): JsonRecord {
 	const name = String(input.name ?? "").trim();
-	if (!name) throw new Error("server name is required");
+	if (!name) throw new Error("服务器名称为必填项");
 	const previousName = String(
 		input.previousName ?? input.previous_name ?? "",
 	).trim();
@@ -225,7 +225,7 @@ export function upsertMcpServer(input: JsonRecord): JsonRecord {
 }
 
 export function deleteMcpServer(name: string): JsonRecord {
-	if (!name) throw new Error("server name is required");
+	if (!name) throw new Error("服务器名称为必填项");
 	// Hold the cross-process lock across read-modify-write so a concurrent writer
 	// cannot resurrect the deleted server from a stale snapshot.
 	updateMcpSettingsFileSync(resolveMcpSettingsPath(), (settings) => {

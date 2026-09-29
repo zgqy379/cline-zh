@@ -176,7 +176,7 @@ export function startServer(
 		randomUUID(),
 ): { port: number; approvalToken: string } {
 	if (!BunRuntime) {
-		throw new Error("sidecar must be run with Bun");
+		throw new Error("sidecar 必须使用 Bun 运行");
 	}
 
 	let server: SidecarServer | undefined;

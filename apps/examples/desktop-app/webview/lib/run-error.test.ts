@@ -8,14 +8,14 @@ describe("formatRunError", () => {
 		"The run failed: Unauthorized",
 	])("adds guidance exactly once for %s", (detail) => {
 		const formatted = formatRunError(detail);
-		expect(formatted).toContain("Settings → Providers");
+		expect(formatted).toContain("设置 → 供应商");
 		expect(formatted.match(/The run failed/g)).toHaveLength(1);
 		expect(formatRunError(formatted)).toBe(formatted);
 	});
 	it("does not suggest changing credentials for a token limit", () => {
 		expect(
 			formatRunError("The run failed: maximum context tokens exceeded"),
-		).not.toContain("Settings");
+		).not.toContain("设置");
 	});
 });
 
@@ -27,6 +27,6 @@ it.each([
 ])("preserves CLI guidance for %s", (detail) => {
 	const text = formatRunError(detail, "claude-code");
 	expect(text).toContain("`claude` CLI");
-	expect(text).not.toContain("Settings");
+	expect(text).not.toContain("设置");
 	expect(formatRunError(text, "claude-code")).toBe(text);
 });
