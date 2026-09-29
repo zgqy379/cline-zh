@@ -192,9 +192,7 @@ export function rewriteDesktopTeamPrompt(
 	if (!match) return prompt;
 	const task = match[1]?.trim();
 	if (!task) {
-		throw new Error(
-			"Usage: /team <task description>. Starts a team of agents for the given task.",
-		);
+		throw new Error("用法：/team <任务描述>。会为给定任务生成一支智能体团队。");
 	}
 	const disabledTools =
 		availability.disabledTools ??
@@ -2219,9 +2217,7 @@ export async function handleChatSessionCommand(
 				return await cloud.removePendingPrompt(sessionId, promptId);
 			}
 			default:
-				throw new Error(
-					`${request.action} is not supported for cloud sessions yet`,
-				);
+				throw new Error(`${request.action} 暂不支持用于云端会话。`);
 		}
 	}
 	const handler = ACTION_HANDLERS[request.action];

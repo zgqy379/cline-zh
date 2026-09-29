@@ -3027,9 +3027,7 @@ export async function handleCommand(
 		const providerId = String(args?.provider ?? "").trim();
 		const modelId = String(args?.model ?? "").trim();
 		if (Boolean(providerId) !== Boolean(modelId)) {
-			throw new Error(
-				"voice input provider and model must both be set or both be cleared",
-			);
+			throw new Error("语音输入的供应商与模型必须同时设置或同时清除");
 		}
 		const manager = new ProviderSettingsManager();
 		const result = await saveVoiceInputSettings(
