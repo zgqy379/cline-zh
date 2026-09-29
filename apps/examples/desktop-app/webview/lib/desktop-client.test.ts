@@ -262,7 +262,7 @@ describe("DesktopClient command deadlines", () => {
 		);
 		const socket = await connectLatestSocket();
 		const rejection = expect(invocation).rejects.toThrow(
-			"Desktop backend transport closed",
+			"桌面后端传输已关闭",
 		);
 
 		socket.close();
@@ -502,7 +502,7 @@ describe("DesktopClient endpoint resolution", () => {
 			{ connectTimeoutMs: 1_000 },
 		);
 		const rejection = expect(invocation).rejects.toThrow(
-			"did not become ready within 1000ms",
+			"在 1000 毫秒内未就绪",
 		);
 
 		await vi.advanceTimersByTimeAsync(1_000);
@@ -534,7 +534,7 @@ describe("DesktopClient endpoint resolution", () => {
 		expect(sockets[0]?.readyState).toBe(FakeWebSocket.CLOSED);
 		expect(states).toContain("unavailable");
 		expect(desktopClient.getTransportError()).toContain(
-			"transport unavailable",
+			"桌面后端传输不可用",
 		);
 
 		await vi.advanceTimersByTimeAsync(RECONNECT_FIRST_DELAY_MS);

@@ -522,12 +522,12 @@ class DesktopClient {
 					}
 					if (this.transportState !== "connected") {
 						reject(
-							new Error(`Desktop backend transport unavailable at ${endpoint}`),
+							new Error(`桌面后端传输不可用：${endpoint}`),
 						);
 						return;
 					}
 					this.setTransportState("reconnecting");
-					this.rejectPending("Desktop backend transport closed");
+					this.rejectPending("桌面后端传输已关闭");
 					this.scheduleReconnect();
 				};
 			});
@@ -585,15 +585,15 @@ class DesktopClient {
 			try {
 				await raceDeadline(this.ensureConnected(), remaining, () => {
 					timedOut = true;
-					const cause = this.transportError ?? "still connecting";
+					const cause = this.transportError ?? "仍在连接中";
 					return new Error(
-						`Desktop backend transport did not become ready within ${timeoutMs}ms (${cause})`,
+						`桌面后端传输在 ${timeoutMs} 毫秒内未就绪（${cause}）`,
 					);
 				});
 				if (this.socket?.readyState === WebSocket.OPEN) {
 					return;
 				}
-				lastError = new Error("Desktop backend transport unavailable");
+				lastError = new Error("桌面后端传输不可用");
 			} catch (error) {
 				lastError = error;
 				if (timedOut) {
@@ -652,7 +652,7 @@ class DesktopClient {
 		if (!socket || socket.readyState !== WebSocket.OPEN) {
 			// connectForCommand only returns with an open socket; this covers
 			// the window where it closed again before the request was sent.
-			const error = new Error("Desktop backend transport unavailable");
+			const error = new Error("桌面后端传输不可用");
 			this.reportError({
 				operation: "webview.transport_unavailable",
 				error,
