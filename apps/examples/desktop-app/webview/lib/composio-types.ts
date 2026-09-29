@@ -90,17 +90,17 @@ export const COMPOSIO_RECOMMENDED_TOOLKITS: ComposioRecommendedToolkit[] = [
 	{
 		slug: "gmail",
 		name: "Gmail",
-		description: "Read, search, draft, and send email from your Gmail account.",
+		description: "读取、搜索、起草并发送你 Gmail 账户中的邮件。",
 	},
 	{
 		slug: "googlecalendar",
 		name: "Google Calendar",
-		description: "List, create, and update events on your Google Calendar.",
+		description: "列出、创建和更新你 Google 日历上的日程。",
 	},
 	{
 		slug: "github",
 		name: "GitHub",
-		description: "Work with issues, pull requests, and repositories on GitHub.",
+		description: "在 GitHub 上处理议题、拉取请求与代码仓库。",
 	},
 ];
 
