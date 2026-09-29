@@ -918,7 +918,7 @@ export function AgentSidebar({
 						{!isCollapsed && isBetaVersion(appVersion) ? (
 							<Badge
 								className="ml-0.5 px-1.5 py-0 text-[10px] uppercase tracking-wide"
-								title={`${BETA_PRODUCT_NAME} — beta builds install side by side with the stable app and update from the beta channel`}
+								title={`${BETA_PRODUCT_NAME} — 测试版与正式版并存安装，并从测试版通道获取更新`}
 								variant="secondary"
 							>
 								Beta

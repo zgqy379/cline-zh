@@ -117,9 +117,9 @@ function formatRequestFailure(
 	const body = bodyText.trim();
 	if (body) {
 		const preview = body.length > 200 ? `${body.slice(0, 200)}...` : body;
-		return `Cline integrations request failed with status ${status}: ${preview}`;
+		return `Cline 集成请求失败（状态码 ${status}）：${preview}`;
 	}
-	return `Cline integrations request failed with status ${status}`;
+	return `Cline 集成请求失败（状态码 ${status}）。`;
 }
 
 async function requestClineApiJson(
@@ -170,7 +170,7 @@ async function requestClineApiJson(
 			if (typeof envelope.success === "boolean") {
 				if (!envelope.success) {
 					throw new Error(
-						getEnvelopeError(parsed) || "Cline integrations request failed",
+						getEnvelopeError(parsed) || "Cline 集成请求失败。",
 					);
 				}
 				return envelope.data ?? null;

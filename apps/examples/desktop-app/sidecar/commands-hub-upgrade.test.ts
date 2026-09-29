@@ -40,9 +40,9 @@ describe("hub_upgrade command", () => {
 
 		await expect(
 			handleCommand(ctx, "hub_upgrade", {}, { connection: connection(false) }),
-		).rejects.toThrow(/trusted desktop connection/);
+		).rejects.toThrow(/受信任的桌面连接/);
 		await expect(handleCommand(ctx, "hub_upgrade", {}, {})).rejects.toThrow(
-			/trusted desktop connection/,
+			/受信任的桌面连接/,
 		);
 		expect(upgradeManagedHubMock).not.toHaveBeenCalled();
 		// The pending mismatch must survive a refused request.
@@ -89,7 +89,7 @@ describe("hub_upgrade command", () => {
 
 		await expect(
 			handleCommand(ctx, "hub_upgrade", {}, { connection: connection(true) }),
-		).rejects.toThrow(/newer than this app/);
+		).rejects.toThrow(/比本应用更新/);
 		expect(ctx.hubBuildMismatch).not.toBeNull();
 	});
 });
