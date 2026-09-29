@@ -97,7 +97,7 @@ describe("resolveHubUpdateRestartDecision", () => {
 		});
 		expect(decision).toEqual({
 			action: "stay",
-			hint: "The update check failed: endpoint unreachable",
+			hint: "检查更新失败：endpoint unreachable",
 		});
 	});
 
