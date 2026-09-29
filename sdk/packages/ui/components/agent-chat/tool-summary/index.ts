@@ -316,38 +316,38 @@ function fallbackLabel(kind: ToolKind, toolName: string, inProgress: boolean) {
 
 const READ_AGGREGATE = {
 	key: "read-files",
-	noun: "file",
+	noun: "文件",
 	completedVerb: "已读取",
 	progressVerb: "正在读取",
 } as const;
 const EDIT_AGGREGATE = {
 	key: "edited-files",
-	noun: "file",
+	noun: "文件",
 	completedVerb: "已编辑",
 	progressVerb: "正在编辑",
 } as const;
 const COMMAND_AGGREGATE = {
 	key: "commands",
-	noun: "command",
+	noun: "条命令",
 	completedVerb: "已运行",
 	progressVerb: "正在运行",
 } as const;
 const SEARCH_AGGREGATE = {
 	key: "searches",
-	noun: "search",
-	pluralNoun: "searches",
+	noun: "次搜索",
+	pluralNoun: "次搜索",
 	completedVerb: "已探查",
 	progressVerb: "正在探查",
 } as const;
 const WEB_AGGREGATE = {
 	key: "links",
-	noun: "link",
+	noun: "个链接",
 	completedVerb: "已探查",
 	progressVerb: "正在探查",
 } as const;
 const SPAWN_AGGREGATE = {
 	key: "spawned-agents",
-	noun: "agent",
+	noun: "个智能体",
 	completedVerb: "已创建",
 	progressVerb: "正在创建",
 } as const;

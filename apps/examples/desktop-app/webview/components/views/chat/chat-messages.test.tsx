@@ -144,7 +144,7 @@ describe("ChatMessages tool disclosures", () => {
 		]);
 
 		const summary = [...container.querySelectorAll("span")].find((element) =>
-			element.textContent?.includes("Searched"),
+			element.textContent?.includes("已搜索"),
 		);
 		expect(summary).toBeDefined();
 		expect(summary?.closest("button")).toBeNull();
@@ -296,7 +296,7 @@ describe("ChatMessages tool disclosures", () => {
 		]);
 
 		const trigger = [...container.querySelectorAll("button")].find((element) =>
-			element.textContent?.includes("Searched workspace selector"),
+			element.textContent?.includes("已搜索 workspace selector"),
 		);
 		expect(trigger?.getAttribute("aria-expanded")).toBe("false");
 		const panelId = trigger?.getAttribute("aria-controls");
@@ -560,7 +560,7 @@ describe("ChatMessages tool disclosures", () => {
 		]);
 
 		const trigger = [...container.querySelectorAll("button")].find((element) =>
-			element.textContent?.includes("Ran command bun run test"),
+			element.textContent?.includes("已运行命令 bun run test"),
 		);
 		expect(trigger).toBeDefined();
 		await act(async () => trigger?.click());
@@ -892,7 +892,7 @@ describe("ChatMessages tool disclosures", () => {
 			),
 		]);
 
-		expect(container.textContent).toContain("Ran 2 commands");
+		expect(container.textContent).toContain("已运行 2 条命令");
 		expect(container.textContent?.match(/Spawned agent/g)).toHaveLength(3);
 		expect(container.textContent).not.toContain("subagent_subagent");
 	});
