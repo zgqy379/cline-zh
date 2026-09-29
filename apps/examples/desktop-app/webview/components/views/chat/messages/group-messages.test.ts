@@ -191,11 +191,11 @@ describe("collapseCompletedWork", () => {
 		// the answer-in-progress stays outside at transcript level.
 		expect(items.map((item) => item.type)).toEqual([
 			"message",
-			"次运行",
+			"run",
 			"message",
 		]);
 		const run = items[1];
-		if (run?.type !== "次运行") throw new Error("expected run item");
+		if (run?.type !== "run") throw new Error("expected run item");
 		expect(run.id).toBe("r1");
 		expect(run.items.map((item) => item.type)).toEqual(["message", "tools"]);
 	});
@@ -519,9 +519,9 @@ describe("collapseCompletedWork", () => {
 			false,
 		);
 
-		expect(items.map((item) => item.type)).toEqual(["message", "次运行"]);
+		expect(items.map((item) => item.type)).toEqual(["message", "run"]);
 		const run = items[1];
-		if (run?.type !== "次运行") throw new Error("expected run item");
+		if (run?.type !== "run") throw new Error("expected run item");
 		const tools = run.items.at(-1);
 		if (tools?.type !== "tools") throw new Error("expected tools item");
 		expect(tools.messages.map((message) => message.id)).toEqual([
