@@ -314,7 +314,7 @@ describe("OnboardingView", () => {
 				?.hasAttribute("inert"),
 		).toBe(false);
 		expect(apiKeyForm?.getAttribute("aria-hidden")).toBe("false");
-		expect(document.activeElement?.getAttribute("aria-label")).toBe("服务商");
+		expect(document.activeElement?.getAttribute("aria-label")).toBe("供应商");
 		expect(
 			container.querySelector('button[aria-label="使用自己的 API key"]'),
 		).toBeNull();
@@ -666,7 +666,7 @@ describe("OnboardingView", () => {
 		await act(async () => {
 			expandButton?.click();
 		});
-		expect(container.textContent).toContain("选择服务商");
+		expect(container.textContent).toContain("选择供应商");
 
 		// Expanding bring-your-own-key changes the selected card, but the user can
 		// still switch back and finish through the Cline OAuth path.

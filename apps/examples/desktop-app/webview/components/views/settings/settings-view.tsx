@@ -550,7 +550,7 @@ export function SettingsView({
 				<DialogHeader>
 					<DialogTitle>添加供应商</DialogTitle>
 					<DialogDescription>
-						添加一个 OpenAI 兼容服务商并选择其可用模型。
+						添加一个 OpenAI 兼容供应商并选择其可用模型。
 					</DialogDescription>
 				</DialogHeader>
 				<AddProviderContent
