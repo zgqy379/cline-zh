@@ -299,7 +299,7 @@ describe("AgentHeader agent roster popover", () => {
 			],
 		});
 		const panel = await openPanel();
-		expect(panel?.textContent).toContain("No activity recorded (failed)");
+		expect(panel?.textContent).toContain("没有记录活动（failed）");
 	});
 
 	it("labels a team-task agent with its team", async () => {
@@ -381,7 +381,7 @@ describe("AgentHeader agent roster popover", () => {
 		// The rows are kept, so the failure has to be stated or they read as fresh.
 		expect(panel?.textContent).toContain("Review the diff for regressions");
 		const stale = panel?.querySelector("#agent-roster-stale");
-		expect(stale?.textContent).toContain("showing the last known agents");
+		expect(stale?.textContent).toContain("显示最后已知的智能体");
 		expect(stale?.textContent).toContain("database is locked");
 	});
 
@@ -394,7 +394,7 @@ describe("AgentHeader agent roster popover", () => {
 	it("explains an empty roster while agents are still starting up", async () => {
 		await renderHeader({ agents: [], agentsLoading: false });
 		const panel = await openPanel();
-		expect(panel?.textContent).toContain("Waiting for the first agent");
+		expect(panel?.textContent).toContain("正在等待第一个智能体上报");
 	});
 });
 
@@ -449,7 +449,7 @@ describe("AgentHeader subagent session badge", () => {
 			parentSession: { sessionId: "root1", title: "Refactor the parser" },
 			onOpenParentSession: vi.fn(),
 		});
-		expect(badge?.textContent).toBe("Main Agent Session");
+		expect(badge?.textContent).toBe("主智能体会话");
 		expect(badge?.textContent).not.toContain("Subagent of");
 	});
 
@@ -459,10 +459,10 @@ describe("AgentHeader subagent session badge", () => {
 			onOpenParentSession: vi.fn(),
 		});
 		expect(badge?.getAttribute("title")).toBe(
-			"Back to the main agent session: Refactor the parser",
+			"返回主智能体会话：Refactor the parser",
 		);
 		expect(badge?.getAttribute("aria-label")).toBe(
-			"Back to the main agent session: Refactor the parser",
+			"返回主智能体会话：Refactor the parser",
 		);
 	});
 
@@ -471,7 +471,7 @@ describe("AgentHeader subagent session badge", () => {
 			parentSession: { sessionId: "root1" },
 			onOpenParentSession: vi.fn(),
 		});
-		expect(badge?.textContent).toBe("Main Agent Session");
+		expect(badge?.textContent).toBe("主智能体会话");
 		expect(badge?.getAttribute("title")).toBe("返回主智能体会话");
 	});
 
