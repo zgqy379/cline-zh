@@ -793,7 +793,7 @@ export async function connectComposioToolkit(
 ): Promise<ComposioConnectResponse> {
 	const scope = getAccountScope();
 	if (!scope) {
-		throw new Error("Sign in to your Cline account to use connectors.");
+		throw new Error("请登录 Cline 账户以使用连接器。");
 	}
 	// Record intent before any await. A later disconnect/cancel receives a
 	// larger sequence and wins; a later reconnect receives a larger sequence

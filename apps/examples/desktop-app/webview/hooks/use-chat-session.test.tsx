@@ -5747,7 +5747,7 @@ describe("useChatSession", () => {
 		// "tokens" here is a context-window problem, not a credential problem;
 		// pointing users at Settings → Providers would be misleading.
 		expect(errorMessage?.content).toContain("maximum context tokens");
-		expect(errorMessage?.content).not.toContain("Check your model connection");
+		expect(errorMessage?.content).not.toContain("请在「设置 → 供应商」中检查");
 	});
 
 	it("points local-auth providers at their CLI for credential failures", async () => {
@@ -5802,9 +5802,9 @@ describe("useChatSession", () => {
 		// nothing that could fix an expired session there.
 		expect(errorMessage?.content).toContain("OAuth session expired");
 		expect(errorMessage?.content).toContain(
-			"Sign in again with the `claude` CLI",
+			"请在终端中用 `claude` CLI 重新登录",
 		);
-		expect(errorMessage?.content).not.toContain("Settings → Providers");
+		expect(errorMessage?.content).not.toContain("设置 → 供应商");
 	});
 
 	it("drops stale failure bubbles from earlier turns on later hydration", async () => {

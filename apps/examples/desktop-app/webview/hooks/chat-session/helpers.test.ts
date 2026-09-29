@@ -125,7 +125,7 @@ describe("resolveCredentialError", () => {
 describe("resolveCredentialFailureHint", () => {
 	it("points local-auth providers at their own CLI", () => {
 		expect(resolveCredentialFailureHint("claude-code")).toBe(
-			"Sign in again with the `claude` CLI in a terminal, then try again.",
+			"请在终端中用 `claude` CLI 重新登录，然后重试。",
 		);
 		expect(resolveCredentialFailureHint("openai-codex-cli")).toMatch(
 			/`codex` CLI/,
@@ -142,7 +142,7 @@ describe("resolveCredentialFailureHint", () => {
 	it("points everything else at Settings → Providers", () => {
 		for (const providerId of ["anthropic", "openai-codex", ""]) {
 			expect(resolveCredentialFailureHint(providerId)).toMatch(
-				/Settings → Providers/,
+				/设置 → 供应商/,
 			);
 		}
 	});

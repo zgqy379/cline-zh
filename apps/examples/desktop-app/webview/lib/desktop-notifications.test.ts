@@ -174,7 +174,7 @@ describe("desktop notifications", () => {
 				title: "Cline 有一个问题",
 				body: "Which branch should I use?",
 				sessionId: "session-4",
-				sound: "默认",
+				sound: "Default",
 			}),
 		);
 		stop();

@@ -522,7 +522,7 @@ export function createDesktopMistakeLimitPrompt(
 			ctx.sessionEnvironmentIds.get(sessionId) ?? "local",
 		)?.sessionManager;
 		try {
-			if (!manager) throw new Error("Desktop session manager is unavailable");
+			if (!manager) throw new Error("桌面会话管理器不可用");
 			const continuedThroughIteration = Math.max(
 				context.iteration,
 				recovery?.latestIteration ?? context.iteration,
@@ -957,7 +957,7 @@ async function handleStart(
 	ctx: SidecarContext,
 	request: ChatSessionCommandRequest,
 ): Promise<unknown> {
-	if (!request.config) throw new Error("config is required");
+	if (!request.config) throw new Error("配置为必填项");
 	const binding = getSessionRuntimeBinding(
 		ctx,
 		undefined,
@@ -1070,7 +1070,7 @@ async function handleAttach(
 ): Promise<unknown> {
 	const sessionId = request.sessionId?.trim();
 	if (!sessionId) {
-		throw new Error("sessionId is required");
+		throw new Error("sessionId 为必填项");
 	}
 
 	const preferredEnvironmentId = readEnvironmentId(request.config);
@@ -1286,13 +1286,13 @@ async function handleSend(
 	request: ChatSessionCommandRequest,
 ): Promise<unknown> {
 	const sessionId = request.sessionId?.trim();
-	if (!sessionId) throw new Error("sessionId is required");
+	if (!sessionId) throw new Error("sessionId 为必填项");
 	const prompt = request.prompt?.trim() ?? "";
 	const hasAttachments =
 		(request.attachments?.userImages?.length ?? 0) > 0 ||
 		(request.attachments?.userFiles?.length ?? 0) > 0;
 	if (!prompt && !hasAttachments) {
-		throw new Error("prompt or attachment is required");
+		throw new Error("提示词或附件为必填项");
 	}
 	const session = ctx.liveSessions.get(sessionId);
 	const binding = getSessionRuntimeBinding(
@@ -1311,7 +1311,7 @@ async function handleSend(
 		throw new Error(WORKSPACE_RESTORE_SEND_ERROR);
 	}
 	if (session?.transitioningProvider) {
-		throw new Error("A provider switch is already in progress");
+		throw new Error("供应商切换已在进行中");
 	}
 	const workspacePath =
 		readWorkspacePath(session?.config ?? request.config) ??
@@ -1363,7 +1363,7 @@ async function handleSend(
 			hasProviderChanged(session.config, request.config),
 	);
 	if (providerChanged && session?.busy) {
-		throw new Error("Cannot switch providers while a turn is running");
+		throw new Error("无法在回合运行时切换供应商");
 	}
 	const ownsBusyState = Boolean(
 		session && delivery !== "queue" && delivery !== "steer",
@@ -1560,7 +1560,7 @@ async function handleStop(
 	request: ChatSessionCommandRequest,
 ): Promise<unknown> {
 	const sessionId = request.sessionId?.trim();
-	if (!sessionId) throw new Error("sessionId is required");
+	if (!sessionId) throw new Error("sessionId 为必填项");
 	cancelSidecarMistakeQuestions(ctx, sessionId, "Session stopped");
 	await getSessionManager(ctx, sessionId, request.config).stop(sessionId);
 	const session = ctx.liveSessions.get(sessionId);
@@ -1576,7 +1576,7 @@ async function handleAbort(
 	request: ChatSessionCommandRequest,
 ): Promise<unknown> {
 	const sessionId = request.sessionId?.trim();
-	if (!sessionId) throw new Error("sessionId is required");
+	if (!sessionId) throw new Error("sessionId 为必填项");
 	cancelSidecarMistakeQuestions(ctx, sessionId, "Run aborted");
 	await getSessionManager(ctx, sessionId, request.config).abort(
 		sessionId,
@@ -1595,13 +1595,13 @@ async function handleFork(
 	request: ChatSessionCommandRequest,
 ): Promise<unknown> {
 	const sourceSessionId = request.sessionId?.trim();
-	if (!sourceSessionId) throw new Error("sessionId is required");
+	if (!sourceSessionId) throw new Error("sessionId 为必填项");
 	const forkBeforeRunCount = request.forkBeforeRunCount;
 	if (
 		forkBeforeRunCount !== undefined &&
 		(!Number.isInteger(forkBeforeRunCount) || forkBeforeRunCount < 1)
 	) {
-		throw new Error("forkBeforeRunCount must be a positive integer");
+		throw new Error("forkBeforeRunCount 必须为正整数");
 	}
 	const manager = getSessionManager(ctx, sourceSessionId, request.config);
 	const liveSourceSession = ctx.liveSessions.get(sourceSessionId);
@@ -1633,7 +1633,7 @@ async function handleFork(
 		readWorkspacePath(liveSourceSession?.config) ??
 		readWorkspacePath(request.config);
 	if (!restoreWorkspacePath) {
-		throw new Error("cwd or workspaceRoot is required to edit a message");
+		throw new Error("编辑消息需要 cwd 或 workspaceRoot");
 	}
 	return withWorkspaceRestoreLock(ctx, restoreWorkspacePath, () =>
 		handleForkUnlocked(
@@ -1776,7 +1776,7 @@ async function handleForkUnlocked(
 				forkConfig.workspaceRoot.trim()) ||
 			"";
 		if (!cwd) {
-			throw new Error("cwd or workspaceRoot is required to edit a message");
+			throw new Error("编辑消息需要 cwd 或 workspaceRoot");
 		}
 		const restored = await manager.restore({
 			sessionId: sourceSessionId,
@@ -1790,7 +1790,7 @@ async function handleForkUnlocked(
 			start: startInput,
 		});
 		if (!restored.sessionId) {
-			throw new Error("Message edit restore did not return a new session");
+			throw new Error("消息编辑还原未返回新会话");
 		}
 		newSessionId = restored.sessionId;
 	} else {
@@ -1869,23 +1869,23 @@ async function handleRestoreCheckpoint(
 	request: ChatSessionCommandRequest,
 ): Promise<unknown> {
 	const sourceSessionId = request.sessionId?.trim();
-	if (!sourceSessionId) throw new Error("sessionId is required");
+	if (!sourceSessionId) throw new Error("sessionId 为必填项");
 	const runCount = request.checkpointRunCount;
 	if (
 		typeof runCount !== "number" ||
 		!Number.isInteger(runCount) ||
 		runCount < 1
 	)
-		throw new Error("checkpointRunCount must be a positive integer");
+		throw new Error("checkpointRunCount 必须为正整数");
 	const requestedConfig = request.config;
 	if (!requestedConfig)
-		throw new Error("config is required to restore a checkpoint");
+		throw new Error("还原检查点需要配置");
 	const cwd =
 		(typeof requestedConfig.cwd === "string" && requestedConfig.cwd.trim()) ||
 		(typeof requestedConfig.workspaceRoot === "string" &&
 			requestedConfig.workspaceRoot.trim()) ||
 		"";
-	if (!cwd) throw new Error("config.cwd or config.workspaceRoot is required");
+	if (!cwd) throw new Error("config.cwd 或 config.workspaceRoot 为必填项");
 	const binding = getSessionRuntimeBinding(
 		ctx,
 		sourceSessionId,
@@ -1926,7 +1926,7 @@ async function handleRestoreCheckpoint(
 		const sessionId = restored.sessionId;
 		const restoredMessages = restored.messages;
 		if (!sessionId || !restoredMessages) {
-			throw new Error("Checkpoint restore did not return a new session");
+			throw new Error("检查点还原未返回新会话");
 		}
 		restoredSessionId = sessionId;
 		discardAllTrackedAttachments(
@@ -1971,7 +1971,7 @@ async function handlePendingPrompts(
 	request: ChatSessionCommandRequest,
 ): Promise<unknown> {
 	const sessionId = request.sessionId?.trim();
-	if (!sessionId) throw new Error("sessionId is required");
+	if (!sessionId) throw new Error("sessionId 为必填项");
 	const prompts = await getSessionManager(
 		ctx,
 		sessionId,
@@ -1989,9 +1989,9 @@ async function handleSteerPrompt(
 ): Promise<unknown> {
 	const sessionId = request.sessionId?.trim();
 	const promptId = request.promptId?.trim();
-	if (!sessionId) throw new Error("sessionId is required");
+	if (!sessionId) throw new Error("sessionId 为必填项");
 	if (request.promptId !== undefined && !promptId)
-		throw new Error("promptId cannot be empty");
+		throw new Error("promptId 不能为空");
 	const manager = getSessionManager(ctx, sessionId, request.config);
 	const result = promptId
 		? await manager.pendingPrompts.update({
@@ -2015,10 +2015,10 @@ async function handleUpdatePendingPrompt(
 	const promptId = request.promptId?.trim();
 	const prompt = request.prompt?.trim();
 	if (!sessionId || !promptId) {
-		throw new Error("sessionId and promptId are required");
+		throw new Error("sessionId 和 promptId 为必填项");
 	}
 	if (!prompt) {
-		throw new Error("prompt is required");
+		throw new Error("提示词为必填项");
 	}
 	const binding = getSessionRuntimeBinding(
 		ctx,
@@ -2058,7 +2058,7 @@ async function handleRemovePendingPrompt(
 	const sessionId = request.sessionId?.trim();
 	const promptId = request.promptId?.trim();
 	if (!sessionId || !promptId) {
-		throw new Error("sessionId and promptId are required");
+		throw new Error("sessionId 和 promptId 为必填项");
 	}
 	const manager = getSessionManager(ctx, sessionId, request.config);
 	const result = await manager.pendingPrompts.delete({
@@ -2141,7 +2141,7 @@ export async function handleChatSessionCommand(
 					request.config?.model ?? request.config?.modelId ?? "",
 				).trim();
 				if (!repoUrl || !modelId) {
-					throw new Error("repoUrl and model are required for a cloud session");
+					throw new Error("云端会话需要 repoUrl 和 model");
 				}
 				const branch = String(request.config?.branch ?? "").trim();
 				const initialPrompt = request.prompt?.trim();
@@ -2164,10 +2164,10 @@ export async function handleChatSessionCommand(
 				});
 			}
 			case "attach":
-				if (!sessionId) throw new Error("sessionId is required");
+				if (!sessionId) throw new Error("sessionId 为必填项");
 				return await cloud.attach(sessionId);
 			case "send": {
-				if (!sessionId) throw new Error("sessionId is required");
+				if (!sessionId) throw new Error("sessionId 为必填项");
 				if (request.attachments?.userFiles?.length) {
 					throw new Error(
 						"File attachments are not supported in cloud sessions",
@@ -2178,7 +2178,7 @@ export async function handleChatSessionCommand(
 					!prompt &&
 					!request.attachments?.userImages?.some((image) => image.trim())
 				) {
-					throw new Error("prompt or image is required");
+					throw new Error("提示词或图片为必填项");
 				}
 				const modelId = String(
 					request.config?.model ?? request.config?.modelId ?? "",
@@ -2193,15 +2193,15 @@ export async function handleChatSessionCommand(
 			}
 			case "stop":
 			case "abort":
-				if (!sessionId) throw new Error("sessionId is required");
+				if (!sessionId) throw new Error("sessionId 为必填项");
 				return await cloud.abort(sessionId);
 			case "pending_prompts":
-				if (!sessionId) throw new Error("sessionId is required");
+				if (!sessionId) throw new Error("sessionId 为必填项");
 				return await cloud.pendingPrompts(sessionId);
 			case "steer_prompt": {
 				const promptId = request.promptId?.trim();
 				if (!sessionId || !promptId)
-					throw new Error("sessionId and promptId are required");
+					throw new Error("sessionId 和 promptId 为必填项");
 				return await cloud.updatePendingPrompt(sessionId, promptId, {
 					delivery: "steer",
 				});
@@ -2210,8 +2210,8 @@ export async function handleChatSessionCommand(
 				const promptId = request.promptId?.trim();
 				const prompt = request.prompt?.trim();
 				if (!sessionId || !promptId)
-					throw new Error("sessionId and promptId are required");
-				if (!prompt) throw new Error("prompt is required");
+					throw new Error("sessionId 和 promptId 为必填项");
+				if (!prompt) throw new Error("提示词为必填项");
 				return await cloud.updatePendingPrompt(sessionId, promptId, {
 					prompt,
 				});
@@ -2219,7 +2219,7 @@ export async function handleChatSessionCommand(
 			case "remove_pending_prompt": {
 				const promptId = request.promptId?.trim();
 				if (!sessionId || !promptId)
-					throw new Error("sessionId and promptId are required");
+					throw new Error("sessionId 和 promptId 为必填项");
 				return await cloud.removePendingPrompt(sessionId, promptId);
 			}
 			default:
@@ -2229,7 +2229,7 @@ export async function handleChatSessionCommand(
 		}
 	}
 	const handler = ACTION_HANDLERS[request.action];
-	if (!handler) throw new Error("unsupported action");
+	if (!handler) throw new Error("不支持的操作");
 	const explicitEnvironment = readEnvironmentId(request.config);
 	const binding =
 		!explicitEnvironment && request.sessionId

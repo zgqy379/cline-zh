@@ -153,7 +153,7 @@ async function requestClineApiJson(
 						formatRequestFailure(response.status, text, undefined),
 					);
 				}
-				throw new Error("Cline integrations response was not valid JSON");
+				throw new Error("Cline 集成响应不是有效的 JSON");
 			}
 		}
 

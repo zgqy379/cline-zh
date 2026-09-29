@@ -19,7 +19,7 @@ export type SidebarProjectGroup = {
 };
 
 export function workspaceDisplayName(path: string): string {
-	if (isChatWorkspacePath(path)) return "Chat";
+	if (isChatWorkspacePath(path)) return "对话";
 	const trimmed = path.trim().replace(/[\\/]+$/, "");
 	if (!trimmed) return "";
 	const segments = trimmed.split(/[\\/]/).filter(Boolean);
@@ -27,7 +27,7 @@ export function workspaceDisplayName(path: string): string {
 }
 
 function uniqueWorkspaceLabel(path: string, workspacePaths: string[]): string {
-	if (!path) return "Other";
+	if (!path) return "其他";
 	const segments = path
 		.replace(/[\\/]+$/, "")
 		.split(/[\\/]/)
@@ -68,7 +68,7 @@ export function groupThreadsByProject(
 	return [...groups.entries()].map(([id, group]) => ({
 		id,
 		label: isChatWorkspacePath(group.workspacePath)
-			? "Chat"
+			? "对话"
 			: uniqueWorkspaceLabel(group.workspacePath, workspacePaths),
 		workspacePath: group.workspacePath,
 		threads: group.threads,

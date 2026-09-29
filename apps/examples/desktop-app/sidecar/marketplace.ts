@@ -136,7 +136,7 @@ function readInstallInput(
 			: {};
 	const installArgs = toStringArray(install.args);
 	if (installArgs.length === 0) {
-		throw new Error("marketplace install args are required");
+		throw new Error("市场安装参数为必填项");
 	}
 	const env = Array.isArray(install.env)
 		? install.env
@@ -182,10 +182,10 @@ function readInstallRecord(
 			? (args.entry as Record<string, unknown>)
 			: (args ?? {});
 	if (typeof entry.id !== "string" || entry.id.trim().length === 0) {
-		throw new Error("marketplace entry id is required");
+		throw new Error("市场条目 ID 为必填项");
 	}
 	if (!isPrimitiveType(entry.type)) {
-		throw new Error("marketplace entry type must be mcp, skill, or plugin");
+		throw new Error("市场条目类型必须为 mcp、skill 或 plugin");
 	}
 	return entry as Record<string, unknown> & {
 		id: string;
@@ -227,7 +227,7 @@ function readLocalUninstallInput(args?: Record<string, unknown>): {
 					? args.path.trim()
 					: "";
 	if (!id) {
-		throw new Error("local uninstall id, name, or path is required");
+		throw new Error("本地卸载 ID、名称或路径为必填项");
 	}
 	return {
 		id,
@@ -258,7 +258,7 @@ function readCatalogEntries(catalog: unknown): MarketplaceInstallInput[] {
 			? (catalog as Record<string, unknown>).entries
 			: undefined;
 	if (!Array.isArray(catalogEntries)) {
-		throw new Error("marketplace catalog entries are required");
+		throw new Error("市场目录条目为必填项");
 	}
 	return catalogEntries
 		.map((entry) => {
@@ -381,7 +381,7 @@ export function buildMarketplaceMcpInput(args: string[]): JsonRecord {
 	const [rawName, ...rest] = args;
 	const name = rawName?.trim();
 	if (!name) {
-		throw new Error("MCP marketplace install requires a server name");
+		throw new Error("MCP 市场安装需要服务器名称");
 	}
 	let transportType = "stdio";
 	const headers: Record<string, string> = {};
@@ -432,11 +432,11 @@ export function buildMarketplaceMcpInput(args: string[]): JsonRecord {
 	transportType = normalizeTransport(transportType);
 	if (transportType === "stdio") {
 		if (Object.keys(headers).length > 0) {
-			throw new Error("Stdio MCP installs do not support request headers.");
+			throw new Error("Stdio MCP 安装不支持请求头。");
 		}
 		const [command, ...commandArgs] = targetArgs;
 		if (!command?.trim()) {
-			throw new Error("Stdio MCP install requires a command");
+			throw new Error("Stdio MCP 安装需要命令");
 		}
 		return {
 			name,
@@ -447,7 +447,7 @@ export function buildMarketplaceMcpInput(args: string[]): JsonRecord {
 		};
 	}
 	if (targetArgs.length !== 1) {
-		throw new Error("Remote MCP install requires exactly one URL");
+		throw new Error("远程 MCP 安装需要且仅需要一个 URL");
 	}
 	const url = targetArgs[0]?.trim() ?? "";
 	assertUrl(url);

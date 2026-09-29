@@ -230,7 +230,7 @@ async function waitForConnectorState(
 
 function buildConnectorStartArgs(args?: Record<string, unknown>): string[] {
 	const channel = asString(args?.channel);
-	if (!channel) throw new Error("channel is required");
+	if (!channel) throw new Error("渠道为必填项");
 	const platform = CONNECTOR_PLATFORMS.find((entry) => entry.id === channel);
 	if (!platform) throw new Error(`未知的连接器渠道：${channel}`);
 	const supported = new Set(
@@ -310,7 +310,7 @@ export async function stopConnectorChannel(
 	args?: Record<string, unknown>,
 ): Promise<WebviewConnectorChannelsResponse> {
 	const channel = asString(args?.channel);
-	if (!channel) throw new Error("channel is required");
+	if (!channel) throw new Error("渠道为必填项");
 	const supported = new Set(
 		listConnectorCatalog().map((connector) => connector.name),
 	);

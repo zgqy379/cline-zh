@@ -1274,7 +1274,7 @@ async function handleHubApprovalRequest(
 	});
 	const client = getSessionRuntimeBinding(ctx, sessionId).hubClient;
 	if (!client)
-		throw new Error("Hub client disconnected before approval response");
+		throw new Error("Hub 客户端在审批响应前断开连接");
 	await client.command(
 		"approval.respond",
 		{
@@ -1515,7 +1515,7 @@ export async function ensureSharedHubClient(
 				cwd: ctx.localWorkspaceRoot,
 			}));
 		if (!url) {
-			throw new Error("Unable to start or connect to the shared Cline Hub.");
+			throw new Error("无法启动或连接到共享 Cline Hub。");
 		}
 
 		const client = new NodeHubClient({
