@@ -2131,7 +2131,7 @@ describe("useChatSession", () => {
 		);
 
 		expect(current.error).toBe(
-			"Couldn't create a worktree: Not a git repository: /workspace/cline",
+			"无法创建工作树：Not a git repository: /workspace/cline",
 		);
 		expect(current.status).toBe("error");
 		expect(
