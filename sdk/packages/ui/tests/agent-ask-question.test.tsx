@@ -307,7 +307,7 @@ describe("AgentAskQuestion", () => {
 		await act(async () => buttons[3]?.click());
 		expect(onAnswer).not.toHaveBeenCalled();
 		expect(onAnswers).toHaveBeenCalledWith("request-1", ["First", "Third"]);
-		expect(container.textContent).toContain("Select all that apply.");
+		expect(container.textContent).toContain("可多选。");
 	});
 
 	it("answers a single choice immediately and toggles a multiple choice off", async () => {

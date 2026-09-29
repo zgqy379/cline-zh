@@ -167,7 +167,7 @@ export function AgentAskQuestion({
 
 									{item.multiple ? (
 										<div className="cline-ui-agent-ask-question__multiple-hint text-cline-ui-sm text-cline-ui-muted-foreground">
-											Select all that apply.
+											可多选。
 										</div>
 									) : null}
 									{item.description ? (
