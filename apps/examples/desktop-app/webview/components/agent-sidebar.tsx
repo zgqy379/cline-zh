@@ -795,7 +795,7 @@ export function AgentSidebar({
 			{isLoadingMore ? (
 				<>
 					<Loader2 className="size-3 animate-spin" />
-					Loading...
+					正在加载…
 				</>
 			) : (
 				<>
@@ -1220,7 +1220,7 @@ export function AgentSidebar({
 												{isLoadingMore ? (
 													<>
 														<Loader2 className="size-3 animate-spin" />
-														Loading...
+														正在加载…
 													</>
 												) : (
 													<>
@@ -1329,7 +1329,7 @@ export function AgentSidebar({
 					</AlertDialogHeader>
 					<AlertDialogFooter>
 						<AlertDialogCancel disabled={pendingAction?.action === "delete"}>
-							Cancel
+							取消
 						</AlertDialogCancel>
 						<AlertDialogAction
 							className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
@@ -1346,7 +1346,7 @@ export function AgentSidebar({
 							{pendingAction?.action === "delete" ? (
 								<>
 									<Loader2 className="size-4 animate-spin" />
-									Deleting...
+									正在删除…
 								</>
 							) : (
 								"删除"
