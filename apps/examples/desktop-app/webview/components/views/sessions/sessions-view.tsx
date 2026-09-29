@@ -600,7 +600,7 @@ export function SessionsView({ activeSessionId, history }: SessionsViewProps) {
 												<span className="sr-only">打开会话：</span>
 												<SessionStatus
 													className="shrink-0"
-													label={`Session status: ${thread.status}`}
+													label={`会话状态：${thread.status}`}
 													showLabel={false}
 													style={
 														{

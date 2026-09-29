@@ -1192,21 +1192,21 @@ export function CustomizationSectionView({
 		const key = plugin.path;
 		const contributionGroups = [
 			{
-				label: "Tools",
+				label: "工具",
 				items:
 					plugin.contributions?.tools ??
 					(pluginToolsByPluginKey.get(plugin.path) ?? []).map(
 						(tool) => tool.name,
 					),
 			},
-			{ label: "Skills", items: plugin.contributions?.skills ?? [] },
-			{ label: "Rules", items: plugin.contributions?.rules ?? [] },
-			{ label: "Hooks", items: plugin.contributions?.hooks ?? [] },
-			{ label: "Commands", items: plugin.contributions?.commands ?? [] },
-			{ label: "MCP servers", items: plugin.contributions?.mcpServers ?? [] },
-			{ label: "Providers", items: plugin.contributions?.providers ?? [] },
+			{ label: "技能", items: plugin.contributions?.skills ?? [] },
+			{ label: "规则", items: plugin.contributions?.rules ?? [] },
+			{ label: "钩子", items: plugin.contributions?.hooks ?? [] },
+			{ label: "命令", items: plugin.contributions?.commands ?? [] },
+			{ label: "MCP 服务器", items: plugin.contributions?.mcpServers ?? [] },
+			{ label: "供应商", items: plugin.contributions?.providers ?? [] },
 			{
-				label: "Capabilities",
+				label: "能力",
 				items: plugin.contributions?.capabilities ?? [],
 			},
 		].filter((group) => group.items.length > 0);
