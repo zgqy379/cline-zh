@@ -136,7 +136,7 @@ describe("WelcomeWorkspaceControls cloud mode", () => {
 			signedIn: false,
 		});
 		expect(container.textContent).toContain("登录以使用云端");
-		expect(container.textContent).not.toContain("Select repository");
+		expect(container.textContent).not.toContain("选择仓库");
 		await click(button("登录以使用云端"));
 		expect(props.onSignIn).toHaveBeenCalledOnce();
 	});
@@ -698,7 +698,7 @@ describe("WelcomeWorkspaceControls manual path entry", () => {
 		const pathOption = [
 			...container.querySelectorAll<HTMLButtonElement>("button"),
 		].find((candidate) =>
-			candidate.textContent?.includes("Open folder \u201c"),
+			candidate.textContent?.includes("打开文件夹\u201c"),
 		);
 		expect(pathOption).toBeUndefined();
 	});
