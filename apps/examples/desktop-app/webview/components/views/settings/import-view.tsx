@@ -68,7 +68,7 @@ export function ImportContent() {
 				actions={
 					<Button onClick={() => setDialogOpen(true)} type="button">
 						<Import className="size-4" />
-						Import sessions
+						导入会话
 					</Button>
 				}
 				description="把其他编程工具中的对话历史导入 Cline。导入的会话会出现在历史记录中，并可在此继续。"

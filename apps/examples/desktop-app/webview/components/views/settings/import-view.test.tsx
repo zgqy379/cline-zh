@@ -102,7 +102,7 @@ describe("ImportContent", () => {
 		await render();
 		expect(invoke).toHaveBeenCalledTimes(1);
 
-		click("Import sessions");
+		click("导入会话");
 		expect(container.querySelector("[data-testid=import-dialog]")).not.toBe(
 			null,
 		);
@@ -131,7 +131,7 @@ describe("ImportContent", () => {
 		await render();
 		expect(container.textContent).toContain("Scanning…");
 
-		click("Import sessions");
+		click("导入会话");
 		click("stub-close");
 		await act(async () => {
 			await Promise.resolve();
