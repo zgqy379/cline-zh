@@ -779,7 +779,7 @@ export async function listComposioToolkits(
 		};
 	} catch (error) {
 		throw new Error(
-			`Could not load the Composio connector catalog: ${formatConnectorsError(error)}`,
+			`无法加载 Composio 连接器目录：${formatConnectorsError(error)}`,
 		);
 	}
 }
@@ -831,7 +831,7 @@ export async function connectComposioToolkit(
 			});
 		} catch (error) {
 			throw new Error(
-				`Could not start the ${toolkit} connection: ${formatConnectorsError(error)}`,
+				`无法发起 ${toolkit} 连接：${formatConnectorsError(error)}`,
 			);
 		}
 		const redirectUrl = initiated.redirectUrl?.trim() || undefined;

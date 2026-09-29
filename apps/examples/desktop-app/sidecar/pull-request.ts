@@ -260,7 +260,7 @@ export function createPullRequestStatusReader({
 				return null;
 			}
 			throw new Error(
-				"Could not load pull request status. Check your connection and try again.",
+				"无法加载拉取请求状态。请检查网络连接后重试。",
 			);
 		}
 	};

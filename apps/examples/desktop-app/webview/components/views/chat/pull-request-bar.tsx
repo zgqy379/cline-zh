@@ -66,7 +66,7 @@ function WorkspacePullRequestBar({ cwd }: { cwd: string }) {
 						setError(
 							cause instanceof Error
 								? cause.message
-								: "Could not load pull request status.",
+								: "无法加载拉取请求状态。",
 						);
 					}
 				}
@@ -93,7 +93,7 @@ function WorkspacePullRequestBar({ cwd }: { cwd: string }) {
 		try {
 			await openExternalUrl(url);
 		} catch {
-			setError("Could not open GitHub in your browser. Try again.");
+			setError("无法在浏览器中打开 GitHub。请重试。");
 		}
 	}
 

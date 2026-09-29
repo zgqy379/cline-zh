@@ -101,7 +101,7 @@ function normalizeConnectorError(rawMessage: string, fallback: string): string {
 	if (
 		/^Telegram getMe failed \(401 Unauthorized\): Unauthorized$/i.test(message)
 	) {
-		return "Telegram rejected this bot token. Copy the token from @BotFather and try again.";
+		return "Telegram 拒绝了该机器人令牌。请从 @BotFather 复制令牌后重试。";
 	}
 
 	return message.slice(0, 2_000);
