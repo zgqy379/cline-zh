@@ -214,9 +214,7 @@ function readLocalUninstallInput(args?: Record<string, unknown>): {
 		type !== "workflow" &&
 		type !== "plugin"
 	) {
-		throw new Error(
-			"local uninstall type must be mcp, skill, workflow, or plugin",
-		);
+		throw new Error("本地卸载类型必须是 mcp、skill、workflow 或 plugin");
 	}
 	const id =
 		typeof args?.id === "string" && args.id.trim().length > 0

@@ -43,7 +43,7 @@ describe("desktop connector lifecycle", () => {
 
 	it("rejects a channel-wide restart when multiple instances are active", () => {
 		expect(() => __test__.shouldRestartConnector("telegram", 2)).toThrow(
-			"cannot safely restart telegram: 2 instances are active",
+			"无法安全重启连接器渠道 telegram：当前有 2 个实例处于活动状态",
 		);
 	});
 });

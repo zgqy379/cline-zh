@@ -429,14 +429,14 @@ function openUrlInDefaultBrowser(url: string): Promise<void> {
 		});
 		spawned.once("error", (error) => {
 			clearTimeout(graceTimer);
-			reject(new Error(`could not open browser: ${error.message}`));
+			reject(new Error(`无法打开浏览器：${error.message}`));
 		});
 		spawned.once("exit", (code) => {
 			clearTimeout(graceTimer);
 			if (code === 0 || code === null) {
 				resolve();
 			} else {
-				reject(new Error(`browser opener exited with code ${code}`));
+				reject(new Error(`浏览器打开命令以退出码 ${code} 退出`));
 			}
 		});
 	});
@@ -1228,7 +1228,7 @@ async function handleRoutineScheduleCommand(
 		});
 		if (!reply.ok) {
 			throw new Error(
-				reply.error?.message ?? `hub command failed: ${hubCommand}`,
+				reply.error?.message ?? `Hub 命令执行失败：${hubCommand}`,
 			);
 		}
 		return (reply.payload ?? {}) as Record<string, unknown>;
@@ -1416,7 +1416,7 @@ async function handleAgendaTaskCommand(
 	const hubClient = await ensureSharedHubClient(ctx);
 	const reply = await hubClient.command(command as never, args);
 	if (!reply.ok) {
-		throw new Error(reply.error?.message ?? `hub command failed: ${command}`);
+		throw new Error(reply.error?.message ?? `Hub 命令执行失败：${command}`);
 	}
 	return reply.payload ?? {};
 }
@@ -1440,7 +1440,7 @@ async function listHubSettings(
 	});
 	if (!reply.ok) {
 		throw new Error(
-			reply.error?.message ?? "hub command failed: settings.list",
+			reply.error?.message ?? "Hub 命令执行失败：settings.list",
 		);
 	}
 	return reply.payload?.snapshot as CoreSettingsSnapshot;
@@ -1463,7 +1463,7 @@ async function toggleHubSetting(
 	});
 	if (!reply.ok) {
 		throw new Error(
-			reply.error?.message ?? "hub command failed: settings.toggle",
+			reply.error?.message ?? "Hub 命令执行失败：settings.toggle",
 		);
 	}
 	return reply.payload?.snapshot as CoreSettingsSnapshot;
@@ -2759,9 +2759,7 @@ export async function handleCommand(
 			throw new Error(`无效 URL：${rawUrl}`);
 		}
 		if (!OPENABLE_URL_PROTOCOLS.has(parsed.protocol)) {
-			throw new Error(
-				"only http(s), mailto and tel urls can be opened externally",
-			);
+			throw new Error("仅支持在外部打开 http(s)、mailto 和 tel 链接");
 		}
 		await openUrlInDefaultBrowser(parsed.toString());
 		return { opened: true };

@@ -223,9 +223,7 @@ async function waitForConnectorState(
 		if (predicate()) return;
 		await new Promise((resolve) => setTimeout(resolve, 250));
 	}
-	throw new Error(
-		`connector did not reach expected state within ${timeoutMs}ms`,
-	);
+	throw new Error(`连接器未在 ${timeoutMs} 毫秒内达到预期状态`);
 }
 
 function buildConnectorStartArgs(args?: Record<string, unknown>): string[] {
@@ -265,7 +263,7 @@ function buildConnectorLaunchArgs(
 function shouldRestartConnector(channel: string, activeCount: number): boolean {
 	if (activeCount > 1) {
 		throw new Error(
-			`cannot safely restart ${channel}: ${activeCount} instances are active; stop the intended instances explicitly first`,
+			`无法安全重启连接器渠道 ${channel}：当前有 ${activeCount} 个实例处于活动状态；请先显式停止目标实例`,
 		);
 	}
 	return activeCount === 1;
@@ -287,10 +285,7 @@ export async function startConnectorChannel(
 	);
 	if (result.code !== 0) {
 		throw new Error(
-			normalizeConnectorError(
-				result.stderr || result.stdout,
-				"connector start failed",
-			),
+			normalizeConnectorError(result.stderr || result.stdout, "连接器启动失败"),
 		);
 	}
 	await waitForConnectorState(() =>
@@ -320,10 +315,7 @@ export async function stopConnectorChannel(
 	const result = await runCliConnectCommand(workspaceRoot, ["--stop", channel]);
 	if (result.code !== 0) {
 		throw new Error(
-			normalizeConnectorError(
-				result.stderr || result.stdout,
-				"connector stop failed",
-			),
+			normalizeConnectorError(result.stderr || result.stdout, "连接器停止失败"),
 		);
 	}
 	await waitForConnectorState(
