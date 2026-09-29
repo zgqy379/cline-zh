@@ -179,19 +179,19 @@ export function SessionCommandBar({
 						))}
 						{visibleHitCount < hits.length ? (
 							<div className="py-2 text-center text-[11px] text-muted-foreground">
-								Showing {visibleHitCount} of {hits.length} results
+								已显示 {visibleHitCount} / {hits.length} 条结果
 							</div>
 						) : null}
 					</CommandGroup>
 				) : null}
 				{!query.trim() ? (
 					<div className="px-4 py-8 text-center text-sm text-muted-foreground">
-						Search messages, commands, errors, and file paths.
+						搜索消息、命令、错误与文件路径。
 					</div>
 				) : null}
 			</CommandList>
 			<div className="flex items-center justify-between border-t px-3 py-2 text-[11px] text-muted-foreground">
-				<span>Navigate with ↑↓ and open with ↵</span>
+				<span>用 ↑↓ 导航，↵ 打开</span>
 				<kbd className="rounded border bg-muted px-1.5 py-0.5 font-sans">
 					Cmd/Ctrl+P
 				</kbd>

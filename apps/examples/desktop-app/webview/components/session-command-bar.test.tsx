@@ -145,7 +145,7 @@ describe("SessionCommandBar", () => {
 
 		const initialItems = document.querySelectorAll<HTMLElement>("[cmdk-item]");
 		expect(initialItems).toHaveLength(15);
-		expect(document.body.textContent).toContain("Showing 15 of 40 results");
+		expect(document.body.textContent).toContain("已显示 15 / 40 条结果");
 		expect(document.body.textContent).not.toContain("user_input");
 		expect(initialItems[0]?.querySelector("svg")).toBeNull();
 		expect(initialItems[0]?.getAttribute("data-value")?.length).toBeLessThan(
@@ -166,6 +166,6 @@ describe("SessionCommandBar", () => {
 		});
 
 		expect(document.querySelectorAll("[cmdk-item]")).toHaveLength(30);
-		expect(document.body.textContent).toContain("Showing 30 of 40 results");
+		expect(document.body.textContent).toContain("已显示 30 / 40 条结果");
 	});
 });

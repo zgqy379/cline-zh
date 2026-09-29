@@ -25,10 +25,10 @@ export function WelcomeSetupNotice({
 				</span>
 				<div className="min-w-0">
 					<p className="text-sm font-semibold text-foreground">
-						Connect a model to start building
+						连接模型后即可开始构建
 					</p>
 					<p className="mt-0.5 text-[13px] text-muted-foreground">
-						Sign in with Cline or add an API key — it takes under a minute.
+						用 Cline 登录或添加 API 密钥，不到一分钟即可完成。
 					</p>
 				</div>
 			</div>
@@ -39,7 +39,7 @@ export function WelcomeSetupNotice({
 					size="sm"
 					type="button"
 				>
-					Connect a model
+					连接模型
 				</Button>
 				<Button
 					className="rounded-full"
@@ -48,7 +48,7 @@ export function WelcomeSetupNotice({
 					type="button"
 					variant="ghost"
 				>
-					Model settings
+					模型设置
 				</Button>
 			</div>
 		</output>

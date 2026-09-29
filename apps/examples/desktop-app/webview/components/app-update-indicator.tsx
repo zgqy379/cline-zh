@@ -32,12 +32,12 @@ export function AppUpdateIndicator({ className }: { className?: string }) {
 		<Popover>
 			<PopoverTrigger asChild>
 				<Button
-					aria-label={`Update ready: v${status.version}`}
+					aria-label={`更新已就绪：v${status.version}`}
 					className={cn(
 						"relative size-8 shrink-0 justify-center px-0 text-blue-500 hover:text-blue-400",
 						className,
 					)}
-					title={`Update ready: v${status.version}`}
+					title={`更新已就绪：v${status.version}`}
 					type="button"
 					variant="sidebarItem"
 				>
@@ -45,10 +45,9 @@ export function AppUpdateIndicator({ className }: { className?: string }) {
 				</Button>
 			</PopoverTrigger>
 			<PopoverContent align="start" className="w-64 p-3" side="bottom">
-				<p className="text-sm font-medium">Update ready: v{status.version}</p>
+				<p className="text-sm font-medium">更新已就绪：v{status.version}</p>
 				<p className="mt-1 text-xs text-muted-foreground">
-					The new version has been downloaded and will be used the next time the
-					app starts. Restart now to switch to it right away.
+					新版本已下载完成，下次启动应用时生效。点击立即重启可直接切换到新版本。
 				</p>
 				<Button
 					className="mt-3 w-full"
@@ -67,10 +66,10 @@ export function AppUpdateIndicator({ className }: { className?: string }) {
 					{restarting ? (
 						<>
 							<Loader2 className="size-4 animate-spin" />
-							Restarting...
+							正在重启…
 						</>
 					) : (
-						"Restart now"
+						"立即重启"
 					)}
 				</Button>
 			</PopoverContent>

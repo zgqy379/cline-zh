@@ -99,7 +99,7 @@ export async function restartToApplyUpdate(): Promise<boolean> {
 	} catch (error) {
 		toast({
 			variant: "destructive",
-			title: "Restart failed",
+			title: "重启失败",
 			description: error instanceof Error ? error.message : String(error),
 		});
 		return false;
@@ -113,18 +113,18 @@ let notifiedVersion: string | null = null;
 function showUpdateReadyToast(version: string) {
 	notifiedVersion = version;
 	toast({
-		title: `Update ready: v${version}`,
+		title: `更新已就绪：v${version}`,
 		description:
-			"The new version has been downloaded. Restart now, or later from the update button next to the Cline logo.",
+			"新版本已下载完成。可立即重启，或稍后用 Cline 标志旁的更新按钮重启。",
 		duration: Number.POSITIVE_INFINITY,
 		action: (
 			<ToastAction
-				altText="Restart now"
+				altText="立即重启"
 				onClick={() => {
 					void restartToApplyUpdate();
 				}}
 			>
-				Restart now
+				立即重启
 			</ToastAction>
 		),
 	});
@@ -137,7 +137,7 @@ function showUpdateReadyToast(version: string) {
  */
 export async function checkForUpdateAndNotify(): Promise<void> {
 	const checking = toast({
-		title: "Checking for updates...",
+		title: "正在检查更新…",
 		duration: Number.POSITIVE_INFINITY,
 	});
 	const status = await checkForUpdateNow();
@@ -145,9 +145,9 @@ export async function checkForUpdateAndNotify(): Promise<void> {
 	if (!status) {
 		toast({
 			variant: "destructive",
-			title: "Unable to check for updates",
+			title: "无法检查更新",
 			description:
-				"The update check could not be started. Try again in a moment.",
+				"无法启动更新检查，请稍后重试。",
 		});
 		return;
 	}
@@ -160,14 +160,14 @@ export async function checkForUpdateAndNotify(): Promise<void> {
 		case "error":
 			toast({
 				variant: "destructive",
-				title: "Update check failed",
+				title: "检查更新失败",
 				description: status.error ?? "未知错误",
 			});
 			return;
 		default:
 			toast({
-				title: "You're up to date",
-				description: "You're already running the latest version of Cline.",
+				title: "你已是最新版本",
+				description: "你当前运行的已是 Cline 最新版本。",
 			});
 	}
 }
