@@ -31,7 +31,7 @@ describe("resolveCredentialError (cloud)", () => {
 			"http://github.com/cline/cline",
 		]) {
 			expect(resolveCredentialError({ ...CLOUD_CONFIG, repoUrl })).toMatch(
-				/valid HTTPS GitHub repository URL/,
+				/有效的 HTTPS GitHub 仓库地址/,
 			);
 		}
 	});
@@ -51,7 +51,7 @@ describe("resolveCredentialError (cloud)", () => {
 				{ ...CLOUD_CONFIG, provider: "anthropic" },
 				{ hasActiveSession: true },
 			),
-		).toMatch(/Cline provider/);
+		).toMatch(/Cline 供应商/);
 	});
 });
 
@@ -70,14 +70,14 @@ function makeConfig(overrides: Partial<ChatSessionConfig>): ChatSessionConfig {
 describe("resolveCredentialError", () => {
 	it("requires a provider", () => {
 		expect(resolveCredentialError(makeConfig({ provider: "  " }))).toMatch(
-			/Provider is required/,
+			/必须先选择供应商/,
 		);
 	});
 
 	it("blocks API-key providers without a key", () => {
 		expect(
 			resolveCredentialError(makeConfig({ provider: "anthropic" })),
-		).toMatch(/Missing API key/);
+		).toMatch(/缺少 API key/);
 	});
 
 	it("allows API-key providers with a key", () => {

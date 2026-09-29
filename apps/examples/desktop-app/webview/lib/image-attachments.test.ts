@@ -45,11 +45,11 @@ describe("image attachments", () => {
 	});
 	it.each([
 		[[3_932_160], undefined],
-		[[3_932_161], "Each image"],
+		[[3_932_161], "单张图片"],
 		[[3_145_728, 3_145_728], undefined],
-		[[3_145_728, 3_145_729], "in total"],
+		[[3_145_728, 3_145_729], "总计"],
 		[[1, 1, 1, 1, 1], undefined],
-		[[1, 1, 1, 1, 1, 1], "up to 5"],
+		[[1, 1, 1, 1, 1, 1], "最多"],
 	] as const)("checks cloud image budgets for %j", (sizes, error) => {
 		const result = cloudImageAttachmentError(sizes.map((size) => ({ size })));
 		if (error) expect(result).toContain(error);

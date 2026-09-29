@@ -123,7 +123,7 @@ export function useAgendaAutomation(enabled = true): UseAgendaAutomationResult {
 			setError(
 				cause instanceof Error
 					? cause.message
-					: "Unable to load Agenda automation.",
+					: "无法加载任务自动化设置。",
 			);
 		} finally {
 			setIsLoading(false);
@@ -168,7 +168,7 @@ export function useAgendaAutomation(enabled = true): UseAgendaAutomationResult {
 				setError(
 					cause instanceof Error
 						? cause.message
-						: "Unable to update Agenda automation.",
+						: "无法更新任务自动化设置。",
 				);
 				throw cause;
 			} finally {
@@ -220,7 +220,7 @@ export function useAgendaTasks(
 		} catch (cause) {
 			if (requestId !== requestSequence.current) return;
 			setError(
-				cause instanceof Error ? cause.message : "Unable to load the Agenda.",
+				cause instanceof Error ? cause.message : "无法加载任务列表。",
 			);
 		} finally {
 			if (requestId === requestSequence.current) setIsLoading(false);
@@ -265,7 +265,7 @@ export function useAgendaTasks(
 				return next;
 			} catch (cause) {
 				const message =
-					cause instanceof Error ? cause.message : "Unable to update the task.";
+					cause instanceof Error ? cause.message : "无法更新该任务。";
 				setError(message);
 				throw cause;
 			} finally {
@@ -288,7 +288,7 @@ export function useAgendaTasks(
 				return created;
 			} catch (cause) {
 				const message =
-					cause instanceof Error ? cause.message : "Unable to create the task.";
+					cause instanceof Error ? cause.message : "无法创建该任务。";
 				setError(message);
 				throw cause;
 			}
