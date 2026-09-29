@@ -38,7 +38,7 @@ function errorMessage(error: unknown): string {
 			// Fall through to the generic message.
 		}
 	}
-	return typeof error === "string" ? error : "语音转写失败";
+	return typeof error === "string" ? error : "流式转录失败";
 }
 
 function floatsToPcm16(samples: Float32Array): Uint8Array {
@@ -212,7 +212,7 @@ export async function startStreamingTranscription(options: {
 				/(Connection error on AI Gateway transcription stream|AI Gateway transcription stream closed before a finish part was received|OpenAI realtime transcription error)$/.test(
 					errorMessage(error),
 				))
-				? new Error("语音转写网络连接中断", {
+				? new Error("流式转录网络连接已断开", {
 						cause: error,
 					})
 				: error instanceof Error
@@ -228,7 +228,7 @@ export async function startStreamingTranscription(options: {
 			metadata: { transport: credentials.transport },
 		});
 	};
-	const handleOffline = () => fail(new Error("语音转写网络连接中断"));
+	const handleOffline = () => fail(new Error("流式转录网络连接已断开"));
 	window.addEventListener("offline", handleOffline);
 	const complete = (text: string) => {
 		if (finished) return;
@@ -357,7 +357,7 @@ export async function startStreamingTranscription(options: {
 			const connected = new Promise<void>((resolve, reject) => {
 				rejectConnection = reject;
 				connectionTimeout = setTimeout(
-					() => fail(new Error("语音转写连接超时")),
+					() => fail(new Error("流式转录连接超时")),
 					15_000,
 				);
 				activeSocket.onopen = () => {
@@ -407,7 +407,7 @@ export async function startStreamingTranscription(options: {
 			await connected;
 			if (finished) {
 				await done;
-				throw new Error("语音转写在建立阶段即结束");
+				throw new Error("流式转录在建立阶段即结束");
 			}
 		}
 		const startedCapture = await startPcmCapture(
@@ -417,7 +417,7 @@ export async function startStreamingTranscription(options: {
 				if (stopped || finished) return;
 				if (audioController) {
 					if ((audioController.desiredSize ?? 0) < bytes.byteLength) {
-						fail(new Error("语音转写网络太慢，无法发送麦克风音频"));
+						fail(new Error("流式转录网络太慢，无法发送麦克风音频"));
 					} else audioController.enqueue(bytes);
 				} else if (socket?.readyState === WebSocket.OPEN) {
 					socket.send(
@@ -465,11 +465,11 @@ export async function startStreamingTranscription(options: {
 					}),
 				);
 			} else {
-				fail(new Error("语音转写连接尚未打开"));
+				fail(new Error("流式转录连接尚未打开"));
 				return;
 			}
 			finishTimeout = setTimeout(
-				() => fail(new Error("语音转写收尾超时")),
+				() => fail(new Error("流式转录收尾超时")),
 				STREAM_FINISH_TIMEOUT_MS,
 			);
 		},
