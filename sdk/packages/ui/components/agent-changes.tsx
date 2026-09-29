@@ -60,7 +60,7 @@ export function AgentChangesPanel({
 					<button
 						ref={closeButtonRef}
 						className="cline-ui-agent-changes__action rounded-md p-1 text-cline-ui-muted-foreground hover:bg-cline-ui-surface-hover hover:text-cline-ui-foreground transition-colors"
-						aria-label="Close diff view"
+						aria-label="关闭差异视图"
 						type="button"
 						onClick={onClose}
 					>
@@ -130,8 +130,8 @@ export function AgentChangedFile({
 				<button
 					className={`cline-ui-agent-changes__action cline-ui-agent-changes__copy shrink-0 rounded-md p-1 transition-opacity hover:bg-cline-ui-surface-hover hover:text-cline-ui-foreground focus-visible:opacity-100 group-hover:opacity-100 ${copied ? "opacity-100 text-cline-ui-primary" : "opacity-0 text-cline-ui-muted-foreground"}`}
 					data-copied={copied || undefined}
-					aria-label={`Copy file path for ${path}`}
-					title="Copy file path"
+					aria-label={`复制 ${path} 的文件路径`}
+					title="复制文件路径"
 					type="button"
 					onClick={onCopyPath}
 				>

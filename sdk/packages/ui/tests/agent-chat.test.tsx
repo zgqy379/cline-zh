@@ -78,7 +78,7 @@ describe("@cline/ui agent chat primitives", () => {
 		const viewport = container.querySelector(
 			".cline-chat-conversation-viewport",
 		);
-		expect(viewport?.getAttribute("aria-label")).toBe("Agent conversation");
+		expect(viewport?.getAttribute("aria-label")).toBe("智能体对话");
 		expect(viewport?.getAttribute("role")).toBe("log");
 		expect(viewport?.getAttribute("tabindex")).toBe("0");
 	});
@@ -202,10 +202,10 @@ describe("@cline/ui agent chat primitives", () => {
 	});
 
 	it("labels the thinking row by streaming state and duration", async () => {
-		expect(formatThoughtLabel(undefined)).toBe("Thinking");
-		expect(formatThoughtLabel(0)).toBe("Thought for 0s");
-		expect(formatThoughtLabel(120)).toBe("Thought for 1s");
-		expect(formatThoughtLabel(2_600)).toBe("Thought for 3s");
+		expect(formatThoughtLabel(undefined)).toBe("思考中");
+		expect(formatThoughtLabel(0)).toBe("思考了 0 秒");
+		expect(formatThoughtLabel(120)).toBe("思考了 1 秒");
+		expect(formatThoughtLabel(2_600)).toBe("思考了 3 秒");
 
 		await render(
 			<ThinkingBlock isStreaming>
@@ -213,7 +213,7 @@ describe("@cline/ui agent chat primitives", () => {
 			</ThinkingBlock>,
 		);
 		let trigger = container.querySelector("button") as HTMLButtonElement;
-		expect(trigger.textContent).toContain("Thinking");
+		expect(trigger.textContent).toContain("思考中");
 		expect(trigger.querySelector(".cline-chat-streaming-title")).not.toBeNull();
 
 		await render(
@@ -222,7 +222,7 @@ describe("@cline/ui agent chat primitives", () => {
 			</ThinkingBlock>,
 		);
 		trigger = container.querySelector("button") as HTMLButtonElement;
-		expect(trigger.textContent).toContain("Thought for 4s");
+		expect(trigger.textContent).toContain("思考了 4 秒");
 		expect(trigger.querySelector(".cline-chat-streaming-title")).toBeNull();
 
 		await act(async () => trigger.click());
@@ -324,7 +324,7 @@ describe("@cline/ui agent chat primitives", () => {
 
 		await act(async () => viewport.dispatchEvent(new Event("scroll")));
 		const button = container.querySelector(
-			'button[aria-label="Scroll to latest message"]',
+			'button[aria-label="滚动到最新消息"]',
 		) as HTMLButtonElement;
 		expect(button).not.toBeNull();
 
@@ -334,13 +334,13 @@ describe("@cline/ui agent chat primitives", () => {
 		viewport.scrollTop = 300;
 		await act(async () => viewport.dispatchEvent(new Event("scroll")));
 		expect(
-			container.querySelector('button[aria-label="Scroll to latest message"]'),
+			container.querySelector('button[aria-label="滚动到最新消息"]'),
 		).toBeNull();
 
 		viewport.scrollTop = 100;
 		await act(async () => viewport.dispatchEvent(new Event("scroll")));
 		expect(
-			container.querySelector('button[aria-label="Scroll to latest message"]'),
+			container.querySelector('button[aria-label="滚动到最新消息"]'),
 		).not.toBeNull();
 	});
 
@@ -368,7 +368,7 @@ describe("@cline/ui agent chat primitives", () => {
 
 		await act(async () => firstViewport.dispatchEvent(new Event("scroll")));
 		expect(
-			container.querySelector('button[aria-label="Scroll to latest message"]'),
+			container.querySelector('button[aria-label="滚动到最新消息"]'),
 		).not.toBeNull();
 
 		await render(transcript("session-b"));
@@ -378,7 +378,7 @@ describe("@cline/ui agent chat primitives", () => {
 		);
 		expect(nextViewport).not.toBe(firstViewport);
 		expect(
-			container.querySelector('button[aria-label="Scroll to latest message"]'),
+			container.querySelector('button[aria-label="滚动到最新消息"]'),
 		).toBeNull();
 	});
 });

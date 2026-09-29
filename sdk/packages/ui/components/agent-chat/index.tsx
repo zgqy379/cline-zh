@@ -257,7 +257,7 @@ export const ConversationViewport = forwardRef<
 >(
 	(
 		{
-			"aria-label": ariaLabel = "Agent conversation",
+			"aria-label": ariaLabel = "智能体对话",
 			"aria-live": ariaLive = "polite",
 			className,
 			tabIndex = 0,
@@ -325,9 +325,9 @@ export type ConversationEmptyStateProps = HTMLAttributes<HTMLDivElement> & {
 export const ConversationEmptyState = ({
 	children,
 	className,
-	description = "Start a conversation to see messages here.",
+	description = "开始对话以在此查看消息。",
 	icon,
-	title = "No messages yet",
+	title = "暂无消息",
 	...props
 }: ConversationEmptyStateProps) => (
 	<div className={classNames("cline-chat-empty-state", className)} {...props}>
@@ -351,7 +351,7 @@ export type ConversationScrollButtonProps = Omit<
 >;
 
 export const ConversationScrollButton = ({
-	"aria-label": ariaLabel = "Scroll to latest message",
+	"aria-label": ariaLabel = "滚动到最新消息",
 	children,
 	className,
 	onClick,
@@ -513,9 +513,9 @@ export type ReasoningTriggerProps = Omit<
 export const ReasoningTrigger = ({
 	children,
 	className,
-	completeLabel = "Thinking",
+	completeLabel = "思考中",
 	onClick,
-	streamingLabel = "Thinking",
+	streamingLabel = "思考中",
 	...props
 }: ReasoningTriggerProps) => {
 	const { isOpen, isStreaming, panelId, setIsOpen } = useReasoning();
@@ -568,7 +568,7 @@ export const ReasoningContent = ({
 /** "Thinking" while the duration is unknown, "Thought for Ns" once it is. */
 export function formatThoughtLabel(durationMilliseconds?: number): string {
 	if (durationMilliseconds === undefined) {
-		return "Thinking";
+		return "思考中";
 	}
 
 	const seconds =
@@ -576,7 +576,7 @@ export function formatThoughtLabel(durationMilliseconds?: number): string {
 			? 0
 			: Math.max(1, Math.round(durationMilliseconds / 1000));
 
-	return `Thought for ${seconds}s`;
+	return `思考了 ${seconds} 秒`;
 }
 
 export type ThinkingBlockProps = Omit<
@@ -615,7 +615,7 @@ export const ThinkingBlock = ({
 }: ThinkingBlockProps) => {
 	const resolvedLabel =
 		label ??
-		(isStreaming ? "Thinking" : formatThoughtLabel(durationMilliseconds));
+		(isStreaming ? "思考中" : formatThoughtLabel(durationMilliseconds));
 	return (
 		<Reasoning
 			{...props}

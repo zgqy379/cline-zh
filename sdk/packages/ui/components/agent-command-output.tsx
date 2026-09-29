@@ -33,7 +33,7 @@ export function AgentCommandOutput({
 				Output
 			</div>
 			<div
-				aria-label="Command output"
+				aria-label="命令输出"
 				aria-live="off"
 				className={`max-h-64 overflow-auto rounded-md border border-cline-ui-border/70 bg-black/90 p-3 font-cline-ui-mono text-cline-ui-xs leading-relaxed text-zinc-100${classNames?.viewport ? ` ${classNames.viewport}` : ""}`}
 				onScroll={(event) => {

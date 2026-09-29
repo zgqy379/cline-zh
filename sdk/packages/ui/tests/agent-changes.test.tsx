@@ -52,7 +52,7 @@ it("keeps file actions separate from disclosure and forwards panel focus/close",
 		await act(async () =>
 			container
 				.querySelector<HTMLButtonElement>(
-					'[aria-label="Copy file path for src/a.ts"]',
+					'[aria-label="复制 src/a.ts 的文件路径"]',
 				)
 				?.click(),
 		);

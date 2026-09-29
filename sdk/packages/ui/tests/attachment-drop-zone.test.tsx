@@ -60,7 +60,7 @@ describe("AttachmentDropZone", () => {
 			dispatchDrag(child, "dragleave");
 		});
 		expect(zone.dataset.draggingFiles).toBe("true");
-		expect(container.textContent).toContain("Drop to attach");
+		expect(container.textContent).toContain("拖放以附加");
 
 		let dragOver: ReturnType<typeof dispatchDrag> | undefined;
 		await act(async () => {

@@ -34,7 +34,7 @@ describe("AgentHeroHeading", () => {
 
 		const heading = container.querySelector("h1");
 		expect(heading?.getAttribute("aria-label")).toBe(
-			"What would you like to build?",
+			"你想构建什么？",
 		);
 		expect(
 			container.querySelector(".cline-ui-agent-hero-heading__word")

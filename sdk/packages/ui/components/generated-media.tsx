@@ -131,7 +131,7 @@ export function GeneratedMediaContent({
 		case "image":
 			return (
 				<img
-					alt={media.name ?? "Generated image"}
+					alt={media.name ?? "已生成的图片"}
 					className={modalityClassName}
 					data-media-id={media.id}
 					src={browserOwnedSource}

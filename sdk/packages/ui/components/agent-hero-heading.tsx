@@ -21,7 +21,7 @@ export function AgentHeroHeading() {
 
 	return (
 		<h1
-			aria-label="What would you like to build?"
+			aria-label="你想构建什么？"
 			className="cline-ui-agent-hero-heading"
 		>
 			<span aria-hidden="true">
