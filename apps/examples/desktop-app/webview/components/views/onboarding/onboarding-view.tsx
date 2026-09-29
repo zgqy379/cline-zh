@@ -556,7 +556,7 @@ function ConnectStep({
 					设置 Cline
 				</h1>
 				<p className="mt-4 text-sm text-muted-foreground">
-					选择 Cline 连接模型的方式。之后随时可以在设置中添加更多服务商。
+					选择 Cline 连接模型的方式。之后随时可以在设置中添加更多供应商。
 				</p>
 			</div>
 
@@ -769,7 +769,7 @@ function ConnectStep({
 						<div className="flex flex-col gap-3 pt-6">
 							{providersError ? (
 								<p className="text-xs text-destructive" role="alert">
-									加载服务商失败：{providersError}
+									加载供应商失败：{providersError}
 								</p>
 							) : (
 								<Select
@@ -781,14 +781,14 @@ function ConnectStep({
 									value={selectedProviderId || undefined}
 								>
 									<SelectTrigger
-										aria-label="服务商"
+										aria-label="供应商"
 										className="w-full bg-background"
 									>
 										<SelectValue
 											placeholder={
 												providersLoading
-													? "正在加载服务商..."
-													: "选择服务商"
+													? "正在加载供应商..."
+													: "选择供应商"
 											}
 										/>
 									</SelectTrigger>
@@ -848,7 +848,7 @@ function ConnectStep({
 							</div>
 							{saveError ? (
 								<p className="text-xs text-destructive" role="alert">
-									保存服务商失败：{saveError}
+									保存供应商失败：{saveError}
 								</p>
 							) : null}
 						</div>

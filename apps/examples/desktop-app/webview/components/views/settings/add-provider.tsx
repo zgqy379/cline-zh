@@ -187,12 +187,12 @@ export function AddProviderContent({
 		<div className="flex flex-col gap-6">
 			<div className="rounded-lg border border-border p-5">
 				<h3 className="mb-4 text-sm font-semibold text-foreground">
-					OpenAI 兼容服务商
+					OpenAI 兼容供应商
 				</h3>
 				<div className="grid grid-cols-1 gap-4 md:grid-cols-2">
 					<div>
 						<Label className="mb-2 block text-xs font-medium text-muted-foreground">
-							服务商 ID
+							供应商 ID
 						</Label>
 						<input
 							type="text"
@@ -204,17 +204,17 @@ export function AddProviderContent({
 							className="w-full rounded-lg border border-border bg-input px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground/50 outline-none focus:ring-1 focus:ring-ring"
 						/>
 						<p className="mt-1.5 text-xs text-muted-foreground">
-							服务商注册表中使用的小写 ID。
+							供应商注册表中使用的小写 ID。
 						</p>
 						{duplicateProviderId ? (
 							<p className="mt-1 text-xs text-destructive">
-								该服务商 ID 已存在。
+								该供应商 ID 已存在。
 							</p>
 						) : null}
 					</div>
 					<div>
 						<Label className="mb-2 block text-xs font-medium text-muted-foreground">
-							服务商名称
+							供应商名称
 						</Label>
 						<input
 							type="text"
@@ -222,7 +222,7 @@ export function AddProviderContent({
 							onChange={(e) =>
 								setForm((prev) => ({ ...prev, name: e.target.value }))
 							}
-							placeholder="我的服务商"
+							placeholder="我的供应商"
 							className="w-full rounded-lg border border-border bg-input px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground/50 outline-none focus:ring-1 focus:ring-ring"
 						/>
 					</div>
@@ -456,7 +456,7 @@ export function AddProviderContent({
 							: "bg-muted cursor-not-allowed text-foreground",
 					)}
 				>
-					{saving ? "保存中…" : "添加服务商"}
+					{saving ? "保存中…" : "添加供应商"}
 				</Button>
 			</div>
 		</div>
@@ -469,17 +469,17 @@ export function AddProviderContent({
 	return (
 		<PageFrame contentClassName="max-w-4xl">
 			<PageHeader
-				description="添加一个 OpenAI 兼容服务商并选择其可用模型。"
-				title="添加服务商"
+				description="添加一个 OpenAI 兼容供应商并选择其可用模型。"
+				title="添加供应商"
 				actions={
 					<Button
 						onClick={onBack}
 						variant="secondary"
 						className="rounded-md p-1.5"
-						aria-label="返回服务商列表"
+						aria-label="返回供应商列表"
 					>
 						<ArrowLeft className="size-4" />
-						服务商
+						供应商
 					</Button>
 				}
 			/>

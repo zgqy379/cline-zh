@@ -758,8 +758,8 @@ export function AccountView() {
 				<div>
 					<p className="mb-6 text-sm text-muted-foreground">
 						{activeOrganization
-							? `${activeOrganization.name} 近期的 API 用量与 Token 消耗。`
-							: "所有服务商近期的 API 用量与 Token 消耗。"}
+							? `${activeOrganization.name} 近期的 API 用量与令牌消耗。`
+							: "所有供应商近期的 API 用量与令牌消耗。"}
 					</p>
 					{usageLoading && renderLoading()}
 					{usageError && renderError(usageError, loadUsage)}
@@ -767,7 +767,7 @@ export function AccountView() {
 						<div className="overflow-hidden rounded-lg border border-border">
 							<div className="grid grid-cols-[minmax(0,1fr)_5.5rem_4.5rem_5.5rem] gap-4 border-b border-border bg-secondary/50 px-4 py-2.5 text-xs font-medium text-muted-foreground">
 								<span>模型</span>
-								<span className="text-right">Token 数</span>
+								<span className="text-right">令牌数</span>
 								<span className="text-right">额度</span>
 								<span className="text-right">时间</span>
 							</div>
