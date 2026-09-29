@@ -139,7 +139,7 @@ describe("parseComposioToolkitSlug", () => {
 		expect(parseComposioToolkitSlug("Gmail ")).toBe("gmail");
 		expect(parseComposioToolkitSlug("googlecalendar")).toBe("googlecalendar");
 		expect(() => parseComposioToolkitSlug("bad slug!")).toThrow(
-			/Invalid Composio toolkit slug/,
+			/无效的 Composio 工具包标识/,
 		);
 	});
 });

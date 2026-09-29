@@ -180,7 +180,7 @@ describe("desktop settings commands", () => {
 			handleCommand(ctx, "set_cloud_sessions_enabled", {
 				cloud_sessions_enabled: "yes",
 			}),
-		).rejects.toThrow("cloud_sessions_enabled must be a boolean");
+		).rejects.toThrow("cloud_sessions_enabled 必须为布尔值");
 		expect(events).toEqual([]);
 	});
 

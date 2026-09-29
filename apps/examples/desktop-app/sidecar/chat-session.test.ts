@@ -72,7 +72,7 @@ describe("rewriteDesktopTeamPrompt", () => {
 				mode: "yolo",
 				disabledTools: new Set(),
 			}),
-		).toThrow("Agent teams are not available in yolo mode");
+		).toThrow("智能体团队在 yolo 模式下不可用");
 	});
 
 	it("accepts /team in act and plan modes", () => {
@@ -460,7 +460,7 @@ describe("environment-bound session attach", () => {
 				sessionId,
 				config: { environmentId: "pi-host" },
 			}),
-		).rejects.toThrow(`Session ${sessionId} not found`);
+		).rejects.toThrow(`未找到会话 ${sessionId}`);
 		expect(remoteGet).toHaveBeenCalledWith(sessionId);
 		expect(localGet).not.toHaveBeenCalled();
 	});
@@ -1524,7 +1524,7 @@ describe("first-send connection updates", () => {
 				prompt: "racing prompt",
 				config: { ...baseConfig },
 			}),
-		).rejects.toThrow("A provider switch is already in progress");
+		).rejects.toThrow("供应商切换已在进行中");
 
 		resolveMessages?.([
 			{ role: "user", content: "first prompt" },
@@ -1568,7 +1568,7 @@ describe("first-send connection updates", () => {
 				prompt: "racing prompt",
 				config: { ...baseConfig },
 			}),
-		).rejects.toThrow("A provider switch is already in progress");
+		).rejects.toThrow("供应商切换已在进行中");
 
 		resolveMessages?.([
 			{ role: "user", content: "first prompt" },
