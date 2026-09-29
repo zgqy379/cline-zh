@@ -79,7 +79,7 @@ describe("pickWorkspaceDirectory (linux)", () => {
 	it("throws a descriptive error when every backend fails to launch", async () => {
 		const { exec } = fakeExec({ zenity: LAUNCH_FAILURE, kdialog: CRASH });
 		await expect(pickWorkspaceDirectory(exec, "linux")).rejects.toThrow(
-			"zenity failed to launch (EACCES); kdialog was terminated by signal SIGSEGV",
+			"zenity 启动失败（EACCES）；kdialog 被信号 SIGSEGV 终止",
 		);
 	});
 
@@ -107,7 +107,7 @@ describe("pickWorkspaceDirectory (darwin)", () => {
 	it("throws when osascript fails for a reason other than cancel", async () => {
 		const { exec } = fakeExec({ osascript: execError({ code: "EMFILE" }) });
 		await expect(pickWorkspaceDirectory(exec, "darwin")).rejects.toThrow(
-			"osascript failed to launch (EMFILE)",
+			"osascript 启动失败（EMFILE）",
 		);
 	});
 });

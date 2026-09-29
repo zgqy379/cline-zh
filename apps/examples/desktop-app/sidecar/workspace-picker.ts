@@ -5,7 +5,7 @@ import { promisify } from "node:util";
 const execFileAsync = promisify(execFile);
 
 export const FOLDER_PICKER_UNAVAILABLE_MESSAGE =
-	"No system folder picker found (zenity or kdialog). Type or paste a folder path in the workspace selector instead.";
+	"未找到可用的系统文件夹选择器（zenity 或 kdialog）。请改为在工作区选择器中输入或粘贴文件夹路径。";
 
 /** Minimal exec surface so tests can simulate picker backends failing. */
 export type PickerExec = (
@@ -44,14 +44,14 @@ export function isPickerCancellation(error: unknown): boolean {
 
 export function describePickerFailure(name: string, error: unknown): string {
 	const { code, signal } = execErrorShape(error);
-	if (signal) return `${name} was terminated by signal ${String(signal)}`;
-	if (typeof code === "number") return `${name} exited with code ${code}`;
-	if (typeof code === "string") return `${name} failed to launch (${code})`;
-	return `${name} failed: ${error instanceof Error ? error.message : String(error)}`;
+	if (signal) return `${name} 被信号 ${String(signal)} 终止`;
+	if (typeof code === "number") return `${name} 以退出码 ${code} 退出`;
+	if (typeof code === "string") return `${name} 启动失败（${code}）`;
+	return `${name} 失败：${error instanceof Error ? error.message : String(error)}`;
 }
 
 export function folderPickerFailedMessage(failures: string[]): string {
-	return `The folder picker could not be opened (${failures.join("; ")}). Type or paste a folder path in the workspace selector instead.`;
+	return `无法打开文件夹选择器（${failures.join("；")}）。请改为在工作区选择器中输入或粘贴文件夹路径。`;
 }
 
 export function normalizePickedDirectory(stdout: string): string | null {
@@ -80,7 +80,7 @@ export async function pickWorkspaceDirectory(
 		try {
 			const { stdout } = await exec("osascript", [
 				"-e",
-				'set theFolder to choose folder with prompt "Select workspace directory"',
+				'set theFolder to choose folder with prompt "选择工作区文件夹"',
 				"-e",
 				"return POSIX path of theFolder",
 			]);
@@ -102,7 +102,7 @@ export async function pickWorkspaceDirectory(
 			args: [
 				"--file-selection",
 				"--directory",
-				"--title=Select workspace directory",
+				"--title=选择工作区文件夹",
 			],
 		},
 		{ name: "kdialog", args: ["--getexistingdirectory", homedir()] },

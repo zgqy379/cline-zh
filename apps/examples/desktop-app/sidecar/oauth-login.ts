@@ -11,7 +11,7 @@ import { getClineEnvironmentConfig } from "@cline/shared";
 
 export class OAuthLoginCancelledError extends Error {
 	constructor(providerId: string) {
-		super(`Sign-in was cancelled for provider "${providerId}"`);
+		super(`已取消供应商 "${providerId}" 的登录。`);
 		this.name = "OAuthLoginCancelledError";
 	}
 }
