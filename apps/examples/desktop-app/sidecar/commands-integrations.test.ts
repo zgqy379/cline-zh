@@ -198,7 +198,7 @@ describe("resolveGitHubInstallUrl", () => {
 
 		await expect(
 			resolveGitHubInstallUrl(requestOptions(fetchImpl)),
-		).rejects.toThrow("not a valid URL");
+		).rejects.toThrow("无效 URL");
 	});
 
 	it("throws when the install endpoint does not answer with a redirect", async () => {

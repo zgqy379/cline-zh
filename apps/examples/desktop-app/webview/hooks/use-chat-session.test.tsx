@@ -612,8 +612,8 @@ describe("useChatSession", () => {
 				),
 			).toBe(false);
 		} else {
-			expect(current.error).toContain("This cloud session has expired");
-			expect(current.error?.includes("no archived history")).toBe(!hasHistory);
+			expect(current.error).toContain("此云端会话已过期");
+			expect(current.error?.includes("没有可用的归档历史")).toBe(!hasHistory);
 			expect(current.messages).toEqual(history);
 		}
 		invokeMock.mockClear();
