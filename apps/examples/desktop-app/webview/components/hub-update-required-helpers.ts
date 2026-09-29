@@ -76,12 +76,12 @@ export function resolveHubUpdateRestartDecision(
 		return {
 			action: "stay",
 			hint: status.error
-				? `The update check failed: ${status.error}`
-				: "The update check failed. Try again in a moment.",
+				? `检查更新失败：${status.error}`
+				: "检查更新失败，请稍后重试。",
 		};
 	}
 	return {
 		action: "stay",
-		hint: "No app update is available to download yet. You can keep working - Cline stays connected to the updated Hub - and try again later.",
+		hint: "暂无可下载的应用更新。你可以继续工作——Cline 仍会保持与已更新 Hub 的连接——请稍后再试。",
 	};
 }

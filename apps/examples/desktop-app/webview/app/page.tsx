@@ -774,14 +774,14 @@ export default function Home() {
 					},
 				);
 				if (!session) {
-					throw new Error("The session for this run is no longer available.");
+					throw new Error("该运行对应的会话已不再可用。");
 				}
 				if (
 					environmentId !== undefined &&
 					session.environmentId !== environmentId
 				) {
 					throw new Error(
-						`The session belongs to environment ${session.environmentId}, not ${environmentId}.`,
+						`该会话属于环境 ${session.environmentId}，而非 ${environmentId}。`,
 					);
 				}
 				handleOpenSession(session);
@@ -1690,7 +1690,7 @@ function ChatThreadPane({
 				throw new Error(
 					error instanceof Error && error.message.trim()
 						? error.message
-						: "The folder picker could not be opened.",
+						: "无法打开文件夹选择器。",
 				);
 			}
 		},
@@ -2522,7 +2522,7 @@ function ChatThreadPane({
 								errorAction={
 									cloudConnectUrl
 										? {
-												label: "Connect GitHub",
+												label: "连接 GitHub",
 												onClick: () => openGitHubConnect(cloudConnectUrl),
 											}
 										: undefined
