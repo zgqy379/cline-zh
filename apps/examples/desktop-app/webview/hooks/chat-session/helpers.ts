@@ -295,7 +295,7 @@ export function resolveCredentialFailureAction(
 	}
 	return normalizeProviderId(providerId) === "cline"
 		? { label: "登录 Cline", target: "account" }
-		: { label: "Open API providers", target: "models" };
+		: { label: "打开 API 供应商", target: "models" };
 }
 
 /** Message meta that makes the chat render the credential fix action. */
