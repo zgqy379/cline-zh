@@ -1,8 +1,8 @@
 {
 	"$schema": "https://schema.tauri.app/config/2",
-	"productName": "Cline",
+	"productName": "Cline 中文版",
 	"version": "0.0.37",
-	"identifier": "bot.cline.app",
+	"identifier": "bot.cline.app.zh",
 	"build": {
 		"beforeDevCommand": "bun run build:sidecar:bin && bun run dev:web",
 		"devUrl": "http://localhost:3125",
