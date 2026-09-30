@@ -237,10 +237,10 @@ describe("rule scope grouping", () => {
 
 		const scopeByRule = new Map<string, string>();
 		for (const row of container.querySelectorAll<HTMLElement>(
-			'[role="switch"][aria-label^="Toggle "]',
+			'[role="switch"][aria-label^="切换 "]',
 		)) {
 			const card = row.closest("div.grid");
-			const name = row.getAttribute("aria-label")?.replace(/^Toggle /, "");
+			const name = row.getAttribute("aria-label")?.replace(/^切换 /, "");
 			const badge = card
 				?.querySelector('[data-slot="badge"]')
 				?.textContent?.trim();
