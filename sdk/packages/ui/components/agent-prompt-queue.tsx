@@ -129,7 +129,7 @@ export function AgentPromptQueue({
 			try {
 				const message = await runHostCallback(
 					() => onEdit(item.id, prompt),
-					"Could not update the queued prompt.",
+					"无法更新已排队的提示词。",
 				);
 				if (message) {
 					setActionError({ id: item.id, message });
@@ -153,7 +153,7 @@ export function AgentPromptQueue({
 					() => (action === "steer" ? onSteer(item.id) : onRemove(item.id)),
 					action === "steer"
 						? "无法引导队列中的提示。"
-						: "Could not remove the queued prompt.",
+						: "无法移除已排队的提示词。",
 				);
 				if (message) setActionError({ id: item.id, message });
 			} finally {
@@ -198,7 +198,7 @@ export function AgentPromptQueue({
 			>
 				<Icon name={expanded ? "chevron-down" : "chevron-right"} small />
 				<span>
-					{items.length} prompt{items.length === 1 ? "" : "s"} queued
+					{items.length} 条提示词已排队
 				</span>
 			</button>
 			<div
@@ -261,8 +261,7 @@ export function AgentPromptQueue({
 										</span>
 										{hasAttachments ? (
 											<span className="cline-ui-agent-prompt-queue__attachments shrink-0 text-[10px] text-cline-ui-muted-foreground">
-												{item.attachmentCount} attachment
-												{item.attachmentCount === 1 ? "" : "s"}
+												{item.attachmentCount} 个附件
 											</span>
 										) : null}
 										{item.steer ? (

@@ -47,12 +47,12 @@ describe("AgentPromptQueue", () => {
 		const toggle = container.querySelector<HTMLButtonElement>(
 			"button[aria-expanded]",
 		);
-		expect(toggle?.textContent).toContain("2 prompts queued");
+		expect(toggle?.textContent).toContain("2 条提示词已排队");
 		expect(toggle?.getAttribute("aria-expanded")).toBe("false");
 		await act(async () => toggle?.click());
 		expect(toggle?.getAttribute("aria-expanded")).toBe("true");
-		expect(container.textContent).toContain("2 attachments");
-		expect(container.textContent).toContain("Next turn");
+		expect(container.textContent).toContain("2 个附件");
+		expect(container.textContent).toContain("下一轮");
 
 		await act(async () => {
 			container
@@ -216,7 +216,7 @@ describe("AgentPromptQueue", () => {
 			await Promise.resolve();
 		});
 		expect(container.querySelector('[role="alert"]')?.textContent).toBe(
-			"Could not remove the queued prompt.",
+			"无法移除已排队的提示词。",
 		);
 
 		await act(async () => {
