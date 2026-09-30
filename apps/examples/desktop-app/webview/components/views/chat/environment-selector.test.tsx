@@ -224,7 +224,7 @@ describe("EnvironmentSelector", () => {
 				/>,
 			),
 		);
-		expect(trigger().title).toBe("环境：Cloud");
+		expect(trigger().title).toBe("环境：云端");
 		await pointerDown(trigger());
 		expect(menuItemContaining("云端").getAttribute("aria-current")).toBe(
 			"true",

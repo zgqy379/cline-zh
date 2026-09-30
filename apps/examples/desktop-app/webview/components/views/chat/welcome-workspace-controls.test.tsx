@@ -600,14 +600,14 @@ describe("WelcomeWorkspaceControls cloud mode", () => {
 		await act(async () => {
 			await vi.waitFor(() => {
 				expect(onListCloudBranches).toHaveBeenCalledWith(42);
-				expect(container.textContent).toContain("main (default)");
+				expect(container.textContent).toContain("main（默认）");
 			});
 		});
 
-		const branchButton = button("main (default)");
+		const branchButton = button("main（默认）");
 		expect(branchButton.disabled).toBe(true);
 		expect(branchButton.title).toBe(
-			"Using the repository default branch: main",
+			"使用仓库默认分支：main",
 		);
 		expect(container.textContent).not.toContain("无法加载分支。");
 	});
@@ -687,7 +687,7 @@ describe("WelcomeWorkspaceControls manual path entry", () => {
 
 		await clickButton("Open folder \u201c/does/not/exist\u201d");
 
-		expect(container.textContent).toContain('Couldn\'t open "/does/not/exist"');
+		expect(container.textContent).toContain('无法打开“/does/not/exist”。请确认该文件夹存在后重试。');
 	});
 
 	it("does not offer path entry for plain search text", async () => {
@@ -723,7 +723,7 @@ describe("WelcomeWorkspaceControls manual path entry", () => {
 		await openWorkspaceMenu();
 		await typeInSearch("/does/not/exist");
 		await clickButton("Open folder \u201c/does/not/exist\u201d");
-		expect(container.textContent).toContain('Couldn\'t open "/does/not/exist"');
+		expect(container.textContent).toContain('无法打开“/does/not/exist”。请确认该文件夹存在后重试。');
 
 		// Re-render with fresh callback identities, as the page does when the
 		// session history poll lands.
@@ -731,7 +731,7 @@ describe("WelcomeWorkspaceControls manual path entry", () => {
 
 		const input = container.querySelector<HTMLInputElement>("input");
 		expect(input?.value).toBe("/does/not/exist");
-		expect(container.textContent).toContain('Couldn\'t open "/does/not/exist"');
+		expect(container.textContent).toContain('无法打开“/does/not/exist”。请确认该文件夹存在后重试。');
 	});
 
 	it("surfaces picker failures from Open folder instead of a silent no-op", async () => {
