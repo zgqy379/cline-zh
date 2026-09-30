@@ -133,10 +133,10 @@ describe("SessionsView table", () => {
 			.map((node) => node.textContent);
 		expect(headers).toEqual([
 			"标题",
-			"Workspace",
-			"Model",
-			"Tokens",
-			"Cost",
+			"工作区",
+			"模型",
+			"令牌数",
+			"费用",
 			"时间",
 		]);
 	});
@@ -162,7 +162,7 @@ describe("SessionsView table", () => {
 	it("marks pinned sessions with a pin icon", async () => {
 		const plain = renderView();
 		await plain.render();
-		expect(container.querySelector('[aria-label="Pinned"]')).toBeNull();
+		expect(container.querySelector('[aria-label="已置顶"]')).toBeNull();
 
 		await act(async () => root.unmount());
 		root = createRoot(container);
@@ -171,7 +171,7 @@ describe("SessionsView table", () => {
 			threads: [{ ...thread, pinned: true }],
 		});
 		await pinned.render();
-		expect(container.querySelector('[aria-label="Pinned"]')).not.toBeNull();
+		expect(container.querySelector('[aria-label="已置顶"]')).not.toBeNull();
 	});
 
 	it("marks cloud sessions and shows their repository", async () => {
