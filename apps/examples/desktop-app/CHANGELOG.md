@@ -1,66 +1,68 @@
-# Cline Desktop Changelog
+# Cline 桌面版更新日志
 
 ## 0.0.37
 
-- Settings has a new **About** page. It shows your version and channel, has **Check for updates** and **Restart to update** buttons, and lists the release notes for recent versions with links to each GitHub release and the full changelog. **Report an issue** is there too
-- After an update, a one-time **What's new** dialog now catches you up on recent features. The first one covers SSH remotes, worktrees, pull request status in the composer, and parallel sub-agents. To see it again, use **Highlights** on the About page
-- On macOS, **Help → Export Diagnostics…** now opens the diagnostics export directly, so you don't have to find it in Settings
-- On Amazon Bedrock, OpenAI models reached through inference profiles (`us.openai.…`, `global.openai.…`) no longer fail with "Unknown parameter: 'reasoningConfig'" when reasoning effort is set
+- 设置新增**「关于」**页面：显示当前版本与更新渠道，提供**「检查更新」**和**「重启以更新」**按钮，并列出近期版本的发布说明，附各版本 GitHub 发布页与完整更新日志的链接。**「报告问题」**入口也在这里
+- 应用更新后，一次性的**「新功能」**对话框会为你介绍近期特性。首期内容涵盖 SSH 远程、工作树（worktree）、输入框中的拉取请求状态，以及并行子智能体。想再看一次，在「关于」页点**「亮点」**即可
+- 在 macOS 上，**帮助 → 导出诊断信息…** 现在会直接打开诊断导出，不用再去设置里找
+- 在 Amazon Bedrock 上，经由推理配置档（`us.openai.…`、`global.openai.…`）访问的 OpenAI 模型，在设置了思考强度后不再报「Unknown parameter: 'reasoningConfig'」错误
 
 ## 0.0.36
 
-- The app now starts on machines that set a system HTTP(S) proxy, such as Clash, v2ray, or a corporate proxy. Before, the backend sent its local connection checks through the proxy, so it couldn't find its own hub and failed with "No compatible hub runtime is available." Local connections now skip the proxy, and any proxy exemptions you already had are kept
-- On small or scaled displays, the main window now fits on screen. A 1080p laptop at 150% scaling used to open the window larger than the screen, which pushed the settings and account controls out of reach. An oversized window now shrinks to fit the screen (not counting the taskbar) and opens centered
-- Plugin slash commands like `/goal` no longer vanish from the slash menu the first time you use them. Plugin commands now load as soon as a workspace opens instead of on your first `/`. If that first load is slow or fails, the app retries in the background, so the command no longer gets sent to the model as plain text
-- The Providers settings (renamed from API Providers) now keep the model list inside the panel. Long model lists scroll in place, and the model controls stay reachable in short windows
-- In SSH settings, **Save** is disabled until you change a saved host, and the button for a new host now says **Add**
-- On Amazon Bedrock, OpenAI GPT-6 and GPT-5.6 models now work without turning on cross-region inference. They used to fail with "on-demand throughput isn't supported." India regions (ap-south-1/2) now use the `in.` inference profile
+- 应用现在可以在设置了系统 HTTP(S) 代理的机器上启动（如 Clash、v2ray 或公司代理）。此前后端把本地连接检查也走了代理，导致找不到自己的 hub，报「No compatible hub runtime is available」。本地连接现在会跳过代理，已有的代理例外设置保持不变
+- 在小尺寸或高缩放的屏幕上，主窗口现在能完整显示在屏幕内。此前 150% 缩放的 1080p 笔记本上窗口会超出屏幕，把设置和账户控件挤到够不着的地方。过大的窗口现在会缩小到屏幕内（不含任务栏）并居中打开
+- 像 `/goal` 这样的插件斜杠命令，第一次使用时不会再从斜杠菜单里消失。插件命令现在在工作区打开时即加载，而不是等你第一次输入 `/`。如果首次加载慢或失败，应用会在后台重试，命令也不会再被当作纯文本发给模型
+- 「供应商」设置页（由「API 供应商」更名而来）现在把模型列表收进面板内：长列表原地滚动，矮窗口里模型控件也始终够得着
+- SSH 设置里，在你修改已保存的主机之前**「保存」**保持禁用；新建主机的按钮现在叫**「添加」**
+- 在 Amazon Bedrock 上，OpenAI GPT-6 与 GPT-5.6 模型无需开启跨区域推理即可使用（此前报「on-demand throughput isn't supported」）。印度区域（ap-south-1/2）现在使用 `in.` 推理配置档
 
 ## 0.0.35
 
-- Cline Desktop now runs on Linux. Each release ships x64 `.deb` and `.rpm` packages alongside the macOS and Windows builds. **Open folder…** uses the native GTK picker, and updates download in the background and install when you choose **Restart now**, so you are never hit with a surprise password prompt. There is no AppImage for now
-- Plugin slash commands now work in the desktop app. Commands a plugin registers, like `/goal`, used to be sent to the model as plain text; they now run the plugin's handler, show its reply, and start a turn only when the command asks for one. Enabled plugin commands appear in the slash menu, skills and workflows in that menu now come from the conversation's own workspace (including worktrees), and a broken plugin no longer makes every slash prompt fail
-- Settings has a new **Diagnostics** row. **Export…** writes a single text file to your Downloads folder with the app version, OS, settings, recent sidecar and hub logs, and the manifests of the sessions you pick. API keys, credential-shaped values, your prompts, and your home directory path are stripped, so the file is safe to attach to a GitHub issue
-- Voice input works again with provider-backed transcription, and it streams live. OpenAI, Vercel AI Gateway, and ElevenLabs transcribe as you speak; when the network drops mid-recording, the app falls back to the browser's recognizer and retries the provider next time. The model picker labels which voice models are realtime and which transcribe recordings
-- Your reasoning effort choice is now remembered per provider. Reopening a session reset the thinking picker to Low, and that Low was sent with your next message; switching providers now applies the effort you last picked for that provider
-- Model lists for LiteLLM, Baseten, Hicap, Poolside, Ollama, and LM Studio now show the actual error when your endpoint can't be reached, instead of an empty list or a placeholder model. The app also trusts your operating system's certificate store, so endpoints signed by a corporate CA stop failing with "unable to get local issuer certificate"
-- When the backend's hub fails to start, the error now says why, and the app waits up to 15 seconds for it instead of 8. The first launch after an install or update can take 8 to 13 seconds on Windows while the new binary is scanned
-- Renaming a session now sticks after a relaunch, and renaming no longer clears other state such as pinning
-- CLI sessions that were opened and closed without a prompt no longer show up as empty entries in the sidebar
-- Arrow-key navigation in the slash command and @-mention menus now scrolls the highlighted option into view
-- Free models under the picker's Free header no longer carry a redundant FREE badge on every row
-- Short session titles now have room to edit
-- Long replies on local models (llama.cpp, Ollama, LM Studio) that hit the output-token limit now compact the conversation and retry once instead of failing the run
-- New provider: ai&, an OpenAI-compatible endpoint serving open-weight models from Japan
-- Refreshed the model catalog to 6,386 models. The default model changes for 19 providers, 11 of them to Claude Opus 5.5 (including GitHub Copilot and Vertex). If you use one of those providers without picking a model, expect a different default
+- Cline 桌面版现已支持 Linux。每个版本在 macOS 和 Windows 之外同时提供 x64 `.deb` 与 `.rpm` 安装包。**打开文件夹…** 使用原生 GTK 选择器；更新在后台下载，点**「立即重启」**时安装，不会突然弹出密码框。暂不提供 AppImage
+- 插件斜杠命令现已在桌面应用可用。插件注册的命令（如 `/goal`）以前会被当纯文本发给模型；现在会执行插件的处理逻辑、显示其回复，并且只在命令需要时才开启新回合。已启用的插件命令会出现在斜杠菜单；菜单中的技能与工作流现在取自当前对话所在的工作区（含工作树）；单个插件损坏也不会再拖垮所有斜杠提示
+- 设置新增**「诊断」**一行。**「导出…」**会在你的「下载」文件夹生成一个文本文件，包含应用版本、操作系统、设置、最近的 sidecar 与 hub 日志，以及你勾选的会话清单。API 密钥、凭据类取值、你的提示词和主目录路径都会被剔除，文件可放心附到 GitHub issue
+- 语音输入经供应商转写恢复可用，并且实时流式显示。OpenAI、Vercel AI Gateway 与 ElevenLabs 边说边转写；录音中途断网时自动回退到浏览器识别器，下次再试供应商。模型选择器会标注哪些语音模型是实时的、哪些转写录音
+- 思考强度的选择现在按供应商分别记忆。此前重开会话会把思考强度重置为「低」并随下一条消息发出；切换供应商现在会应用你为该供应商上次选择的强度
+- LiteLLM、Baseten、Hicap、Poolside、Ollama 与 LM Studio 的模型列表，现在会显示端点不可达时的具体错误，而不是空列表或占位模型。应用还会信任操作系统证书库，企业 CA 签发的端点不再报「unable to get local issuer certificate」
+- 后端 hub 启动失败时，错误信息会说明原因；等待时间从 8 秒延长到 15 秒。安装或更新后的首次启动在 Windows 上可能需要 8 到 13 秒（新二进制要被安全扫描）
+- 重命名会话在重启后依然保留；重命名不再清掉置顶等其他状态
+- 打开过但没发过提示词就关闭的 CLI 会话，不再在侧边栏显示为空条目
+- 斜杠命令与 @ 提及菜单里，方向键导航现在会把高亮选项滚动到可视区域
+- 选择器「免费」分组下的免费模型，不再每行都带多余的 FREE 徽标
+- 较短的会话标题现在有足够的编辑空间
+- 本地模型（llama.cpp、Ollama、LM Studio）的长回复触到输出令牌上限时，现在会压缩对话并重试一次，而不是让整个运行失败
+- 新增供应商：ai&——来自日本、提供开放权重模型的 OpenAI 兼容端点
+- 模型目录刷新至 6,386 个模型。19 个供应商的默认模型发生变化，其中 11 个改为 Claude Opus 5.5（含 GitHub Copilot 与 Vertex）。如果你在用这些供应商但没有手动选过模型，默认模型会不一样
 
 ## 0.0.34
 
-- Composio connectors now load all their tools, not just the first 20. Google Calendar, for example, showed only 20 of its 47 tools, and the Installed view wrongly said "20/20." The full list is now fetched and the tool cache refreshes instead of staying stale forever
-- You can now connect to a Mac as an SSH remote from a Mac. Picking a Mac host used to fail with "Remote target darwin/arm64 is unsupported in SSH" even though **Test** passed on the same profile. The app now uses its own signed backend as the helper on both Apple Silicon and Intel Mac hosts. Windows and Linux desktops still can't connect to a Mac out of the box
-- Session errors now stay in the transcript when you leave a session or open it in another client. Before, a failed run's error disappeared once you went away and came back, or opened the session in the CLI. Failures after all retries run out are now recorded too, and these error-only entries are left out of compaction
-- Stopping a run while it waits to retry an empty model response now takes effect right away, instead of after the backoff finishes
+- Composio 连接器现在会加载全部工具，而不只是前 20 个。例如 Google Calendar 的 47 个工具此前只显示 20 个，且「已安装」视图错误地显示「20/20」。现在会拉取完整列表，工具缓存也会刷新，不再永久过期
+- 现在可以从一台 Mac 通过 SSH 远程连接另一台 Mac。此前选择 Mac 主机会报「Remote target darwin/arm64 is unsupported in SSH」，即使同一配置下**「测试」**是通过的。应用现在在 Apple Silicon 与 Intel Mac 主机上都使用自家签名的后端作为辅助程序。Windows 与 Linux 桌面目前仍无法开箱连接 Mac
+- 会话错误现在会留在会话记录里：离开会话或在其他客户端打开后不再消失。此前失败的运行一旦离开再回来（或在 CLI 里打开）错误就没了；重试次数用尽后的失败现在也会记录，且这类纯错误条目不参与压缩
+- 在等待重试「模型空响应」时停止运行，现在会立即生效，而不用等退避计时结束
 
 ## 0.0.33
 
-- Start a task in its own git worktree. The welcome screen's “Work in” switch (next to the folder and branch chips) now offers Local or Worktree; pick Worktree and the first prompt of a new thread cuts a fresh `cline/<id>` branch off the current one, creates a worktree under `~/.cline/worktrees/`, and runs the task there, so the agent never touches your working tree. The conversation chip shows `<repo> / cline/<id>` with the full path in its tooltip. Deleting the task removes its worktree and branch (discarding uncommitted changes in it), unless another session still lives there. Only new threads are affected — follow-ups and reopened sessions stay where they are
-- Long sessions in the desktop app now compact automatically. Auto-compaction had never actually run here: the sidecar opted sessions into checkpoints but never into compaction, so the 90% trigger was never installed and long conversations simply ran out of room. This was not a recent regression — the gap dated to compaction becoming opt-in in core back in April
-- On Windows, launching Cline while it is already running now brings the existing window to the front instead of starting a second copy. Closing the window hides Cline to the tray rather than quitting, so every subsequent launch from Start, the taskbar, or a shortcut started another full app — another tray icon, another backend process, all on the same Hub. Open and close a few times and the tray filled with identical icons while several idle copies kept running. Cline Beta still runs side by side with stable
-- Signing in no longer fails when the app is still starting up. A click that landed while the backend was booting (or being restarted after a failed first start) returned “desktop backend endpoint not ready” even though the connection succeeded moments later. The app now waits for a usable connection with bounded retries, restarts a backend that died before it was ready, and allows a longer window for slow login-shell profiles and for the sign-in browser round trip
-- Starting a brand-new chat on an SSH host works. A new chat on a connected remote failed immediately with “Unknown session” because the app asked the remote for the transcript of a session it had not created yet, and that rejection aborted startup before the session could be created. A missing transcript on that first read is now treated as an empty one; any other read failure still stops before creating a session
-- “Check for Updates…” is now in the app menu on macOS (under About Cline) and the tray menu on every platform. The label reflects what the updater is doing — Checking for Updates…, or Downloading Update vX.Y.Z… — and is disabled while either is in progress. Cline still checks on its own shortly after launch and every two hours
-- Deleting the session you are currently viewing now returns you to the new-task view instead of leaving its chat on screen. This only affected sessions started by sending a prompt in that pane; sessions opened from history already closed correctly
-- On macOS, a fullscreen window now leaves fullscreen before hiding on close, instead of leaving an empty fullscreen space behind
-- Cloud sessions are hidden from the sidebar, history, and search whenever Cloud is turned off, rather than lingering there. No session data is deleted and no remote runs are stopped — turning Cloud back on restores them
-- Cline runs on older Linux x64 machines again: the bundled helpers are now built for pre-AVX2 CPUs, and the Linux SSH remote helpers are compressed, making the download smaller
-- Agent Skills, rules, and MCP servers from `.cline/rules` are picked up consistently, including global rules created in a OneDrive-redirected Documents folder on Windows
-- Single-choice questions from the agent now submit as soon as you click an option, and accept a typed answer when none of the offered ones fit. Multiple-choice questions still use Submit
-- A model turn that hits its output-token limit before making a tool call no longer kills the run — it is retried up to three times with a reminder to be concise, and models with a large advertised output limit get a bigger default output budget
-- Compaction no longer silently falls back to truncation partway through a long session. The summarizer kept the credentials captured when the session started, so once they refreshed its request failed and the error was swallowed; it now follows the session's current credentials and model
-- Deleting a session from history now actually removes it, instead of the row reappearing on the next refresh
-- Sub-agents you configure yourself no longer ask you to approve their individual tool calls after you have already approved the delegation
-- The environment selector renders Cloud in uppercase, and the workspace selector's labels use matching font sizes
-- Refreshed the model catalog: 203 to 209 providers and 6,079 to 6,237 models. Kimi For Coding splits into separate kimi.com and kimi.ai providers, and AI21 Labs, ainetcafe, Inco, OCI Generative AI, Tempr, and Vispark are new. The resolved default model changes for 36 providers that do not pin one — most landing on DeepSeek V4.1 Flash, GLM 5.3 Flash, or MiMo V2.6 Flash. If you use one of those without pinning a model, expect a different default
+- 在独立的 git 工作树中运行任务。欢迎界面的「工作于」开关（在文件夹与分支标签旁）现在提供「本地」或「工作树」：选工作树后，新会话的第一条提示词会从当前分支切出新的 `cline/<id>` 分支、在 `~/.cline/worktrees/` 下创建工作树并在那里运行任务，智能体不会碰你的工作区。会话标签显示 `<repo> / cline/<id>`，悬停可见完整路径。删除任务会移除其工作树与分支（丢弃其中未提交的改动），除非还有其他会话在其中。只影响新会话——后续消息和重开的会话不受影响
+- 桌面版的长会话现在会自动压缩。自动压缩此前从未真正生效：sidecar 让会话加入了检查点，却没有加入压缩，90% 触发器从未安装，长对话只会耗尽空间。这不是近期的回归——缺口可追溯到四月压缩在 core 中改为可选加入时
+- 在 Windows 上，应用已在运行时再次启动会把已有窗口置前，而不是启动第二个副本。此前关闭窗口只是隐藏到托盘而非退出，导致从开始菜单、任务栏或快捷方式的每次启动都创建完整副本——又一个托盘图标、又一个后端进程，全都挂在同一个 Hub 上。开关几次后托盘挤满相同图标，还有多个空闲副本在后台运行。Cline Beta 仍可与正式版并存
+- 应用还在启动时登录不再失败。后端启动中（或首次启动失败后重启中）时点击登录，会报「desktop backend endpoint not ready」，尽管稍后连接就成功了。应用现在会以有界重试等待可用连接，重启尚未就绪就死掉的后端，并为慢登录 shell 配置和登录浏览器往返留出更长时间
+- 在 SSH 主机上开全新对话可用。在已连接的远程上新建对话此前会立即报「Unknown session」：应用向远程索取一个尚未创建的会话的记录，该拒绝中断了启动流程。首次读取缺少记录现在视为空；其他读取失败仍会阻止会话创建
+- 「检查更新…」现在位于 macOS 应用菜单（「关于 Cline」下）和所有平台的托盘菜单中。菜单文字会反映更新器当前状态——「正在检查更新…」或「正在下载更新 vX.Y.Z…」——进行中时禁用。Cline 仍会在启动后不久和每两小时自行检查
+- 删除当前正在查看的会话，现在会回到新建任务界面，而不是把它的聊天留在屏幕上。只影响在那个面板里发出提示词启动的会话；从历史打开的会话此前就已正确关闭
+- 在 macOS 上，全屏窗口关闭隐藏前会先退出全屏，不再留下一片空的全屏空间
+- 关闭 Cloud 后，云端会话会从侧边栏、历史和搜索中隐藏，而不是滞留其中。不会删除任何会话数据，也不会停止远程运行——重新打开 Cloud 即可恢复
+- Cline 重新支持较老的 Linux x64 机器：内置辅助程序改为面向 pre-AVX2 CPU 构建，Linux SSH 远程辅助程序经过压缩，下载更小
+- 来自 `.cline/rules` 的智能体技能、规则与 MCP 服务器现在都能被一致地发现，包括 Windows 上被 OneDrive 重定向的「文档」文件夹里创建的全局规则
+- 智能体的单选问题现在点选项即提交，所给选项都不合适时也可自行输入答案。多选问题仍用「提交」按钮
+- 模型回合在调用工具前触到输出令牌上限，不再终止整个运行——最多重试三次并附上「请简洁」的提醒；宣传输出上限较大的模型会获得更大的默认输出预算
+- 长会话中压缩不再中途悄悄退化为截断。摘要器一直沿用会话开始时捕获的凭据，一旦凭据刷新其请求就会失败且错误被吞掉；现在它会跟随会话当前的凭据与模型
+- 从历史中删除会话现在会真正删除，而不是下次刷新时又出现
+- 你自己配置的子智能体，在你已批准委托后，不再逐个请求批准其工具调用
+- 环境选择器中 Cloud 显示为大写，工作区选择器的标签使用一致的字号
+- 模型目录刷新：供应商 203 → 209，模型 6,079 → 6,237。Kimi For Coding 拆分为 kimi.com 与 kimi.ai 两个供应商；AI21 Labs、ainetcafe、Inco、OCI Generative AI、Tempr 与 Vispark 为新增。36 个未固定默认模型的供应商默认模型发生变化——多数落在 DeepSeek V4.1 Flash、GLM 5.3 Flash 或 MiMo V2.6 Flash。如果你在用这些供应商但没有固定模型，默认模型会不一样
+
+> 注：0.0.32 及更早版本的发布说明保留英文原文（应用内「关于」页仅展示最近 5 个版本）。
 
 ## 0.0.32
 
