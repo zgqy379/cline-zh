@@ -181,16 +181,16 @@ type ReasoningEffortOption = {
 };
 
 const DEFAULT_REASONING_EFFORT: ReasoningEffortOption = {
-	label: "Low",
+	label: "低",
 	value: "low",
 };
 
 const EFFORT_LEVELS: ReasoningEffortOption[] = [
-	{ label: "None", value: "none" },
+	{ label: "关闭", value: "none" },
 	DEFAULT_REASONING_EFFORT,
-	{ label: "Medium", value: "medium" },
-	{ label: "High", value: "high" },
-	{ label: "Extra", value: "xhigh" },
+	{ label: "中", value: "medium" },
+	{ label: "高", value: "high" },
+	{ label: "极高", value: "xhigh" },
 ];
 const PROMPT_INPUT_COLLAPSED_ROWS = 1;
 const PROMPT_INPUT_EXPANDED_ROWS = 2;

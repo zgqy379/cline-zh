@@ -1296,7 +1296,7 @@ describe("ChatInputBar", () => {
 			const trigger = container.querySelector<HTMLButtonElement>(
 				'[aria-label="思考强度"]',
 			);
-			expect(trigger?.textContent).toContain("High");
+			expect(trigger?.textContent).toContain("高");
 			expect(trigger?.disabled).toBe(true);
 			expect(
 				trigger?.querySelector('[data-slot="select-value"]')?.parentElement
@@ -1477,7 +1477,7 @@ describe("ChatInputBar", () => {
 		const highOption = await vi.waitFor(() => {
 			const element = [
 				...document.querySelectorAll<HTMLElement>('[role="option"]'),
-			].find((option) => option.textContent?.includes("High"));
+			].find((option) => option.textContent?.includes("高"));
 			expect(element).toBeDefined();
 			return element as HTMLElement;
 		});
