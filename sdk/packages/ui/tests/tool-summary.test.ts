@@ -467,7 +467,7 @@ describe("spawn / skill / question summaries", () => {
 			toolName: "skills",
 			input: { skill: "deploy", args: "--prod" },
 		});
-		expect(summary.label).toBe("Used skill deploy");
+		expect(summary.label).toBe("已使用技能 deploy");
 		expect(summary.details).toEqual(["deploy --prod"]);
 	});
 
@@ -523,7 +523,7 @@ describe("fallbacks", () => {
 		);
 		expect(
 			buildToolSummary({ toolName: "custom_tool", inProgress: true }).label,
-		).toBe("Running Custom tool");
+		).toBe("正在运行 Custom tool");
 	});
 
 	it("captures error text from record results", () => {
