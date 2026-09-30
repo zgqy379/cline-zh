@@ -8,7 +8,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
 	title: "Cline",
-	description: "Build software with Cline.",
+	description: "使用 Cline 构建软件。",
 	icons: {
 		icon: [
 			{
@@ -37,7 +37,7 @@ export default function RootLayout({
 		<html
 			className="dark h-full"
 			data-cline-hub-theme="dark"
-			lang="en"
+			lang="zh-CN"
 			suppressHydrationWarning
 		>
 			<head>
