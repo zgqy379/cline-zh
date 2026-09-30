@@ -352,7 +352,7 @@ describe("SpeechInput", () => {
 
 		expect(onError).toHaveBeenCalledOnce();
 		expect(onError.mock.calls[0]?.[0]).toEqual(
-			new Error("Speech recognition failed: not-allowed"),
+			new Error("语音识别失败: not-allowed"),
 		);
 		expect(button?.getAttribute("aria-label")).toBe("开始语音输入");
 	});

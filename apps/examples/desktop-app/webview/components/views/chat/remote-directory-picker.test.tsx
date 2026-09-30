@@ -90,7 +90,7 @@ describe("RemoteDirectoryPicker", () => {
 		await vi.waitFor(() => {
 			expect(document.body.textContent).toContain("projects");
 			expect(document.body.textContent).toContain(
-				"Only the first directories are shown",
+				"仅显示靠前的部分目录。打开某个文件夹以继续浏览。",
 			);
 		});
 		expect(invokeMock).toHaveBeenCalledWith("list_workspace_directories", {
@@ -138,7 +138,7 @@ describe("RemoteDirectoryPicker", () => {
 
 		await vi.waitFor(() => {
 			expect(document.body.textContent).toContain(
-				"Directory response belongs to other-host, not pi-host.",
+				"目录响应属于 other-host，而不是 pi-host。",
 			);
 		});
 	});
