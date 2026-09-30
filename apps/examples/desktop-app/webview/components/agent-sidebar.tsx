@@ -1058,7 +1058,7 @@ export function AgentSidebar({
 									onClick={openSessions}
 									type="button"
 								>
-									{sortMode === "time" ? "会话" : "项目"}
+									{sortMode === "time" ? "会话列表" : "项目列表"}
 								</button>
 								<div className="flex shrink-0 items-center gap-0.5">
 									{sortToggle}
@@ -1683,7 +1683,7 @@ export function getSessionOverviewItems(
 		["分支", thread.gitBranch],
 		["供应商", thread.provider],
 		["模型", thread.model],
-		["令牌数", formatTokenCount(thread.inputTokens, thread.outputTokens)],
+		["词元消耗数", formatTokenCount(thread.inputTokens, thread.outputTokens)],
 		["费用", formatCostUsd(thread.totalCostUsd)],
 		["来源", thread.source],
 	];

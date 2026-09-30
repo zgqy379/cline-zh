@@ -221,7 +221,7 @@ function isTerminalHistoryStatus(status: SessionHistoryStatus): boolean {
 }
 
 export function formatRelativeTime(value?: string): string {
-	if (!value) return "just now";
+	if (!value) return "刚刚";
 	const timestamp = parseTimestamp(value);
 	const date = Number.isFinite(timestamp)
 		? new Date(timestamp)
@@ -233,10 +233,10 @@ export function formatRelativeTime(value?: string): string {
 	const hour = 60 * minute;
 	const day = 24 * hour;
 
-	if (diffMs < minute) return "now";
-	if (diffMs < hour) return `${Math.max(1, Math.floor(diffMs / minute))}m`;
-	if (diffMs < day) return `${Math.max(1, Math.floor(diffMs / hour))}h`;
-	return `${Math.max(1, Math.floor(diffMs / day))}d`;
+	if (diffMs < minute) return "刚刚";
+	if (diffMs < hour) return `${Math.max(1, Math.floor(diffMs / minute))}分钟`;
+	if (diffMs < day) return `${Math.max(1, Math.floor(diffMs / hour))}小时`;
+	return `${Math.max(1, Math.floor(diffMs / day))}天`;
 }
 
 export function basenamePath(input?: string): string {
