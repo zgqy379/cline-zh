@@ -678,7 +678,7 @@ describe("ChatMessages tool disclosures", () => {
 		);
 
 		const triggers = [...container.querySelectorAll("button")].filter(
-			(element) => element.textContent?.includes("Spawned 1 teammate"),
+			(element) => element.textContent?.includes("已生成 1 名队友"),
 		);
 		expect(triggers).toHaveLength(3);
 		for (const trigger of triggers) {
@@ -707,7 +707,7 @@ describe("ChatMessages tool disclosures", () => {
 		);
 
 		const triggers = [...container.querySelectorAll("button")].filter(
-			(element) => element.textContent?.includes("Assigned 1 team task"),
+			(element) => element.textContent?.includes("已分配 1 项团队任务"),
 		);
 		expect(triggers).toHaveLength(2);
 		for (const trigger of triggers) {
@@ -736,7 +736,7 @@ describe("ChatMessages tool disclosures", () => {
 		]);
 
 		const trigger = [...container.querySelectorAll("button")].find((element) =>
-			element.textContent?.includes("Waited for teammates"),
+			element.textContent?.includes("已等待队友"),
 		);
 		expect(trigger).toBeDefined();
 		await act(async () => trigger?.click());
@@ -766,7 +766,7 @@ describe("ChatMessages tool disclosures", () => {
 			},
 		]);
 
-		expect(container.textContent).toContain("Listed 3 team tasks");
+		expect(container.textContent).toContain("已列出 3 项团队任务");
 	});
 
 	it("uses failure-oriented labels for failed team tools", async () => {
