@@ -89,9 +89,9 @@ const ACTIVE_WORKSPACE_SESSION_STATUSES = new Set([
 	"stopping",
 ]);
 const WORKSPACE_RESTORE_SEND_ERROR =
-	"Cannot send a prompt while the session workspace is being restored";
+	"会话工作区正在还原，无法发送提示词";
 const WORKSPACE_RESTORE_BUSY_ERROR =
-	"Wait for all turns in this workspace to finish before restoring it";
+	"请等待该工作区的所有回合结束后再还原";
 
 type WorkspacePathSource = {
 	cwd?: unknown;
