@@ -134,7 +134,7 @@ describe("remove_git_worktree command", () => {
 	it("refuses paths outside ~/.cline/worktrees/<id>/<repo>", async () => {
 		await expect(
 			handleCommand(ctx, "remove_git_worktree", { path: repo }),
-		).rejects.toThrow("Not a task worktree");
+		).rejects.toThrow("不是任务工作树");
 		expect(existsSync(repo)).toBe(true);
 	});
 });

@@ -259,7 +259,7 @@ describe("availability gating (proxy entitlement)", () => {
 			new ConnectorsApiError("sign in", 401),
 		);
 		await expect(connectComposioToolkit("gmail")).rejects.toThrow(
-			/Sign in to your Cline account/,
+			/请登录 Cline 账户/,
 		);
 		expect(proxy.initiateConnection).not.toHaveBeenCalled();
 	});
@@ -728,7 +728,7 @@ describe("Composio beta access", () => {
 			toolkits: [],
 		});
 		await expect(connectComposioToolkit("gmail")).rejects.toThrow(
-			/not be enabled/,
+			/尚未启用连接器功能/,
 		);
 		expect(proxy.listConnections).not.toHaveBeenCalled();
 		expect(proxy.fetchConnectableToolkits).not.toHaveBeenCalled();
