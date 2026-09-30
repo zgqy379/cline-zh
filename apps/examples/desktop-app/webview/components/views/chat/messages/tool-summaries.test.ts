@@ -164,7 +164,7 @@ describe("buildGroupedToolLabel over presentations", () => {
 		});
 		expect(
 			buildGroupedToolLabel([toGroupInput(first), toGroupInput(second)]),
-		).toBe("已读取 3 files");
+		).toBe("已读取 3 文件");
 	});
 
 	it("joins non-mergeable segments with separators and keeps progress verbs", () => {
@@ -184,6 +184,6 @@ describe("buildGroupedToolLabel over presentations", () => {
 		);
 		expect(
 			buildGroupedToolLabel([toGroupInput(reads), toGroupInput(running)]),
-		).toBe("已读取 2 files · 正在运行 1 command");
+		).toBe("已读取 2 文件 · 正在运行 1 条命令");
 	});
 });

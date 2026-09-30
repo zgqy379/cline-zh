@@ -156,5 +156,5 @@ export function scheduleRunLabel(thread: SessionThread): string {
 			minute: "2-digit",
 		});
 	}
-	return "Run";
+	return "运行";
 }
