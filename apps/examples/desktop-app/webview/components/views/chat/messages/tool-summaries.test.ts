@@ -150,7 +150,7 @@ describe("buildGroupedToolLabel over presentations", () => {
 			toolName: "read_files",
 			input: { paths: ["a.ts"] },
 		});
-		expect(buildGroupedToolLabel([toGroupInput(only)])).toBe("已读取 file a.ts");
+		expect(buildGroupedToolLabel([toGroupInput(only)])).toBe("已读取文件 a.ts");
 	});
 
 	it("merges consecutive aggregates that share a key", () => {

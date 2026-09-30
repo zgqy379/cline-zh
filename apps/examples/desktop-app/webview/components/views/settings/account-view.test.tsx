@@ -66,7 +66,7 @@ describe("AccountView usage table", () => {
 		});
 
 		const usageTab = Array.from(container.querySelectorAll("button")).find(
-			(button) => button.textContent === "usage",
+			(button) => button.textContent === "用量",
 		);
 		expect(usageTab).toBeDefined();
 		await act(async () => usageTab?.click());
