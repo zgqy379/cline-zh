@@ -301,7 +301,7 @@ describe("WelcomeScreen", () => {
 		});
 
 		const heading = container.querySelector("h1");
-		expect(heading?.textContent).toBe("What would you like to build?");
+		expect(heading?.textContent).toBe("你想做点什么？");
 		expect(heading?.classList.contains("sr-only")).toBe(true);
 		expect(container.querySelector("[data-welcome-hero]")).not.toBeNull();
 		await clickButton("project-1");

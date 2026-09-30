@@ -92,9 +92,9 @@ describe("ImportContent", () => {
 		);
 		const text = container.textContent ?? "";
 		expect(text).toContain("Claude Code");
-		expect(text).toContain("3 sessions found · 1 already imported");
-		expect(text).toContain("No sessions found");
-		expect(text).toContain("Not detected on this machine");
+		expect(text).toContain("3 个会话 · 已导入 1 个");
+		expect(text).toContain("未找到会话");
+		expect(text).toContain("未在本机检测到");
 	});
 
 	it("opens the import dialog and rescans when it closes", async () => {
@@ -137,7 +137,7 @@ describe("ImportContent", () => {
 			await Promise.resolve();
 		});
 		expect(container.textContent).toContain(
-			"1 session found · 1 already imported",
+			"1 个会话 · 已导入 1 个",
 		);
 
 		await act(async () => {
@@ -145,7 +145,7 @@ describe("ImportContent", () => {
 			await Promise.resolve();
 		});
 		expect(container.textContent).toContain(
-			"1 session found · 1 already imported",
+			"1 个会话 · 已导入 1 个",
 		);
 	});
 
