@@ -10,6 +10,14 @@ const originalClipboard = Object.getOwnPropertyDescriptor(
 	"clipboard",
 );
 
+// Streamdown calls scrollTo on mount to keep the newest token in view. jsdom
+// implements neither Element.prototype.scrollTo nor scrollIntoView, so the
+// mount effect throws and fails the suite with "a.scrollTo is not a function"
+// -- an environment gap, not a defect in the component under test. Stub them
+// the same way chat-messages.test.tsx stubs CSSStyleSheet.replaceSync.
+Element.prototype.scrollTo ??= function scrollTo() {};
+Element.prototype.scrollIntoView ??= function scrollIntoView() {};
+
 let writeText: ReturnType<typeof vi.fn>;
 let openWindow: ReturnType<typeof vi.fn<typeof window.open>>;
 let container: HTMLDivElement;
