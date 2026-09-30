@@ -37,8 +37,8 @@
 		"active": true,
 		"targets": "all",
 		"category": "DeveloperTool",
-		"shortDescription": "Cline AI coding agent",
-		"longDescription": "Cline is an AI coding agent. It reads your code, edits files, runs commands, and works through tasks with you in any project on your machine.",
+		"shortDescription": "Cline AI 编程智能体",
+		"longDescription": "Cline 是一个 AI 编程智能体。它能阅读你的代码、编辑文件、运行命令，并在你机器上的任意项目中与你一起完成任务。",
 		"homepage": "https://cline.bot",
 		"externalBin": ["bin/code-sidecar"],
 		"resources": [
