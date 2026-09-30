@@ -309,7 +309,7 @@ function fallbackLabel(kind: ToolKind, toolName: string, inProgress: boolean) {
 			return inProgress ? "正在调用 MCP 工具" : "已调用 MCP 工具";
 		default:
 			return inProgress
-				? `Running ${humanizeToolName(toolName)}`
+				? `正在运行 ${humanizeToolName(toolName)}`
 				: humanizeToolName(toolName);
 	}
 }
@@ -767,7 +767,7 @@ export function buildToolSummary(
 			return {
 				...base,
 				...labeled([
-					{ text: `${inProgress ? "Using" : "Used"} skill ` },
+					{ text: `${inProgress ? "正在使用" : "已使用"}技能 ` },
 					{ text: truncate(skill, opts.maxInlineChars), code: true },
 				]),
 				items: [{ type: "text", text: detail }],
