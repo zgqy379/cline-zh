@@ -676,7 +676,7 @@ describe("session forks", () => {
 					prompt: "race",
 				}),
 			).rejects.toThrow(
-				"Cannot send a prompt while the session workspace is being restored",
+				"会话工作区正在还原，无法发送提示词",
 			);
 			expect(send).not.toHaveBeenCalled();
 		} finally {
@@ -875,7 +875,7 @@ describe("session forks", () => {
 				sessionId: sourceSessionId,
 				forkBeforeRunCount: 1,
 			}),
-		).rejects.toThrow("Wait for all turns in this workspace to finish");
+		).rejects.toThrow("请等待该工作区的所有回合结束后再还原");
 		expect(restore).not.toHaveBeenCalled();
 	});
 
@@ -915,7 +915,7 @@ describe("session forks", () => {
 				sessionId: sourceSessionId,
 				forkBeforeRunCount: 1,
 			}),
-		).rejects.toThrow("Wait for all turns in this workspace to finish");
+		).rejects.toThrow("请等待该工作区的所有回合结束后再还原");
 		expect(restore).not.toHaveBeenCalled();
 		expect(ctx.restoringWorkspacePaths.size).toBe(0);
 	});
@@ -970,7 +970,7 @@ describe("session forks", () => {
 				sessionId: sourceSessionId,
 				forkBeforeRunCount: 1,
 			}),
-		).rejects.toThrow("Wait for all turns in this workspace to finish");
+		).rejects.toThrow("请等待该工作区的所有回合结束后再还原");
 		expect(restore).not.toHaveBeenCalled();
 		expect(ctx.restoringWorkspacePaths.size).toBe(0);
 	});
@@ -1021,7 +1021,7 @@ describe("session forks", () => {
 			// While the queued turn is still running the workspace stays locked.
 			await expect(
 				handleChatSessionCommand(ctx, restoreRequest),
-			).rejects.toThrow("Wait for all turns in this workspace to finish");
+			).rejects.toThrow("请等待该工作区的所有回合结束后再还原");
 			expect(restore).not.toHaveBeenCalled();
 
 			// The queued turn settles through the event stream: the runtime
@@ -1078,7 +1078,7 @@ describe("session forks", () => {
 				prompt: "race",
 			}),
 		).rejects.toThrow(
-			"Cannot send a prompt while the session workspace is being restored",
+			"会话工作区正在还原，无法发送提示词",
 		);
 		expect(send).not.toHaveBeenCalled();
 	});
