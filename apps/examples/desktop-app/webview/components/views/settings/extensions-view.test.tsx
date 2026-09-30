@@ -112,12 +112,12 @@ describe("CustomizationSectionView Agent Plugin inventory", () => {
 					catalogPrimitive="plugin"
 					chrome="embedded"
 					marketplaceVariant="installed"
-					section="插件"
+					section="Plugins"
 				/>,
 			);
 		});
 		const toggle = container.querySelector<HTMLInputElement>(
-			'[role="switch"][aria-label="Toggle agent-plugins-example"]',
+			'[role="switch"][aria-label="切换 agent-plugins-example"]',
 		);
 		const details = toggle?.closest("details");
 		expect(toggle?.checked).toBe(true);
@@ -153,7 +153,7 @@ describe("CustomizationSectionView Agent Plugin inventory", () => {
 					catalogPrimitive="plugin"
 					chrome="embedded"
 					marketplaceVariant="installed"
-					section="插件"
+					section="Plugins"
 				/>,
 			);
 		});
@@ -171,7 +171,7 @@ describe("CustomizationSectionView Agent Plugin inventory", () => {
 					catalogPrimitive="skill"
 					chrome="embedded"
 					marketplaceVariant="installed"
-					section="技能"
+					section="Skills"
 				/>,
 			);
 		});
@@ -280,11 +280,11 @@ describe("tool state controls", () => {
 			throw new Error(`Unexpected command: ${command}`);
 		});
 		await act(async () => {
-			root.render(<CustomizationSectionView section="工具" />);
+			root.render(<CustomizationSectionView section="Tools" />);
 		});
 		await act(async () => {
 			container
-				.querySelector<HTMLInputElement>('[aria-label="Toggle web_search"]')
+				.querySelector<HTMLInputElement>('[aria-label="切换 web_search"]')
 				?.click();
 		});
 		expect(enabled).toBe(!initialEnabled);
@@ -294,7 +294,7 @@ describe("tool state controls", () => {
 		});
 		expect(
 			container.querySelector<HTMLInputElement>(
-				'[aria-label="Toggle web_search"]',
+				'[aria-label="切换 web_search"]',
 			)?.checked,
 		).toBe(!initialEnabled);
 	});

@@ -1236,7 +1236,7 @@ export function CustomizationSectionView({
 							plugin.toggleable === false ||
 							togglingPluginPaths.has(plugin.path)
 						}
-						aria-label={`Toggle ${plugin.name}`}
+						aria-label={`切换 ${plugin.name}`}
 					/>
 					{plugin.agentPlugin !== true
 						? renderLocalItemMenu({
