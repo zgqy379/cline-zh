@@ -5,6 +5,7 @@ import { createRoot, type Root } from "react-dom/client";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { ChatMessage } from "@/lib/chat-schema";
 import { MAX_LIVE_COMMAND_OUTPUT_CHARS } from "@/lib/command-output";
+import { resolveCredentialFailureHint } from "@/hooks/chat-session/helpers";
 import { ChatMessages } from "./chat-messages";
 
 // @pierre/diffs' custom element adopts constructable stylesheets, which jsdom
@@ -893,7 +894,7 @@ describe("ChatMessages tool disclosures", () => {
 		]);
 
 		expect(container.textContent).toContain("已运行 2 条命令");
-		expect(container.textContent?.match(/Spawned agent/g)).toHaveLength(3);
+		expect(container.textContent?.match(/已创建智能体/g)).toHaveLength(3);
 		expect(container.textContent).not.toContain("subagent_subagent");
 	});
 
@@ -1382,7 +1383,7 @@ describe("ChatMessages tool disclosures", () => {
 			{ status: "running", onProceedWhileRunning },
 		);
 
-		const output = container.querySelector('[aria-label="Command output"]');
+		const output = container.querySelector('[aria-label="命令输出"]');
 		expect(output?.textContent).toContain("failed");
 		expect(output?.textContent).not.toContain("\u001b[31m");
 		expect(output?.querySelector("span")?.getAttribute("style")).toContain(
@@ -1426,7 +1427,7 @@ describe("ChatMessages tool disclosures", () => {
 		);
 		await act(async () => trigger?.click());
 		expect(
-			container.querySelector('[aria-label="Command output"]')?.textContent,
+			container.querySelector('[aria-label="命令输出"]')?.textContent,
 		).toContain("3 tests passed");
 	});
 
@@ -1451,7 +1452,7 @@ describe("ChatMessages tool disclosures", () => {
 			".cline-chat-tool-trigger",
 		);
 		await act(async () => trigger?.click());
-		const output = container.querySelector('[aria-label="Command output"]');
+		const output = container.querySelector('[aria-label="命令输出"]');
 		expect(output?.textContent?.length).toBeLessThanOrEqual(
 			MAX_LIVE_COMMAND_OUTPUT_CHARS,
 		);
@@ -1698,7 +1699,7 @@ describe("ChatMessages reasoning disclosure", () => {
 		]);
 
 		const trigger = [...container.querySelectorAll("button")].find((element) =>
-			element.textContent?.includes("Thought for 7s"),
+			element.textContent?.includes("思考了 7 秒"),
 		);
 		expect(trigger?.getAttribute("aria-expanded")).toBe("false");
 		expect(trigger?.querySelector(".cline-chat-thinking-icon")).not.toBeNull();
@@ -2267,10 +2268,11 @@ describe("persisted run errors", () => {
 				meta: { providerId },
 			},
 		];
-		const fullError =
-			providerId === "claude-code"
-				? "The run failed: API key expired. Sign in again with the `claude` CLI in a terminal, then try again."
-				: "The run failed: API key expired. Check your model connection in Settings → Providers (or sign in with Cline), then try again.";
+		// This must stay byte-identical to what formatRunError() builds for the
+		// persisted message, otherwise the banner is treated as a new error and
+		// the same text renders twice. Deriving it from the shared helper keeps
+		// the fixture from rotting when the hint copy is reworded.
+		const fullError = `The run failed: API key expired. ${resolveCredentialFailureHint(providerId)}`;
 		await renderMessages(messages, { error: fullError, status: "failed" });
 		expect(container.textContent?.split("API key expired.")).toHaveLength(2);
 		expect(container.textContent).toContain(fullError.replaceAll("`", ""));

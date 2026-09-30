@@ -1,7 +1,7 @@
 export const MAX_LIVE_COMMAND_OUTPUT_CHARS = 48_000;
 
 const COMMAND_OUTPUT_TRUNCATION_MARKER =
-	"\u001b[0m[Earlier command output truncated]\n";
+	"\u001b[0m[此前的命令输出已截断]\n";
 
 export function appendCappedCommandOutput(
 	current: string,
