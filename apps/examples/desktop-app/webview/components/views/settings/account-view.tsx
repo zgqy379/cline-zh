@@ -674,7 +674,7 @@ export function AccountView() {
 											<h3 className="text-sm font-semibold text-foreground">
 												{activeOrganization
 													? `${activeOrganization.name} 余额`
-													: "额度余额"}
+													: "余额"}
 											</h3>
 										</div>
 										<button
@@ -759,16 +759,16 @@ export function AccountView() {
 				<div>
 					<p className="mb-6 text-sm text-muted-foreground">
 						{activeOrganization
-							? `${activeOrganization.name} 近期的 API 用量与令牌消耗。`
-							: "所有供应商近期的 API 用量与令牌消耗。"}
+							? `${activeOrganization.name} 近期的 API 用量与词元消耗。`
+							: "所有供应商近期的 API 用量与词元消耗。"}
 					</p>
 					{usageLoading && renderLoading()}
 					{usageError && renderError(usageError, loadUsage)}
 					{!usageLoading && !usageError && usageLoaded && (
 						<div className="overflow-hidden rounded-lg border border-border">
-							<div className="grid grid-cols-[minmax(0,1fr)_5.5rem_4.5rem_5.5rem] gap-4 border-b border-border bg-secondary/50 px-4 py-2.5 text-xs font-medium text-muted-foreground">
+							<div className="grid grid-cols-[minmax(0,1fr)_5.5rem_4.5rem_8rem] gap-4 border-b border-border bg-secondary/50 px-4 py-2.5 text-xs font-medium text-muted-foreground">
 								<span>模型</span>
-								<span className="text-right">令牌数</span>
+								<span className="text-right">词元消耗数</span>
 								<span className="text-right">额度</span>
 								<span className="text-right">时间</span>
 							</div>
@@ -781,7 +781,7 @@ export function AccountView() {
 									{usageTransactions.map((tx) => (
 										<div
 											key={tx.id}
-											className="grid grid-cols-[minmax(0,1fr)_5.5rem_4.5rem_5.5rem] gap-4 px-4 py-3 text-sm hover:bg-surface-hover"
+											className="grid grid-cols-[minmax(0,1fr)_5.5rem_4.5rem_8rem] gap-4 px-4 py-3 text-sm hover:bg-surface-hover"
 										>
 											<div className="min-w-0">
 												<p className="font-medium text-foreground truncate">

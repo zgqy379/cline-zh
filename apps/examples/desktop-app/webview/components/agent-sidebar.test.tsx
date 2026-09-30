@@ -829,7 +829,7 @@ describe("AgentSidebar session organization", () => {
 			["分支", "bee/session-overview"],
 			["供应商", "cline"],
 			["模型", "test-model"],
-			["令牌数", "3009k"],
+			["词元消耗数", "3009k"],
 			["费用", "$3.06"],
 		]);
 		expect(getSessionOverviewItems(makeThread("cline", 5))).not.toContainEqual([

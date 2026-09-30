@@ -369,7 +369,7 @@ export function SessionsView({ activeSessionId, history }: SessionsViewProps) {
 						variant="outline"
 					>
 						<Import className="size-4" />
-						Import
+						导入
 					</Button>
 					<DropdownMenu>
 						<DropdownMenuTrigger asChild>
@@ -458,7 +458,7 @@ export function SessionsView({ activeSessionId, history }: SessionsViewProps) {
 						<span>标题</span>
 						<span>工作区</span>
 						<span>模型</span>
-						<span>令牌数</span>
+						<span>词元消耗数</span>
 						<span>费用</span>
 						<span>时间</span>
 						<span className="sr-only">操作</span>
@@ -722,7 +722,7 @@ export function SessionsView({ activeSessionId, history }: SessionsViewProps) {
 						{filteredThreads.length > 0 ? (
 							<div className="flex items-center justify-between gap-4 border-t px-4 py-3 text-xs text-muted-foreground">
 								<span>
-									{`${pageStart + 1}-${pageStart + visibleThreads.length} of ${filteredThreads.length}`}
+									{`第 ${pageStart + 1}-${pageStart + visibleThreads.length} 项，共 ${filteredThreads.length} 项`}
 									{history.mayHaveMoreSessions ? "+" : ""}
 								</span>
 								<div className="flex items-center gap-1">

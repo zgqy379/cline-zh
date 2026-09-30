@@ -135,7 +135,7 @@ describe("SessionsView table", () => {
 			"标题",
 			"工作区",
 			"模型",
-			"令牌数",
+			"词元消耗数",
 			"费用",
 			"时间",
 		]);
@@ -319,7 +319,7 @@ describe("SessionsView table", () => {
 			});
 			const deleteItem = Array.from(
 				document.body.querySelectorAll<HTMLElement>('[role="menuitem"]'),
-			).find((item) => item.textContent === "Delete");
+			).find((item) => item.textContent === "删除");
 			expect(deleteItem).not.toBeUndefined();
 			await act(async () => {
 				deleteItem?.click();
@@ -363,11 +363,11 @@ describe("SessionsView pagination", () => {
 
 		expect(rowTitles()).toHaveLength(10);
 		expect(rowTitles()[0]).toBe("Session 0");
-		expect(container.textContent).toContain("1-10 of 25");
+  expect(container.textContent).toContain("第 1-10 项，共 25 项");
 
 		await clickNext();
 		expect(rowTitles()[0]).toBe("Session 10");
-		expect(container.textContent).toContain("11-20 of 25");
+		expect(container.textContent).toContain("第 11-20 项，共 25 项");
 	});
 
 	it("asks the history hook for usage of the rows on the visible page", async () => {
@@ -423,7 +423,7 @@ describe("SessionsView pagination", () => {
 		await clickNext();
 		await clickNext();
 
-		expect(container.textContent).toContain("21-25 of 25");
+  expect(container.textContent).toContain("第 21-25 项，共 25 项");
 		expect(rowTitles()).toHaveLength(5);
 	});
 
