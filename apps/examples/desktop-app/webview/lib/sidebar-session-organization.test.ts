@@ -139,13 +139,24 @@ describe("sidebar session organization", () => {
 				thread("a", "/ws", { isScheduled: true, scheduleRunNumber: 7 }),
 			),
 		).toBe("运行 7");
+		// The fallback renders through toLocaleString(undefined, ...), so both the
+		// month name and the calendar day follow the host locale and timezone.
+		// Hardcoding /Aug 31/ only passed in UTC or west of it -- at UTC+8 this
+		// instant is already 2026-09-01. Derive the expectation through the same
+		// Intl call so the assertion tests the fallback itself, not the runner's
+		// locale.
+		const startedAt = "2026-08-31T19:31:40.834Z";
 		const dated = scheduleRunLabel(
-			thread("b", "/ws", {
-				isScheduled: true,
-				startedAt: "2026-08-31T19:31:40.834Z",
+			thread("b", "/ws", { isScheduled: true, startedAt }),
+		);
+		expect(dated).toBe(
+			new Date(startedAt).toLocaleString(undefined, {
+				month: "short",
+				day: "numeric",
+				hour: "numeric",
+				minute: "2-digit",
 			}),
 		);
-		expect(dated).toMatch(/Aug 31/);
 		expect(dated).not.toBe("运行");
 		expect(scheduleRunLabel(thread("c", "/ws", { isScheduled: true }))).toBe(
 			"运行",
