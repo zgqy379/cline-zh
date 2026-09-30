@@ -1377,7 +1377,7 @@ function ChatInputBarImpl({
 									aria-live="polite"
 									className="max-w-40 text-right text-[11px] leading-4 text-muted-foreground"
 								>
-									Repository required
+									需要仓库
 								</span>
 							) : null}
 							{canAbort && (

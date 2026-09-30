@@ -12,9 +12,9 @@ export type ModelPickerData = {
 };
 
 // Section copy mirrors the CLI's featured picker so the products read the same.
-const FREE_SECTION_DESCRIPTION = "Try with limited usage at no cost";
+const FREE_SECTION_DESCRIPTION = "免费试用，额度有限";
 const CLINE_PASS_FREE_SECTION_DESCRIPTION =
-	"Try with limited usage, separate from ClinePass quota";
+	"免费试用，与 ClinePass 额度分开计算";
 
 function displayName(model: ProviderModel): string {
 	return model.name?.trim() || model.id;
@@ -129,7 +129,7 @@ export function buildModelPickerData(
 		return {
 			options: [...subscribed, ...free],
 			sections: [
-				{ id: "subscribed", label: "Subscribed" },
+				{ id: "subscribed", label: "已订阅" },
 				{
 					description: CLINE_PASS_FREE_SECTION_DESCRIPTION,
 					id: "free",
