@@ -426,8 +426,9 @@ export function AccountView() {
 
 	// -- Formatters --
 
+	// 显示格式化固定走 zh-CN：跟随系统 locale 会在英文系统上漏出 "Jan 1, 2024" / "8:00 AM"。
 	const formatDate = (dateStr: string) => {
-		return new Date(dateStr).toLocaleDateString("en-US", {
+		return new Date(dateStr).toLocaleDateString("zh-CN", {
 			month: "short",
 			day: "numeric",
 			year: "numeric",
@@ -435,14 +436,14 @@ export function AccountView() {
 	};
 
 	const formatTime = (dateStr: string) => {
-		return new Date(dateStr).toLocaleTimeString("en-US", {
+		return new Date(dateStr).toLocaleTimeString("zh-CN", {
 			hour: "numeric",
 			minute: "2-digit",
 		});
 	};
 
 	const formatCreditBalance = (value: number, decimalPlaces = 2) => {
-		return new Intl.NumberFormat("en-US", {
+		return new Intl.NumberFormat("zh-CN", {
 			minimumFractionDigits: decimalPlaces,
 			maximumFractionDigits: decimalPlaces,
 		}).format(value / 1_000_000);
