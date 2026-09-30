@@ -37,6 +37,11 @@
 		"active": true,
 		"targets": "all",
 		"category": "DeveloperTool",
+		"windows": {
+			"wix": {
+				"language": "zh-CN"
+			}
+		},
 		"shortDescription": "Cline AI 编程智能体",
 		"longDescription": "Cline 是一个 AI 编程智能体。它能阅读你的代码、编辑文件、运行命令，并在你机器上的任意项目中与你一起完成任务。",
 		"homepage": "https://cline.bot",
