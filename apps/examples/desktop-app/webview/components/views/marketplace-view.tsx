@@ -392,11 +392,11 @@ function MarketplaceEntryCard({
 		onInstall(entry);
 	};
 	const actionLabel = !installedStatusReady
-		? "检查中..."
+		? "检查中…"
 		: actionState?.status === "installing"
-			? "安装中..."
+			? "安装中…"
 			: actionState?.status === "uninstalling"
-				? "卸载中..."
+				? "卸载中…"
 				: installed
 					? "卸载"
 					: "安装";
@@ -1169,7 +1169,7 @@ export function MarketplaceView({
 							<div className="relative block flex-1">
 								<Search className="pointer-events-none absolute left-2.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
 								<Input
-									aria-label={`搜索${pageDetails.title}`}
+									aria-label={`搜索 ${pageDetails.title}`}
 									className="h-10 pl-8"
 									onChange={(event) => setQuery(event.target.value)}
 									placeholder={`搜索${pageDetails.title}`}

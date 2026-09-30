@@ -2023,8 +2023,8 @@ export function RoutineSchedulesContent({
 						>
 							{isCreating
 								? editingSchedule
-									? "保存中..."
-									: "创建中..."
+									? "保存中…"
+									: "创建中…"
 								: editingSchedule
 									? "保存修改"
 									: "创建计划"}

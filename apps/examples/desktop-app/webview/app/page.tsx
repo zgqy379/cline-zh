@@ -281,7 +281,7 @@ function toThreadTitle(options: { title?: string; prompt?: string }): string {
 	}
 	const line = options.prompt?.trim().split("\n")[0]?.trim();
 	if (line) return line.slice(0, 70);
-	return "新会话";
+	return "新建会话";
 }
 
 export default function Home() {
@@ -1814,10 +1814,10 @@ function ChatThreadPane({
 			if (supportedFiles.length !== files.length) {
 				toast({
 					title: isCloudSession
-						? "不支持的云端附件"
+						? "云端不支持该附件"
 						: "不支持的图片格式",
 					description: isCloudSession
-						? "请选择 PNG、JPEG、GIF 或 WebP 图片，或切换到本地模式以附加其他文件。"
+						? "云端会话仅支持 PNG、JPEG、GIF、WebP 图片；如需添加其他文件，请切换到本地。"
 						: "请先将图片转换为 PNG、JPEG、GIF 或 WebP 格式再附加。",
 				});
 			}
@@ -2395,8 +2395,8 @@ function ChatThreadPane({
 					{chatTransportState === "unavailable"
 						? "桌面端后端不可用"
 						: chatTransportState !== "connected"
-							? "正在连接..."
-							: "正在加载..."}
+							? "正在连接…"
+							: "正在加载…"}
 				</p>
 				{chatTransportError ? (
 					<p className="max-w-xl px-6 text-center text-xs text-muted-foreground">

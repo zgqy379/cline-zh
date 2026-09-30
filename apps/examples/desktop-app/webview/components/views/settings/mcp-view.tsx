@@ -1141,7 +1141,7 @@ export function McpServersContent({
 							disabled={busyServerName !== null}
 						>
 							{busyServerName !== null
-								? "保存中..."
+								? "保存中…"
 								: editorMode === "edit"
 									? "保存更改"
 									: "添加服务器"}

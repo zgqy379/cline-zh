@@ -113,7 +113,7 @@ describe("sortProvidersForApiKeySetup", () => {
 				name: "Ollama",
 				configFields: [
 					apiKeyField,
-					{ path: "baseUrl", label: "基础 URL", type: "url" },
+					{ path: "baseUrl", label: "接口地址", type: "url" },
 				],
 			}),
 			makeProvider({ id: "anthropic", name: "Anthropic" }),
@@ -531,7 +531,7 @@ describe("OnboardingView", () => {
 		await act(async () => {
 			buttonByText("登录").click();
 		});
-		expect(container.textContent).toContain("正在等待浏览器...");
+		expect(container.textContent).toContain("正在等待浏览器…");
 
 		await act(async () => {
 			buttonByText("取消").click();

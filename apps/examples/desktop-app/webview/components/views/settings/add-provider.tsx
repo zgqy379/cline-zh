@@ -231,7 +231,7 @@ export function AddProviderContent({
 
 			<div className="rounded-lg border border-border p-5">
 				<Label className="mb-2 block text-xs font-medium text-muted-foreground">
-					基础 URL
+					接口地址
 				</Label>
 				<input
 					type="url"

@@ -636,7 +636,7 @@ export function ChannelsContent({
 					className="flex-1 bg-transparent text-sm text-foreground outline-none placeholder:text-muted-foreground"
 					id="channel-search"
 					onChange={(event) => setQuery(event.target.value)}
-					placeholder="搜索渠道..."
+					placeholder="搜索渠道…"
 					type="search"
 					value={query}
 				/>
@@ -891,7 +891,7 @@ export function ChannelsContent({
 												disabled={isBusy}
 												type="submit"
 											>
-												{pendingType === "connecting" ? "保存中..." : "保存"}
+												{pendingType === "connecting" ? "保存中…" : "保存"}
 											</button>
 										</div>
 									</div>

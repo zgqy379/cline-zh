@@ -30,7 +30,7 @@ function Command({
 
 function CommandDialog({
 	title = "命令面板",
-	description = "搜索要执行的命令...",
+	description = "搜索要执行的命令…",
 	children,
 	className,
 	showCloseButton = true,
