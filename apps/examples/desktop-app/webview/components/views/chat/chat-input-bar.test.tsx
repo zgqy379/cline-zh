@@ -1742,8 +1742,8 @@ describe("ChatInputBar", () => {
 			...container.querySelectorAll<HTMLButtonElement>(
 				"button[aria-controls][aria-expanded]",
 			),
-		].find((button) => button.textContent?.includes("prompts queued"));
-		expect(queueToggle?.textContent).toContain("2 prompts queued");
+		].find((button) => button.textContent?.includes("条提示词已排队"));
+		expect(queueToggle?.textContent).toContain("2 条提示词已排队");
 		expect(queueToggle?.getAttribute("aria-expanded")).toBe("false");
 		const queuedPromptsId = queueToggle?.getAttribute("aria-controls");
 		expect(queuedPromptsId).toBeTruthy();
@@ -1759,7 +1759,7 @@ describe("ChatInputBar", () => {
 			"What else can we update the title to?",
 		);
 		expect(queuedPrompts?.textContent).toContain("Use the shorter title");
-		expect(queuedPrompts?.textContent).toContain("Next turn");
+		expect(queuedPrompts?.textContent).toContain("下一轮");
 		expect(
 			container.querySelector('[aria-label="编辑排队的提示"]'),
 		).not.toBeNull();
@@ -1882,7 +1882,7 @@ describe("ChatInputBar", () => {
 			...container.querySelectorAll<HTMLButtonElement>(
 				"button[aria-controls][aria-expanded]",
 			),
-		].find((button) => button.textContent?.includes("prompt queued"));
+		].find((button) => button.textContent?.includes("条提示词已排队"));
 		await act(async () => queueToggle?.click());
 
 		const queuedPrompts = document.getElementById(
