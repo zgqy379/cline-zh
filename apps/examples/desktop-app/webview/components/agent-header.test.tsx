@@ -151,7 +151,7 @@ describe("AgentHeader agent activity", () => {
 		);
 		expect(activity).not.toBeNull();
 		expect(activity?.getAttribute("aria-label")).toBe(
-			"5 agents: 1 running, 2 completed, 1 failed, 1 cancelled",
+			"5 个智能体：1 个运行中、2 个已完成、1 个失败、1 个已取消",
 		);
 		// total, running, completed, failed, stalled
 		expect(activity?.textContent).toBe("51211");
