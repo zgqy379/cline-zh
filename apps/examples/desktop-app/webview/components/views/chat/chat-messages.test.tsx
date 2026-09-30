@@ -1850,7 +1850,7 @@ describe("ChatMessages reasoning disclosure", () => {
 		const disclosures = container.querySelectorAll(".cline-chat-reasoning");
 		expect(disclosures).toHaveLength(1);
 		const trigger = disclosures[0]?.querySelector("button");
-		expect(trigger?.textContent).toContain("Thought for 2s");
+		expect(trigger?.textContent).toContain("思考了 2 秒");
 
 		await act(async () => trigger?.click());
 
@@ -1925,7 +1925,7 @@ describe("ChatMessages reasoning disclosure", () => {
 		]);
 
 		expect(container.textContent).toContain("Thinking");
-		expect(container.textContent).not.toContain("Thought for");
+		expect(container.textContent).not.toContain("思考了");
 	});
 });
 
