@@ -48,9 +48,9 @@ describe("read_files summaries", () => {
 			toolName: "read_files",
 			input: { files: [{ path: "src/app.tsx", start_line: 10, end_line: 80 }] },
 		});
-		expect(summary.label).toBe("已读取 file app.tsx (10–80)");
+		expect(summary.label).toBe("已读取文件 app.tsx (10–80)");
 		expect(summary.labelParts).toEqual([
-			{ text: "已读取 file " },
+			{ text: "已读取文件 " },
 			{ text: "app.tsx (10–80)", code: true },
 		]);
 		expect(summary.kind).toBe("read");
@@ -72,7 +72,7 @@ describe("read_files summaries", () => {
 			toolName: "read_files",
 			input: { files: [{ path: "a.ts", start_line: 100 }] },
 		});
-		expect(summary.label).toBe("已读取 file a.ts (100+)");
+		expect(summary.label).toBe("已读取文件 a.ts (100+)");
 		expect(summary.details).toEqual(["a.ts:100+"]);
 	});
 
@@ -91,13 +91,13 @@ describe("read_files summaries", () => {
 		expect(
 			buildToolSummary({ toolName: "read_files", input: { paths: ["x.go"] } })
 				.label,
-		).toBe("已读取 file x.go");
+		).toBe("已读取文件 x.go");
 		expect(
 			buildToolSummary({
 				toolName: "read_files",
 				input: '{"file_paths":["y.rs"]}',
 			}).label,
-		).toBe("已读取 file y.rs");
+		).toBe("已读取文件 y.rs");
 	});
 
 	it("shortens long paths in details but keeps basenames in labels", () => {
@@ -107,7 +107,7 @@ describe("read_files summaries", () => {
 			toolName: "read_files",
 			input: { file_paths: [longPath] },
 		});
-		expect(summary.label).toBe("已读取 file chat-messages.tsx");
+		expect(summary.label).toBe("已读取文件 chat-messages.tsx");
 		expect(summary.details[0]).toBe(shortenPath(longPath));
 		expect(summary.details[0].startsWith(".../")).toBe(true);
 	});
@@ -119,9 +119,9 @@ describe("run_commands summaries", () => {
 			toolName: "run_commands",
 			input: { commands: ["bun run test"] },
 		});
-		expect(summary.label).toBe("已运行 command bun run test");
+		expect(summary.label).toBe("已运行命令 bun run test");
 		expect(summary.labelParts).toEqual([
-			{ text: "已运行 command " },
+			{ text: "已运行命令 " },
 			{ text: "bun run test", code: true },
 		]);
 		expect(summary.items).toEqual([
@@ -138,7 +138,7 @@ describe("run_commands summaries", () => {
 			toolName: "run_commands",
 			input: { commands: [command] },
 		});
-		expect(summary.label).toBe(`已运行 command ${command}`);
+		expect(summary.label).toBe(`已运行命令 ${command}`);
 	});
 
 	it("applies maxInlineChars only when a consumer opts in", () => {
@@ -150,7 +150,7 @@ describe("run_commands summaries", () => {
 			{ maxInlineChars: 60 },
 		);
 		expect(summary.label.length).toBeLessThanOrEqual(
-			"已运行 command ".length + 60,
+			"已运行命令 ".length + 60,
 		);
 		expect(summary.label.endsWith("…")).toBe(true);
 		expect(summary.details[0]).toBe(`echo ${"x".repeat(400)}`);
@@ -458,7 +458,7 @@ describe("spawn / skill / question summaries", () => {
 			toolName: "spawn_agent",
 			input: { task: "Fix the login bug in auth flow" },
 		});
-		expect(summary.label).toBe("已创建 agent: Fix the login bug in auth flow");
+		expect(summary.label).toBe("已创建智能体：Fix the login bug in auth flow");
 		expect(summary.details).toEqual(["Fix the login bug in auth flow"]);
 	});
 
@@ -584,7 +584,7 @@ describe("buildGroupedToolLabel", () => {
 			toolName: "read_files",
 			input: { files: [{ path: "a.ts", start_line: 1, end_line: 5 }] },
 		});
-		expect(buildGroupedToolLabel([summary])).toBe("已读取 file a.ts (1–5)");
+		expect(buildGroupedToolLabel([summary])).toBe("已读取文件 a.ts (1–5)");
 	});
 
 	it("merges input-less fallback summaries into grouped counts", () => {
