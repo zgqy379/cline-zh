@@ -328,7 +328,7 @@ export function SearchCombobox({
 				aria-busy={loading || undefined}
 				aria-expanded={open}
 				aria-haspopup="dialog"
-				aria-label={`${ariaLabel}: ${displayedValue}`}
+				aria-label={`${ariaLabel}：${displayedValue}`}
 				className={[
 					"cline-ui-search-combobox__trigger inline-flex min-w-0 cursor-pointer items-center gap-1 rounded-cline-ui-md border-0 bg-transparent px-2 py-1 text-cline-ui-sm font-cline-ui-medium text-cline-ui-foreground ease-[ease] [&:hover:not(:disabled)]:bg-cline-ui-surface-hover focus-visible:outline-2 focus-visible:outline-cline-ui-ring focus-visible:outline-offset-0 disabled:cursor-not-allowed disabled:opacity-50 motion-reduce:transition-none",
 					className,

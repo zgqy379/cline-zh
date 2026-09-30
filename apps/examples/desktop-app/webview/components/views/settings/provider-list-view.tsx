@@ -850,7 +850,7 @@ export function ProviderDetailContent({
 								) : null}
 								<span>
 									{oauthLoginPending
-										? "等待浏览器中完成操作..."
+										? "等待浏览器中完成操作…"
 										: "使用浏览器登录"}
 								</span>
 							</Button>
@@ -1232,7 +1232,7 @@ export function ProviderDetailContent({
 					<div className="rounded-lg border border-border px-4 py-8 text-center">
 						<p className="text-sm text-muted-foreground">
 							{modelsLoading
-								? "正在加载模型..."
+								? "正在加载模型…"
 								: "没有可用的模型。点击刷新以加载模型。"}
 						</p>
 					</div>

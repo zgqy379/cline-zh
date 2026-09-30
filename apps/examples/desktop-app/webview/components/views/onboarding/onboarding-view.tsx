@@ -624,7 +624,7 @@ function ConnectStep({
 								variant="fill"
 							>
 								{signingIn && <Loader2 className="size-4 animate-spin" />}
-								{signingIn ? "正在等待浏览器..." : "登录"}
+								{signingIn ? "正在等待浏览器…" : "登录"}
 							</Button>
 							{signingIn ? (
 								<Button
@@ -723,7 +723,7 @@ function ConnectStep({
 											{clineKeySaving ? (
 												<Loader2 className="size-4 animate-spin" />
 											) : null}
-											{clineKeySaving ? "正在连接..." : "连接"}
+											{clineKeySaving ? "正在连接…" : "连接"}
 										</Button>
 									</div>
 									<Button
@@ -787,7 +787,7 @@ function ConnectStep({
 										<SelectValue
 											placeholder={
 												providersLoading
-													? "正在加载供应商..."
+													? "正在加载供应商…"
 													: "选择供应商"
 											}
 										/>
@@ -843,7 +843,7 @@ function ConnectStep({
 									variant="fill"
 								>
 									{saving ? <Loader2 className="size-4 animate-spin" /> : null}
-									{saving ? "正在连接..." : "连接"}
+									{saving ? "正在连接…" : "连接"}
 								</Button>
 							</div>
 							{saveError ? (

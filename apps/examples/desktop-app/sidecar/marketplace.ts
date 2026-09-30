@@ -795,7 +795,7 @@ async function installSkill(
 	}
 	const output = commandOutput(result);
 	if (/\bFailed to install\b/i.test(output ?? "")) {
-		throw new Error(`技能安装失败${output ? `:\n${output}` : ""}`);
+		throw new Error(`技能安装失败${output ? `：\n${output}` : ""}`);
 	}
 	if (!isGlobalSkillInstalled(entry)) {
 		throw new Error(

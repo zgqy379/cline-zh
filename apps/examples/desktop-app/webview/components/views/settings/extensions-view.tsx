@@ -1056,7 +1056,7 @@ export function CustomizationSectionView({
 				variant="destructive"
 			>
 				{uninstalling ? <Spinner /> : <Trash2 className="size-4" />}
-				{uninstalling ? "正在卸载..." : "卸载"}
+				{uninstalling ? "正在卸载…" : "卸载"}
 			</Button>
 		);
 	};
@@ -1097,7 +1097,7 @@ export function CustomizationSectionView({
 							onClick={() => void uninstallLocalPrimitive(target)}
 						>
 							{uninstalling ? <Spinner /> : <Trash2 className="size-4" />}
-							{uninstalling ? "正在卸载..." : "卸载"}
+							{uninstalling ? "正在卸载…" : "卸载"}
 						</DropdownMenuItem>
 					) : null}
 				</DropdownMenuContent>

@@ -272,9 +272,9 @@ function actionLabelFor(
 	installed: boolean,
 	ready: boolean,
 ): string {
-	if (!ready) return "检查中...";
-	if (state?.status === "installing") return "安装中...";
-	if (state?.status === "uninstalling") return "卸载中...";
+	if (!ready) return "检查中…";
+	if (state?.status === "installing") return "安装中…";
+	if (state?.status === "uninstalling") return "卸载中…";
 	return installed ? "卸载" : "安装";
 }
 

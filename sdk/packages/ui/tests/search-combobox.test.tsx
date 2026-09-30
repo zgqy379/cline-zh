@@ -47,7 +47,7 @@ describe("SearchCombobox", () => {
 		);
 
 		const trigger = container.querySelector("button");
-		expect(trigger?.getAttribute("aria-label")).toBe("Repository: cline/cline");
+		expect(trigger?.getAttribute("aria-label")).toBe("Repository：cline/cline");
 		expect(onOpen).not.toHaveBeenCalled();
 		await act(async () => trigger?.click());
 		expect(onOpen).toHaveBeenCalledTimes(1);

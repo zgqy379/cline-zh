@@ -57,7 +57,7 @@ function errorFromEvent(event: Event, fallbackMessage: string): Error {
 		return new Error(eventMessage.trim());
 	}
 	if (typeof eventError === "string" && eventError.trim()) {
-		return new Error(`${fallbackMessage}: ${eventError.trim()}`);
+		return new Error(`${fallbackMessage}：${eventError.trim()}`);
 	}
 	return new Error(fallbackMessage);
 }
