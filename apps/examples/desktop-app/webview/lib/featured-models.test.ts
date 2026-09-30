@@ -132,8 +132,8 @@ describe("buildModelPickerData", () => {
 			model("z-ai/glm-5.3-flash", "GLM-5.3-Flash"),
 		]);
 		expect(sections?.map((section) => section.label)).toEqual([
-			"Subscribed",
-			"Free",
+			"已订阅",
+			"免费",
 		]);
 		expect(options.map((option) => [option.value, option.section])).toEqual([
 			["cline-pass/deepseek-v4-flash", "subscribed"],

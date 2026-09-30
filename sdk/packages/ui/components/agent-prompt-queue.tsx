@@ -267,7 +267,7 @@ export function AgentPromptQueue({
 										) : null}
 										{item.steer ? (
 											<span className="cline-ui-agent-prompt-queue__badge shrink-0 rounded-full bg-cline-ui-primary/10 px-1.5 py-0.5 font-cline-ui-medium text-[10px] text-cline-ui-primary">
-												Next turn
+												下一轮
 											</span>
 										) : null}
 									</div>

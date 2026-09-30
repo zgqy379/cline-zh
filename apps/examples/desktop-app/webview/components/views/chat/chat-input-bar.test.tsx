@@ -756,7 +756,7 @@ describe("ChatInputBar", () => {
 		);
 		expect(sendButton?.disabled).toBe(true);
 		expect(sendButton?.title).toBe("请选择一个仓库");
-		expect(container.textContent).toContain("Repository required");
+		expect(container.textContent).toContain("需要仓库");
 		expect(promptInput?.placeholder).toBe("请选择一个仓库");
 		await act(async () => {
 			promptInput?.dispatchEvent(
