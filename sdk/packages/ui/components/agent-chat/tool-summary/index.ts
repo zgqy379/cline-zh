@@ -452,7 +452,7 @@ export function buildToolSummary(
 				...labeled(
 					single
 						? [
-								{ text: `${inProgress ? "正在读取" : "已读取"} file ` },
+								{ text: `${inProgress ? "正在读取" : "已读取"}文件 ` },
 								{
 									text: `${displayFileName(single.path)}${lineRangeLabelSuffix(single.startLine, single.endLine)}`,
 									code: true,
@@ -492,7 +492,7 @@ export function buildToolSummary(
 				...labeled(
 					singleInline !== null
 						? [
-								{ text: `${inProgress ? "正在运行" : "已运行"} command ` },
+								{ text: `${inProgress ? "正在运行" : "已运行"}命令 ` },
 								{ text: singleInline, code: true },
 							]
 						: [
@@ -748,7 +748,7 @@ export function buildToolSummary(
 			return {
 				...base,
 				...labeled([
-					{ text: `${inProgress ? "正在创建" : "已创建"} agent: ` },
+					{ text: `${inProgress ? "正在创建" : "已创建"}智能体：` },
 					{ text: truncate(info.task, opts.maxInlineChars) },
 				]),
 				aggregate: { ...SPAWN_AGGREGATE, count: 1 },

@@ -1492,7 +1492,7 @@ describe("ChatMessages follow-up questions", () => {
 		);
 		await act(async () => answer?.click());
 
-		expect(onAnswerAskQuestion).toHaveBeenCalledWith("request-1", "Continue");
+		expect(onAnswerAskQuestion).toHaveBeenCalledWith("request-1", "继续");
 	});
 });
 
@@ -1924,7 +1924,7 @@ describe("ChatMessages reasoning disclosure", () => {
 			},
 		]);
 
-		expect(container.textContent).toContain("Thinking");
+		expect(container.textContent).toContain("思考中");
 		expect(container.textContent).not.toContain("思考了");
 	});
 });
@@ -2337,11 +2337,11 @@ describe("ChatMessages credential failures", () => {
 
 		const buttons = [...container.querySelectorAll("button")].filter(
 			(button) =>
-				button.textContent === "Open API providers" ||
+				button.textContent === "打开 API 供应商" ||
 				button.textContent === "登录 Cline",
 		);
 		expect(buttons.map((button) => button.textContent)).toEqual([
-			"Open API providers",
+			"打开 API 供应商",
 		]);
 		await act(async () => buttons[0]?.click());
 		expect(onFixCredentials).toHaveBeenCalledWith("models");
