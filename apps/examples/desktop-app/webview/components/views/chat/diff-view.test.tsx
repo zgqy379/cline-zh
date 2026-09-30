@@ -150,7 +150,7 @@ describe("DiffView file actions", () => {
 			);
 		});
 
-		await click(buttonWithLabel("Copy file path for docs/a.mdx"));
+		await click(buttonWithLabel("复制 docs/a.mdx 的文件路径"));
 
 		expect(writeText).toHaveBeenCalledWith("/Users/renee/cline/docs/a.mdx");
 	});
@@ -167,7 +167,7 @@ describe("DiffView file actions", () => {
 			);
 		});
 
-		await pointerDown(buttonWithLabel("Open docs/a.mdx in editor"));
+		await pointerDown(buttonWithLabel("在编辑器中打开 docs/a.mdx"));
 
 		const labels = menuItems().map((item) => item.textContent);
 		expect(labels).toEqual(["VS Code", "System default"]);
@@ -203,7 +203,7 @@ describe("DiffView file actions", () => {
 			);
 		});
 
-		await pointerDown(buttonWithLabel("Open docs/a.mdx in editor"));
+		await pointerDown(buttonWithLabel("在编辑器中打开 docs/a.mdx"));
 
 		const labels = menuItems().map((item) => item.textContent);
 		expect(labels).toEqual(["System default"]);
@@ -228,7 +228,7 @@ describe("DiffView file actions", () => {
 			);
 		});
 
-		await click(buttonWithLabel("Copy file path for docs/a.mdx"));
+		await click(buttonWithLabel("复制 docs/a.mdx 的文件路径"));
 
 		expect(writeText).toHaveBeenCalledWith("docs/a.mdx");
 	});
