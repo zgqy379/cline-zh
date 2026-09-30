@@ -138,7 +138,7 @@ describe("sidebar session organization", () => {
 			scheduleRunLabel(
 				thread("a", "/ws", { isScheduled: true, scheduleRunNumber: 7 }),
 			),
-		).toBe("Run 7");
+		).toBe("运行 7");
 		const dated = scheduleRunLabel(
 			thread("b", "/ws", {
 				isScheduled: true,
@@ -146,9 +146,9 @@ describe("sidebar session organization", () => {
 			}),
 		);
 		expect(dated).toMatch(/Aug 31/);
-		expect(dated).not.toBe("Run");
+		expect(dated).not.toBe("运行");
 		expect(scheduleRunLabel(thread("c", "/ws", { isScheduled: true }))).toBe(
-			"Run",
+			"运行",
 		);
 	});
 });

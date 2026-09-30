@@ -178,9 +178,9 @@ describe("Marketplace directory", () => {
 			})),
 		});
 		await render();
-		expect(connectorFilter()?.textContent).toBe("Connectors121");
+		expect(connectorFilter()?.textContent).toBe("连接器121");
 		const section = container.querySelector('section[aria-label="连接器"]');
-		expect(section?.querySelector("h2")?.textContent).toBe("Connectors121");
+		expect(section?.querySelector("h2")?.textContent).toBe("连接器121");
 		expect(section?.querySelectorAll("button")).toHaveLength(24);
 		const input = container.querySelector(
 			'input[aria-label="搜索市场"]',
@@ -194,8 +194,8 @@ describe("Marketplace directory", () => {
 		});
 		expect(section?.querySelectorAll("button")).toHaveLength(1);
 		expect(section?.textContent).toContain("App 120");
-		expect(connectorFilter()?.textContent).toBe("Connectors121");
-		expect(section?.querySelector("h2")?.textContent).toBe("Connectors121");
+		expect(connectorFilter()?.textContent).toBe("连接器121");
+		expect(section?.querySelector("h2")?.textContent).toBe("连接器121");
 	});
 	it("appends pages on scroll through the full catalog and resets pagination for search", async () => {
 		mocks.catalog.mockResolvedValue({
@@ -214,7 +214,7 @@ describe("Marketplace directory", () => {
 				}),
 			);
 			expect(section?.querySelectorAll("button")).toHaveLength(count);
-			expect(connectorFilter()?.textContent).toBe("Connectors73");
+			expect(connectorFilter()?.textContent).toBe("连接器73");
 		}
 		expect(intersections.size).toBe(0);
 		expect(
