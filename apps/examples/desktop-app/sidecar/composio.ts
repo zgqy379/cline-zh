@@ -802,7 +802,7 @@ export async function connectComposioToolkit(
 	const ctx: ClineAuthTelemetryContext = { logger };
 	if (!(await isConnectorsAvailable(scope, { ctx }))) {
 		throw new Error(
-			"Sign in to your Cline account to use connectors. If you are signed in, connectors may not be enabled for your account yet.",
+			"请登录 Cline 账户以使用连接器。若已登录，你的账户可能尚未启用连接器功能。",
 		);
 	}
 	const existingPending = scope.pendingConnections.get(toolkit);
