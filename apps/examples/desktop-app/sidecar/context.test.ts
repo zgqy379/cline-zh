@@ -1116,7 +1116,7 @@ describe("Code sidecar runtime capabilities", () => {
 				{ sessionId: "sess-1", requestId, approved: true },
 				{ connection: untrustedClient },
 			),
-		).rejects.toThrow("trusted desktop connection");
+		).rejects.toThrow("工具审批需要受信任的桌面连接");
 		expect(ctx.pendingApprovals.size).toBe(1);
 		await handleCommand(
 			ctx,
@@ -1515,7 +1515,7 @@ describe("Code sidecar runtime capabilities", () => {
 
 		await expect(
 			handleCommand(ctx, command, {}, { connection: untrustedClient }),
-		).rejects.toThrow("task execution requires a trusted desktop connection");
+		).rejects.toThrow("任务执行需要受信任的桌面连接");
 		expect(hubCommandMock).not.toHaveBeenCalled();
 	});
 
