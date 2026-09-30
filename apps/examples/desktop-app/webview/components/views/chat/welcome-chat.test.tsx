@@ -274,7 +274,7 @@ describe("WelcomeScreen", () => {
 		});
 
 		expect(container.textContent).toContain("Finish accessibility review");
-		expect(container.textContent).toContain("Follow-up · P1");
+		expect(container.textContent).toContain("跟进 · P1");
 	});
 
 	it("hides expired workspace suggestions", async () => {
@@ -348,7 +348,7 @@ describe("WelcomeScreen", () => {
 			...cloudProps,
 		});
 
-		await clickButton("Select repository");
+		await clickButton("选择仓库");
 		await act(async () => {
 			await Promise.resolve();
 			await Promise.resolve();

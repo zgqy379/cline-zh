@@ -2858,7 +2858,7 @@ describe("ChatInputBar token ring", () => {
 			2000,
 		);
 		expect(outputOnly?.getAttribute("aria-label")).toBe(
-			"Context window: 500 of 2,000 tokens used (25%)",
+			"上下文窗口：2,000 中已用 500 个令牌（25%）",
 		);
 	});
 
@@ -2872,7 +2872,7 @@ describe("ChatInputBar token ring", () => {
 			2000,
 		);
 		expect(trigger?.getAttribute("aria-label")).toBe(
-			"Context window: 1,500 of 2,000 tokens used (75%)",
+			"上下文窗口：2,000 中已用 1,500 个令牌（75%）",
 		);
 		expect(trigger?.textContent).toBe("");
 		const ring = trigger?.querySelector("svg");
@@ -2942,7 +2942,7 @@ describe("ChatInputBar token ring", () => {
 		});
 
 		const panel = document.querySelector("#token-usage-panel");
-		expect(panel?.textContent).toContain("Context window500.5k / 1.0M (50%)");
+		expect(panel?.textContent).toContain("上下文窗口500.5k / 1.0M (50%)");
 		expect(panel?.textContent).toContain("输入令牌数500,000");
 		expect(panel?.textContent).toContain("输出令牌数500");
 		expect(panel?.textContent).toContain("缓存令牌数125,000");

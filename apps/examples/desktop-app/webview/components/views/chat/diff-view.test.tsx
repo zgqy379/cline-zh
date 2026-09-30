@@ -170,7 +170,7 @@ describe("DiffView file actions", () => {
 		await pointerDown(buttonWithLabel("在编辑器中打开 docs/a.mdx"));
 
 		const labels = menuItems().map((item) => item.textContent);
-		expect(labels).toEqual(["VS Code", "System default"]);
+		expect(labels).toEqual(["VS Code", "系统默认"]);
 
 		const vscodeItem = menuItems().find(
 			(item) => item.textContent === "VS Code",
@@ -206,7 +206,7 @@ describe("DiffView file actions", () => {
 		await pointerDown(buttonWithLabel("在编辑器中打开 docs/a.mdx"));
 
 		const labels = menuItems().map((item) => item.textContent);
-		expect(labels).toEqual(["System default"]);
+		expect(labels).toEqual(["系统默认"]);
 
 		await click(menuItems()[0] as Element);
 
