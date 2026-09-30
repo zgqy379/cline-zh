@@ -18,15 +18,15 @@ function toolStatus(
 	scan: ListImportableSessionsResponse,
 ): string {
 	if (!scan.installedTools.includes(tool)) {
-		return "Not detected on this machine";
+		return "未在本机检测到";
 	}
 	const sessions = scan.sessions.filter((session) => session.tool === tool);
-	if (sessions.length === 0) return "No sessions found";
+	if (sessions.length === 0) return "未找到会话";
 	const imported = sessions.filter(
 		(session) => session.alreadyImportedSessionId,
 	).length;
-	const found = `${sessions.length} session${sessions.length === 1 ? "" : "s"} found`;
-	return imported > 0 ? `${found} · ${imported} already imported` : found;
+	const found = `${sessions.length} 个会话`;
+	return imported > 0 ? `${found} · 已导入 ${imported} 个` : found;
 }
 
 export function ImportContent() {

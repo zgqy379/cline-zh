@@ -5,7 +5,6 @@ import {
 	resolveToolRoutingConfig,
 } from "./model-tool-routing";
 import { resolveToolPresetName, ToolPresets } from "./presets";
-import { createSpawnAgentTool } from "./team/spawn-agent-tool";
 import { TEAM_TOOL_NAMES } from "./team/team-tools";
 import type { DefaultToolsConfig } from "./types";
 
@@ -44,68 +43,68 @@ const BASE_TOOL_CATALOG: readonly RuntimeToolCatalogEntry[] = [
 	{
 		id: "web_search",
 		description:
-			"Search the public web using the selected model provider's native search capability.",
+			"使用所选模型供应商的原生搜索能力搜索公开网页。",
 		headlessToolNames: ["web_search"],
 	},
 	{
 		id: "read_files",
 		description:
-			"Read the content of text or image files at the provided absolute paths, or return only an inclusive one-based line range when start_line/end_line are provided. Long files are windowed; page with start_line/end_line.",
+			"读取指定绝对路径下的文本或图片文件内容；提供 start_line/end_line 时仅返回包含首末行的闭区间。长文件会分窗显示，可用 start_line/end_line 翻页。",
 		headlessToolNames: ["read_files"],
 	},
 	{
 		id: "search_codebase",
 		description:
-			"Perform regex pattern searches across the codebase for code patterns, definitions, imports, and other text matches.",
+			"在整个代码库中执行正则搜索，匹配代码模式、定义、导入及其他文本。",
 		headlessToolNames: ["search_codebase"],
 	},
 	{
 		id: "run_commands",
 		description:
-			"Run shell commands from the root of the workspace for listing files, checking git status, builds, tests, and similar tasks.",
+			"在工作区根目录运行 shell 命令，用于列出文件、查看 git 状态、构建、测试等任务。",
 		headlessToolNames: ["run_commands"],
 	},
 	{
 		id: "editor",
 		description:
-			"Make controlled filesystem edits on text files with create, replace, and insert operations.",
+			"通过创建、替换和插入操作，对文本文件进行受控的文件系统编辑。",
 		headlessToolNames: ["editor"],
 	},
 	{
 		id: "fetch_web_content",
 		description:
-			"Fetch URL content and analyze it with a prompt describing what to extract.",
+			"抓取 URL 内容，并按给定的提取要求用提示词进行分析。",
 		headlessToolNames: ["fetch_web_content"],
 	},
 	{
 		id: "skills",
 		description:
-			"Execute a configured skill within the main conversation when a matching skill exists for the task.",
+			"当存在与任务匹配的技能时，在主对话中执行该技能。",
 		headlessToolNames: ["skills"],
 	},
 	{
 		id: "ask_question",
 		description:
-			"Ask the user a single clarifying question with 2-5 selectable options.",
+			"向用户提出一个澄清问题，提供 2-5 个可选项。",
 		headlessToolNames: ["ask_question"],
 	},
 	{
 		id: "tasks",
 		description:
-			"Create and manage explicitly requested one-time and recurring agent schedules.",
+			"创建并管理用户明确要求的单次与周期性智能体定时任务。",
 		headlessToolNames: ["tasks"],
 		unavailableClientTypes: ["cli", "vscode"],
 	},
 	{
 		id: "spawn_agent",
-		description: createSpawnAgentTool({ configProvider: {} as never })
-			.description,
+		description:
+			"创建子智能体来并行处理独立的子任务。",
 		headlessToolNames: ["spawn_agent"],
 	},
 	{
 		id: "teams",
 		description:
-			"Enable team collaboration tools for teammate management, task coordination, mailbox messaging, mission logs, and outcomes.",
+			"启用团队协作工具：队友管理、任务协调、邮箱消息、任务日志与成果。",
 		headlessToolNames: [...TEAM_TOOL_NAMES],
 	},
 ] as const;
