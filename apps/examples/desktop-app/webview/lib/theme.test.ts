@@ -120,6 +120,35 @@ describe("hub theme: system preference", () => {
 		expect(document.documentElement.dataset.clineHubTheme).toBe("light");
 	});
 
+	it("follows the system theme by polling when change events never fire (WebView2)", async () => {
+		const state = { dark: false };
+		window.matchMedia = ((query: string) =>
+			({
+				get matches() {
+					if (query === "(prefers-color-scheme: dark)") return state.dark;
+					if (query === "(prefers-color-scheme: light)") return !state.dark;
+					return false;
+				},
+				media: query,
+				addEventListener() {},
+				removeEventListener() {},
+			}) as unknown as MediaQueryList) as typeof window.matchMedia;
+		window.localStorage.setItem(HUB_THEME_STORAGE_KEY, "system");
+		expect(syncHubTheme()).toBe("light");
+		expect(document.documentElement.dataset.clineHubTheme).toBe("light");
+
+		// 无回调调用（page.tsx 的用法）：应用逻辑必须照常执行
+		const stop = watchSystemHubTheme();
+		// WebView2 怪癖：matches 取值已翻转，但 change 事件永远不会派发
+		state.dark = true;
+		await new Promise((resolve) => setTimeout(resolve, 1200));
+
+		expect(document.documentElement.dataset.clineHubTheme).toBe("dark");
+		expect(document.documentElement.classList.contains("dark")).toBe(true);
+
+		stop();
+	}, 4000);
+
 	it("resolves preferences through resolveHubTheme", () => {
 		setSystemTheme("light");
 		expect(resolveHubTheme("system")).toBe("light");
