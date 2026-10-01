@@ -234,15 +234,19 @@ export function watchSystemHubTheme(
 		onChange?.(next);
 	};
 	media.addEventListener("change", handle);
-	// WebView2 的怪癖：prefers-color-scheme 的取值会随系统实时更新，
-	// 但 change 事件从不派发（CDP 实测 2026-10-01）。轮询比对取值兜底；
-	// 在正常派发事件的宿主里轮询只是冗余的低成本读取。
-	let lastMatches = media.matches;
+	// WebView2 的怪癖（CDP 实测 2026-10-01，B43/B44 两轮定位）：
+	// prefers-color-scheme 的 change 事件从不派发，且**已存在的 MediaQueryList
+	// 实例的 matches 在真实系统切换后保持过期值**——只有新发起的 matchMedia()
+	// 才能看到新值。因此轮询必须每 tick 重新发起查询，而不是复用捕获的实例。
+	let lastMatches = window.matchMedia?.("(prefers-color-scheme: dark)")?.matches;
 	const interval = window.setInterval(() => {
-		if (media.matches === lastMatches) {
+		const matches = window.matchMedia?.(
+			"(prefers-color-scheme: dark)",
+		)?.matches;
+		if (matches === undefined || matches === lastMatches) {
 			return;
 		}
-		lastMatches = media.matches;
+		lastMatches = matches;
 		handle();
 	}, 800);
 	return () => {
