@@ -133,7 +133,7 @@ describe("buildModelPickerData", () => {
 		]);
 		expect(sections?.map((section) => section.label)).toEqual([
 			"已订阅",
-			"免费",
+			"免费模型",
 		]);
 		expect(options.map((option) => [option.value, option.section])).toEqual([
 			["cline-pass/deepseek-v4-flash", "subscribed"],
