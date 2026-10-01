@@ -2527,6 +2527,139 @@ describe("ChatInputBar", () => {
 			expect(panel?.textContent).not.toContain("当前模型");
 		});
 
+		it("falls back to the remembered model when the configured one was removed from the catalog", async () => {
+			// 真人验收 2026-10-01：stealth/pixel-canary 被服务端下架后仍留在会话
+			// 配置里，一直霸占选择位，localStorage 里记住的模型永久失效。
+			mockBundledCatalog();
+			window.localStorage.setItem(
+				MODEL_SELECTION_STORAGE_KEY,
+				JSON.stringify({
+					lastProvider: "cline-pass",
+					lastModelByProvider: { "cline-pass": flash.id },
+				}),
+			);
+			const onModelChange = vi.fn();
+			await renderComposer({
+				model: "stealth/pixel-canary",
+				onModelChange,
+				provider: "cline-pass",
+			});
+
+			await vi.waitFor(() => {
+				expect(onModelChange).toHaveBeenCalledWith(flash.id);
+			});
+			// 回退结果会被 autoCorrectModel 写回配置，形成自愈。
+			expect(
+				parseModelSelectionStorage(
+					window.localStorage.getItem(MODEL_SELECTION_STORAGE_KEY),
+				).lastModelByProvider["cline-pass"],
+			).toBe(flash.id);
+		});
+
+		it("keeps a removed model when there is nothing remembered to fall back to", async () => {
+			// 幽灵模型但没有记忆可回退时，不能静默换成别的模型。
+			mockBundledCatalog();
+			const onModelChange = vi.fn();
+			await renderComposer({
+				model: "stealth/pixel-canary",
+				onModelChange,
+				provider: "cline-pass",
+			});
+
+			await vi.waitFor(() => {
+				expect(loadProviderModelCatalogMock).toHaveBeenCalled();
+			});
+			expect(onModelChange).not.toHaveBeenCalledWith(flash.id);
+			expect(onModelChange).not.toHaveBeenCalledWith(kimi.id);
+
+			// 仍要留在列表里可选（visibleModelPicker 的「当前模型」分区）。
+			const modelTrigger = container.querySelector<HTMLButtonElement>(
+				'[aria-label^="模型："]',
+			);
+			await act(async () => modelTrigger?.click());
+			expect(document.querySelector('[role="dialog"]')?.textContent).toContain(
+				"当前模型",
+			);
+		});
+
+		it("treats the catalog as authoritative only after it finished loading", async () => {
+			// 目录加载窗口内 providerModels 为空，此时不能把正常模型误判成幽灵。
+			let releaseCatalog: (() => void) | undefined;
+			const gate = new Promise<void>((resolve) => {
+				releaseCatalog = resolve;
+			});
+			loadProviderModelCatalogMock.mockReturnValue(
+				gate.then(() => ({
+					providers: [],
+					enabledProviderIds: ["cline", "cline-pass"],
+					providerModels: { cline: ["test-model"], "cline-pass": [flash.id] },
+					providerModelDetails: { "cline-pass": [flash] },
+					providerNames: { cline: "Cline", "cline-pass": "ClinePass" },
+					providerReasoningModels: { cline: [], "cline-pass": [] },
+				})),
+			);
+			window.localStorage.setItem(
+				MODEL_SELECTION_STORAGE_KEY,
+				JSON.stringify({
+					lastProvider: "cline-pass",
+					lastModelByProvider: { "cline-pass": flash.id },
+				}),
+			);
+			const onModelChange = vi.fn();
+			await renderComposer({
+				model: "stealth/pixel-canary",
+				onModelChange,
+				provider: "cline-pass",
+			});
+
+			// 目录还没回来：配置里的模型原样保留，不触发回退。
+			expect(onModelChange).not.toHaveBeenCalledWith(flash.id);
+			releaseCatalog?.();
+			await vi.waitFor(() => {
+				expect(onModelChange).toHaveBeenCalledWith(flash.id);
+			});
+		});
+
+		it("does not treat a provider-locked offer as evidence of a removed model", async () => {
+			// 云端模式用 allowedProviderIds 把供应商锁成只有 cline，配置里的
+			// anthropic 模型「不在 cline 列表里」是供应商锁的结果，不是模型被下架。
+			// 漏判会让 resolvedModel 返回被锁掉的供应商的模型。
+			loadProviderModelCatalogMock.mockResolvedValue({
+				providers: [],
+				enabledProviderIds: ["anthropic", "cline"],
+				providerModels: {
+					anthropic: ["claude-test"],
+					cline: ["cline-test", "cline-alt"],
+				},
+				providerReasoningModels: { anthropic: [], cline: [] },
+			});
+			window.localStorage.setItem(
+				MODEL_SELECTION_STORAGE_KEY,
+				JSON.stringify({
+					lastProvider: "anthropic",
+					lastModelByProvider: { anthropic: "claude-test" },
+				}),
+			);
+			const onModelChange = vi.fn();
+			await renderComposer({
+				executionTarget: "cloud",
+				model: "claude-test",
+				onModelChange,
+				provider: "anthropic",
+			});
+
+			await vi.waitFor(() => {
+				expect(loadProviderModelCatalogMock).toHaveBeenCalled();
+			});
+			// 不得把 anthropic 的模型带进 cline-only 的选择器。
+			const modelTrigger = container.querySelector<HTMLButtonElement>(
+				'[aria-label^="模型："]',
+			);
+			await act(async () => modelTrigger?.click());
+			const panelText = document.querySelector('[role="dialog"]')?.textContent;
+			expect(panelText).not.toContain("claude-test");
+		});
+
 		it("does not apply another provider's remembered model to an empty selection", async () => {
 			mockBundledCatalog();
 			window.localStorage.setItem(

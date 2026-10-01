@@ -1806,12 +1806,34 @@ const ModelSelector = memo(function ModelSelector({
 			(normalizeProviderId(rememberedLastProvider) === resolvedProvider
 				? lastSelection.lastModelByProvider[rememberedLastProvider]
 				: undefined);
+		// 幽灵模型：服务端已下架、目录里根本不存在的模型，却仍留在会话配置里。
+		// 真人验收（2026-10-01）发现 stealth/pixel-canary 被下架后一直霸占选择位，
+		// 连带让 localStorage 里记住的模型永久失效、选择器被撑到要手动上滑。
+		// 判据刻意收窄，避免推翻上面「目录是发现数据、不是校验」的原则：
+		//   - 目录加载中不算（加载窗口内 providerModels 为空，会把正常模型误判成幽灵）
+		//   - 目录为空不算（同上）
+		//   - **必须本来就属于当前展示的供应商**（normalizedProvider ===
+		//     resolvedProvider）。云端模式会用 allowedProviderIds 把供应商锁成
+		//     只有 cline，此时配置里的 anthropic 模型「不在列表」是供应商锁的结果，
+		//     不是模型被下架——漏掉这条会破坏云端的供应商锁（回归由
+		//     chat-input-bar.test.tsx「allows cloud image and model selection
+		//     without replacing local defaults」抓到）。
+		//   - 只认「完整取回后仍不在目录里」，不猜服务端意图
+		const isGhostModel =
+			reasoningCapabilitySource !== "loading" &&
+			model !== "" &&
+			normalizedProvider === resolvedProvider &&
+			modelsForProvider.length > 0 &&
+			!modelsForProvider.includes(model);
 		// Catalogs are discovery data, not validation: the bundled catalog can
 		// omit live ClinePass models, and refreshes can return partial lists.
 		// Keep the configured model for the current provider even if absent;
 		// otherwise loading the catalog silently changes the session's model.
+		// Exception: a model the catalog has never heard of is not "live but
+		// unlisted" — it was removed, so the remembered pick wins instead.
 		if (
 			model &&
+			!isGhostModel &&
 			(normalizedProvider === resolvedProvider ||
 				modelsForProvider.includes(model))
 		) {
@@ -1826,6 +1848,12 @@ const ModelSelector = memo(function ModelSelector({
 		) {
 			return rememberedModel;
 		}
+		// Ghost with nothing remembered to fall back to: keep it rather than
+		// silently switching models. visibleModelPicker still lists it under
+		// its own 「当前模型」 section so the value stays selectable.
+		if (isGhostModel) {
+			return model;
+		}
 		return (
 			modelsForProvider.find((id) => pickerModelIds.has(id)) ??
 			modelsForProvider[0] ??
@@ -1837,6 +1865,7 @@ const ModelSelector = memo(function ModelSelector({
 		modelsForProvider,
 		normalizedProvider,
 		pickerModelIds,
+		reasoningCapabilitySource,
 		rememberedLastProvider,
 		resolvedProvider,
 	]);
