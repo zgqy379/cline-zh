@@ -1172,7 +1172,7 @@ export function MarketplaceView({
 									aria-label={`搜索 ${pageDetails.title}`}
 									className="h-10 pl-8"
 									onChange={(event) => setQuery(event.target.value)}
-									placeholder={`搜索${pageDetails.title}`}
+									placeholder={`搜索 ${pageDetails.title}`}
 									value={query}
 								/>
 							</div>

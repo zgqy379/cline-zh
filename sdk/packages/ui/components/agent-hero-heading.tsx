@@ -2,8 +2,10 @@
 
 import { useEffect, useState } from "react";
 
-const HERO_VERBS = ["build", "create", "fix", "know"] as const;
+const HERO_VERBS = ["搭建", "创建", "修复", "了解"] as const;
 const HERO_CYCLE_MS = 5000;
+// 无障碍标签要覆盖全部轮播状态；中文并列最后一项前用「或」而非「、」。
+const HERO_HEADING_LABEL = `你想${HERO_VERBS.slice(0, -1).join("、")}或${HERO_VERBS[HERO_VERBS.length - 1]}什么？`;
 
 export function AgentHeroHeading() {
 	const [verbIndex, setVerbIndex] = useState(0);
@@ -20,12 +22,9 @@ export function AgentHeroHeading() {
 	const verb = HERO_VERBS[verbIndex];
 
 	return (
-		<h1
-			aria-label="你想构建什么？"
-			className="cline-ui-agent-hero-heading"
-		>
+		<h1 aria-label={HERO_HEADING_LABEL} className="cline-ui-agent-hero-heading">
 			<span aria-hidden="true">
-				What would you like to{" "}
+				你想
 				<span className="cline-ui-agent-hero-heading__word" key={verb}>
 					{verb.split("").map((character, index) => (
 						<span
@@ -38,7 +37,7 @@ export function AgentHeroHeading() {
 						</span>
 					))}
 				</span>
-				?
+				什么？
 			</span>
 		</h1>
 	);

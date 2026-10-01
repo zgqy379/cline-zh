@@ -34,19 +34,19 @@ describe("AgentHeroHeading", () => {
 
 		const heading = container.querySelector("h1");
 		expect(heading?.getAttribute("aria-label")).toBe(
-			"你想构建什么？",
+			"你想搭建、创建、修复或了解什么？",
 		);
 		expect(
 			container.querySelector(".cline-ui-agent-hero-heading__word")
 				?.textContent,
-		).toBe("build");
+		).toBe("搭建");
 
 		await act(async () => vi.advanceTimersByTime(5000));
 
 		expect(
 			container.querySelector(".cline-ui-agent-hero-heading__word")
 				?.textContent,
-		).toBe("build");
+		).toBe("搭建");
 	});
 
 	it("cycles the visible verb when reduced motion is not requested", async () => {
@@ -59,6 +59,6 @@ describe("AgentHeroHeading", () => {
 		expect(
 			container.querySelector(".cline-ui-agent-hero-heading__word")
 				?.textContent,
-		).toBe("create");
+		).toBe("创建");
 	});
 });
