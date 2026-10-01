@@ -1688,7 +1688,7 @@ export function CustomizationSectionView({
 
 					<div className="mb-6">
 						<h3 className="mb-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-							Builtin Tools
+						内置工具
 						</h3>
 						<div className="flex flex-col gap-3">
 							{builtinTools.map((tool) =>
@@ -1739,7 +1739,7 @@ export function CustomizationSectionView({
 
 					<div>
 						<h3 className="mb-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-							Plugin Tools
+						插件工具
 						</h3>
 						<div className="flex flex-col gap-3">
 							{pluginTools.map((tool) =>
