@@ -456,7 +456,7 @@ function DetailPane({
 								<button
 									key={tag}
 									onClick={() => onSelectTag(tag)}
-									title={`按${directory.tagLabels.get(tag) ?? tag}筛选`}
+									title={`按 ${directory.tagLabels.get(tag) ?? tag} 筛选`}
 									type="button"
 								>
 									<Badge
