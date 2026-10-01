@@ -161,9 +161,7 @@ describe("mergeCloudSnapshotWithLive", () => {
 			}),
 		);
 		expect(
-			merged.filter(
-				(item) => item.role === "user" && item.content === "Continue",
-			),
+			merged.filter((item) => item.role === "user" && item.content === "继续"),
 		).toHaveLength(2);
 		expect(optimisticStates).toEqual(new Map());
 		expect(merged.find((item) => item.id === "new-saved")?.images).toEqual(
@@ -319,9 +317,7 @@ describe("mergeCloudSnapshotWithLive", () => {
 			}),
 		);
 		expect(
-			merged.filter(
-				(item) => item.role === "user" && item.content === "Continue",
-			),
+			merged.filter((item) => item.role === "user" && item.content === "继续"),
 		).toHaveLength(1);
 		expect(optimisticStates).toEqual(new Map());
 	});
@@ -1282,9 +1278,9 @@ describe("useChatSession", () => {
 		expect(result.output.length).toBeLessThanOrEqual(
 			MAX_LIVE_COMMAND_OUTPUT_CHARS,
 		);
-		expect(
-			result.output.startsWith("\u001b[0m[Earlier command output truncated]"),
-		).toBe(true);
+		expect(result.output.startsWith("\u001b[0m[此前的命令输出已截断]")).toBe(
+			true,
+		);
 		expect(result.output.endsWith("tail")).toBe(true);
 	});
 

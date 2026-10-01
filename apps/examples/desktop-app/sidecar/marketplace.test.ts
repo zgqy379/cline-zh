@@ -65,7 +65,7 @@ describe("official plugin install detection", () => {
 
 		expect(result).toMatchObject({
 			status: "installed",
-			message: "Installed Goal.",
+			message: "已安装 Goal。",
 		});
 		expect(installPluginMock).toHaveBeenCalledWith({
 			source: "goal",
@@ -97,7 +97,7 @@ describe("official plugin install detection", () => {
 
 		expect(result).toMatchObject({
 			status: "installed",
-			message: "Installed Goal.",
+			message: "已安装 Goal。",
 		});
 		expect(installPluginMock).toHaveBeenCalledWith({
 			source: "goal",
@@ -148,7 +148,7 @@ describe("official plugin install detection", () => {
 
 			expect(result).toMatchObject({
 				status: "installed",
-				message: "Installed Aikido.",
+				message: "已安装 Aikido。",
 			});
 			const settings = JSON.parse(await readFile(settingsPath, "utf8")) as {
 				mcpServers: Record<string, { transport?: unknown }>;
