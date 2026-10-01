@@ -120,15 +120,18 @@ describe("hub theme: system preference", () => {
 		expect(document.documentElement.dataset.clineHubTheme).toBe("light");
 	});
 
-	it("follows the system theme by polling when change events never fire (WebView2)", async () => {
+	it("follows the system theme by re-querying when instances go stale (WebView2)", async () => {
 		const state = { dark: false };
+		// WebView2 行为模型：matches 在 matchMedia() 调用时**快照**，
+		// 已存在的实例永远保持旧值，只有新调用才能看到翻转。
 		window.matchMedia = ((query: string) =>
 			({
-				get matches() {
-					if (query === "(prefers-color-scheme: dark)") return state.dark;
-					if (query === "(prefers-color-scheme: light)") return !state.dark;
-					return false;
-				},
+				matches:
+					query === "(prefers-color-scheme: dark)"
+						? state.dark
+						: query === "(prefers-color-scheme: light)"
+							? !state.dark
+							: false,
 				media: query,
 				addEventListener() {},
 				removeEventListener() {},
@@ -139,7 +142,7 @@ describe("hub theme: system preference", () => {
 
 		// 无回调调用（page.tsx 的用法）：应用逻辑必须照常执行
 		const stop = watchSystemHubTheme();
-		// WebView2 怪癖：matches 取值已翻转，但 change 事件永远不会派发
+		// 系统切到深色：已捕获的实例值过期，只有重新查询才能看到
 		state.dark = true;
 		await new Promise((resolve) => setTimeout(resolve, 1200));
 
