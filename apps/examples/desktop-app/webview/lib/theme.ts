@@ -227,8 +227,26 @@ export function watchSystemHubTheme(
 		if (preference !== null && preference !== "system") {
 			return; // 用户锁定了具体主题，不再跟随
 		}
-		onChange?.(applyHubTheme(readSystemHubTheme()));
+		// 先应用再通知：不能写成 onChange?.(applyHubTheme(...))——
+		// 可选调用在 onChange 为空时会连参数一起跳过，应用逻辑就被
+		// 静默吞掉（page.tsx 正是无回调调用，B43 因此漏修）。
+		const next = applyHubTheme(readSystemHubTheme());
+		onChange?.(next);
 	};
 	media.addEventListener("change", handle);
-	return () => media.removeEventListener("change", handle);
+	// WebView2 的怪癖：prefers-color-scheme 的取值会随系统实时更新，
+	// 但 change 事件从不派发（CDP 实测 2026-10-01）。轮询比对取值兜底；
+	// 在正常派发事件的宿主里轮询只是冗余的低成本读取。
+	let lastMatches = media.matches;
+	const interval = window.setInterval(() => {
+		if (media.matches === lastMatches) {
+			return;
+		}
+		lastMatches = media.matches;
+		handle();
+	}, 800);
+	return () => {
+		media.removeEventListener("change", handle);
+		window.clearInterval(interval);
+	};
 }
