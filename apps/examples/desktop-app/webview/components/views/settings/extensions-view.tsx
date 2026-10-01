@@ -1759,7 +1759,7 @@ export function CustomizationSectionView({
 					<div className="mb-6 grid gap-3">
 						<div className="flex items-center justify-between gap-3">
 							<h3 className="text-base font-semibold text-foreground">
-								BuiltIn Tools{" "}
+								内置工具{" "}
 								<span className="text-muted-foreground">
 									{filteredBuiltinTools.length}
 								</span>

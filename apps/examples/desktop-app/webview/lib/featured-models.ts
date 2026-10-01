@@ -100,7 +100,7 @@ export function buildModelPickerData(
 				{
 					description: FREE_SECTION_DESCRIPTION,
 					id: "free",
-					label: "免费",
+					label: "免费模型",
 				},
 				{ id: "all", label: "所有模型" },
 			],
@@ -133,7 +133,7 @@ export function buildModelPickerData(
 				{
 					description: CLINE_PASS_FREE_SECTION_DESCRIPTION,
 					id: "free",
-					label: "免费",
+					label: "免费模型",
 				},
 			],
 		};
