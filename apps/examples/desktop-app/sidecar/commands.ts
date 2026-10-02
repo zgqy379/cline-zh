@@ -3726,5 +3726,5 @@ export async function handleCommand(
 		return { path: filePath, editor };
 	}
 
-	throw new Error(`unsupported desktop command: ${command}`);
+	throw new Error(`不支持的桌面端命令：${command}`);
 }
