@@ -108,24 +108,28 @@ cargo tauri build      # 或 bun run build:binary
 
 ## 测试状态（如实记录）
 
-桌面端全量 vitest 实测：**1656 用例，19 条失败**（Windows 10.19）。
+桌面端全量 vitest 实测：**1656 用例，约 20 条失败**（Windows）。
 
-在**未改动的上游基线**（`41deb5d`）上同机跑为 **30 条失败**，
-即本仓库**净修复 11 条、零新增失败**。逐条对照方法：`git stash` 后
-跑基线，比对失败用例名称集合。
+⚠️ **失败数不是稳定值**：同一份代码连跑三次分别得到 19 / 21 / 27 条
+（去重后 23 条唯一用例）。这是该仓库长期存在的**并行抖动**——sidecar 测试
+大量起真实端口与子进程，并行时互相争用；单个用例隔离复跑全部通过。
+所以此处只给量级，不写精确值。
 
-19 条全部与汉化无关，属Windows 平台差异，在 Linux / macOS 上不复现：
+**稳定的是基线对照**：在**未改动的上游基线**（`41deb5d`）上同机跑，
+失败用例名称集合与本仓库做差集：
 
-| 来源 | 条数 | 原因 |
-|---|---|---|
-| `commands-git-worktree` | 12 | git 打印 `C:/Users/…` 正斜杠而断言写 `C:\…`；`EPERM` 删临时 worktree |
-| `commands-settings` | 3 | `EPERM` 删临时目录 |
-| `chat-session` | 2 | 路径分隔符同上（锁集合 `/workspace/project` vs 实际 `D:\…`） |
-| `chat-input-bar` | 1 | 模型目录异步加载导致的既有 flake |
-| `onboarding` | 1 | localStorage 不可读时的兜底 |
-| `scripts/*`（desktop-startup / dmg-background / generate-update-manifest / windows-installer） | 4 个文件整体未收集 | 仅在对应平台或特定环境下运行 |
+- **零新增失败**
+- 本轮净修复 4 条（`chat-input-bar` 的 3 条 token ring 断言 +
+  1 条 cline-pass picker），另有 5 条在更早批次已修
 
-完整逐条分类见 [`docs/TEST-FAILURE-TRIAGE.md`](docs/TEST-FAILURE-TRIAGE.md)。
+比对方法：`git stash` 后跑基线，取失败用例名称集合做 `comm` 差集，
+而非比较总数——总数会被抖动干扰。
+
+失败全部与汉化无关，属Windows 平台差异，在 Linux / macOS 上不复现：
+git 路径分隔符（`C:/` vs `C:\`）、`EPERM` 删临时目录、模型目录异步加载的
+flake，以及 4 个 `scripts/*` 测试文件在 Windows 上整体未收集
+（仅在对应平台运行）。逐条分类见
+[`docs/TEST-FAILURE-TRIAGE.md`](docs/TEST-FAILURE-TRIAGE.md)。
 
 ---
 
