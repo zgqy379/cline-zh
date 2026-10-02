@@ -85,7 +85,7 @@ Apache-2.0 第 4(b) 条对"修改声明"的要求。
 ### 步骤
 
 ```bash
-git clone https://github.com/<your-name>/cline-zh.git
+git clone https://github.com/zgqy379/cline-zh.git
 cd cline
 
 # 桌面端依赖
