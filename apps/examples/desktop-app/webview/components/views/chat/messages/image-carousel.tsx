@@ -25,14 +25,14 @@ export function MessageImageCarousel({
 	return (
 		<div className="relative w-fit max-w-2xl">
 			<button
-				aria-label={`Expand generated image ${safeIndex + 1}`}
+				aria-label={`展开生成的图片 ${safeIndex + 1}`}
 				className="cursor-zoom-in overflow-hidden rounded-lg border border-border bg-muted text-left transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
 				onClick={() => onExpandImage?.(image)}
 				type="button"
 			>
 				{/* biome-ignore lint/performance/noImgElement: In-memory data URLs do not have dimensions and cannot use Next's optimizer. */}
 				<img
-					alt={`Generated result ${safeIndex + 1}`}
+					alt={`生成结果 ${safeIndex + 1}`}
 					className="max-h-56.25 max-w-56.25 object-contain"
 					src={`data:${image.mediaType};base64,${image.data}`}
 				/>

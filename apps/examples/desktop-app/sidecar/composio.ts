@@ -490,7 +490,7 @@ function summarizeToolkit(
 	// status refresh (see getComposioStatus).
 	const zeroToolsWarning =
 		status === "connected" && stored && stored.tools.length === 0
-			? "Connected, but no tools were retrieved from Composio yet. They are re-fetched automatically; if this persists, disconnect and reconnect."
+			? "已连接，但尚未从 Composio 获取到工具。工具会自动重新拉取；若持续如此，请断开后重新连接。"
 			: undefined;
 	return {
 		toolkit: slug,

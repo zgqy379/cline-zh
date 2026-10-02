@@ -63,7 +63,7 @@ export function AgentContextUsage({
 	const circumference = 2 * Math.PI * radius;
 
 	return children({
-		triggerLabel: `上下文窗口：${contextWindow.toLocaleString()} 中已用 ${totalTokens.toLocaleString()} 个令牌（${percent}%）`,
+		triggerLabel: `上下文窗口：${contextWindow.toLocaleString()} 中已用 ${totalTokens.toLocaleString()} 个词元（${percent}%）`,
 		ring: (
 			<svg
 				aria-hidden="true"
@@ -131,14 +131,14 @@ export function AgentContextUsage({
 				</div>
 				<div className="mt-3 space-y-2 text-cline-ui-sm">
 					<div className="flex items-center justify-between gap-4">
-						<span className="text-cline-ui-muted-foreground">输入令牌数</span>
+						<span className="text-cline-ui-muted-foreground">输入词元数</span>
 						<span className="font-cline-ui-mono text-cline-ui-foreground">
 							{usage.tokensIn.toLocaleString()}
 						</span>
 					</div>
 					<div className="flex items-center justify-between gap-4">
 						<span className="text-cline-ui-muted-foreground">
-							输出令牌数
+							输出词元数
 						</span>
 						<span className="font-cline-ui-mono text-cline-ui-foreground">
 							{usage.tokensOut.toLocaleString()}
@@ -146,7 +146,7 @@ export function AgentContextUsage({
 					</div>
 					<div className="flex items-center justify-between gap-4">
 						<span className="text-cline-ui-muted-foreground">
-							缓存令牌数
+							缓存词元数
 						</span>
 						<span className="font-cline-ui-mono text-cline-ui-foreground">
 							{usage.cacheReadTokens.toLocaleString()}

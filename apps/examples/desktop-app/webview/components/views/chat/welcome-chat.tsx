@@ -484,7 +484,7 @@ export function WelcomeScreen({
 								}}
 							/>
 							<AgendaTaskReviewDialog
-								confirmLabel="Approve and start"
+								confirmLabel="批准并开始"
 								onConfirm={async (task) => {
 									await handleTaskAction(task);
 									setReviewTask(null);

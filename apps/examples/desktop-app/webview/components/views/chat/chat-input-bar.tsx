@@ -142,7 +142,7 @@ export function buildUserInstructionSlashCommands(
 				name,
 				description:
 					command.description?.trim() ||
-					`${command.kind === "skill" ? "Skill" : "Workflow"} command`,
+					`${command.kind === "skill" ? "技能" : "工作流"}命令`,
 			},
 		];
 	});
@@ -151,7 +151,7 @@ export function buildUserInstructionSlashCommands(
 		seen.add(command.name);
 		result.push({
 			name: command.name,
-			description: command.description?.trim() || "Plugin command",
+			description: command.description?.trim() || "插件命令",
 		});
 	}
 	return result;
@@ -1807,7 +1807,7 @@ const ModelSelector = memo(function ModelSelector({
 				? lastSelection.lastModelByProvider[rememberedLastProvider]
 				: undefined);
 		// 幽灵模型：服务端已下架、目录里根本不存在的模型，却仍留在会话配置里。
-		// 真人验收（2026-10-01）发现 stealth/pixel-canary 被下架后一直霸占选择位，
+		// 真人验收（2026-10-01）发现已下架模型会一直霸占选择位，
 		// 连带让 localStorage 里记住的模型永久失效、选择器被撑到要手动上滑。
 		// 判据刻意收窄，避免推翻上面「目录是发现数据、不是校验」的原则：
 		//   - 目录加载中不算（加载窗口内 providerModels 为空，会把正常模型误判成幽灵）

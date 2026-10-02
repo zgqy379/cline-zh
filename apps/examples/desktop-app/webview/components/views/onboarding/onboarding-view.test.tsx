@@ -536,7 +536,7 @@ describe("OnboardingView", () => {
 		await act(async () => {
 			buttonByText("取消").click();
 		});
-		expect(container.textContent).not.toContain("正在等待浏览器...");
+		expect(container.textContent).not.toContain("正在等待浏览器…");
 		expect(buttonByText("登录")).toBeDefined();
 		// Cancelling must also stop the backend browser round-trip so a
 		// later-completed authorization can never persist credentials.
