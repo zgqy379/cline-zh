@@ -58,6 +58,19 @@ Zod schema 的 `.describe()`、产品名与厂商名 —— 这些是协议或�
 Apache-2.0 第 4(b) 条对"修改声明"的要求。
 上游英文 README 原样保留在 [`README.upstream.md`](README.upstream.md)。
 
+### 仓库层面的清理（相对上游）
+
+上游的 CI 与发布流水线没有随汉化一起沿用，已按 fork 的实际情况处理：
+
+- **删除 16 个上游 workflow**：全部 `*-publish*.yml`（会向 npm / VS Code Marketplace 发布）、
+  `repo-*.yml`（其中 `repo-stale-issues` 是每日 cron，会自动给 issue 打 stale 并关闭）、
+  以及 `ext-*.yml`（VS Code / JetBrains 扩展，本 fork 未改动其代码）。
+- **保留 2 个并改为仅手动触发**：`desktop-test.yml` 与 `sdk-test.yml` 覆盖本 fork
+  实际改动的 `apps/examples/desktop-app` 与 `sdk/packages/{ui,shared,core}`，
+  但不再在 push / pull_request 时自动运行。
+- **移除失效的 Git LFS 声明**：上游 `.gitattributes` 把 `assets/docs/demo.gif` 标记为
+  LFS，而该文件在本仓库只是 133 字节指针、LFS 对象从未存在。该文件全仓无引用，已删除。
+
 ---
 
 ## 构建
@@ -72,7 +85,7 @@ Apache-2.0 第 4(b) 条对"修改声明"的要求。
 ### 步骤
 
 ```bash
-git clone <this-repo>
+git clone https://github.com/<your-name>/cline-zh.git
 cd cline
 
 # 桌面端依赖
@@ -166,6 +179,10 @@ Apache License 2.0 第 6 条**不授予商标许可**。
 - [`NOTICE`](NOTICE) 记录归属与商标立场；[`MODIFICATIONS.md`](MODIFICATIONS.md) 记录全部修改
 - 上游英文 README 原样保留在 [`README.upstream.md`](README.upstream.md)
 - 汉化工作由 AI agent 辅助完成，并经人工逐屏验收
+- 本仓库全部 commit 的作者为 `cline-zh-agent <agent@cline-zh.local>` —— 这是产出这些改动的
+  AI agent 身份，未改写成人类身份，以便与「AI 辅助 + 人工验收」的声明保持一致
+- 提交时 husky 会执行 `.husky/pre-commit`，其中要求本机已安装 `gitleaks`；未安装时提交会被
+  直接拒绝（可临时 `git commit --no-verify`，但请自行确认没有密钥入库）
 
 本项目发布的安装包包含上游 Cline 的源代码编译产物，
 遵循 Apache-2.0 第 4 条：保留原许可与版权声明、标明修改内容、不提供任何商标许可。

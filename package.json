@@ -1,6 +1,12 @@
 {
     "name": "@cline/packages",
     "private": true,
+    "description": "Cline Desktop（Tauri 桌面端）简体中文本地化版本（非官方社区项目）",
+    "license": "Apache-2.0",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/<your-name>/cline-zh.git"
+    },
     "workspaces": [
         "sdk/packages/*",
         "apps/*",
