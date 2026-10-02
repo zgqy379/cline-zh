@@ -59,7 +59,7 @@ const CLINE_PASS_SUBSCRIBE_URL =
 const CLINE_SIGN_IN_BENEFITS = [
 	"常规免费模型推广",
 	"订阅 ClinePass，畅用 DeepSeek、Kimi、GLM 等顶尖开放权重模型",
-	"无需 API key",
+	"无需 API 密钥",
 ];
 
 type ClineRecommendedModelsResponse = {
@@ -680,7 +680,7 @@ function ConnectStep({
 								type="button"
 								variant="ghost"
 							>
-								使用 Cline API key
+								使用 Cline API 密钥
 								<ChevronDown aria-hidden="true" className="size-3.5" />
 							</Button>
 							<ExpandablePanel
@@ -740,7 +740,7 @@ function ConnectStep({
 									</Button>
 									{clineKeyError ? (
 										<p className="text-xs text-destructive" role="alert">
-											保存 API key 失败：{clineKeyError}
+											保存 API 密钥 失败：{clineKeyError}
 										</p>
 									) : null}
 								</div>
@@ -754,13 +754,13 @@ function ConnectStep({
 						setSelectedMethod("api-key");
 						setClineKeyFormExpanded(false);
 					}}
-					selectLabel="使用自己的 API key"
+					selectLabel="使用自己的 API 密钥"
 					selected={selectedMethod === "api-key"}
 				>
 					<SetupOptionHeader
 						description="支持 Anthropic、OpenAI、OpenRouter 等。"
 						icon={<KeyRound className="size-4" />}
-						title="使用自己的 API key"
+						title="使用自己的 API 密钥"
 					/>
 					<ExpandablePanel
 						data-onboarding-api-key-form
@@ -812,8 +812,8 @@ function ConnectStep({
 								}}
 								placeholder={
 									selectedProvider
-										? `${selectedProvider.name} API key`
-										: "API key"
+										? `${selectedProvider.name} API 密钥`
+										: "API 密钥"
 								}
 								type="password"
 								value={apiKey}
@@ -830,7 +830,7 @@ function ConnectStep({
 										variant="ghost"
 									>
 										{selectedProvider.docLabel ||
-											`获取 ${selectedProvider.name} API key`}
+											`获取 ${selectedProvider.name} API 密钥`}
 										<ExternalLink className="size-3.5" />
 									</Button>
 								) : null}

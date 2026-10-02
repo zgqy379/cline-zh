@@ -1144,7 +1144,7 @@ export function WelcomeWorkspaceControls({
 						variant="outline"
 					>
 						<LogIn className="size-3.5" />
-						{signingIn ? "等待浏览器…" : "登录以使用云端"}
+						{signingIn ? "正在等待浏览器…" : "登录以使用云端"}
 					</Button>
 				)
 			) : (

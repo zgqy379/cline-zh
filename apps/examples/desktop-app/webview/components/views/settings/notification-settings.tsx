@@ -17,11 +17,11 @@ const EVENT_COPY: Record<
 	{ label: string; description: string }
 > = {
 	taskCompletion: {
-		label: "任务完成",
+		label: "任务已完成",
 		description: "当 Cline 完成任务或一轮对话时。",
 	},
 	approvalNeeded: {
-		label: "需要审批",
+		label: "需要你批准",
 		description: "当有工具正在等待你批准时。",
 	},
 	questionAsked: {

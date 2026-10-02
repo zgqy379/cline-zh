@@ -850,7 +850,7 @@ export function ProviderDetailContent({
 								) : null}
 								<span>
 									{oauthLoginPending
-										? "等待浏览器中完成操作…"
+										? "正在等待浏览器…"
 										: "使用浏览器登录"}
 								</span>
 							</Button>

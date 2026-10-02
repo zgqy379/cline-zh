@@ -77,7 +77,7 @@ describe("resolveCredentialError", () => {
 	it("blocks API-key providers without a key", () => {
 		expect(
 			resolveCredentialError(makeConfig({ provider: "anthropic" })),
-		).toMatch(/缺少 API key/);
+		).toMatch(/缺少 API 密钥/);
 	});
 
 	it("allows API-key providers with a key", () => {

@@ -2026,7 +2026,7 @@ export function RoutineSchedulesContent({
 									? "保存中…"
 									: "创建中…"
 								: editingSchedule
-									? "保存修改"
+									? "保存更改"
 									: "创建计划"}
 						</Button>
 					</DialogFooter>
