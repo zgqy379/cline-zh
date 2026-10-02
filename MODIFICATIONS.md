@@ -129,25 +129,29 @@ git diff 41deb5d HEAD
 
 ## 四、测试状态（如实记录）
 
-桌面端全量 vitest 实测：**1656 用例，19 条失败**（Windows 10.19）。
+桌面端全量 vitest 实测：**1656 用例，约 20 条失败**（Windows）。
 
-在**未改动的上游基线**（`41deb5d`）上同机跑为**30 条失败**，
-即本仓库**净修复 11 条、零新增失败**（`git stash` 后跑基线、
-比对失败用例名称集合）。
+⚠️ 失败数**不是稳定值**：同一份代码连跑三次分别得19 / 21 / 27 条
+（去重后 23 条唯一用例）。这是该仓库长期存在的并行抖动（`PROGRESS.md`
+已多次登记「同一份代码连跑两次互相翻转」），sidecar 测试大量起真实端口
+与子进程、并行时互相争用，隔离复跑均通过。此处只给量级。
 
-- **汉化致因的失败已全部清零**：早期 6 条见 commit `e54ba5d`；
-  本轮又修掉 5 条——`composio.test.ts` 1 条（`zeroToolsWarning` 译中文后
-  断言未同步）与 `chat-messages.test.tsx` 4 条（图片附件 `alt`/`aria-label`
-  译中文后 11 处选择器断言未同步，其中 4 条因参数化用例而计为多条）。
-- 剩余 19 条经 `docs/TEST-FAILURE-TRIAGE.md` 分类，**均非汉化导致**：
-  - **18 条为 Windows 平台差异**：git 路径分隔符（`C:/` vs `C:\`）、
-    `EPERM` 删临时目录。
-  - **1 条待定论**：`sidecar/logging.test.ts`，怀疑为 Windows 下
-    `createWriteStream` 失败时机问题。
-  - 另有 4 个 `scripts/*` 测试文件在 Windows 上整体未收集
-    （`desktop-startup` / `dmg-background` / `generate-update-manifest` /
-    `windows-installer`），仅在对应平台或特定环境下运行。
-- 上述失败在 Linux / macOS 上不复现。
+**稳定的是基线对照**：`git stash` 后跑未改动的上游基线`41deb5d`，
+取失败用例名称集合做 `comm` 差集（而非比较总数，总数会被抖动干扰）：
+
+- **零新增失败**
+- 本轮净修复 4 条（`chat-input-bar` 的 3 条 token ring 断言 + 1 条
+  cline-pass picker），另有 5 条在更早批次已修
+
+**汉化致因的失败已全部清零**：早期 6 条见 commit `e54ba5d`；本轮又修掉
+5 条——`composio.test.ts` 1 条（`zeroToolsWarning` 译中文后断言未同步）与
+`chat-messages.test.tsx` 4 条（图片附件 `alt`/`aria-label` 译中文后
+11 处选择器断言未同步，其中 4 条因参数化用例而计为多条）。
+
+剩余失败**均非汉化导致**，属 Windows 平台差异（git 路径分隔符、
+`EPERM` 删临时目录、模型目录异步加载的 flake），在 Linux / macOS 上不复现；
+另有 4 个 `scripts/*` 测试文件在 Windows 上整体未收集。
+逐条分类见 `docs/TEST-FAILURE-TRIAGE.md`。
 
 ---
 
