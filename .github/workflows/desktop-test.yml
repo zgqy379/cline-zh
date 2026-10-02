@@ -1,36 +1,8 @@
 name: desktop-test
 
+# 本 fork 只保留手动触发：上游的 push/pull_request 自动触发会在每次改动
+# sdk/** 或 apps/examples/desktop-app/** 时跑上游全量 CI，与汉化无关且噪音大。
 on:
-  push:
-    branches:
-      - main
-      - desktop-experimental
-    paths:
-      - "apps/examples/desktop-app/package.json"
-      - "apps/examples/desktop-app/scripts/dmg-background.ts"
-      - "apps/examples/desktop-app/scripts/dmg-background.test.ts"
-      - "apps/examples/desktop-app/scripts/windows-installer.test.ts"
-      - "apps/examples/desktop-app/src-tauri/nsis/**"
-      # windows-installer.test.ts pins the @tauri-apps/cli version bun.lock resolves.
-      - "bun.lock"
-      - "apps/examples/desktop-app/src-tauri/dmg/background.png"
-      - "apps/examples/desktop-app/src-tauri/dmg/background@2x.png"
-      - ".github/workflows/desktop-test.yml"
-  pull_request:
-    branches:
-      - main
-      - desktop-experimental
-    paths:
-      - "apps/examples/desktop-app/package.json"
-      - "apps/examples/desktop-app/scripts/dmg-background.ts"
-      - "apps/examples/desktop-app/scripts/dmg-background.test.ts"
-      - "apps/examples/desktop-app/scripts/windows-installer.test.ts"
-      - "apps/examples/desktop-app/src-tauri/nsis/**"
-      # windows-installer.test.ts pins the @tauri-apps/cli version bun.lock resolves.
-      - "bun.lock"
-      - "apps/examples/desktop-app/src-tauri/dmg/background.png"
-      - "apps/examples/desktop-app/src-tauri/dmg/background@2x.png"
-      - ".github/workflows/desktop-test.yml"
   workflow_dispatch:
 
 permissions:
