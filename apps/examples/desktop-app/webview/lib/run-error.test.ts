@@ -9,7 +9,7 @@ describe("formatRunError", () => {
 	])("adds guidance exactly once for %s", (detail) => {
 		const formatted = formatRunError(detail);
 		expect(formatted).toContain("设置 → 供应商");
-		expect(formatted.match(/The run failed/g)).toHaveLength(1);
+		expect(formatted.match(/The run failed|运行失败：/g)).toHaveLength(1);
 		expect(formatRunError(formatted)).toBe(formatted);
 	});
 	it("does not suggest changing credentials for a token limit", () => {

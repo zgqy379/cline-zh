@@ -24,7 +24,7 @@ describe("formatChatMessageContent", () => {
 
 	test("trims outer whitespace and formats error messages", () => {
 		expect(formatChatMessageContent("error", "  Request failed  \n")).toBe(
-			"The run failed: Request failed",
+			"运行失败：Request failed",
 		);
 	});
 });
