@@ -27,6 +27,20 @@ VS Code 扩展与桌面端是两套独立的 UI 代码，扩展版的汉化不�
 
 ---
 
+## 下载安装包
+
+已编译好的 **Windows x64** 安装包见 **[Releases](https://github.com/zgqy379/cline-zh/releases/latest)**：
+
+| 文件 | 说明 |
+|---|---|
+| `Cline-zh-CN_0.0.37_x64-setup.exe` | **推荐**，NSIS 安装包（普通用户） |
+| `Cline-zh-CN_0.0.37_x64.msi` | MSI 安装包（企业批量部署） |
+
+> 应用标识为 `bot.cline.app.zh`，可与官方 Cline **同时安装、同时运行**，配置目录与单实例锁互不干扰；
+> 但**不共享登录态与 API Key**，首次使用需重新配置。**自动更新已禁用**，升级请手动下载新版本。
+
+---
+
 ## 已汉化范围
 
 | 层 | 路径 | 内容 |
