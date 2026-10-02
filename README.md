@@ -108,12 +108,24 @@ cargo tauri build      # 或 bun run build:binary
 
 ## 测试状态（如实记录）
 
-桌面端全量 vitest：**1647 用例，18 条失败**。
+桌面端全量 vitest 实测：**1656 用例，19 条失败**（Windows 10.19）。
 
-汉化直接导致的 6 条失败已全部修复。剩余 18 条经分类均为
-**Windows 平台差异**（git 路径分隔符、`EPERM` 删临时目录、Windows 无 `sh`），
-**与汉化无关，在 Linux / macOS 上不复现**。详见
-[`docs/TEST-FAILURE-TRIAGE.md`](docs/TEST-FAILURE-TRIAGE.md)。
+在**未改动的上游基线**（`41deb5d`）上同机跑为 **30 条失败**，
+即本仓库**净修复 11 条、零新增失败**。逐条对照方法：`git stash` 后
+跑基线，比对失败用例名称集合。
+
+19 条全部与汉化无关，属Windows 平台差异，在 Linux / macOS 上不复现：
+
+| 来源 | 条数 | 原因 |
+|---|---|---|
+| `commands-git-worktree` | 12 | git 打印 `C:/Users/…` 正斜杠而断言写 `C:\…`；`EPERM` 删临时 worktree |
+| `commands-settings` | 3 | `EPERM` 删临时目录 |
+| `chat-session` | 2 | 路径分隔符同上（锁集合 `/workspace/project` vs 实际 `D:\…`） |
+| `chat-input-bar` | 1 | 模型目录异步加载导致的既有 flake |
+| `onboarding` | 1 | localStorage 不可读时的兜底 |
+| `scripts/*`（desktop-startup / dmg-background / generate-update-manifest / windows-installer） | 4 个文件整体未收集 | 仅在对应平台或特定环境下运行 |
+
+完整逐条分类见 [`docs/TEST-FAILURE-TRIAGE.md`](docs/TEST-FAILURE-TRIAGE.md)。
 
 ---
 
