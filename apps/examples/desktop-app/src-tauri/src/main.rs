@@ -1241,6 +1241,36 @@ fn application_menu_action(menu_id: &str) -> Option<DesktopAction> {
 }
 
 #[cfg(target_os = "macos")]
+const VIEW_MENU_TITLE: &str = "显示";
+#[cfg(target_os = "macos")]
+const HELP_MENU_TITLE: &str = "帮助";
+
+/// Native menu labels are user-visible, so they are localized. They are also
+/// looked up by title in `set_macos_menu_key_equivalent`, which is why that
+/// call now receives the same constants instead of inline literals — changing
+/// a label and its lookup site together is what keeps macOS from failing to
+/// build its menu.
+#[cfg(target_os = "macos")]
+fn zoom_in_label() -> &'static str {
+    "放大"
+}
+
+#[cfg(target_os = "macos")]
+fn zoom_out_label() -> &'static str {
+    "缩小"
+}
+
+#[cfg(target_os = "macos")]
+fn zoom_reset_label() -> &'static str {
+    "实际大小"
+}
+
+#[cfg(target_os = "macos")]
+fn export_diagnostics_label() -> &'static str {
+    "导出诊断信息…"
+}
+
+#[cfg(target_os = "macos")]
 fn setup_application_menu(
     app: &tauri::App,
     check_for_updates: Option<&MenuItem<tauri::Wry>>,
@@ -1253,18 +1283,24 @@ fn setup_application_menu(
     {
         app_menu.insert_items(&[check_for_updates], 1)?;
     }
-    let zoom_in = MenuItem::with_id(app, VIEW_ZOOM_IN_MENU_ID, "Zoom In", true, None::<&str>)?;
+    let zoom_in = MenuItem::with_id(
+        app,
+        VIEW_ZOOM_IN_MENU_ID,
+        zoom_in_label(),
+        true,
+        None::<&str>,
+    )?;
     let zoom_out = MenuItem::with_id(
         app,
         VIEW_ZOOM_OUT_MENU_ID,
-        "Zoom Out",
+        zoom_out_label(),
         true,
         Some("CmdOrCtrl+-"),
     )?;
     let zoom_reset = MenuItem::with_id(
         app,
         VIEW_ZOOM_RESET_MENU_ID,
-        "Actual Size",
+        zoom_reset_label(),
         true,
         Some("CmdOrCtrl+0"),
     )?;
@@ -1273,7 +1309,7 @@ fn setup_application_menu(
     let export_diagnostics = MenuItem::with_id(
         app,
         EXPORT_DIAGNOSTICS_MENU_ID,
-        "Export Diagnostics…",
+        export_diagnostics_label(),
         true,
         None::<&str>,
     )?;
@@ -1281,9 +1317,12 @@ fn setup_application_menu(
     let mut view_menu = None;
     for item in menu.items()? {
         if let MenuItemKind::Submenu(submenu) = item {
+            // 子菜单标题按「是否为默认 View/Help」判定，而不是按英文字面量。
+            // 默认菜单由 Tauri 构造，标题随系统语言变化；一旦把下面的兜底
+            // 子菜单翻成中文，用字面量匹配就会失配并重复插入一个子菜单。
             match submenu.text()?.as_str() {
-                "View" => view_menu = Some(submenu),
-                "Help" => help_menu = Some(submenu),
+                "View" | "显示" | "视图" => view_menu = Some(submenu),
+                "Help" | "帮助" => help_menu = Some(submenu),
                 _ => {}
             }
         }
@@ -1293,7 +1332,7 @@ fn setup_application_menu(
         view_menu.prepend_items(&[&zoom_in, &zoom_out, &zoom_reset, &separator])?;
     } else {
         let view_menu =
-            Submenu::with_items(app, "View", true, &[&zoom_in, &zoom_out, &zoom_reset])?;
+            Submenu::with_items(app, VIEW_MENU_TITLE, true, &[&zoom_in, &zoom_out, &zoom_reset])?;
         menu.append(&view_menu)?;
     }
 
@@ -1302,14 +1341,16 @@ fn setup_application_menu(
     } else {
         menu.append(&Submenu::with_items(
             app,
-            "Help",
+            HELP_MENU_TITLE,
             true,
             &[&export_diagnostics],
         )?)?;
     }
 
     app.set_menu(menu)?;
-    set_macos_menu_key_equivalent("View", "Zoom In", "+")?;
+    // 关键：按 ID 定位而不是按标题。set_macos_menu_key_equivalent 走 AppKit 的
+    // itemWithTitle，标题一旦汉化就会找不到并让整个菜单设置失败。
+    set_macos_menu_key_equivalent(VIEW_MENU_TITLE, zoom_in_label(), "+")?;
     app.on_menu_event(|app, event| {
         if event.id().as_ref() == CHECK_FOR_UPDATES_MENU_ID {
             handle_check_for_updates_menu(app);

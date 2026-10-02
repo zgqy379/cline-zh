@@ -42,9 +42,18 @@ const ORGANIZATION_CREDITS_URL =
 const CREATE_ORGANIZATION_URL = "https://app.cline.bot/onboarding?step=1";
 const CREATE_ACCOUNT_URL = "https://app.cline.bot";
 
-function normalizeAccountViewError(error: unknown): Error {
+/**
+ * 导出以便测试：这个函数通过**匹配 sidecar 的错误文案**来识别过旧的 sidecar，
+ * 因此它与 sidecar 的措辞构成跨文件契约 —— 任何一方改文案都必须同步。
+ */
+export function normalizeAccountViewError(error: unknown): Error {
 	const message = error instanceof Error ? error.message : String(error);
-	if (message.includes("unsupported desktop command: cline_account")) {
+	// 匹配 sidecar 抛出的命令不支持错误。中文构建下 sidecar 的文案是中文，
+	// 英文构建下仍是英文原文 —— 两种都要匹配，否则这个分支永远不会命中。
+	if (
+		message.includes("unsupported desktop command: cline_account") ||
+		message.includes("不支持的桌面端命令：cline_account")
+	) {
 		return new Error(
 			"桌面端 sidecar 正在运行的版本过旧，尚不支持账户相关命令。请重启 sidecar 或重新加载应用后再试。",
 		);

@@ -3,7 +3,7 @@
 import { act } from "react";
 import { createRoot, type Root } from "react-dom/client";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { AccountView } from "./account-view";
+import { AccountView, normalizeAccountViewError } from "./account-view";
 
 const { invoke, openExternalUrl } = vi.hoisted(() => ({
 	invoke: vi.fn(),
@@ -189,5 +189,26 @@ describe("AccountView signed-out state", () => {
 			expect(container.textContent).toContain("Beatrix");
 		});
 		expect(container.textContent).not.toContain("登录 Cline");
+	});
+});
+
+// 回归测试：sidecar 抛出的错误文案被汉化后，webview 侧靠 includes() 识别
+// 「过旧 sidecar」的分支也必须仍然命中 —— 否则用户只会看到原始英文错误。
+describe("normalizeAccountViewError", () => {
+	const STALE_HINT = "版本过旧";
+
+	it("recognizes the localized sidecar message", () => {
+		const error = new Error("不支持的桌面端命令：cline_account");
+		expect(normalizeAccountViewError(error).message).toContain(STALE_HINT);
+	});
+
+	it("still recognizes the original English message", () => {
+		const error = new Error("unsupported desktop command: cline_account");
+		expect(normalizeAccountViewError(error).message).toContain(STALE_HINT);
+	});
+
+	it("passes unrelated errors through untouched", () => {
+		const error = new Error("network unreachable");
+		expect(normalizeAccountViewError(error)).toBe(error);
 	});
 });

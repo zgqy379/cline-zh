@@ -63,7 +63,7 @@ describe("rewriteDesktopTeamPrompt", () => {
 			rewriteDesktopTeamPrompt("/team inspect the app", {
 				disabledTools: new Set(["teams"]),
 			}),
-		).toThrow("Agent teams are disabled");
+		).toThrow("智能体团队已被禁用");
 	});
 
 	it("rejects /team when the mode's tool preset has no team tools", () => {
@@ -2102,7 +2102,7 @@ describe("mistake-limit prompt", () => {
 		resolveSidecarAskQuestion(
 			ctx,
 			readQuestionRequest()?.requestId ?? "",
-			"Try a different approach",
+			"换一种做法",
 		);
 		await Promise.resolve();
 		expect(steer).toHaveBeenCalledTimes(1);
@@ -2155,7 +2155,7 @@ describe("mistake-limit prompt", () => {
 			resolveSidecarAskQuestion(
 				ctx,
 				readQuestionRequest()?.requestId ?? "",
-				"Stop this run",
+				"停止本次运行",
 			);
 		} else {
 			await handleChatSessionCommand(ctx, {
@@ -2182,18 +2182,64 @@ describe("mistake-limit prompt", () => {
 		const request = readQuestionRequest();
 		expect(request).toMatchObject({
 			sessionId: "session-late",
-			options: ["Try a different approach", "Stop this run"],
+			options: ["换一种做法", "停止本次运行"],
 		});
-		expect(request?.question).toContain("repeated mistakes or tool calls");
+		expect(request?.question).toContain("重复的错误或工具调用");
 		expect(request?.question).toContain("identical calls to `editor`");
 
 		expect(
-			resolveSidecarAskQuestion(ctx, request?.requestId ?? "", "Stop this run"),
+			resolveSidecarAskQuestion(ctx, request?.requestId ?? "", "停止本次运行"),
 		).toBe(true);
 		await expect(decision).resolves.toEqual({
 			action: "stop",
 			reason: "stopped after mistake_limit_reached prompt",
 		});
+	});
+
+	// 回归测试：选项文案同时是答案匹配键。若只把 label 翻成中文而不同步
+	// 匹配集合，用户点「停止本次运行」会落进 customGuidance 分支，运行不会停。
+	it.each([
+		["中文按钮文案", "停止本次运行"],
+		["英文原文（历史会话/CLI 回传）", "Stop this run"],
+		["中文简写", "停止"],
+		["编号", "2"],
+		["英文缩写", "no"],
+	])("stops the run when the user answers %s", async (_label, answer) => {
+		const { ctx, steer, readQuestionRequest } = createPromptContext();
+		const decide = createDesktopMistakeLimitPrompt(ctx, () => "session-1");
+
+		const decision = decide(limitContext);
+		await Promise.resolve();
+		resolveSidecarAskQuestion(
+			ctx,
+			readQuestionRequest()?.requestId ?? "",
+			answer,
+		);
+
+		await expect(decision).resolves.toMatchObject({ action: "stop" });
+		// 关键：停止时绝不能把答案当成自定义指导回灌给模型。
+		expect(steer).not.toHaveBeenCalled();
+	});
+
+	it("treats only the continue answers as button clicks, not custom guidance", async () => {
+		const { ctx, steer, readQuestionRequest } = createPromptContext();
+		const decide = createDesktopMistakeLimitPrompt(ctx, () => "session-1");
+
+		const decision = decide(limitContext);
+		await Promise.resolve();
+		resolveSidecarAskQuestion(
+			ctx,
+			readQuestionRequest()?.requestId ?? "",
+			"换一种做法",
+		);
+
+		await expect(decision).resolves.toMatchObject({ action: "continue" });
+		// 点「换一种做法」不应产生 User guidance 回灌。
+		expect(steer).not.toHaveBeenCalledWith(
+			expect.objectContaining({
+				prompt: expect.stringContaining("User guidance:"),
+			}),
+		);
 	});
 
 	it("delivers recovery guidance only through steering", async () => {
@@ -2205,7 +2251,7 @@ describe("mistake-limit prompt", () => {
 		resolveSidecarAskQuestion(
 			ctx,
 			request?.requestId ?? "",
-			"Try a different approach",
+			"换一种做法",
 		);
 
 		const result = await decision;
@@ -2260,7 +2306,7 @@ describe("mistake-limit prompt", () => {
 		resolveSidecarAskQuestion(
 			ctx,
 			readQuestionRequest()?.requestId ?? "",
-			"Try a different approach",
+			"换一种做法",
 		);
 		await expect(decision).resolves.toMatchObject({
 			action: "stop",
@@ -2324,7 +2370,7 @@ describe("mistake-limit prompt", () => {
 			startIteration(21);
 			return undefined;
 		});
-		answer("Try a different approach");
+		answer("换一种做法");
 		await expect(first).resolves.toMatchObject({ action: "continue" });
 
 		// A batch can have many failures in one iteration, followed by more
@@ -2346,7 +2392,7 @@ describe("mistake-limit prompt", () => {
 
 		startIteration(21);
 		const next = decide({ ...limitContext, iteration: 21 });
-		answer("Try a different approach");
+		answer("换一种做法");
 		await expect(next).resolves.toMatchObject({ action: "continue" });
 		expect(steer).toHaveBeenCalledTimes(2);
 
@@ -2355,7 +2401,7 @@ describe("mistake-limit prompt", () => {
 		startIteration(1);
 		startIteration(5);
 		const newRun = decide({ ...limitContext, iteration: 5 });
-		answer("Stop this run");
+		answer("停止本次运行");
 		await expect(newRun).resolves.toMatchObject({ action: "stop" });
 		expect(ctx.pendingQuestions.size).toBe(0);
 		expect(steer).toHaveBeenCalledTimes(2);
@@ -2387,7 +2433,7 @@ describe("mistake-limit prompt", () => {
 			resolveSidecarAskQuestion(
 				ctx,
 				request?.requestId ?? "",
-				"Try a different approach",
+				"换一种做法",
 			),
 		).toBe(false);
 		expect(steer).not.toHaveBeenCalled();
@@ -2465,7 +2511,7 @@ describe("mistake-limit prompt", () => {
 		await expect(decision).resolves.toMatchObject({ action: "stop" });
 		expect(ctx.pendingQuestions.size).toBe(0);
 		expect(
-			resolveSidecarAskQuestion(ctx, requestId, "Try a different approach"),
+			resolveSidecarAskQuestion(ctx, requestId, "换一种做法"),
 		).toBe(false);
 		expect(steer).not.toHaveBeenCalled();
 	});

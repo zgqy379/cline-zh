@@ -199,7 +199,7 @@ export function rewriteDesktopTeamPrompt(
 		new Set(readGlobalSettings().disabledTools ?? []);
 	if (disabledTools.has("teams")) {
 		throw new Error(
-			"Agent teams are disabled. Enable the Teams tool in Customizations → Tools.",
+			"智能体团队已被禁用。请在「自定义」→「工具」中启用 Teams 工具。",
 		);
 	}
 	// The runtime resolves tool availability from the mode's preset, so a
@@ -419,9 +419,34 @@ type MistakeLimitDecider = (
 	context: ConsecutiveMistakeLimitContext,
 ) => Promise<ConsecutiveMistakeLimitDecision>;
 
-const MISTAKE_LIMIT_CONTINUE_OPTION = "Try a different approach";
-const MISTAKE_LIMIT_STOP_OPTION = "Stop this run";
+// 用户可见文案走中文。注意：这两个 label 同时是「用户答案」的匹配键，
+// 因此匹配逻辑（MISTAKE_LIMIT_STOP_ANSWERS / CONTINUE_ANSWER）必须同时
+// 接受中英文两种形式——只改文案不改匹配会让「停止」按钮不再停止运行。
+const MISTAKE_LIMIT_CONTINUE_LABEL = "换一种做法";
+const MISTAKE_LIMIT_STOP_LABEL = "停止本次运行";
 const MISTAKE_LIMIT_DETAIL_MAX_CHARS = 600;
+
+/**
+ * 用户可能点击中文按钮，也可能手动输入；历史会话/CLI 侧仍会回传英文原文。
+ * 两种形式都必须接受，否则「停止」会落到自定义指导分支，运行不会停止。
+ */
+const MISTAKE_LIMIT_STOP_ANSWERS = new Set([
+	"2",
+	MISTAKE_LIMIT_STOP_LABEL.toLowerCase(),
+	"停止",
+	"stop this run",
+	"stop",
+	"n",
+	"no",
+	"否",
+]);
+
+const MISTAKE_LIMIT_CONTINUE_ANSWERS = new Set([
+	"1",
+	MISTAKE_LIMIT_CONTINUE_LABEL.toLowerCase(),
+	"继续",
+	"try a different approach",
+]);
 
 /**
  * Desktop counterpart of the CLI's mistake-limit prompt
@@ -460,9 +485,9 @@ export function createDesktopMistakeLimitPrompt(
 				? `${detail.slice(0, MISTAKE_LIMIT_DETAIL_MAX_CHARS)}…`
 				: detail;
 		const question = [
-			"Cline detected repeated mistakes or tool calls and needs your guidance.",
-			truncatedDetail ? `Latest: ${truncatedDetail}` : "",
-			"How should Cline continue?",
+			"Cline 检测到重复的错误或工具调用，需要你给出指示。",
+			truncatedDetail ? `最近一次：${truncatedDetail}` : "",
+			"你希望 Cline 如何继续？",
 		]
 			.filter((line) => line.length > 0)
 			.join("\n");
@@ -472,7 +497,7 @@ export function createDesktopMistakeLimitPrompt(
 			answer = await requestSidecarAskQuestion(
 				ctx,
 				question,
-				[MISTAKE_LIMIT_CONTINUE_OPTION, MISTAKE_LIMIT_STOP_OPTION],
+				[MISTAKE_LIMIT_CONTINUE_LABEL, MISTAKE_LIMIT_STOP_LABEL],
 				{
 					sessionId,
 					agentId: "desktop-mistake-limit",
@@ -494,18 +519,16 @@ export function createDesktopMistakeLimitPrompt(
 		}
 
 		const normalized = answer.trim().toLowerCase();
-		if (["2", "stop this run", "stop", "n", "no"].includes(normalized)) {
+		if (MISTAKE_LIMIT_STOP_ANSWERS.has(normalized)) {
 			return {
 				action: "stop",
 				reason: "stopped after mistake_limit_reached prompt",
 			};
 		}
-		const customGuidance =
-			normalized.length > 0 &&
-			normalized !== "1" &&
-			normalized !== MISTAKE_LIMIT_CONTINUE_OPTION.toLowerCase()
-				? answer.trim()
-				: "";
+		// 只有「继续」和「停止」是按钮答案；其余都是用户手写的自定义指导。
+		const customGuidance = !MISTAKE_LIMIT_CONTINUE_ANSWERS.has(normalized)
+			? answer.trim()
+			: "";
 		const guidance = [
 			"The run reached the limit for repeated mistakes or tool calls.",
 			truncatedDetail ? `Latest: ${truncatedDetail}` : "",
