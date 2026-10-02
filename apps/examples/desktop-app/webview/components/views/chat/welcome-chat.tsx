@@ -385,7 +385,7 @@ export function WelcomeScreen({
 				>
 					{active ? (
 						<div className="cline-view-enter">
-							<h1 className="sr-only">你想做点什么？</h1>
+							<h1 className="sr-only">你想构建什么？</h1>
 							<AgentWelcomeHero />
 
 							<div className="mt-11 flex min-w-0 items-center gap-2">

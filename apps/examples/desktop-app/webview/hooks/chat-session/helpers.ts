@@ -247,7 +247,7 @@ export function resolveCredentialError(
 	if (config.apiKey.trim().length > 0) {
 		return null;
 	}
-	return `供应商 "${config.provider}" 缺少 API key，请在设置中添加凭据，或改用其他供应商。`;
+	return `供应商 "${config.provider}" 缺少 API 密钥，请在设置中添加凭据，或改用其他供应商。`;
 }
 
 /**

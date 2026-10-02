@@ -1,7 +1,7 @@
 {
-	"Task completed": "任务完成",
+	"Task completed": "任务已完成",
 	"When Cline finishes a task or turn.": "当 Cline 完成任务或一轮对话时。",
-	"Approval needed": "需要审批",
+	"Approval needed": "需要你批准",
 	"When a tool is waiting for your approval.": "当有工具正在等待你批准时。",
 	"Question asked": "提出问题",
 	"When Cline needs an answer before continuing.": "当 Cline 需要你回答后才能继续时。",

@@ -131,7 +131,7 @@ export function CloudOnboardingCard({
 					{isSignedOut ? (
 						<Button disabled={signingIn} onClick={onSignIn} size="sm">
 							<LogIn aria-hidden="true" className="size-3.5" />
-							{signingIn ? "等待浏览器…" : "使用 Cline 登录"}
+							{signingIn ? "正在等待浏览器…" : "使用 Cline 登录"}
 						</Button>
 					) : (
 						<Button onClick={onConnect} size="sm">

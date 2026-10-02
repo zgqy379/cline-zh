@@ -230,7 +230,7 @@ describe("OnboardingView", () => {
 		).toEqual([
 			"常规免费模型推广",
 			"订阅 ClinePass，畅用 DeepSeek、Kimi、GLM 等顶尖开放权重模型",
-			"无需 API key",
+			"无需 API 密钥",
 		]);
 		const apiKeyOption = container.querySelector(
 			'[data-onboarding-option="api-key"]',
@@ -291,7 +291,7 @@ describe("OnboardingView", () => {
 			"[data-onboarding-api-key-form]",
 		);
 		const apiKeyCardAction = container.querySelector<HTMLButtonElement>(
-			'button[aria-label="使用自己的 API key"]',
+			'button[aria-label="使用自己的 API 密钥"]',
 		);
 
 		expect(apiKeyCardAction).not.toBeNull();
@@ -316,7 +316,7 @@ describe("OnboardingView", () => {
 		expect(apiKeyForm?.getAttribute("aria-hidden")).toBe("false");
 		expect(document.activeElement?.getAttribute("aria-label")).toBe("供应商");
 		expect(
-			container.querySelector('button[aria-label="使用自己的 API key"]'),
+			container.querySelector('button[aria-label="使用自己的 API 密钥"]'),
 		).toBeNull();
 
 		const clineCardAction = container.querySelector<HTMLButtonElement>(
@@ -333,7 +333,7 @@ describe("OnboardingView", () => {
 		expect(apiKeyForm?.getAttribute("aria-hidden")).toBe("true");
 		expect(document.activeElement?.textContent?.trim()).toBe("登录");
 		expect(
-			container.querySelector('button[aria-label="使用自己的 API key"]'),
+			container.querySelector('button[aria-label="使用自己的 API 密钥"]'),
 		).not.toBeNull();
 	});
 
@@ -345,7 +345,7 @@ describe("OnboardingView", () => {
 
 		// The design uses the chevron as a disclosure affordance without rotating
 		// it; aria-expanded and panel visibility carry the actual state.
-		const trigger = buttonByText("使用 Cline API key");
+		const trigger = buttonByText("使用 Cline API 密钥");
 		const chevron = trigger.querySelector("svg");
 		const chevronClassName = chevron?.getAttribute("class");
 		const panel = container.querySelector("#onboarding-cline-key-form");
@@ -552,7 +552,7 @@ describe("OnboardingView", () => {
 		});
 
 		await act(async () => {
-			buttonByText("使用 Cline API key").click();
+			buttonByText("使用 Cline API 密钥").click();
 		});
 		const keyInput = container.querySelector<HTMLInputElement>(
 			'input[aria-label="Cline API 密钥"]',
@@ -611,7 +611,7 @@ describe("OnboardingView", () => {
 			buttonByText("开始构建").click();
 		});
 		await act(async () => {
-			buttonByText("使用 Cline API key").click();
+			buttonByText("使用 Cline API 密钥").click();
 		});
 		const keyInput = container.querySelector<HTMLInputElement>(
 			'input[aria-label="Cline API 密钥"]',
@@ -646,7 +646,7 @@ describe("OnboardingView", () => {
 
 		// Stays on the connect step with an error instead of advancing.
 		expect(container.textContent).not.toContain("全部就绪");
-		expect(container.textContent).toContain("保存 API key 失败");
+		expect(container.textContent).toContain("保存 API 密钥 失败");
 		expect(container.textContent).toContain("密钥无法通过验证");
 		// The rejected key was persisted for verification, then rolled back.
 		expect(savedKeys).toEqual(["bad_key", ""]);
@@ -660,7 +660,7 @@ describe("OnboardingView", () => {
 		// Expand the bring-your-own-key form; drive state through the select's
 		// props via the API key path (jsdom cannot open the radix listbox).
 		const expandButton = container.querySelector<HTMLButtonElement>(
-			'button[aria-label="使用自己的 API key"]',
+			'button[aria-label="使用自己的 API 密钥"]',
 		);
 		expect(expandButton).toBeDefined();
 		await act(async () => {
