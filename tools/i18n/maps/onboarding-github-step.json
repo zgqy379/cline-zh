@@ -1,0 +1,13 @@
+{
+	"Your Cline account session ended. Sign in again to connect GitHub.": "你的 Cline 账户会话已结束，请重新登录以连接 GitHub。",
+	"Checking GitHub connection": "正在检查 GitHub 连接",
+	"Connect GitHub": "连接 GitHub",
+	"Connected": "已连接",
+	"Not connected": "未连接",
+	"Finish installing the Cline GitHub App in your browser...": "请在浏览器中完成 Cline GitHub App 的安装...",
+	"Cancel": "取消",
+	"Accessible repositories": "可访问的仓库",
+	"Loading repositories...": "正在加载仓库...",
+	"Continue": "继续",
+	"Skip for now": "暂时跳过"
+}

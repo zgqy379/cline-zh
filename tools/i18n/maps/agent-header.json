@@ -1,0 +1,18 @@
+{
+	"New Session": "新建会话",
+	"Session actions": "会话操作",
+	"Deleting...": "正在删除…",
+	"Delete session": "删除会话",
+	"Open diff: ${additions} additions, ${deletions} deletions": "查看差异：新增 ${additions} 行，删除 ${deletions} 行",
+	"New session": "新建会话",
+	"Back to the main agent session": "返回主智能体会话",
+	"Session status: ${status}": "会话状态：${status}",
+	"Agents": "智能体",
+	"Waiting for the first agent to report in...": "正在等待第一个智能体上报…",
+	"No agent details were recorded for this session.": "此会话没有记录任何智能体详情。",
+	"Could not refresh — showing the last known agents.": "刷新失败 — 显示最后已知的智能体。",
+	"Open this agent's session": "打开此智能体的会话",
+	"Untitled task": "未命名任务",
+	"Starting up...": "正在启动…",
+	"No activity recorded (${state})": "没有记录活动（${state}）"
+}

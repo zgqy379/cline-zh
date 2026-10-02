@@ -1,0 +1,21 @@
+{
+	"Chat": "对话",
+	"The folder picker could not be opened. Type a folder path instead.": "无法打开文件夹选择器。请改为输入文件夹路径。",
+	"Close menu": "关闭菜单",
+	"Search workspaces & branches": "搜索工作区和分支",
+	"Search workspaces": "搜索工作区",
+	"Loading...": "加载中…",
+	"Workspaces": "工作区",
+	"Open folder “{search.trim()}”": "打开文件夹“{search.trim()}”",
+	"Press the option above to open this folder": "点击上方选项以打开此文件夹",
+	"No workspaces found — type a full folder path to add one": "未找到工作区 — 输入完整文件夹路径以添加",
+	"Opening folder picker...": "正在打开文件夹选择器…",
+	"Open folder...": "打开文件夹…",
+	"Go": "前往",
+	"Branches": "分支",
+	"No branches found": "未找到分支",
+	"Branch name": "分支名称",
+	"Create": "创建",
+	"Cancel": "取消",
+	"Create and checkout new branch...": "创建并切换到新分支…"
+}

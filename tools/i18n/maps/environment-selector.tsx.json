@@ -1,0 +1,10 @@
+{
+	"SSH host": "SSH 主机",
+	"Local": "本地",
+	"Remote": "远程",
+	"Cloud": "云端",
+	"Connecting": "连接中",
+	"Coming soon": "即将推出",
+	"Add SSH Host": "添加 SSH 主机",
+	"No SSH hosts saved": "尚未保存 SSH 主机"
+}

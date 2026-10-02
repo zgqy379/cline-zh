@@ -1,0 +1,19 @@
+{
+	"Task completed": "任务完成",
+	"When Cline finishes a task or turn.": "当 Cline 完成任务或一轮对话时。",
+	"Approval needed": "需要审批",
+	"When a tool is waiting for your approval.": "当有工具正在等待你批准时。",
+	"Question asked": "提出问题",
+	"When Cline needs an answer before continuing.": "当 Cline 需要你回答后才能继续时。",
+	"Session error": "会话出错",
+	"When a task stops because of an error.": "当任务因错误而中止时。",
+	"Allowed by system": "系统已允许",
+	"Checking…": "检查中…",
+	"Check permission": "检查权限",
+	"Allow notifications": "允许通知",
+	"Desktop notifications": "桌面通知",
+	"Notifications are blocked in system settings.": "通知已被系统设置屏蔽。",
+	"Event": "事件",
+	"Notify": "通知",
+	"Sound": "声音"
+}

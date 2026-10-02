@@ -1,0 +1,19 @@
+{
+	"Speak instead of typing: the microphone in chat transcribes your voice with the model chosen here. Text appears as you speak; Stop ends the live session.": "用说的代替打字：聊天中的麦克风会使用这里选择的模型转录你的语音。说话时文字实时出现；点「停止」结束实时会话。",
+	"Voice input": "语音输入",
+	"Choose a streaming transcription model to use live voice input.": "请选择流式转录模型以使用实时语音输入。",
+	"Reopen Voice settings to retry.": "请重新打开语音设置后重试。",
+	"Loading providers...": "正在加载服务商…",
+	"Failed to load providers: {loadError}": "服务商加载失败：{loadError}",
+	"None of your configured providers offer streaming speech-to-text models": "你已配置的服务商都不提供流式语音转文字模型",
+	"Voice input needs a configured model provider": "语音输入需要已配置的服务商",
+	"Connect a provider with streaming transcription models and this page unlocks automatically.": "连接一个提供流式转录模型的服务商后，本页会自动解锁。",
+	"Open Model Providers": "打开服务商设置",
+	"Enable voice input": "启用语音输入",
+	"Turns on the microphone button in chat. A default model is\n\t\t\t\t\t\tpreselected \u2014 adjust it below.": "开启聊天中的麦克风按钮。已预选默认模型，可在下方调整。",
+	"Failed to save voice input settings: {saveError}": "保存语音输入设置失败：{saveError}",
+	"Provider": "服务商",
+	"Model": "模型",
+	"Voice input model": "语音输入模型",
+	"Default": "默认"
+}

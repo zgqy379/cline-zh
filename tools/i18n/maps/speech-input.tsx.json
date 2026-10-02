@@ -1,0 +1,10 @@
+{
+	"Speech recognition failed": "语音识别失败",
+	"Audio recording failed": "录音失败",
+	"Stop recording": "停止录音",
+	"Record speech": "开始语音输入",
+	"Stop browser speech recognition": "停止浏览器语音识别",
+	"Record with browser speech recognition": "使用浏览器语音识别录音",
+	"Speech input is not supported in this browser": "当前浏览器不支持语音输入",
+	"Click Stop to transcribe your recording.": "点击停止即可转录你的录音。"
+}

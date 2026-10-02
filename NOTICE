@@ -1,0 +1,26 @@
+Cline 中文版 (Cline Chinese Desktop Localization)
+Copyright 2026 Cline 中文版 contributors
+
+This product is a modified distribution of Cline.
+
+Upstream project:  Cline (https://github.com/cline/cline)
+Upstream copyright: Copyright 2026 Cline Bot Inc.
+Upstream license:  Apache License, Version 2.0
+Upstream version:   desktop-v0.0.37
+
+The original Apache License 2.0 text is reproduced verbatim in the LICENSE file
+at the root of this repository and has not been altered.
+
+Modifications made in this repository — including the Chinese localization of
+user-facing text across the desktop webview, sidecar, shared UI packages and
+native menus — are documented in MODIFICATIONS.md at the repository root, as
+required by Apache License 2.0 section 4(b).
+
+No trademark rights are granted by the Apache License. "Cline" and the Cline
+logo and wordmark remain the property of Cline Bot Inc. They are used here
+solely to identify the origin of this derivative work, nominatively, and do
+not imply endorsement, sponsorship, or affiliation.
+
+This is an unofficial, community-maintained project. It is not affiliated with,
+endorsed by, or supported by Cline Bot Inc. For the official product, see
+https://cline.bot.
