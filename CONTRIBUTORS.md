@@ -16,7 +16,7 @@
 | **zcode** | 构建出包、CDP 运行时验证、悬置范围问题收口 |
 | **MiMo** | 设置页测试修复与对抗式审计 |
 | **opencode** | 部分批次汉化与断言同步 |
-| **监督方 / coordinator** | 跨 agent 仲裁、测试结论核查与工单派发 |
+| **Hermes agent** | 跨 agent 仲裁、测试结论核查与工单派发（早期台账中署名为「监督方 / coordinator」） |
 | **DSH agent** | 发布前的仓库卫生清理（Git LFS、上游 CI、仓库元数据） |
 
 ## 关于提交作者
