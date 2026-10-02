@@ -2272,7 +2272,7 @@ describe("persisted run errors", () => {
 		// persisted message, otherwise the banner is treated as a new error and
 		// the same text renders twice. Deriving it from the shared helper keeps
 		// the fixture from rotting when the hint copy is reworded.
-		const fullError = `The run failed: API key expired. ${resolveCredentialFailureHint(providerId)}`;
+		const fullError = `运行失败：API key expired. ${resolveCredentialFailureHint(providerId)}`;
 		await renderMessages(messages, { error: fullError, status: "failed" });
 		expect(container.textContent?.split("API key expired.")).toHaveLength(2);
 		expect(container.textContent).toContain(fullError.replaceAll("`", ""));

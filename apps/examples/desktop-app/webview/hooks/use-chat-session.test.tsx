@@ -4951,7 +4951,7 @@ describe("useChatSession", () => {
 			(message) => message.role === "error",
 		);
 		expect(errorMessages).toHaveLength(1);
-		expect(errorMessages[0]?.content).toContain("The run failed");
+		expect(errorMessages[0]?.content).toContain("运行失败");
 		// The optimistic user message and the queued materialization of the
 		// same prompt must not duplicate each other.
 		const userMessages = current.messages.filter(
@@ -5229,7 +5229,7 @@ describe("useChatSession", () => {
 			(message) => message.role === "error",
 		);
 		expect(errorMessage?.content).toContain(
-			"The run failed before a response was produced.",
+			"运行失败，未产生任何回复。",
 		);
 		expect(errorMessage?.content).not.toContain("Unauthorized");
 	});
@@ -5331,7 +5331,7 @@ describe("useChatSession", () => {
 		);
 		expect(errorMessages).toHaveLength(1);
 		expect(errorMessages[0]?.content).toContain(
-			persistedError ? "API key expired" : "The run failed",
+			persistedError ? "API key expired" : "运行失败",
 		);
 		if (persistedError) {
 			const failedSessionId = current.sessionId!;
@@ -5413,7 +5413,7 @@ describe("useChatSession", () => {
 		});
 		expect(current.messages.filter((m) => m.role === "error")).toHaveLength(1);
 		expect(current.error).toContain(
-			"The run failed before a response was produced.",
+			"运行失败，未产生任何回复。",
 		);
 
 		await act(async () => {
@@ -5442,7 +5442,7 @@ describe("useChatSession", () => {
 		);
 		expect(errorMessages).toHaveLength(1);
 		expect(errorMessages[0]?.content).toContain(
-			"The run failed: cline requires re-authentication.",
+			"运行失败：cline requires re-authentication.",
 		);
 		expect(errorMessages[0]?.content).not.toContain(
 			"before a response was produced",
