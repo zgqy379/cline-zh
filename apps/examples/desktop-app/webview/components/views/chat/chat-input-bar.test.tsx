@@ -499,7 +499,7 @@ describe("ChatInputBar", () => {
 			}),
 		).toEqual([
 			{ name: "release", description: "Ship it" },
-			{ name: "publish-ui-skill", description: "Skill command" },
+			{ name: "publish-ui-skill", description: "技能命令" },
 		]);
 	});
 
@@ -516,8 +516,8 @@ describe("ChatInputBar", () => {
 				],
 			),
 		).toEqual([
-			{ name: "goal", description: "Skill command" },
-			{ name: "goal-status", description: "Plugin command" },
+			{ name: "goal", description: "技能命令" },
+			{ name: "goal-status", description: "插件命令" },
 		]);
 	});
 
@@ -2991,7 +2991,7 @@ describe("ChatInputBar token ring", () => {
 			2000,
 		);
 		expect(outputOnly?.getAttribute("aria-label")).toBe(
-			"上下文窗口：2,000 中已用 500 个令牌（25%）",
+			"上下文窗口：2,000 中已用 500 个词元（25%）",
 		);
 	});
 
@@ -3005,7 +3005,7 @@ describe("ChatInputBar token ring", () => {
 			2000,
 		);
 		expect(trigger?.getAttribute("aria-label")).toBe(
-			"上下文窗口：2,000 中已用 1,500 个令牌（75%）",
+			"上下文窗口：2,000 中已用 1,500 个词元（75%）",
 		);
 		expect(trigger?.textContent).toBe("");
 		const ring = trigger?.querySelector("svg");
@@ -3076,9 +3076,9 @@ describe("ChatInputBar token ring", () => {
 
 		const panel = document.querySelector("#token-usage-panel");
 		expect(panel?.textContent).toContain("上下文窗口500.5k / 1.0M (50%)");
-		expect(panel?.textContent).toContain("输入令牌数500,000");
-		expect(panel?.textContent).toContain("输出令牌数500");
-		expect(panel?.textContent).toContain("缓存令牌数125,000");
+		expect(panel?.textContent).toContain("输入词元数500,000");
+		expect(panel?.textContent).toContain("输出词元数500");
+		expect(panel?.textContent).toContain("缓存词元数125,000");
 		expect(panel?.textContent).toContain("费用$0.014");
 		const uncachedSegment = panel?.querySelector<HTMLElement>(
 			'[data-token-kind="uncached-input"]',

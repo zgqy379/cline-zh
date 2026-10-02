@@ -58,7 +58,7 @@ describe("AgentContextUsage", () => {
 	it("uses current input plus output for the ring, with cost provided by the host", () => {
 		const markup = render(usage, "$0.014");
 		expect(markup).toContain(
-			'aria-label="上下文窗口：2,000 中已用 1,500 个令牌（75%）"',
+			'aria-label="上下文窗口：2,000 中已用 1,500 个词元（75%）"',
 		);
 		expect(markup).toContain("1.5k / 2k (75%)");
 		expect(markup).toContain("$0.014");
@@ -95,7 +95,7 @@ describe("AgentContextUsage", () => {
 			contextWindow: 750,
 			cacheReadTokens: 2_000,
 		});
-		expect(markup).toContain("个令牌（100%）");
+		expect(markup).toContain("个词元（100%）");
 		expect(markup).toContain('stroke-dashoffset="0"');
 		expect(markup).toContain(
 			'data-token-kind="uncached-input" style="width:0%"',
@@ -108,7 +108,7 @@ describe("AgentContextUsage", () => {
 
 	it("supports output-only usage and keeps the established million-token label", () => {
 		expect(render({ ...usage, tokensIn: 0, tokensOut: 500 })).toContain(
-			"2,000 中已用 500 个令牌（25%）",
+			"2,000 中已用 500 个词元（25%）",
 		);
 		expect(render({ ...usage, contextWindow: 1_000_000 })).toContain(
 			"1.5k / 1.0M (0%)",

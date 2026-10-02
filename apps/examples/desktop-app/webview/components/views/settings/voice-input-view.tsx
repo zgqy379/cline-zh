@@ -183,7 +183,7 @@ export function VoiceInputContent({
 		return (
 			<PageFrame>
 				{header}
-				<p className="text-sm text-muted-foreground">正在加载服务商...</p>
+				<p className="text-sm text-muted-foreground">正在加载供应商…</p>
 			</PageFrame>
 		);
 	}
@@ -193,7 +193,7 @@ export function VoiceInputContent({
 			<PageFrame>
 				{header}
 				<p className="text-sm text-destructive">
-					加载服务商失败：{loadError}
+					加载供应商失败：{loadError}
 				</p>
 			</PageFrame>
 		);
@@ -208,18 +208,18 @@ export function VoiceInputContent({
 					<Mic aria-hidden="true" className="size-6 text-muted-foreground" />
 					<p className="text-base font-medium text-foreground">
 						{hasConnected
-							? "你已配置的服务商都不提供流式语音转文字模型"
-							: "语音输入需要已配置的服务商"}
+							? "你已配置的供应商都不提供流式语音转文字模型"
+							: "语音输入需要已配置的供应商"}
 					</p>
 					<p className="text-sm text-muted-foreground">
 						{voiceCapableProviderNames.length > 0
-							? `连接一个提供流式转录模型的服务商（例如 ${voiceCapableProviderNames
+							? `连接一个提供流式转录模型的供应商（例如 ${voiceCapableProviderNames
 								.slice(0, 4)
 								.join(", ")}）后，本页会自动解锁。`
-							: "连接一个提供流式转录模型的服务商后，本页会自动解锁。"}
+							: "连接一个提供流式转录模型的供应商后，本页会自动解锁。"}
 					</p>
 					<Button onClick={onOpenModelProviders} size="sm" type="button">
-						打开服务商设置
+						打开供应商设置
 					</Button>
 				</div>
 			</PageFrame>
@@ -262,7 +262,7 @@ export function VoiceInputContent({
 					<>
 						<div className="mt-6">
 							<p className="mb-2 text-sm font-semibold text-foreground">
-								服务商
+								供应商
 							</p>
 							<div className="flex flex-wrap gap-2">
 								{voiceProviders.map(({ provider }) => {

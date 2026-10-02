@@ -346,7 +346,7 @@ describe("ChatMessages tool disclosures", () => {
 		expect(container.textContent).not.toContain(screenshotData);
 
 		const image = container.querySelector<HTMLImageElement>(
-			'img[alt="Generated result 1"]',
+			'img[alt="生成结果 1"]',
 		);
 		expect(image?.src).toBe(`data:image/png;base64,${screenshotData}`);
 
@@ -377,10 +377,10 @@ describe("ChatMessages tool disclosures", () => {
 		]);
 
 		expect(
-			container.querySelector<HTMLImageElement>('img[alt="Generated result 1"]')
+			container.querySelector<HTMLImageElement>('img[alt="生成结果 1"]')
 				?.src,
 		).toBe("data:image/png;base64,Zmlyc3Q=");
-		expect(container.querySelector('img[alt="Generated result 2"]')).toBeNull();
+		expect(container.querySelector('img[alt="生成结果 2"]')).toBeNull();
 		expect(container.textContent).toContain("1 / 2");
 
 		const next = container.querySelector<HTMLButtonElement>(
@@ -389,7 +389,7 @@ describe("ChatMessages tool disclosures", () => {
 		await act(async () => next?.click());
 
 		expect(
-			container.querySelector<HTMLImageElement>('img[alt="Generated result 2"]')
+			container.querySelector<HTMLImageElement>('img[alt="生成结果 2"]')
 				?.src,
 		).toBe("data:image/png;base64,c2Vjb25k");
 		expect(container.textContent).toContain("2 / 2");
@@ -1513,7 +1513,7 @@ describe("ChatMessages image attachments", () => {
 		]);
 
 		const image = container.querySelector<HTMLImageElement>(
-			'img[alt="Attachment 1"]',
+			'img[alt="附件 1"]',
 		);
 		expect(image?.src).toBe("data:image/png;base64,aGVsbG8=");
 		expect(image?.className).toContain("max-h-56.25");
@@ -1540,7 +1540,7 @@ describe("ChatMessages image attachments", () => {
 		]);
 
 		expect(
-			container.querySelector<HTMLImageElement>('img[alt="Generated result 1"]')
+			container.querySelector<HTMLImageElement>('img[alt="生成结果 1"]')
 				?.src,
 		).toBe("data:image/webp;base64,aGVsbG8=");
 	});
@@ -1569,10 +1569,10 @@ describe("ChatMessages image attachments", () => {
 		]);
 
 		expect(
-			container.querySelector<HTMLImageElement>('img[alt="Generated result 1"]')
+			container.querySelector<HTMLImageElement>('img[alt="生成结果 1"]')
 				?.src,
 		).toBe("data:image/png;base64,Zmlyc3Q=");
-		expect(container.querySelector('img[alt="Generated result 2"]')).toBeNull();
+		expect(container.querySelector('img[alt="生成结果 2"]')).toBeNull();
 		expect(container.textContent).toContain("1 / 2");
 
 		const previous = container.querySelector<HTMLButtonElement>(
@@ -1585,7 +1585,7 @@ describe("ChatMessages image attachments", () => {
 		await act(async () => next?.click());
 
 		expect(
-			container.querySelector<HTMLImageElement>('img[alt="Generated result 2"]')
+			container.querySelector<HTMLImageElement>('img[alt="生成结果 2"]')
 				?.src,
 		).toBe("data:image/png;base64,c2Vjb25k");
 		expect(container.textContent).toContain("2 / 2");
@@ -1593,7 +1593,7 @@ describe("ChatMessages image attachments", () => {
 
 		await act(async () => previous?.click());
 		expect(
-			container.querySelector<HTMLImageElement>('img[alt="Generated result 1"]')
+			container.querySelector<HTMLImageElement>('img[alt="生成结果 1"]')
 				?.src,
 		).toBe("data:image/png;base64,Zmlyc3Q=");
 	});
@@ -1613,7 +1613,7 @@ describe("ChatMessages image attachments", () => {
 		]);
 
 		const expand = container.querySelector<HTMLButtonElement>(
-			'button[aria-label="Expand attachment 1"]',
+			'button[aria-label="展开附件 1"]',
 		);
 		await act(async () => expand?.click());
 

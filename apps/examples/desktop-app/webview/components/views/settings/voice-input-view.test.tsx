@@ -168,7 +168,7 @@ describe("VoiceInputContent", () => {
 		});
 		fetchProviderCatalogMock.mockReturnValue(new Promise(() => {}));
 		await render();
-		expect(container.textContent).not.toContain("正在加载服务商");
+		expect(container.textContent).not.toContain("正在加载供应商");
 		expect(container.textContent).toContain("Scribe v2 Realtime");
 		expect(
 			container.querySelector('[role="radio"][aria-checked="true"]')
@@ -184,10 +184,10 @@ describe("VoiceInputContent", () => {
 		const onOpenModelProviders = await render();
 
 		expect(container.textContent).toContain(
-			"语音输入需要已配置的服务商",
+			"语音输入需要已配置的供应商",
 		);
 		const openProviders = Array.from(container.querySelectorAll("button")).find(
-			(button) => button.textContent?.includes("打开服务商设置"),
+			(button) => button.textContent?.includes("打开供应商设置"),
 		);
 		await act(async () => openProviders?.click());
 		expect(onOpenModelProviders).toHaveBeenCalledOnce();
@@ -277,7 +277,7 @@ describe("VoiceInputContent", () => {
 		await render();
 
 		expect(container.textContent).toContain(
-			"你已配置的服务商都不提供流式语音转文字模型",
+			"你已配置的供应商都不提供流式语音转文字模型",
 		);
 		expect(container.textContent).toContain("Groq");
 	});

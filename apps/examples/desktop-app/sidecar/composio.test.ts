@@ -399,7 +399,7 @@ describe("getComposioStatus", () => {
 		);
 		expect(cached?.toolNames).toHaveLength(cachedCount);
 		if (cachedCount === 0) {
-			expect(cached?.error).toMatch(/no tools were retrieved/);
+			expect(cached?.error).toMatch(/尚未从 Composio 获取到工具/);
 		}
 		expect(proxy.listToolkitTools).not.toHaveBeenCalled();
 		const status = await getComposioStatus({ refresh: true });

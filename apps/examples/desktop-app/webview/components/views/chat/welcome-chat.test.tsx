@@ -246,7 +246,7 @@ describe("WelcomeScreen", () => {
 		await clickButton("Review PR checks");
 		expect(approveAgendaTaskMock).not.toHaveBeenCalled();
 		expect(document.body.textContent).toContain(task.instructions);
-		await clickButton("Approve and start", false, document);
+		await clickButton("批准并开始", false, document);
 
 		expect(approveAgendaTaskMock).toHaveBeenCalledWith({
 			taskId: "task-1",

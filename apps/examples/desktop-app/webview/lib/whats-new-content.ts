@@ -59,7 +59,7 @@ export const WHATS_NEW_RELEASES: WhatsNewRelease[] = [
 				icon: GitBranchPlus,
 			},
 			{
-				title: "Pull Request 状态",
+				title: "拉取请求状态",
 				description:
 					"在输入框即可查看分支的 PR、合并状态与 CI 检查。",
 				icon: GitPullRequest,

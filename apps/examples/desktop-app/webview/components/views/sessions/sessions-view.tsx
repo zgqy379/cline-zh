@@ -756,7 +756,7 @@ export function SessionsView({ activeSessionId, history }: SessionsViewProps) {
 												aria-current={
 													item === currentPage + 1 ? "page" : undefined
 												}
-												aria-label={`Page ${item}`}
+												aria-label={`第 ${item} 页`}
 												className="h-8 min-w-8 rounded-md px-2 tabular-nums"
 												disabled={history.isLoadingMore}
 												key={item}

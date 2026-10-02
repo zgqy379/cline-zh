@@ -432,16 +432,16 @@ describe("SessionsView pagination", () => {
 		await view.render();
 
 		const pageButtons = Array.from(
-			container.querySelectorAll('button[aria-label^="Page "]'),
+			container.querySelectorAll('button[aria-label^="第 "]'),
 		).map((button) => button.textContent);
 		expect(pageButtons).toEqual(["1", "2", "3"]);
 		expect(container.textContent).not.toContain("Page 1 of");
 
-		await clickButton("Page 3");
+		await clickButton("第 3 页");
 		expect(rowTitles()[0]).toBe("Session 20");
 		expect(
 			container
-				.querySelector('button[aria-label="Page 3"]')
+				.querySelector('button[aria-label="第 3 页"]')
 				?.getAttribute("aria-current"),
 		).toBe("page");
 

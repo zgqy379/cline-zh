@@ -256,7 +256,7 @@ function useCloudProvisioningPhase(
 				? "正在启动智能体"
 				: "正在启动你的工作区";
 	return longRunning
-		? `${label}...这可能需要几分钟。`
+		? `${label}…这可能需要几分钟。`
 		: `${label}...`;
 }
 
