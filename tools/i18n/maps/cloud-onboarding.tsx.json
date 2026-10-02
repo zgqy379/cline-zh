@@ -1,0 +1,21 @@
+{
+	"Could not reach Cline Cloud": "无法连接到 Cline Cloud",
+	"Check your connection and try again.": "请检查网络连接后重试。",
+	"Retry": "重试",
+	"Cloud sessions": "云端会话",
+	"Run Cline in the cloud": "在云端运行 Cline",
+	"Give Cline access to a repository": "授予 Cline 仓库访问权限",
+	"Connect GitHub to get started": "连接 GitHub 以开始",
+	"Sign in with Cline": "使用 Cline 登录",
+	"Cloud sessions are part of your Cline account.": "云端会话属于你的 Cline 账户。",
+	"Connect GitHub": "连接 GitHub",
+	"Link your GitHub account from the Cline dashboard.": "在 Cline 控制台中关联你的 GitHub 账户。",
+	"Pick your repositories": "选择你的仓库",
+	"Choose which repositories the Cline GitHub App can access.": "选择 Cline GitHub App 可以访问的仓库。",
+	"Start a session": "开始会话",
+	"Waiting for browser…": "等待浏览器…",
+	"Manage repository access": "管理仓库访问权限",
+	"Check again": "重新检查",
+	"I've connected GitHub": "我已连接 GitHub",
+	"Watching for changes — this updates automatically.": "正在监听变化 — 此处会自动更新。"
+}

@@ -1,0 +1,21 @@
+{
+	"You're up to date. Cline also checks on its own shortly after launch and every two hours.": "你已是最新版本。Cline 还会在启动后不久以及每两小时自动检查。",
+	"Update checks are only available in the desktop app.": "仅桌面端支持检查更新。",
+	"Cline checks for updates shortly after launch and every two hours, and installs them when it restarts.": "Cline 会在启动后不久和每两小时检查更新，并在重启时安装。",
+	"Updates": "更新",
+	"Restart to update": "重启以更新",
+	"Check for updates": "检查更新",
+	"Loading release notes…": "正在加载版本说明…",
+	"Open this release on GitHub": "在 GitHub 上查看此版本",
+	"Installed": "已安装",
+	"Release notes aren't available in this build. The full changelog is on GitHub.": "此版本暂不提供版本说明。完整更新日志请见 GitHub。",
+	"Beta": "测试版",
+	"Highlights": "近期亮点",
+	"A short tour of the biggest recent additions.": "快速了解最近最重要的新增内容。",
+	"Show what's new": "查看新功能",
+	"Report an issue": "反馈问题",
+	"Found a bug or have a request? Open an issue on GitHub.": "发现缺陷或有建议？欢迎在 GitHub 提交 issue。",
+	"Open GitHub issues": "打开 GitHub issue",
+	"Release notes": "版本说明",
+	"Full changelog": "完整更新日志"
+}

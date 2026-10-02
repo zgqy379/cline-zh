@@ -1,0 +1,12 @@
+{
+	"Directory response belongs to ${result.environmentId}, not ${request.environmentId}.": "目录响应属于 ${result.environmentId}，而不是 ${request.environmentId}。",
+	"Remote host returned an empty directory path.": "远程主机返回了空目录路径。",
+	"Choose remote workspace": "选择远程工作区",
+	"Remote home directory": "远程主目录",
+	"Parent remote directory": "上级远程目录",
+	"Refresh remote directories": "刷新远程目录",
+	"Loading remote directories…": "正在加载远程目录…",
+	"No subdirectories": "无子目录",
+	"Cancel": "取消",
+	"Use this folder": "使用此文件夹"
+}

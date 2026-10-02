@@ -1,0 +1,10 @@
+{
+	"New session": "新会话",
+	"Back to the main agent session: ${parentTitle}": "返回主智能体会话：${parentTitle}",
+	"Copy failed": "复制失败",
+	"The file path could not be copied to the clipboard.": "无法将文件路径复制到剪贴板。",
+	"Rename ${thread.title}": "重命名 ${thread.title}",
+	"Sign in again with the `${cli.command}` CLI in a terminal, then try again.": "请在终端中使用 `${cli.command}` CLI 重新登录，然后重试。",
+	"Sign in to Cline": "登录 Cline",
+	"Task completed": "任务已完成"
+}

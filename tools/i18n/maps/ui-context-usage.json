@@ -1,0 +1,8 @@
+{
+	"Context window: ${a} of ${b} tokens used (${c}%)": "上下文窗口：${b} 中已用 ${a} 个令牌（${c}%）",
+	"Context window": "上下文窗口",
+	"Input tokens": "输入令牌数",
+	"Output tokens": "输出令牌数",
+	"Cached tokens": "缓存令牌数",
+	"Cost": "费用"
+}

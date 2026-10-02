@@ -1,0 +1,21 @@
+{
+	"Could not submit decision.": "无法提交审批决定。",
+	"Could not submit answer.": "无法提交回答。",
+	"Copy failed": "复制失败",
+	"The message could not be copied to the clipboard.": "无法将该消息复制到剪贴板。",
+	"Could not restore checkpoint.": "无法还原检查点。",
+	"Could not restart from this message.": "无法从该消息重新开始。",
+	"Could not fork session.": "无法分叉会话。",
+	"Agent conversation": "智能体对话",
+	"Switching session...": "正在切换会话…",
+	"Loading session...": "正在加载会话…",
+	"Thinking...": "思考中…",
+	"Reconnecting chat...": "正在重新连接对话…",
+	"Chat backend unavailable": "对话后端不可用",
+	"Connecting chat...": "正在连接对话…",
+	"Revert to this checkpoint?": "还原到此检查点？",
+	"Cancel": "取消",
+	"Revert": "还原",
+	"Edit and restart from here?": "在此编辑并重新开始？",
+	"Continue": "继续"
+}

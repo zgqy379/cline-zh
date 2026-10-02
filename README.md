@@ -2,234 +2,174 @@
   <img src="assets/icons/icon.png" width="80" alt="Cline" />
 </p>
 
-<h1 align="center">Cline</h1>
+<h1 align="center">Cline 中文版</h1>
 
 <p align="center">
-The open source coding agent in your IDE, terminal, & desktop.
+  <strong>Cline 桌面端（Desktop App）的简体中文本地化版本</strong><br>
+  非官方社区项目 · 基于 <a href="https://github.com/cline/cline">cline/cline</a> @ <code>desktop-v0.0.37</code> 编译
 </p>
-
-<div align="center">
-
-<div align="center">
-<table>
-<tbody>
-<td align="center">
-<a href="https://docs.cline.bot" target="_blank"><strong>Docs</strong></a>
-</td>
-<td align="center">
-<a href="https://discord.gg/cline" target="_blank"><strong>Discord</strong></a>
-</td>
-<td align="center">
-<a href="https://www.reddit.com/r/cline/" target="_blank"><strong>r/cline</strong></a>
-</td>
-<td align="center">
-<a href="https://github.com/cline/cline/discussions/categories/feature-requests?discussions_q=is%3Aopen+category%3A%22Feature+Requests%22+sort%3Atop" target="_blank"><strong>Feature Requests</strong></a>
-</td>
-<td align="center">
-<a href="https://cline.bot/join-us" target="_blank"><strong>Join us!</strong></a>
-</td>
-</tbody>
-</table>
-</div>
-
-</div>
-
-<br>
-
-<div align="center">
-<table>
-<tr>
-<td align="center" width="50%">
-
-### CLI
-
-Run Cline in your terminal.
-Interactive chat or fully headless 
-for CI/CD and scripting.
-
-```
-npm i -g cline
-```
-
-<a href="./apps/cli/README.md">Learn more</a>
-<br><br>
-
-</td>
-<td align="center" width="50%">
-
-### Desktop App
-
-Cline as a native app for macOS and Windows.
-Run agent sessions in any folder, schedule
-routines, and manage models, plugins, and MCP servers.
-
-<a href="https://cline.bot/desktop">Download for macOS and Windows</a>
-<br><br>
-
-</td>
-</tr>
-<tr>
-<td align="center" width="50%">
-
-### VS Code Extension
-
-AI coding assistant in your editor.
-Create files, run commands, browse the web,
-and use tools with human-in-the-loop approval.
-
-<a href="https://marketplace.visualstudio.com/items?itemName=saoudrizwan.claude-dev">Install from VS Marketplace</a>
-<br><br>
-
-</td>
-<td align="center" width="50%">
-
-### JetBrains Plugin
-
-The same Cline experience in IntelliJ IDEA,
-PyCharm, WebStorm, GoLand, and the rest of
-the JetBrains family.
-
-<a href="https://plugins.jetbrains.com/plugin/28247-cline">Install from JetBrains Marketplace</a>
-<br><br>
-
-</td>
-</tr>
-</table>
-</div>
-
-<div align="center">
-<table>
-<tr>
-<td align="center">
-
-### SDK
-
-Build your own AI agents and integrations powered by the same engine that runs the CLI, desktop app, VS Code extension, and JetBrains plugin. Custom tools, multi-agent teams, connectors, scheduled automations, and more.
-
-```
-npm install @cline/sdk
-```
-
-<a href="https://docs.cline.bot/cline-sdk/overview">Documentation</a>
-<br><br>
-
-</td>
-</tr>
-</table>
-</div>
 
 ---
 
-## Index
+## 这是什么
 
-| Product | Description | Location | CHANGELOG |
-|---------|------------|--------------|--------------|
-| **SDK** | Node.js programmatic agent API and extension exports. | [`sdk/`](https://github.com/cline/cline/tree/main/sdk) | [CHANGELOG.md](https://github.com/cline/cline/blob/main/sdk/CHANGELOG.md) |
-| **CLI** | Terminal UI, headless mode, shell commands, and CLI-specific flows. | [`apps/cli/`](https://github.com/cline/cline/tree/main/apps/cli) | [CHANGELOG.md](https://github.com/cline/cline/blob/main/apps/cli/CHANGELOG.md) |
-| **VS Code Extension** | The Marketplace extension and extension host integration. | [`/`](https://github.com/cline/cline/tree/main) (WIP migrating) | [CHANGELOG.md](https://github.com/cline/cline/blob/main/CHANGELOG.md) |
-| **Desktop App** | Native macOS and Windows app (Tauri shell, Bun sidecar, Next.js UI). | [`apps/examples/desktop-app/`](https://github.com/cline/cline/tree/main/apps/examples/desktop-app) | [CHANGELOG.md](https://github.com/cline/cline/blob/main/apps/examples/desktop-app/CHANGELOG.md) |
-| **JetBrains Plugin** | JetBrains-hosted client that talks to the shared agent core. | Currently we are not open-sourcing JetBrains plugins | - |
-| **Docs site** | Public documentation pages. | [`docs/`](https://docs.cline.bot/) | - |
+Cline 官方桌面端**没有任何 i18n 机制**，也没有官方中文版。本仓库把
+**Cline Desktop（Tauri 桌面应用）** 的界面文案整体译为简体中文，并自行编译发布。
 
-## Edits Code Across Your Project
+**关于"首个汉化版"**：社区此前已有多个 Cline **VS Code 扩展**的汉化 fork
+（如 [`HybridTalentComputing/cline-chinese`](https://github.com/HybridTalentComputing/cline-chinese)，
+2025 年 2 月起）。本仓库的不同在于**覆盖桌面端**——
+VS Code 扩展与桌面端是两套独立的 UI 代码，扩展版的汉化不覆盖桌面应用。
 
-Cline reads your project structure, understands the relationships between files, and makes coordinated changes across your codebase. It monitors linter and compiler errors as it works, fixing issues like missing imports, type mismatches, and syntax errors before you even see them. In VS Code and JetBrains, every edit shows up as a diff you can review, modify, or revert. All changes are tracked with checkpoints, so you can easily undo the agent's work.
+> ⚠️ **本项目与 Cline 官方无隶属关系**，是第三方社区作品。
+> Cline 是 Cline Bot Inc. 的商标，本项目仅以描述性方式标明来源。
+> 如需官方版本，请前往 [cline.bot](https://cline.bot)。
 
-## Runs Bash Commands
+---
 
-Cline executes commands directly in your terminal and watches the output in real time. Install packages, run build scripts, execute tests, deploy applications, manage databases. For long-running processes like dev servers, Cline continues working in the background and reacts to new output as it appears, catching compile errors, test failures, and server crashes as they happen.
+## 已汉化范围
 
-## Plan and Act
+| 层 | 路径 | 内容 |
+|---|---|---|
+| L1 | `apps/examples/desktop-app/webview/**` | 桌面端界面文案（会话、聊天、设置、欢迎页、模型选择器…） |
+| L2 | `apps/examples/desktop-app/src-tauri/**` | 托盘菜单、macOS 应用菜单、安装包标识 |
+| L3 | `apps/examples/desktop-app/sidecar/**` | sidecar 返回给 UI 的用户可见消息 |
+| L4 | `sdk/packages/ui/**` | 共享 React 组件库 |
+| L5 | `sdk/packages/shared/**`、`sdk/packages/core/**` | 状态标签、内置工具目录描述 |
 
-Toggle between Plan mode and Act mode. In Plan mode, Cline explores your codebase, asks clarifying questions, and lays out a strategy. Once you're aligned, switch to Act mode and Cline executes the plan. Every file edit and terminal command requires your approval, so you stay in control of what actually changes. Or toggle auto-approve and let Cline run autonomously.
+约 **1500 处**用户可见文案，涉及 **200 个文件**（+3678 / −3204 行）。
 
-## Rules and Skills
+**系统提示词未汉化**，保持英文 —— 提示词直接决定模型行为，
+翻译需要独立的对照审校，不在本次发布范围内。
 
-Define project-specific rules in `.clinerules` files that guide how Cline works in your codebase: coding standards, architecture conventions, deployment procedures, testing requirements. Rules are picked up automatically by the CLI, VS Code extension, and JetBrains plugin. Use skills to let the model load specific rules when needed.
+### 刻意保留英文的部分
 
-## Works With Every Model
+命令名、事件名、IPC type、API 字段名、工具名、CSS 类名、存储键、
+Zod schema 的 `.describe()`、产品名与厂商名 —— 这些是协议或标识，翻译会导致功能失效。
 
-Cline is not locked to a single AI provider. Use whichever model fits your workflow:
+---
 
-| Provider | Models |
-|----------|--------|
-| Anthropic | Claude Opus, Sonnet, Haiku |
-| OpenAI | GPT series models |
-| Google | Gemini series models |
-| OpenRouter | 200+ models from any provider |
-| Vercel AI Gateway | Route to many providers through one gateway |
-| AWS Bedrock | Claude, Llama, and more |
-| Azure / GCP Vertex | All hosted models |
-| Cerebras / Groq | Fast inference models |
-| Ollama / LM Studio | Run local models on your machine |
-| Any OpenAI-compatible API | Self-hosted or third-party endpoints |
+## 与上游的差异
 
-## Extend With Plugins or MCP Servers
+除汉化外，本仓库还包含 **4 项功能性修改**（主题三态、模型回退、CJK 复数、
+错误上限弹窗文案与匹配逻辑解耦），以及构建标识符变更。
 
-Extend Cline's capabilities with plugins. Using the SDK, register tools and lifecycle hooks programmatically through the plugin system for logging, auditing, policy enforcement, or adding domain-specific capabilities. Simple plugin example below.
+**完整清单见 [`MODIFICATIONS.md`](MODIFICATIONS.md)** —— 该文件同时用于满足
+Apache-2.0 第 4(b) 条对"修改声明"的要求。
+上游英文 README 原样保留在 [`README.upstream.md`](README.upstream.md)。
 
-```typescript
-import { Agent, createTool } from "@cline/sdk"
+---
 
-const deployTool = createTool({
-  name: "deploy",
-  description: "Deploy the current branch to staging.",
-  inputSchema: { type: "object", properties: { env: { type: "string" } }, required: ["env"] },
-  execute: async (input) => {
-    // your deployment logic
-  },
-})
+## 构建
 
-const agent = new Agent({ tools: [deployTool], /* ... */ })
-```
-...or use [MCPs](https://github.com/modelcontextprotocol) to connect to databases, query APIs, manage cloud infrastructure, and interact with external systems. Use [community-built servers](https://github.com/modelcontextprotocol/servers) or ask Cline to create custom tools on the fly. In the CLI, manage servers with `cline mcp`.
+### 环境要求
 
-## Multi-Agent Teams
+- [Rust](https://rustup.rs/) ≥ 1.85（crate graph 需要 `edition2024`）
+- [Bun](https://bun.sh)（本仓库使用 bun，非 npm）
+- Visual Studio Build Tools（C++ 生成工具，Windows）
+- Linux 需 `libwebkit2gtk-4.1-dev` `libgtk-3-dev` `libayatana-appindicator3-dev` `librsvg2-dev` `libxdo-dev` `libssl-dev`
 
-Coordinate multiple agents working together on complex tasks. A coordinator agent breaks the work into subtasks and delegates to specialist agents, each with their own tools and context. Team state persists across sessions so you can pick up where you left off.
+### 步骤
 
 ```bash
-cline --team-name auth-sprint "Plan and implement user authentication with tests"
+git clone <this-repo>
+cd cline
+
+# 桌面端依赖
+cd apps/examples/desktop-app
+bun install
+
+# 构建共享 UI / SDK 包
+cd ../../..
+bun install && bun run build:sdk
+
+# 编译桌面端
+cd apps/examples/desktop-app
+bun run build:sidecar:bin
+bun run build          # = bun run bun.mts，产出 webview/out
+cargo tauri build      # 或 bun run build:binary
 ```
 
-## Scheduled Agents
+产物：
 
-Run agents on cron schedules for recurring automations. Daily PR summaries, weekly dependency checks, codebase health reports. Schedules persist across restarts and run independently of any terminal session.
+- 可执行文件：`src-tauri/target/release/cline-app.exe`（Windows）
+- 安装包：`src-tauri/target/release/bundle/msi/` 与 `bundle/nsis/`
+
+> **提示**：建议设置独立的 `CARGO_TARGET_DIR`，避免与本机已安装的官方 Cline
+> 争用构建产物和单实例锁：
+> ```bash
+> export CARGO_TARGET_DIR=/path/to/your/build-out
+> ```
+
+> ⚠️ 本仓库与官方版使用**不同的 bundle identifier**（`bot.cline.app.zh`），
+> 两者可以并存，各自使用独立的配置目录。
+
+---
+
+## 测试状态（如实记录）
+
+桌面端全量 vitest：**1647 用例，18 条失败**。
+
+汉化直接导致的 6 条失败已全部修复。剩余 18 条经分类均为
+**Windows 平台差异**（git 路径分隔符、`EPERM` 删临时目录、Windows 无 `sh`），
+**与汉化无关，在 Linux / macOS 上不复现**。详见
+[`docs/TEST-FAILURE-TRIAGE.md`](docs/TEST-FAILURE-TRIAGE.md)。
+
+---
+
+## 自动更新已禁用
+
+上游的 updater 端点指向官方 release，pubkey 是官方签名密钥 ——
+若保持启用，自动更新会把汉化版**静默替换回英文官方版**。
+本仓库已置空 `endpoints` 与 `pubkey`。如需自建更新通道，
+请同时配置自己的端点与签名密钥。
+
+---
+
+## 商标声明
+
+Apache License 2.0 第 6 条**不授予商标许可**。
+
+本仓库保留上游的图标与 wordmark 素材（`assets/`），**未作替换** ——
+它们仅用于**描述性标明来源**（表明这是 Cline 的衍生作品），
+不构成对 Cline Bot Inc. 的背书或授权。
+
+「Cline」「Cline 中文版」均为描述性使用。Cline 商标归 Cline Bot Inc. 所有。
+
+本项目**非官方**，与 Cline Bot Inc. 无隶属关系。官方版本见 [cline.bot](https://cline.bot)。
+
+---
+
+## 致谢与许可
+
+- 上游项目：[cline/cline](https://github.com/cline/cline) · Copyright 2026 Cline Bot Inc.
+- 本仓库沿用上游的 **Apache License 2.0**，[`LICENSE`](LICENSE) 未作任何改动
+- [`NOTICE`](NOTICE) 记录归属与商标立场；[`MODIFICATIONS.md`](MODIFICATIONS.md) 记录全部修改
+- 上游英文 README 原样保留在 [`README.upstream.md`](README.upstream.md)
+- 汉化工作由 AI agent 辅助完成，并经人工逐屏验收
+
+本项目发布的安装包包含上游 Cline 的源代码编译产物，
+遵循 Apache-2.0 第 4 条：保留原许可与版权声明、标明修改内容、不提供任何商标许可。
+
+---
+
+## 汉化工具链
+
+[`tools/i18n/`](tools/i18n/README.md) 提供本项目的校验工具与翻译映射表：
+
+| 工具 | 用途 |
+|---|---|
+| `check-enums.mjs` | **必跑** —— 检测枚举值被误译导致的静默功能失效 |
+| `check-syntax.mjs` | **必跑** —— 检测文本替换造成的语法损坏 |
+| `residual.mjs` | 精准扫描残留的用户可见英文 |
+| `scan-i18n.mjs` | 定位待译文件（误报较高，仅作索引用） |
+| `apply-zh.mjs` | 按映射表精确替换（默认 dry-run） |
+| `maps/` | 36 个译文映射 JSON，上游更新后可复用 |
 
 ```bash
-cline schedule create "PR summary" \
-  --cron "0 9 * * MON-FRI" \
-  --prompt "List all open PRs and their review status" \
-  --workspace /path/to/repo
+node tools/i18n/check-enums.mjs <改动的文件>
+node tools/i18n/check-syntax.mjs <改动的文件>
 ```
 
-## Connect to Slack, Telegram, Discord, and More
-
-Chat with your agent from any messaging platform: Telegram, Slack, Discord, Google Chat, WhatsApp, and Linear. Each conversation thread maps to an agent session with full context. Set up access control to restrict who can interact with your agent.
-
-```bash
-# Connect to Telegram
-cline connect telegram -k $BOT_TOKEN
-# Connect to Slack through webhook
-cline connect slack --bot-token $SLACK_TOKEN --signing-secret $SECRET --base-url $URL
-# Connect to Slack using socket mode
-cline connect slack --bot-token $SLACK_TOKEN --app-token $SLACK_APP_TOKEN
-```
-
-## Headless CLI for CI/CD
-
-Run Cline with zero interaction for scripting and automation. Pipe input, get JSON output, chain commands, integrate into CI/CD pipelines.
-
-```bash
-cline "Run tests and fix any failures"
-git diff origin/main | cline "Review these changes for issues"
-cline --json "List all TODO comments" | jq -r 'select(.type == "agent_event" and .event.text) | .event.text'
-```
-
-## Contributing
-
-Start with the [Contributing Guide](CONTRIBUTING.md). Join our [Discord](https://discord.gg/cline) and head to the `#contributors` channel to connect with other contributors. Check our [careers page](https://cline.bot/join-us) for full-time roles.
-
-## License
-
-[Apache 2.0 © 2026 Cline Bot Inc.](./LICENSE)
+⚠️ 若新增的 UI 文案**同时被代码 `===` 比较**（如弹窗按钮），翻文案必须同步改匹配逻辑，
+否则会造成静默的功能回归。详见 [`tools/i18n/README.md`](tools/i18n/README.md)。

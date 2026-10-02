@@ -1,0 +1,22 @@
+{
+	"View": "查看",
+	"Uninstall": "卸载",
+	"Cancel": "取消",
+	"Install": "安装",
+	"Failed to load connectors:": "连接器加载失败：",
+	"Loading connectors": "正在加载连接器",
+	"Connectors aren&apos;t available.": "连接器尚不可用。",
+	"Browse all connectors in the Marketplace": "在市场浏览全部连接器",
+	"Connect your accounts to give Cline tools for your favorite apps.": "连接你的账号，让 Cline 获得你常用应用的工具。",
+	"Tools will become available in new sessions.": "工具将在新会话中可用。",
+	"Search connectors": "搜索连接器",
+	"Loading connector catalog": "正在加载连接器目录",
+	"Retry": "重试",
+	"No connectors are available for your account yet.": "你的账号暂无可用连接器。",
+	"Category": "分类",
+	"Connected": "已连接",
+	"Slug": "标识",
+	"Tools": "工具",
+	"available in new sessions": "在新会话中可用",
+	"Finish authorizing": "请在浏览器中完成"
+}
