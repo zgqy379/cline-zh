@@ -335,7 +335,7 @@ function ChatMessagesImpl({
 				await Promise.resolve(fn(requestId));
 			} catch (err) {
 				const message =
-					err instanceof Error ? err.message : "无法提交审批决定。";
+					err instanceof Error ? err.message : "无法提交批准决定。";
 				setToolApprovalErrors((prev) => ({ ...prev, [requestId]: message }));
 			} finally {
 				setToolApprovalActions((prev) => {

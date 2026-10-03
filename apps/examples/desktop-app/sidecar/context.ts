@@ -1274,7 +1274,7 @@ async function handleHubApprovalRequest(
 	});
 	const client = getSessionRuntimeBinding(ctx, sessionId).hubClient;
 	if (!client)
-		throw new Error("Hub 客户端在审批响应前断开连接");
+		throw new Error("Hub 客户端在批准响应前断开连接");
 	await client.command(
 		"approval.respond",
 		{

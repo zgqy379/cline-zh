@@ -36,7 +36,7 @@
 	"Branch": "分支",
 	"Provider": "供应商",
 	"Model": "模型",
-	"Tokens": "令牌数",
+	"Tokens": "词元消耗数",
 	"Cost": "费用",
 	"Source": "来源",
 	"run": "次运行",

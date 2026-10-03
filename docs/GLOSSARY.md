@@ -204,6 +204,28 @@
 | Continue | 继续（追问面板确认按钮） |
 | Drop to attach | 拖放以附加 |
 
+## 八、B55 新增（2026-10-03 Cline，residual v0.3 复扫 + 术语交叉核对）
+
+| 英文 | 中文 | 说明 |
+|---|---|---|
+| Approve | 批准 | ⚠️ **禁用「审批」**。GLOSSARY §一/§四 早已定 approve=批准，B55 清理了源码与 maps 里 11 处漂移 |
+| Approving… / Rejecting… | 批准中… / 拒绝中… | 工具批准卡片按钮的进行态（省略号用 `…`） |
+| Submit / Sending… | 提交 / 正在发送… | 追问面板按钮 |
+| Tokens（会话列表列头、会话元信息标签） | 词元消耗数 | ⚠️ 曾误写「令牌数」；与「供应商/模型/费用/来源」同列，词形取「词元消耗数」 |
+| Input / Output / Cached tokens | 输入 / 输出 / 缓存词元数 | 上下文用量面板 |
+| Token consumption | 词元消耗 | 账户页 API 用量说明 |
+| Untitled session | 未命名会话 | 会话导入列表的兜底标题（core → sidecar → 导入对话框） |
+| Imported from {tool} | 从 {tool} 导入 | 导入会话提示条标题 |
+| Proceed while running | 继续执行（不等待） | 命令执行中「把命令丢后台、让智能体继续」的按钮 |
+| Last run: | 上次运行： | 钩子/技能的执行时间标签 |
+| Scanning… | 正在扫描… | 会话导入页 |
+| Couldn't scan for sessions: | 无法扫描会话： | 导入扫描失败的错误前缀 |
+| Cloud synchronization failed | 云端同步失败 | 云端会话同步失败（core → `cloud_session_sync_failed` → UI 错误条） |
+| Cloud transcript refresh failed | 云端对话记录刷新失败 | 同上，重连补拉历史失败 |
+| settings coming soon. | 设置即将推出。 | 设置分区未实现的兜底文案（当前所有分区都已实现，属兜底分支） |
+| Files: {fileCount} | 文件：{fileCount} | 变更面板的文件数徽标 |
+| Beta（版本徽标） | 保留 Beta | 阶段徽标，与 `BETA_PRODUCT_NAME = "Cline Beta"` 同族；判不改 |
+
 ## 回填记录
 
 > 翻译过程中遇到的新术语，请追加到对应分类并在此登记。
@@ -218,4 +240,8 @@
 | Pull request | 拉取请求 | doubao | 2026-09-29 |
 | Command output | 命令输出 | doubao | 2026-09-29 |
 | Follow-up question | 追问 | doubao | 2026-09-29 |
+| Approve | 批准（禁用「审批」） | Cline | 2026-10-03 |
+| Tokens | 词元消耗数（禁用「令牌数」） | Cline | 2026-10-03 |
+| Untitled session | 未命名会话 | Cline | 2026-10-03 |
+| Proceed while running | 继续执行（不等待） | Cline | 2026-10-03 |
 | — | — | — | — |
