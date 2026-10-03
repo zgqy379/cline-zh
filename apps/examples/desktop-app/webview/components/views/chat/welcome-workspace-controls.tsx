@@ -718,7 +718,7 @@ function WorkspacePicker({
 							>
 								<Folder className="size-3 shrink-0 text-muted-foreground" />
 								<span className="truncate text-xs text-foreground">
-									Open folder “{search.trim()}”
+									打开文件夹“{search.trim()}”
 								</span>
 							</Button>
 						)}

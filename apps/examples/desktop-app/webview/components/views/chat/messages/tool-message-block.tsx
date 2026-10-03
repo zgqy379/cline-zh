@@ -330,7 +330,7 @@ const ToolCallRow = memo(function ToolCallRow({
 							{isProceeding ? (
 								<Loader2 className="mr-1.5 h-3.5 w-3.5 animate-spin" />
 							) : null}
-							Proceed while running
+							继续执行（不等待）
 						</Button>
 						{proceedError ? (
 							<div className="text-xs text-destructive">{proceedError}</div>

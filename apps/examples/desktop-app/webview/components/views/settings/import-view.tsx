@@ -93,14 +93,14 @@ export function ImportContent() {
 									? toolStatus(tool, scan)
 									: scanError
 										? "扫描失败"
-										: "Scanning…"}
+										: "正在扫描…"}
 							</p>
 						</div>
 					</div>
 				))}
 				{scanError ? (
 					<p className="mt-4 text-sm text-destructive" role="alert">
-						Couldn't scan for sessions: {scanError}
+						无法扫描会话：{scanError}
 					</p>
 				) : null}
 			</section>

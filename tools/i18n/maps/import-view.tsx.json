@@ -1,0 +1,4 @@
+{
+	"Scanning…": "正在扫描…",
+	"Couldn't scan for sessions: {scanError}": "无法扫描会话：{scanError}"
+}

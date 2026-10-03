@@ -1438,8 +1438,8 @@ function ChatInputBarImpl({
 				</div>
 				{unsupportedDraftImageCount > 0 && (
 					<output className="block px-2 text-sm text-destructive">
-						This model doesn’t support the attached images. Remove them or
-						choose a model that supports images before sending.
+						当前模型不支持已附加的图片。请先移除这些图片，
+						或改选支持图片的模型后再发送。
 					</output>
 				)}
 				{attachments.length > 0 && (

@@ -36,6 +36,7 @@
 	"No branches found": "未找到分支",
 	"Worktree": "工作树",
 	"About worktrees": "关于工作树",
+	"Open folder “{search.trim()}”": "打开文件夹“{search.trim()}”",
 	"Waiting for browser...": "正在等待浏览器…",
 	"Sign in to use Cloud": "登录以使用云端"
 }

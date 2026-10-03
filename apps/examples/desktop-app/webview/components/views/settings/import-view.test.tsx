@@ -129,7 +129,7 @@ describe("ImportContent", () => {
 				sessions: [session("codex", "existing")],
 			});
 		await render();
-		expect(container.textContent).toContain("Scanning…");
+		expect(container.textContent).toContain("正在扫描…");
 
 		click("导入会话");
 		click("stub-close");
@@ -153,7 +153,7 @@ describe("ImportContent", () => {
 		invoke.mockRejectedValue(new Error("disk on fire"));
 		await render();
 		expect(container.textContent).toContain(
-			"Couldn't scan for sessions: disk on fire",
+			"无法扫描会话：disk on fire",
 		);
 	});
 });

@@ -1606,7 +1606,7 @@ export function CustomizationSectionView({
 									</div>
 									{hook.hookEventName ? (
 										<p className="text-xs leading-5 text-muted-foreground">
-											Last run:{" "}
+											上次运行：{" "}
 											{formatExecutionTs(
 												hookExecutionByEvent[hook.hookEventName]?.lastTs ??
 													null,

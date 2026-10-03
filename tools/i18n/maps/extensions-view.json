@@ -33,5 +33,6 @@
 	"${toolCallCount} tool calls": "${toolCallCount} 次工具调用",
 	"${item.name} · ${item.version}": "${item.name} · ${item.version}",
 	"Builtin Tools": "内置工具",
-	"Plugin Tools": "插件工具"
+	"Plugin Tools": "插件工具",
+	"Last run:": "上次运行："
 }

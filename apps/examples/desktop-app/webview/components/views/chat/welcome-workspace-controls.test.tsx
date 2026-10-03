@@ -674,7 +674,7 @@ describe("WelcomeWorkspaceControls manual path entry", () => {
 		await openWorkspaceMenu();
 		await typeInSearch("/home/user/personal-stuff");
 
-		await clickButton("Open folder \u201c/home/user/personal-stuff\u201d");
+		await clickButton("打开文件夹\u201c/home/user/personal-stuff\u201d");
 
 		expect(onSwitchWorkspace).toHaveBeenCalledWith("/home/user/personal-stuff");
 	});
@@ -685,7 +685,7 @@ describe("WelcomeWorkspaceControls manual path entry", () => {
 		await openWorkspaceMenu();
 		await typeInSearch("/does/not/exist");
 
-		await clickButton("Open folder \u201c/does/not/exist\u201d");
+		await clickButton("打开文件夹\u201c/does/not/exist\u201d");
 
 		expect(container.textContent).toContain('无法打开“/does/not/exist”。请确认该文件夹存在后重试。');
 	});
@@ -722,7 +722,7 @@ describe("WelcomeWorkspaceControls manual path entry", () => {
 		await render();
 		await openWorkspaceMenu();
 		await typeInSearch("/does/not/exist");
-		await clickButton("Open folder \u201c/does/not/exist\u201d");
+		await clickButton("打开文件夹\u201c/does/not/exist\u201d");
 		expect(container.textContent).toContain('无法打开“/does/not/exist”。请确认该文件夹存在后重试。');
 
 		// Re-render with fresh callback identities, as the page does when the

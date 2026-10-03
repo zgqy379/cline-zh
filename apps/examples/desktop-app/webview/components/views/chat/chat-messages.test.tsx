@@ -1390,7 +1390,7 @@ describe("ChatMessages tool disclosures", () => {
 			"color",
 		);
 		const proceedButton = [...container.querySelectorAll("button")].find(
-			(button) => button.textContent?.includes("Proceed while running"),
+			(button) => button.textContent?.includes("继续执行（不等待）"),
 		);
 		expect(proceedButton).toBeDefined();
 		await act(async () => proceedButton?.click());
@@ -2244,7 +2244,7 @@ describe("ChatMessages tool approvals", () => {
 		await renderMessages(messages, { importedFromTool: "claude-code" });
 
 		const notice = container.querySelector("output");
-		expect(notice?.textContent).toContain("Imported from Claude Code");
+		expect(notice?.textContent).toContain("从 Claude Code 导入");
 		expect(notice?.parentElement?.firstElementChild).toBe(notice);
 		expect(notice?.parentElement?.textContent).toContain("imported prompt");
 

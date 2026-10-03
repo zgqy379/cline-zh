@@ -289,7 +289,7 @@ describe("ChatInputBar", () => {
 			]);
 		});
 		expect(container.querySelector("output")?.textContent).toContain(
-			"doesn’t support",
+			"当前模型不支持已附加的图片",
 		);
 		const textarea = container.querySelector("textarea");
 		await act(async () => {
