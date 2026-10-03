@@ -153,7 +153,7 @@ describe("AgentAskQuestion", () => {
 		const buttons = container.querySelectorAll("button");
 		expect([...buttons].every((button) => button.disabled)).toBe(true);
 		expect(buttons[0]?.getAttribute("aria-pressed")).toBe("true");
-		expect(buttons[2]?.textContent).toContain("Sending…");
+		expect(buttons[2]?.textContent).toContain("正在发送…");
 		expect(
 			container.querySelector<HTMLInputElement>(
 				".cline-ui-agent-ask-question__custom",
@@ -214,7 +214,7 @@ describe("AgentAskQuestion", () => {
 		const labels = [...container.querySelectorAll("button")].map(
 			(button) => button.textContent,
 		);
-		expect(labels).toEqual(["AYes", "BNo", "Submit"]);
+		expect(labels).toEqual(["AYes", "BNo", "提交"]);
 	});
 
 	it("labels choices alphabetically without changing the submitted answer", async () => {

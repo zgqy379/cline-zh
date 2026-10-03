@@ -572,7 +572,7 @@ export class CloudSessionController {
 			this.publish({
 				type: "sync_failed",
 				sessionId,
-				message: String(payload.message ?? "Cloud synchronization failed"),
+				message: String(payload.message ?? "云端同步失败"),
 			});
 		} else {
 			this.publishSnapshot(
@@ -2778,7 +2778,7 @@ export class CloudSessionController {
 						message:
 							error instanceof Error
 								? error.message
-								: "Cloud transcript refresh failed",
+								: "云端对话记录刷新失败",
 					});
 				},
 			);

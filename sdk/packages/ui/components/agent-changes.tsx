@@ -53,7 +53,7 @@ export function AgentChangesPanel({
 						{title}
 					</span>
 					<span className="cline-ui-agent-changes__count rounded bg-cline-ui-secondary px-1.5 py-0.5 text-[10px] font-cline-ui-mono text-cline-ui-muted-foreground">
-						Files: {fileCount}
+						文件：{fileCount}
 					</span>
 				</div>
 				<div className="flex items-center gap-2 text-cline-ui-xs font-cline-ui-mono">

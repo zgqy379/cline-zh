@@ -260,10 +260,10 @@ export function AgentAskQuestion({
 									{isPending ? (
 										<>
 											<Spinner />
-											Sending…
+											正在发送…
 										</>
 									) : (
-										"Submit"
+										"提交"
 									)}
 								</Button>
 							</div>

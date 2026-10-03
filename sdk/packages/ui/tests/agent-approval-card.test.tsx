@@ -88,7 +88,7 @@ describe("AgentApprovalCard", () => {
 		const [approve, reject] = container.querySelectorAll("button");
 		expect(approve?.disabled).toBe(true);
 		expect(reject?.disabled).toBe(true);
-		expect(reject?.textContent).toContain("Rejecting...");
+		expect(reject?.textContent).toContain("拒绝中…");
 		expect(container.querySelector("section")?.getAttribute("aria-busy")).toBe(
 			"true",
 		);

@@ -477,7 +477,7 @@ describe("spawn / skill / question summaries", () => {
 			input: { question: "Which env?", options: ["dev", "prod"] },
 			result: "prod",
 		});
-		expect(summary.label).toBe('Asked "Which env?"');
+		expect(summary.label).toBe("已提问 “Which env?”");
 		expect(summary.details).toEqual(["dev", "prod"]);
 		expect(summary.outputText).toBe("prod");
 	});

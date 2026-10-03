@@ -783,7 +783,7 @@ export function buildToolSummary(
 				...base,
 				...labeled([
 					{
-						text: `${inProgress ? "Asking" : "Asked"} "${truncate(info.question, opts.maxInlineChars)}"`,
+						text: `${inProgress ? "正在提问" : "已提问"} “${truncate(info.question, opts.maxInlineChars)}”`,
 					},
 				]),
 				items: [
@@ -827,7 +827,7 @@ export function buildGroupedToolLabel(
 	}>,
 ): string {
 	if (summaries.length === 1) {
-		return summaries[0]?.label ?? "Tool";
+		return summaries[0]?.label ?? "工具";
 	}
 
 	type Segment =

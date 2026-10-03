@@ -42,7 +42,7 @@ it("keeps file actions separate from disclosure and forwards panel focus/close",
 				</AgentChangesPanel>,
 			),
 		);
-		expect(container.textContent).toContain("Files: 1+");
+		expect(container.textContent).toContain("文件：1+");
 		expect(container.textContent).toContain("One omitted edit");
 		const toggle = container.querySelector<HTMLButtonElement>(
 			".cline-ui-agent-changes__toggle",

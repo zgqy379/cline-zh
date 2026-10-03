@@ -277,7 +277,7 @@ export class CodexImportAdapter implements SessionImportAdapter {
 				title:
 					titles.get(sessionId) ??
 					truncateForDisplay(meta.firstUserText, 120) ??
-					"Untitled session",
+					"未命名会话",
 				cwd: meta.cwd,
 				startedAtMs: meta.startedAtMs ?? Date.now(),
 				updatedAtMs: meta.endedAtMs ?? meta.startedAtMs ?? Date.now(),
@@ -498,7 +498,7 @@ export class CodexImportAdapter implements SessionImportAdapter {
 			title:
 				titles.get(sourceId) ??
 				truncateForDisplay(meta.firstUserText, 120) ??
-				"Untitled session",
+				"未命名会话",
 			...(prompt ? { prompt } : {}),
 			provider: "openai-native",
 			model: currentModel ?? "gpt-5",
