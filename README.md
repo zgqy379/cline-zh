@@ -85,6 +85,21 @@ Apache-2.0 第 4(b) 条对"修改声明"的要求。
 - **移除失效的 Git LFS 声明**：上游 `.gitattributes` 把 `assets/docs/demo.gif` 标记为
   LFS，而该文件在本仓库只是 133 字节指针、LFS 对象从未存在。该文件全仓无引用，已删除。
 
+### 为什么仓库里是整个 cline 源码？
+
+本仓库是上游**完整源码树**的 fork（基线提交 `41deb5d` = `desktop-v0.0.37` 的未改动快照），
+跟踪 4100+ 个文件，而汉化实际只改动其中约 280 个。其余部分 —— `apps/vscode`（VS Code 扩展）、
+`apps/cli`、`apps/cline-hub`、`evals`、上游文档站等 —— 本 fork **一行未动**。
+
+保留完整树而不是只放一份「汉化补丁」，是三个硬约束的结果：
+
+1. **法务可追溯**：[`MODIFICATIONS.md`](MODIFICATIONS.md) 声明「本仓库与上游的全部差异可用
+   `git diff 41deb5d HEAD` 复现」。Apache-2.0 第 4(b) 条的修改声明要求可追溯，裁剪任何目录都会让这句话不成立。
+2. **上游更新可重放**：上游发新版后可直接 rebase，再重跑 `tools/i18n/` 的扫描器复用译文映射表。
+3. **构建可复现**：桌面端依赖 `sdk/packages/**` 与根 workspace 配置，缺一块就编不出来。
+
+只想看汉化改了什么：`git diff --stat 41deb5d HEAD`。
+
 ---
 
 ## 构建
