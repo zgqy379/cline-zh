@@ -55,7 +55,8 @@ further defined and clarified by project maintainers.
 ## Enforcement
 
 Instances of abusive, harassing, or otherwise unacceptable behavior may be
-reported by contacting the project team at hi@cline.bot. All complaints
+reported by opening a confidential report via this repository's [Security Advisories](https://github.com/zgqy379/cline-zh/security/advisories/new),
+or by contacting the maintainer [@zgqy379](https://github.com/zgqy379) through this repository. All complaints
 will be reviewed and investigated and will result in a response that
 is deemed necessary and appropriate to the circumstances. The project team is
 obligated to maintain confidentiality with regard to the reporter of an incident.
