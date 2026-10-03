@@ -40,5 +40,6 @@
 	"Provider": "供应商",
 	"Model": "模型",
 	"Model and provider": "模型与供应商",
-	"Close model selector": "关闭模型选择器"
+	"Close model selector": "关闭模型选择器",
+	"This model doesn’t support the attached images. Remove them or choose a model that supports images before sending.": "当前模型不支持已附加的图片。请先移除这些图片，或改选支持图片的模型后再发送。"
 }

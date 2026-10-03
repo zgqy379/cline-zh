@@ -21,13 +21,12 @@ export function ImportedSessionNotice({ tool }: { tool: SessionImportTool }) {
 			</span>
 			<div className="min-w-0">
 				<p className="text-sm font-semibold text-foreground">
-					Imported from {label}
+					从 {label} 导入
 				</p>
 				<p className="mt-0.5 text-[13px] text-muted-foreground">
-					The earlier turns were recorded by {label}, whose tools and workflow
-					differ from Cline&apos;s. When you continue, the model works from a
-					summary of them rather than the original tool calls, so results may
-					not be as reliable as in a session started with Cline.
+					此前的轮次由 {label} 记录，其工具与工作流和 Cline 不同。继续时，
+					模型依据这些轮次的摘要工作，而不是原始工具调用，因此结果可能
+					不如用 Cline 新建的会话可靠。
 				</p>
 			</div>
 		</output>
