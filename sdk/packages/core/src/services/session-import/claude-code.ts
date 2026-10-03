@@ -317,7 +317,7 @@ export class ClaudeCodeImportAdapter implements SessionImportAdapter {
 			title:
 				truncateForDisplay(title ?? summaryTitle, 120) ??
 				truncateForDisplay(preview, 120) ??
-				"Untitled session",
+				"未命名会话",
 			cwd,
 			startedAtMs: firstTs ?? Date.now(),
 			updatedAtMs: lastTs ?? firstTs ?? Date.now(),
@@ -433,7 +433,7 @@ export class ClaudeCodeImportAdapter implements SessionImportAdapter {
 			tool: this.tool,
 			sourceId,
 			sourcePath: file,
-			title: summary?.title ?? "Untitled session",
+			title: summary?.title ?? "未命名会话",
 			...(truncateForDisplay(prompt, 2000)
 				? { prompt: truncateForDisplay(prompt, 2000) }
 				: {}),

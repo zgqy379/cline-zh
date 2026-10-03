@@ -145,7 +145,7 @@ export class OpencodeImportAdapter implements SessionImportAdapter {
 					title:
 						(needsFallback ? truncateForDisplay(preview, 120) : undefined) ??
 						truncateForDisplay(title, 120) ??
-						"Untitled session",
+						"未命名会话",
 					cwd: typeof row.directory === "string" ? row.directory : "",
 					startedAtMs: asMs(row.time_created) ?? Date.now(),
 					updatedAtMs:
@@ -362,7 +362,7 @@ export class OpencodeImportAdapter implements SessionImportAdapter {
 				title:
 					(needsFallback ? truncateForDisplay(prompt, 120) : undefined) ??
 					truncateForDisplay(title, 120) ??
-					"Untitled session",
+					"未命名会话",
 				...(displayPrompt ? { prompt: displayPrompt } : {}),
 				provider: provider ?? "opencode",
 				model: model ?? "opencode",

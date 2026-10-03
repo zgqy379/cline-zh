@@ -82,10 +82,10 @@ export function AgentApprovalCard({
 					{responding === "approve" ? (
 						<>
 							<Spinner />
-							Approving...
+							批准中…
 						</>
 					) : (
-						"Approve"
+						"批准"
 					)}
 				</button>
 				<button
@@ -97,10 +97,10 @@ export function AgentApprovalCard({
 					{responding === "reject" ? (
 						<>
 							<Spinner />
-							Rejecting...
+							拒绝中…
 						</>
 					) : (
-						"Reject"
+						"拒绝"
 					)}
 				</button>
 			</div>
