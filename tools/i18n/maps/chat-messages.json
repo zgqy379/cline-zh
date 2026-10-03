@@ -20,7 +20,7 @@
 	"Scheduled task completed": "定时任务已完成",
 	"Could not detach the running command.": "无法分离正在运行的命令。",
 	"Pending now": "立即待处理",
-	"Tool approval required": "需要工具审批",
+	"Tool approval required": "需要工具批准",
 	"Review each tool call and approve or reject it before execution.": "执行前请逐一审核工具调用，并选择批准或拒绝。",
 	"Previous generated image": "上一张生成的图片",
 	"Next generated image": "下一张生成的图片",

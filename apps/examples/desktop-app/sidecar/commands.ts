@@ -2271,7 +2271,7 @@ export async function handleCommand(
 		const sessionId = String(args?.sessionId ?? "").trim();
 		const connection = options?.connection;
 		if (!connection?.data?.canApproveTools) {
-			throw new Error("工具审批需要受信任的桌面连接");
+			throw new Error("工具批准需要受信任的桌面连接");
 		}
 		return Array.from(ctx.pendingApprovals.values())
 			.filter(
@@ -2289,14 +2289,14 @@ export async function handleCommand(
 		}
 		const connection = options?.connection;
 		if (!connection?.data?.canApproveTools) {
-			throw new Error("工具审批需要受信任的桌面连接");
+			throw new Error("工具批准需要受信任的桌面连接");
 		}
 		const pending = ctx.pendingApprovals.get(requestId);
 		if (!pending || (pending.owner && pending.owner !== connection)) {
-			throw new Error("工具审批不属于此连接");
+			throw new Error("工具批准不属于此连接");
 		}
 		if (pending.item.sessionId !== sessionId) {
-			throw new Error("工具审批不属于此会话");
+			throw new Error("工具批准不属于此会话");
 		}
 		await pending.resolve({
 			approved: Boolean(args?.approved),

@@ -13,7 +13,7 @@
 	"Title": "标题",
 	"Workspace": "工作区",
 	"Model": "模型",
-	"Tokens": "令牌数",
+	"Tokens": "词元消耗数",
 	"Cost": "费用",
 	"Time": "时间",
 	"Actions": "操作",

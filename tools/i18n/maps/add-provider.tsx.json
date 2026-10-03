@@ -1,10 +1,10 @@
 {
-	"OpenAI-Compatible Provider": "OpenAI 兼容服务商",
-	"Provider ID": "服务商 ID",
-	"Lowercase ID used in provider registry.": "服务商注册表中使用的小写 ID。",
-	"This provider ID already exists.": "该服务商 ID 已存在。",
-	"Provider Name": "服务商名称",
-	"My Provider": "我的服务商",
+	"OpenAI-Compatible Provider": "OpenAI 兼容供应商",
+	"Provider ID": "供应商 ID",
+	"Lowercase ID used in provider registry.": "供应商注册表中使用的小写 ID。",
+	"This provider ID already exists.": "该供应商 ID 已存在。",
+	"Provider Name": "供应商名称",
+	"My Provider": "我的供应商",
 	"Base URL": "基础 URL",
 	"Model Source URL (Optional)": "模型来源 URL（可选）",
 	"Supported JSON: OpenAI `/models` shape with a `data` array, or a\n\t\t\t\t\tdirect model array.": "支持的 JSON 格式：OpenAI `/models` 结构（含 `data` 数组），或直接的模型数组。",
@@ -25,8 +25,8 @@
 	"Add Header": "添加请求头",
 	"Cancel": "取消",
 	"Saving...": "保存中…",
-	"Add Provider": "添加服务商",
-	"Add an OpenAI-compatible provider and choose its available models.": "添加一个 OpenAI 兼容服务商并选择其可用模型。",
-	"Back to providers": "返回服务商列表",
-	"Providers": "服务商"
+	"Add Provider": "添加供应商",
+	"Add an OpenAI-compatible provider and choose its available models.": "添加一个 OpenAI 兼容供应商并选择其可用模型。",
+	"Back to providers": "返回供应商列表",
+	"Providers": "供应商"
 }

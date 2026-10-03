@@ -54,7 +54,7 @@ export function ToolApprovalPanel({
 		<section className="rounded-xl border border-amber-400/40 bg-amber-500/5 p-3">
 			<div className="flex items-center gap-2 text-sm font-medium text-foreground">
 				<ShieldAlert className="h-4 w-4 text-amber-500" />
-				需要工具审批
+				需要工具批准
 			</div>
 			<p className="mt-1 text-xs text-muted-foreground">
 				执行前请逐一审核工具调用，并选择批准或拒绝。

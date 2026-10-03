@@ -1116,7 +1116,7 @@ describe("Code sidecar runtime capabilities", () => {
 				{ sessionId: "sess-1", requestId, approved: true },
 				{ connection: untrustedClient },
 			),
-		).rejects.toThrow("工具审批需要受信任的桌面连接");
+		).rejects.toThrow("工具批准需要受信任的桌面连接");
 		expect(ctx.pendingApprovals.size).toBe(1);
 		await handleCommand(
 			ctx,
