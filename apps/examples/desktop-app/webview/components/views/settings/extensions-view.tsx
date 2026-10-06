@@ -39,6 +39,7 @@ import {
 	MarketplaceView,
 } from "../marketplace-view";
 import { CommandBadge, PageFrame, PageHeader } from "../page-layout";
+import { WebSearchProviderGuidance } from "./web-search-provider-guidance";
 
 export type CustomizationSection =
 	| "Rules"
@@ -376,6 +377,7 @@ async function fetchUserInstructionLists(): Promise<UserInstructionListsResponse
 }
 
 export function CustomizationSectionView({
+	onOpenModelProviders,
 	catalogPrimitive,
 	chrome = "page",
 	marketplaceVariant = "full",
@@ -383,6 +385,7 @@ export function CustomizationSectionView({
 	section = "Rules",
 	showTabs = false,
 }: {
+	onOpenModelProviders?: () => void;
 	catalogPrimitive?: MarketplacePrimitiveType;
 	/** "embedded" renders without the page frame/header for use inside the Plugins hub. */
 	chrome?: "page" | "embedded";
@@ -1821,6 +1824,11 @@ export function CustomizationSectionView({
 												{tool.description?.trim() ||
 													"暂无描述。"}
 											</p>
+											{tool.id === "web_search" && (
+												<WebSearchProviderGuidance
+													onOpenModelProviders={onOpenModelProviders}
+												/>
+											)}
 											{!!tool.headlessToolNames?.length &&
 												tool.headlessToolNames?.length > 1 && (
 													<p className="truncate text-xs font-mono text-muted-foreground">

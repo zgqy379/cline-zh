@@ -7,7 +7,11 @@ import {
 	appendCappedCommandOutput,
 	MAX_LIVE_COMMAND_OUTPUT_CHARS,
 } from "@/lib/command-output";
-import { MODEL_SELECTION_STORAGE_KEY } from "@/lib/model-selection";
+import {
+	MODEL_SELECTION_STORAGE_KEY,
+	writeExecutionTargetToWindow,
+	writeModelSelectionStorageToWindow,
+} from "@/lib/model-selection";
 import { startsNewThread } from "@/lib/work-in-selection";
 import { writeWorkspaceSelectionToWindow } from "@/lib/workspace-paths";
 import {
@@ -16,6 +20,7 @@ import {
 } from "../components/views/chat/messages/group-messages";
 import { buildToolPresentation } from "../components/views/chat/messages/tool-summaries";
 import { mergeCloudSnapshotWithLive, useChatSession } from "./use-chat-session";
+import { usePromptDraft } from "./use-prompt-draft";
 
 const { invokeMock, subscribeMock } = vi.hoisted(() => ({
 	invokeMock: vi.fn(),
@@ -143,13 +148,13 @@ describe("mergeCloudSnapshotWithLive", () => {
 		]);
 		const merged = mergeCloudSnapshotWithLive(
 			[
-				message("old-saved", "user", "继续", 1),
-				message("new-saved", "user", "继续", 3),
+				message("old-saved", "user", "Continue", 1),
+				message("new-saved", "user", "Continue", 3),
 			],
 			[
-				message("old-saved", "user", "继续", 1),
+				message("old-saved", "user", "Continue", 1),
 				{
-					...message("pending-new", "user", "继续", 2),
+					...message("pending-new", "user", "Continue", 2),
 					images: [
 						{ id: "img", mediaType: "image/png" as const, data: "AQID" },
 					],
@@ -161,7 +166,9 @@ describe("mergeCloudSnapshotWithLive", () => {
 			}),
 		);
 		expect(
-			merged.filter((item) => item.role === "user" && item.content === "继续"),
+			merged.filter(
+				(item) => item.role === "user" && item.content === "Continue",
+			),
 		).toHaveLength(2);
 		expect(optimisticStates).toEqual(new Map());
 		expect(merged.find((item) => item.id === "new-saved")?.images).toEqual(
@@ -301,15 +308,15 @@ describe("mergeCloudSnapshotWithLive", () => {
 		const hydrated = Array.from({ length: 799 }, (_, index) =>
 			message(`filler-${index}`, "user", `filler-${index}`, index + 1),
 		);
-		hydrated.push(message("canonical-new", "user", "继续", 800));
+		hydrated.push(message("canonical-new", "user", "Continue", 800));
 		const optimisticStates = new Map([
 			["optimistic-new", { sessionId: "ses-cloud", state: "pending" as const }],
 		]);
 		const merged = mergeCloudSnapshotWithLive(
 			hydrated,
 			[
-				message("old", "user", "继续", 1),
-				message("optimistic-new", "user", "继续", 1001),
+				message("old", "user", "Continue", 1),
+				message("optimistic-new", "user", "Continue", 1001),
 			],
 			snapshotOptions({
 				previousUserIds: new Set(["old"]),
@@ -317,7 +324,9 @@ describe("mergeCloudSnapshotWithLive", () => {
 			}),
 		);
 		expect(
-			merged.filter((item) => item.role === "user" && item.content === "继续"),
+			merged.filter(
+				(item) => item.role === "user" && item.content === "Continue",
+			),
 		).toHaveLength(1);
 		expect(optimisticStates).toEqual(new Map());
 	});
@@ -424,6 +433,70 @@ afterEach(async () => {
 });
 
 describe("useChatSession", () => {
+	it("keeps a remounted pane's newer draft when the original session start rejects", async () => {
+		const drafts = new Map<string, string>();
+		let draft!: ReturnType<typeof usePromptDraft>;
+		function DraftHarness({ threadId }: { threadId: string }) {
+			current = useChatSession("local");
+			draft = usePromptDraft(drafts, threadId);
+			return null;
+		}
+		const show = (threadId: string) =>
+			act(async () => {
+				root.render(<DraftHarness key={threadId} threadId={threadId} />);
+			});
+		const started = deferred<void>();
+		let rejectStart!: (error: Error) => void;
+		const startResult = new Promise<never>((_resolve, reject) => {
+			rejectStart = reject;
+		});
+		invokeMock.mockImplementation(
+			async (command: string, args?: Record<string, unknown>) => {
+				if (command === "get_process_context") {
+					return {
+						environmentId: "local",
+						cwd: "/workspace/cline",
+						workspaceRoot: "/workspace/cline",
+					};
+				}
+				if (command === "chat_session_command") {
+					const request = args?.request;
+					if (
+						request &&
+						typeof request === "object" &&
+						"action" in request &&
+						request.action === "start"
+					) {
+						started.resolve();
+						return await startResult;
+					}
+					return { promptsInQueue: [] };
+				}
+				return [];
+			},
+		);
+		await show("A");
+		let restore!: (value: string) => boolean;
+		let send!: Promise<boolean>;
+		await act(async () => {
+			restore = draft.clearPromptForSend();
+			send = current.sendPrompt("Original submitted prompt");
+			await started.promise;
+		});
+		await show("B");
+		await show("A");
+		act(() => draft.handlePromptInputChange("Newer unsent prompt"));
+		await act(async () => {
+			rejectStart(new Error("Provider connection failed"));
+			const accepted = await send;
+			expect(accepted).toBe(false);
+			expect(restore("Original submitted prompt")).toBe(false);
+		});
+		await show("B");
+		await show("A");
+		expect(draft.promptDraft.value).toBe("Newer unsent prompt");
+	});
+
 	const cloudSessionConfig = {
 		provider: "cline",
 		model: "test-model",
@@ -441,7 +514,7 @@ describe("useChatSession", () => {
 							id: "old-user",
 							sessionId,
 							role: "user",
-							content: "继续",
+							content: "Continue",
 							createdAt: 1,
 						},
 					];
@@ -476,7 +549,7 @@ describe("useChatSession", () => {
 						id: "new-user",
 						sessionId,
 						role: "user",
-						content: "继续",
+						content: "Continue",
 						createdAt: 2,
 					},
 				],
@@ -608,8 +681,8 @@ describe("useChatSession", () => {
 				),
 			).toBe(false);
 		} else {
-			expect(current.error).toContain("此云端会话已过期");
-			expect(current.error?.includes("没有可用的归档历史")).toBe(!hasHistory);
+			expect(current.error).toContain("This cloud session has expired");
+			expect(current.error?.includes("no archived history")).toBe(!hasHistory);
 			expect(current.messages).toEqual(history);
 		}
 		invokeMock.mockClear();
@@ -1278,9 +1351,9 @@ describe("useChatSession", () => {
 		expect(result.output.length).toBeLessThanOrEqual(
 			MAX_LIVE_COMMAND_OUTPUT_CHARS,
 		);
-		expect(result.output.startsWith("\u001b[0m[此前的命令输出已截断]")).toBe(
-			true,
-		);
+		expect(
+			result.output.startsWith("\u001b[0m[Earlier command output truncated]"),
+		).toBe(true);
 		expect(result.output.endsWith("tail")).toBe(true);
 	});
 
@@ -2127,7 +2200,7 @@ describe("useChatSession", () => {
 		);
 
 		expect(current.error).toBe(
-			"无法创建工作树：Not a git repository: /workspace/cline",
+			"Couldn't create a worktree: Not a git repository: /workspace/cline",
 		);
 		expect(current.status).toBe("error");
 		expect(
@@ -4951,7 +5024,7 @@ describe("useChatSession", () => {
 			(message) => message.role === "error",
 		);
 		expect(errorMessages).toHaveLength(1);
-		expect(errorMessages[0]?.content).toContain("运行失败");
+		expect(errorMessages[0]?.content).toContain("The run failed");
 		// The optimistic user message and the queued materialization of the
 		// same prompt must not duplicate each other.
 		const userMessages = current.messages.filter(
@@ -5013,7 +5086,7 @@ describe("useChatSession", () => {
 			(message) => message.role === "error",
 		);
 		expect(errorMessage?.content).toContain("Unauthorized: invalid API key");
-		expect(errorMessage?.content).toContain("设置");
+		expect(errorMessage?.content).toContain("Settings");
 	});
 
 	it("shows a failure relayed through chat_session_ended", async () => {
@@ -5229,7 +5302,7 @@ describe("useChatSession", () => {
 			(message) => message.role === "error",
 		);
 		expect(errorMessage?.content).toContain(
-			"运行失败，未产生任何回复。",
+			"The run failed before a response was produced.",
 		);
 		expect(errorMessage?.content).not.toContain("Unauthorized");
 	});
@@ -5331,7 +5404,7 @@ describe("useChatSession", () => {
 		);
 		expect(errorMessages).toHaveLength(1);
 		expect(errorMessages[0]?.content).toContain(
-			persistedError ? "API key expired" : "运行失败",
+			persistedError ? "API key expired" : "The run failed",
 		);
 		if (persistedError) {
 			const failedSessionId = current.sessionId!;
@@ -5413,7 +5486,7 @@ describe("useChatSession", () => {
 		});
 		expect(current.messages.filter((m) => m.role === "error")).toHaveLength(1);
 		expect(current.error).toContain(
-			"运行失败，未产生任何回复。",
+			"The run failed before a response was produced.",
 		);
 
 		await act(async () => {
@@ -5442,7 +5515,7 @@ describe("useChatSession", () => {
 		);
 		expect(errorMessages).toHaveLength(1);
 		expect(errorMessages[0]?.content).toContain(
-			"运行失败：cline requires re-authentication.",
+			"The run failed: cline requires re-authentication.",
 		);
 		expect(errorMessages[0]?.content).not.toContain(
 			"before a response was produced",
@@ -5561,7 +5634,7 @@ describe("useChatSession", () => {
 								id: "canonical-b",
 								sessionId: current.sessionId,
 								role: "user",
-								content: "重试",
+								content: "Retry",
 								createdAt: 2,
 							},
 						],
@@ -5681,7 +5754,7 @@ describe("useChatSession", () => {
 		const errorMessages = current.messages.filter((m) => m.role === "error");
 		expect(errorMessages).toHaveLength(1);
 		expect(errorMessages[0]?.content).toContain("no longer valid");
-		expect(errorMessages[0]?.content).toContain("设置 → 账户");
+		expect(errorMessages[0]?.content).toContain("Settings → Account");
 		expect(errorMessages[0]?.meta).toEqual({
 			reason: "credentials",
 			providerId: "cline",
@@ -5743,7 +5816,7 @@ describe("useChatSession", () => {
 		// "tokens" here is a context-window problem, not a credential problem;
 		// pointing users at Settings → Providers would be misleading.
 		expect(errorMessage?.content).toContain("maximum context tokens");
-		expect(errorMessage?.content).not.toContain("请在「设置 → 供应商」中检查");
+		expect(errorMessage?.content).not.toContain("Check your model connection");
 	});
 
 	it("points local-auth providers at their CLI for credential failures", async () => {
@@ -5771,6 +5844,11 @@ describe("useChatSession", () => {
 			current.setConfig((previous) => ({
 				...previous,
 				provider: "claude-code",
+				providerAuth: {
+					providerId: "claude-code",
+					capabilities: ["local-auth"],
+					localCli: { command: "claude" },
+				},
 				model: "sonnet",
 			}));
 		});
@@ -5798,9 +5876,84 @@ describe("useChatSession", () => {
 		// nothing that could fix an expired session there.
 		expect(errorMessage?.content).toContain("OAuth session expired");
 		expect(errorMessage?.content).toContain(
-			"请在终端中用 `claude` CLI 重新登录",
+			"Sign in again with the `claude` CLI",
 		);
-		expect(errorMessage?.content).not.toContain("设置 → 供应商");
+		expect(errorMessage?.content).not.toContain("Settings → Providers");
+		expect(errorMessage?.meta?.providerAuth).toMatchObject({
+			providerId: "claude-code",
+			localCli: { command: "claude" },
+		});
+	});
+
+	it("keeps the submitted provider's auth guidance after the selection changes", async () => {
+		let resolveSend: ((value: unknown) => void) | undefined;
+		invokeMock.mockImplementation(
+			async (command: string, args?: Record<string, unknown>) => {
+				if (command === "get_process_context") {
+					return { cwd: "/workspace/cline", workspaceRoot: "/workspace/cline" };
+				}
+				if (command === "chat_session_command") {
+					const request = args?.request as
+						| { action?: string; config?: { sessionId?: string } }
+						| undefined;
+					if (request?.action === "start") {
+						return { sessionId: request.config?.sessionId };
+					}
+					if (request?.action === "send") {
+						return new Promise((resolve) => {
+							resolveSend = resolve;
+						});
+					}
+				}
+				return [];
+			},
+		);
+
+		await act(async () => {
+			current.setConfig((previous) => ({
+				...previous,
+				provider: "claude-code",
+				providerAuth: {
+					providerId: "claude-code",
+					capabilities: ["local-auth"],
+					localCli: { command: "claude" },
+				},
+				model: "sonnet",
+			}));
+		});
+		let sendPromise: Promise<unknown> | undefined;
+		await act(async () => {
+			sendPromise = current.sendPrompt("First prompt");
+		});
+		await act(async () => {
+			current.setConfig((previous) => ({
+				...previous,
+				provider: "anthropic",
+				providerAuth: { providerId: "anthropic", capabilities: [] },
+				model: "claude-sonnet",
+			}));
+		});
+		await act(async () => {
+			resolveSend?.({
+				ok: true,
+				result: {
+					finishReason: "error",
+					text: "Failed to authenticate: OAuth session expired.",
+				},
+			});
+			await sendPromise;
+		});
+
+		const errorMessage = current.messages.find(
+			(message) => message.role === "error",
+		);
+		expect(errorMessage?.content).toContain(
+			"Sign in again with the `claude` CLI",
+		);
+		expect(errorMessage?.meta?.providerAuth).toMatchObject({
+			providerId: "claude-code",
+			localCli: { command: "claude" },
+		});
 	});
 
 	it("drops stale failure bubbles from earlier turns on later hydration", async () => {
@@ -6113,6 +6266,134 @@ describe("useChatSession", () => {
 		expect(invokeMock).toHaveBeenCalledWith("validate_workspace_directory", {
 			environmentId: "local",
 			path: "/workspace/deleted",
+		});
+	});
+
+	it.each([
+		"local",
+		"cloud",
+	] as const)("restores the Cloud target and model after viewing a %s session", async (target) => {
+		await act(async () => root.unmount());
+		window.localStorage.setItem(
+			MODEL_SELECTION_STORAGE_KEY,
+			JSON.stringify({
+				lastProvider: "openrouter",
+				lastModelByProvider: {
+					openrouter: "local-model",
+					cline: "cline-local",
+				},
+			}),
+		);
+		writeExecutionTargetToWindow("cloud");
+		writeModelSelectionStorageToWindow(
+			{ lastProvider: "cline", lastModelByProvider: { cline: "cloud-model" } },
+			"cloud",
+		);
+		const hydratedSessionId = "session-local-history";
+		invokeMock.mockImplementation(
+			async (command: string, args?: Record<string, unknown>) => {
+				if (command === "get_process_context") {
+					return {
+						environmentId: "local",
+						cwd: "/workspace/cline",
+						workspaceRoot: "/workspace/cline",
+					};
+				}
+				if (command === "read_session_messages") return [];
+				if (command === "read_session_hooks") return [];
+				if (command === "chat_session_command") {
+					const request = args?.request as { action?: string } | undefined;
+					if (request?.action === "attach") {
+						return {
+							sessionId: hydratedSessionId,
+							status: "completed",
+							provider: "openrouter",
+							model: "local-model",
+							cwd: "/workspace/cline",
+							workspaceRoot: "/workspace/cline",
+						};
+					}
+					return { promptsInQueue: [] };
+				}
+				return [];
+			},
+		);
+		root = createRoot(container);
+		await act(async () => root.render(<HookHarness />));
+
+		expect(current.config).toMatchObject({
+			executionTarget: "cloud",
+			provider: "cline",
+			model: "cloud-model",
+			repoUrl: undefined,
+		});
+
+		// History must not replace the defaults for the next new chat.
+		await act(async () => {
+			await current.hydrateSession({
+				environmentId: "local",
+				sessionId: hydratedSessionId,
+				status: "completed",
+				provider: "openrouter",
+				model: "local-model",
+				cwd: "/workspace/cline",
+				workspaceRoot: "/workspace/cline",
+				startedAt: "2026-09-01T00:00:00Z",
+				...(target === "cloud"
+					? {
+							origin: "cloud",
+							repoUrl: "https://github.com/cline/other",
+							metadata: { gitBranch: "feature" },
+							...cloudSessionConfig,
+						}
+					: {}),
+			});
+		});
+		expect(current.config).toMatchObject({
+			executionTarget: target,
+		});
+		await act(async () => {
+			await current.reset();
+		});
+		expect(current.config).toMatchObject({
+			sessionId: undefined,
+			executionTarget: "cloud",
+			provider: "cline",
+			model: "cloud-model",
+			repoUrl: undefined,
+			branch: undefined,
+		});
+	});
+
+	it("keeps remote environments on Local even when Cloud is remembered", async () => {
+		await act(async () => root.unmount());
+		window.localStorage.setItem(
+			MODEL_SELECTION_STORAGE_KEY,
+			JSON.stringify({
+				lastProvider: "openrouter",
+				lastModelByProvider: { openrouter: "local-model" },
+			}),
+		);
+		writeExecutionTargetToWindow("cloud");
+		invokeMock.mockImplementation(async (command: string) => {
+			if (command === "get_process_context") {
+				return {
+					environmentId: "pi-server",
+					cwd: "/home/pi/app",
+					workspaceRoot: "/home/pi/app",
+				};
+			}
+			return [];
+		});
+		root = createRoot(container);
+		await act(async () =>
+			root.render(<HookHarness environmentId="pi-server" />),
+		);
+
+		expect(current.config).toMatchObject({
+			executionTarget: "local",
+			provider: "openrouter",
+			model: "local-model",
 		});
 	});
 
@@ -7078,11 +7359,11 @@ describe("cloud snapshot replay", () => {
 				repoUrl: "https://github.com/cline/test",
 			}),
 		);
-		await act(async () => current.sendPrompt("继续"));
+		await act(async () => current.sendPrompt("Continue"));
 		expect(current.status).toBe("completed");
 		let pending!: Promise<boolean>;
 		await act(async () => {
-			pending = current.sendPrompt("继续");
+			pending = current.sendPrompt("Continue");
 			await secondDispatched.promise;
 		});
 		expect(sends).toBe(2);
@@ -7101,7 +7382,7 @@ describe("cloud snapshot replay", () => {
 						id: "canonical-first",
 						sessionId: "ses-replay",
 						role: "user",
-						content: "继续",
+						content: "Continue",
 						createdAt: 1,
 					},
 				],

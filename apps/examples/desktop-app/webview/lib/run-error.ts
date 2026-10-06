@@ -1,3 +1,4 @@
+import type { ProviderAuthInfo } from "@cline/shared/browser";
 import {
 	isCredentialFailure,
 	resolveCredentialFailureHint,
@@ -6,9 +7,13 @@ import {
 const RUN_PREFIX = "运行失败：";
 
 /** The same presentation for live failures and restored transcript errors. */
-export function formatRunError(detail: string, providerId = ""): string {
+export function formatRunError(
+	detail: string,
+	providerId = "",
+	providerAuth?: ProviderAuthInfo,
+): string {
 	const description = detail.trim();
-	const guidance = resolveCredentialFailureHint(providerId);
+	const guidance = resolveCredentialFailureHint(providerId, providerAuth);
 	const looksCredentialRelated =
 		!description || isCredentialFailure(description);
 	// Upstream (sdk core) emits the English prefix; this module emits RUN_PREFIX.

@@ -1,6 +1,6 @@
 "use client";
 
-import { SessionStatus } from "@cline/ui";
+import { AgentConversationHeader, SessionStatus } from "@cline/ui";
 import {
 	AlertCircle,
 	Bot,
@@ -93,7 +93,7 @@ function AgentHeaderImpl({
 	const statusTone = sessionStatusTone(status);
 	const statusColor = sessionStatusColor(status);
 	const threadTitle = useMemo(
-		() => normalizeTitle(title?.trim()) || "新建会话",
+		() => normalizeTitle(title?.trim()) || "New Session",
 		[title],
 	);
 
@@ -123,159 +123,156 @@ function AgentHeaderImpl({
 	const triggerDeleteSession = () => onDeleteSession?.();
 
 	return (
-		<header className="flex h-12 items-center justify-between gap-2 px-4 max-md:h-7 max-md:pl-28 md:group-data-[state=collapsed]/sidebar-wrapper:pl-7">
-			{/* Left: thread title */}
-			<div className="flex min-w-0 flex-1 items-center gap-2">
-				<SessionStatus
-					className="shrink-0 font-mono"
-					label={`会话状态：${status}`}
-					showLabel={false}
-					style={
-						{
-							"--cline-ui-session-status-color": statusColor,
-						} as CSSProperties
-					}
-					tone={statusTone}
-				/>
-				{!canEditTitle ? (
-					<span
-						className="min-w-0 truncate text-sm font-medium text-foreground"
-						title={threadTitle}
-					>
-						{threadTitle}
-					</span>
-				) : isEditingTitle ? (
-					<form
-						className="m-0 min-w-0 max-w-full"
-						onSubmit={(event) => {
-							event.preventDefault();
-							void submitTitle();
-						}}
-						style={{ width: titleEditorWidth }}
-					>
-						<Input
-							autoFocus
-							className="h-7 w-full text-sm"
-							disabled={renamingTitle}
-							onBlur={() => {
-								void submitTitle();
-							}}
-							onChange={(event) => setTitleInput(event.target.value)}
-							onKeyDown={(event) => {
-								if (event.key === "Escape") {
-									event.preventDefault();
-									setTitleInput(threadTitle);
-									setIsEditingTitle(false);
-								}
-							}}
-							value={titleInput}
+		<AgentConversationHeader
+			className="max-md:h-7 max-md:pl-28 md:group-data-[state=collapsed]/sidebar-wrapper:pl-7"
+			actions={
+				showSessionActions ? (
+					<>
+						<AgentActivityStatus
+							activity={agentActivity}
+							agents={agents}
+							error={agentsError}
+							loading={agentsLoading}
+							onOpenAgentSession={onOpenAgentSession}
+							onOpenChange={onAgentsOpenChange}
 						/>
-					</form>
-				) : (
-					<button
-						className={cn(
-							"min-w-0 truncate text-sm font-medium text-foreground",
-							canEditTitle &&
-								"rounded px-1 py-0.5 transition-colors hover:bg-surface-hover",
+						{additions !== 0 && (
+							<Button
+								aria-label={`Open diff: ${additions} additions, ${deletions} deletions`}
+								className={cn(
+									"flex items-center gap-1 rounded-md bg-secondary px-2 py-1 text-xs font-mono transition-colors",
+									hasChanges
+										? "hover:bg-secondary/80"
+										: "cursor-default opacity-60",
+								)}
+								disabled={!hasChanges}
+								id="diff-stats"
+								onClick={() => onOpenDiff?.()}
+								size="sm"
+								type="button"
+								variant="secondary"
+							>
+								<span className="text-chart-2">+{additions}</span>
+								<span className="text-destructive">-{deletions}</span>
+							</Button>
 						)}
-						disabled={renamingTitle}
-						onClick={(event) => {
-							if (!canEditTitle || renamingTitle) {
-								return;
-							}
-							setTitleEditorWidth(
-								Math.max(
-									240,
-									event.currentTarget.getBoundingClientRect().width,
-								),
-							);
-							setTitleInput(threadTitle);
-							setIsEditingTitle(true);
-						}}
-						type="button"
-						title={threadTitle}
-					>
-						{threadTitle}
-					</button>
-				)}
-				<DropdownMenu>
-					<DropdownMenuTrigger asChild>
-						<Button
-							aria-label="会话操作"
-							className="shrink-0 text-muted-foreground transition-colors hover:text-foreground"
-							id="show-more-btn"
-							variant="ghost"
-							size="icon-sm"
-							type="button"
-						>
-							<MoreHorizontal className="size-3" />
-						</Button>
-					</DropdownMenuTrigger>
-					<DropdownMenuContent align="start" className="w-44">
-						<DropdownMenuItem
-							className="text-destructive focus:text-destructive"
-							disabled={!canDeleteSession || deletingSession}
-							onClick={triggerDeleteSession}
-						>
-							<Trash2 className="size-4" />
-							<span>{deletingSession ? "正在删除…" : "删除会话"}</span>
-						</DropdownMenuItem>
-					</DropdownMenuContent>
-				</DropdownMenu>
-			</div>
-
-			{showSessionActions ? (
-				<div className="flex shrink-0 items-center gap-2">
-					<AgentActivityStatus
-						activity={agentActivity}
-						agents={agents}
-						error={agentsError}
-						loading={agentsLoading}
-						onOpenAgentSession={onOpenAgentSession}
-						onOpenChange={onAgentsOpenChange}
-					/>
-					{additions !== 0 && (
-						<Button
-							aria-label={`查看差异：新增 ${additions} 行，删除 ${deletions} 行`}
-							className={cn(
-								"flex items-center gap-1 rounded-md bg-secondary px-2 py-1 text-xs font-mono transition-colors",
-								hasChanges
-									? "hover:bg-secondary/80"
-									: "cursor-default opacity-60",
-							)}
-							disabled={!hasChanges}
-							id="diff-stats"
-							onClick={() => onOpenDiff?.()}
-							size="sm"
-							type="button"
-							variant="secondary"
-						>
-							<span className="text-chart-2">+{additions}</span>
-							<span className="text-destructive">-{deletions}</span>
-						</Button>
-					)}
-					{/* A child agent run leads back to its parent instead of starting a
+						{/* A child agent run leads back to its parent instead of starting a
 					    new session: "new session" is a top-level action that does not
 					    belong to a run nested inside another one. */}
-					{parentSession ? (
-						<SubagentSessionBadge
-							onOpenParentSession={onOpenParentSession}
-							parentSession={parentSession}
-						/>
-					) : (
-						<Button
-							aria-label="新建会话"
-							className="flex items-center gap-1 rounded-md text-sm text-muted-foreground hover:bg-surface-hover hover:text-foreground transition-colors"
-							onClick={() => onNewThread?.()}
-							size="icon-sm"
-							variant="ghost"
-						>
-							<Plus className="size-4" />
-						</Button>
+						{parentSession ? (
+							<SubagentSessionBadge
+								onOpenParentSession={onOpenParentSession}
+								parentSession={parentSession}
+							/>
+						) : (
+							<Button
+								aria-label="New session"
+								className="flex items-center gap-1 rounded-md text-sm text-muted-foreground hover:bg-surface-hover hover:text-foreground transition-colors"
+								onClick={() => onNewThread?.()}
+								size="icon-sm"
+								variant="ghost"
+							>
+								<Plus className="size-4" />
+							</Button>
+						)}
+					</>
+				) : null
+			}
+		>
+			<SessionStatus
+				className="shrink-0 font-mono"
+				label={`Session status: ${status}`}
+				showLabel={false}
+				style={
+					{
+						"--cline-ui-session-status-color": statusColor,
+					} as CSSProperties
+				}
+				tone={statusTone}
+			/>
+			{!canEditTitle ? (
+				<span
+					className="min-w-0 truncate text-sm font-medium text-foreground"
+					title={threadTitle}
+				>
+					{threadTitle}
+				</span>
+			) : isEditingTitle ? (
+				<form
+					className="m-0 min-w-0 max-w-full"
+					onSubmit={(event) => {
+						event.preventDefault();
+						void submitTitle();
+					}}
+					style={{ width: titleEditorWidth }}
+				>
+					<Input
+						autoFocus
+						className="h-7 w-full text-sm"
+						disabled={renamingTitle}
+						onBlur={() => {
+							void submitTitle();
+						}}
+						onChange={(event) => setTitleInput(event.target.value)}
+						onKeyDown={(event) => {
+							if (event.key === "Escape") {
+								event.preventDefault();
+								setTitleInput(threadTitle);
+								setIsEditingTitle(false);
+							}
+						}}
+						value={titleInput}
+					/>
+				</form>
+			) : (
+				<button
+					className={cn(
+						"min-w-0 truncate text-sm font-medium text-foreground",
+						canEditTitle &&
+							"rounded px-1 py-0.5 transition-colors hover:bg-surface-hover",
 					)}
-				</div>
-			) : null}
-		</header>
+					disabled={renamingTitle}
+					onClick={(event) => {
+						if (!canEditTitle || renamingTitle) {
+							return;
+						}
+						setTitleEditorWidth(
+							Math.max(240, event.currentTarget.getBoundingClientRect().width),
+						);
+						setTitleInput(threadTitle);
+						setIsEditingTitle(true);
+					}}
+					type="button"
+					title={threadTitle}
+				>
+					{threadTitle}
+				</button>
+			)}
+			<DropdownMenu>
+				<DropdownMenuTrigger asChild>
+					<Button
+						aria-label="Session actions"
+						className="shrink-0 text-muted-foreground transition-colors hover:text-foreground"
+						id="show-more-btn"
+						variant="ghost"
+						size="icon-sm"
+						type="button"
+					>
+						<MoreHorizontal className="size-3" />
+					</Button>
+				</DropdownMenuTrigger>
+				<DropdownMenuContent align="start" className="w-44">
+					<DropdownMenuItem
+						className="text-destructive focus:text-destructive"
+						disabled={!canDeleteSession || deletingSession}
+						onClick={triggerDeleteSession}
+					>
+						<Trash2 className="size-4" />
+						<span>{deletingSession ? "Deleting..." : "Delete session"}</span>
+					</DropdownMenuItem>
+				</DropdownMenuContent>
+			</DropdownMenu>
+		</AgentConversationHeader>
 	);
 }
 
@@ -301,10 +298,10 @@ function SubagentSessionBadge({
 	onOpenParentSession?: (parentSessionId: string) => void | Promise<void>;
 }) {
 	const parentTitle = parentSession.title?.trim();
-	const label = "主智能体会话";
+	const label = "Main Agent Session";
 	const hint = parentTitle
-		? `返回主智能体会话：${parentTitle}`
-		: "返回主智能体会话";
+		? `Back to the main agent session: ${parentTitle}`
+		: "Back to the main agent session";
 
 	return (
 		<Button
@@ -407,7 +404,7 @@ function AgentActivityStatus({
 				id="agent-activity-panel"
 			>
 				<div className="border-b border-border/70 px-3 py-2">
-					<div className="text-sm font-medium text-foreground">智能体</div>
+					<div className="text-sm font-medium text-foreground">Agents</div>
 					<div className="mt-0.5 text-[11px] text-muted-foreground">
 						{label}
 					</div>
@@ -444,7 +441,7 @@ function AgentRoster({
 		return (
 			<div className="flex items-center gap-2 px-3 py-4 text-xs text-muted-foreground">
 				<Loader2 aria-hidden="true" className="size-3.5 animate-spin" />
-				正在加载智能体…
+				Loading agents...
 			</div>
 		);
 	}
@@ -455,8 +452,8 @@ function AgentRoster({
 		return (
 			<div className="px-3 py-4 text-xs text-muted-foreground">
 				{activity.running > 0
-					? "正在等待第一个智能体上报…"
-					: "此会话没有记录任何智能体详情。"}
+					? "Waiting for the first agent to report in..."
+					: "No agent details were recorded for this session."}
 				{error ? (
 					<div className="mt-1 text-[11px] text-muted-foreground/80">
 						{error}
@@ -489,7 +486,7 @@ function AgentRoster({
 					className="border-t border-border/70 px-3 py-2 text-[11px] text-muted-foreground"
 					id="agent-roster-stale"
 				>
-					刷新失败 — 显示最后已知的智能体。{error}
+					Could not refresh — showing the last known agents. {error}
 				</div>
 			) : null}
 		</>
@@ -536,7 +533,7 @@ function AgentRosterRow({
 			<button
 				className="flex w-full min-w-0 items-start gap-2 px-3 py-2 text-left transition-colors hover:bg-surface-hover"
 				onClick={onSelect}
-				title="打开此智能体的会话"
+				title="Open this agent's session"
 				type="button"
 			>
 				<StateIcon
@@ -551,7 +548,7 @@ function AgentRosterRow({
 				    min-w-0 lets the clamp/truncate win over the text's intrinsic size. */}
 				<span className="flex min-w-0 flex-1 flex-col">
 					<span className="line-clamp-2 wrap-break-word text-xs font-medium text-foreground">
-						{task || "未命名任务"}
+						{task || "Untitled task"}
 					</span>
 					<span className="mt-0.5 flex min-w-0 items-center gap-1.5 text-[11px] text-muted-foreground">
 						{agent.kind === "teamtask" ? (
@@ -565,8 +562,8 @@ function AgentRosterRow({
 						>
 							{lastAction ||
 								(isRunning
-									? "正在启动…"
-									: `没有记录活动（${state}）`)}
+									? "Starting up..."
+									: `No activity recorded (${state})`)}
 						</span>
 					</span>
 				</span>

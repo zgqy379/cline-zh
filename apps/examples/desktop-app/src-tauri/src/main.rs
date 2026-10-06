@@ -1,5 +1,7 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
+#[cfg(target_os = "linux")]
+mod linux_webview;
 #[cfg(target_os = "macos")]
 mod macos_notification;
 
@@ -162,12 +164,12 @@ impl UpdateState {
 
 fn tray_status_text(update_status: &UpdateStatus, hub_healthy: bool) -> &'static str {
     match update_status.state.as_str() {
-        "checking" => "状态：正在检查更新",
-        "downloading" => "状态：正在下载更新",
-        "ready" => "状态：有可用更新",
-        "error" => "状态：检查更新失败",
-        _ if hub_healthy => "状态：运行正常",
-        _ => "状态：Hub 已断开",
+        "checking" => "Status: Checking for Updates",
+        "downloading" => "Status: Downloading Update",
+        "ready" => "Status: Update Available",
+        "error" => "Status: Update Check Failed",
+        _ if hub_healthy => "Status: Healthy",
+        _ => "Status: Hub Disconnected",
     }
 }
 
@@ -179,12 +181,12 @@ fn update_menu_item_text(update_status: &UpdateStatus) -> String {
         update_status.state.as_str(),
         update_status.version.as_deref(),
     ) {
-        ("checking", _) => "正在检查更新…".to_string(),
-        ("downloading", Some(version)) => format!("正在下载更新 v{version}…"),
-        ("downloading", None) => "正在下载更新…".to_string(),
-        ("ready", Some(version)) => format!("重启以更新到 v{version}"),
-        ("ready", None) => "重启以更新".to_string(),
-        _ => "检查更新…".to_string(),
+        ("checking", _) => "Checking for Updates...".to_string(),
+        ("downloading", Some(version)) => format!("Downloading Update v{version}..."),
+        ("downloading", None) => "Downloading Update...".to_string(),
+        ("ready", Some(version)) => format!("Restart to Update to v{version}"),
+        ("ready", None) => "Restart to Update".to_string(),
+        _ => "Check for Updates...".to_string(),
     }
 }
 
@@ -194,8 +196,8 @@ fn update_menu_item_enabled(update_status: &UpdateStatus) -> bool {
 
 fn running_sessions_text(running_sessions: u32) -> String {
     match running_sessions {
-        1 => "1 个会话运行中".to_string(),
-        count => format!("{count} 个会话运行中"),
+        1 => "1 session running".to_string(),
+        count => format!("{count} sessions running"),
     }
 }
 
@@ -525,7 +527,7 @@ fn spawn_desktop_backend_process(context: &AppContext) -> Result<Child, String> 
         command
     } else {
         return Err(format!(
-            "未找到桌面端 sidecar。已在 workspace_root={} 与 launch_cwd={} 下查找过二进制与脚本。",
+            "desktop backend sidecar not found. checked binary/script under workspace_root={} and launch_cwd={}",
             context.workspace_root, context.launch_cwd
         ));
     };
@@ -537,7 +539,7 @@ fn spawn_desktop_backend_process(context: &AppContext) -> Result<Child, String> 
     hide_console_window(&mut command);
     command
         .spawn()
-        .map_err(|e| format!("启动桌面端 sidecar 失败：{e}"))
+        .map_err(|e| format!("failed to start desktop backend sidecar: {e}"))
 }
 
 fn ensure_desktop_backend_started(
@@ -562,7 +564,7 @@ fn ensure_desktop_backend_started_with(
     let process_guard = state
         .process
         .lock()
-        .map_err(|_| "无法锁定桌面后端进程状态".to_string())?;
+        .map_err(|_| "failed to lock desktop backend process state")?;
     ensure_desktop_backend_started_locked(state, process_guard, spawn_backend)
 }
 
@@ -600,11 +602,11 @@ fn ensure_desktop_backend_started_locked(
     let stdout = child
         .stdout
         .take()
-        .ok_or_else(|| "无法获取桌面后端的标准输出".to_string())?;
+        .ok_or_else(|| "failed to capture desktop backend stdout".to_string())?;
     let stderr = child
         .stderr
         .take()
-        .ok_or_else(|| "无法获取桌面后端的标准错误输出".to_string())?;
+        .ok_or_else(|| "failed to capture desktop backend stderr".to_string())?;
 
     let child_pid = child.id();
     let state_for_stdout = state.clone();
@@ -667,23 +669,35 @@ fn ensure_desktop_backend_started_locked(
     Ok(())
 }
 
+fn non_empty_env(name: &str) -> Option<String> {
+    std::env::var(name)
+        .ok()
+        .map(|value| value.trim().to_string())
+        .filter(|value| !value.is_empty())
+}
+
+/// Mirrors `resolveMcpSettingsPath()` in `@cline/shared/storage` (the resolver
+/// the sidecar and the hub runtime use): explicit path override, then the data
+/// dir override, then the cline dir override, then `~/.cline/data`. Keeping the
+/// same precedence here means the "Open MCP settings" window action opens the
+/// exact file the runtime reads (cline/cline#14152).
 fn resolve_mcp_settings_path() -> Result<PathBuf, String> {
-    if let Ok(value) = std::env::var("CLINE_MCP_SETTINGS_PATH") {
-        let trimmed = value.trim();
-        if !trimmed.is_empty() {
-            return Ok(PathBuf::from(trimmed));
-        }
+    if let Some(explicit) = non_empty_env("CLINE_MCP_SETTINGS_PATH") {
+        return Ok(PathBuf::from(explicit));
     }
-    // USERPROFILE is the Windows equivalent of HOME (and what the sidecar's
-    // homedir() resolves there); HOME is usually unset on Windows.
-    let home = std::env::var("HOME")
-        .or_else(|_| std::env::var("USERPROFILE"))
-        .map_err(|_| "未设置 HOME 或 USERPROFILE 环境变量".to_string())?;
-    Ok(PathBuf::from(home)
-        .join(".cline")
-        .join("data")
-        .join("settings")
-        .join("cline_mcp_settings.json"))
+    let data_dir = if let Some(data_dir) = non_empty_env("CLINE_DATA_DIR") {
+        PathBuf::from(data_dir)
+    } else if let Some(cline_dir) = non_empty_env("CLINE_DIR") {
+        PathBuf::from(cline_dir).join("data")
+    } else {
+        // USERPROFILE is the Windows equivalent of HOME (and what the sidecar's
+        // homedir() resolves there); HOME is usually unset on Windows.
+        let home = std::env::var("HOME")
+            .or_else(|_| std::env::var("USERPROFILE"))
+            .map_err(|_| "neither HOME nor USERPROFILE is set".to_string())?;
+        PathBuf::from(home).join(".cline").join("data")
+    };
+    Ok(data_dir.join("settings").join("cline_mcp_settings.json"))
 }
 
 fn open_path_with_default_app(path: &Path) -> Result<(), String> {
@@ -692,11 +706,11 @@ fn open_path_with_default_app(path: &Path) -> Result<(), String> {
         let status = Command::new("open")
             .arg(path)
             .status()
-            .map_err(|e| format!("打开路径失败：{e}"))?;
+            .map_err(|e| format!("failed to open path: {e}"))?;
         if status.success() {
             return Ok(());
         }
-        return Err(format!("open 命令以状态码 {status} 退出"));
+        return Err(format!("open command exited with status {status}"));
     }
 
     #[cfg(target_os = "windows")]
@@ -705,11 +719,13 @@ fn open_path_with_default_app(path: &Path) -> Result<(), String> {
         let mut command = Command::new("cmd");
         command.args(["/C", "start", "", &path_arg]);
         hide_console_window(&mut command);
-        let status = command.status().map_err(|e| format!("打开路径失败：{e}"))?;
+        let status = command
+            .status()
+            .map_err(|e| format!("failed to open path: {e}"))?;
         if status.success() {
             return Ok(());
         }
-        return Err(format!("start 命令以状态码 {status} 退出"));
+        return Err(format!("start command exited with status {status}"));
     }
 
     #[cfg(all(unix, not(target_os = "macos")))]
@@ -717,15 +733,15 @@ fn open_path_with_default_app(path: &Path) -> Result<(), String> {
         let status = Command::new("xdg-open")
             .arg(path)
             .status()
-            .map_err(|e| format!("打开路径失败：{e}"))?;
+            .map_err(|e| format!("failed to open path: {e}"))?;
         if status.success() {
             return Ok(());
         }
-        return Err(format!("xdg-open 命令以状态码 {status} 退出"));
+        return Err(format!("xdg-open command exited with status {status}"));
     }
 
     #[allow(unreachable_code)]
-    Err("当前平台不支持打开文件".to_string())
+    Err("opening files is not supported on this platform".to_string())
 }
 
 /// How long one `get_desktop_backend_endpoint` call waits for the sidecar's
@@ -761,7 +777,7 @@ fn wait_for_desktop_backend_endpoint(
     let mut last_respawn: Option<Instant> = None;
     loop {
         if state.is_shutting_down() {
-            return Err("桌面后端正在关闭".to_string());
+            return Err("desktop backend is shutting down".to_string());
         }
         if let Some(endpoint) = state
             .ws_endpoint
@@ -792,7 +808,7 @@ fn wait_for_desktop_backend_endpoint(
             respawn()?;
         }
         if Instant::now() >= deadline {
-            return Err("桌面后端端点未就绪".to_string());
+            return Err("desktop backend endpoint not ready".to_string());
         }
         thread::sleep(poll_interval);
     }
@@ -819,7 +835,7 @@ async fn get_desktop_backend_endpoint(
         )
     })
     .await
-    .map_err(|error| format!("桌面后端启动任务失败：{error}"))?
+    .map_err(|error| format!("desktop backend startup task failed: {error}"))?
 }
 
 #[tauri::command]
@@ -1045,15 +1061,17 @@ fn open_mcp_settings_file() -> Result<String, String> {
     let settings_path = resolve_mcp_settings_path()?;
     if !settings_path.exists() {
         if let Some(parent) = settings_path.parent() {
-            fs::create_dir_all(parent).map_err(|e| format!("创建 MCP 设置目录失败：{e}"))?;
+            fs::create_dir_all(parent)
+                .map_err(|e| format!("failed creating MCP settings directory: {e}"))?;
         }
         let initial = serde_json::json!({
             "mcpServers": {}
         });
-        let mut body =
-            serde_json::to_vec_pretty(&initial).map_err(|e| format!("序列化 MCP 设置失败：{e}"))?;
+        let mut body = serde_json::to_vec_pretty(&initial)
+            .map_err(|e| format!("failed encoding MCP settings: {e}"))?;
         body.push(b'\n');
-        fs::write(&settings_path, body).map_err(|e| format!("写入 MCP 设置文件失败：{e}"))?;
+        fs::write(&settings_path, body)
+            .map_err(|e| format!("failed writing MCP settings file: {e}"))?;
     }
     open_path_with_default_app(&settings_path)?;
     Ok(settings_path.to_string_lossy().to_string())
@@ -1168,7 +1186,7 @@ fn show_session_notification(
     let body = body.trim();
     let session_id = session_id.trim();
     if title.is_empty() || body.is_empty() || session_id.is_empty() {
-        return Err("通知的标题、正文和会话 ID 为必填项".to_string());
+        return Err("notification title, body, and session ID are required".to_string());
     }
 
     let mut notification = notify_rust::Notification::new();
@@ -1176,7 +1194,7 @@ fn show_session_notification(
         .summary(title)
         .body(body)
         .auto_icon()
-        .action("open-session", "打开");
+        .action("open-session", "Open");
     if let Some(sound) = sound
         .as_deref()
         .map(str::trim)
@@ -1241,36 +1259,6 @@ fn application_menu_action(menu_id: &str) -> Option<DesktopAction> {
 }
 
 #[cfg(target_os = "macos")]
-const VIEW_MENU_TITLE: &str = "显示";
-#[cfg(target_os = "macos")]
-const HELP_MENU_TITLE: &str = "帮助";
-
-/// Native menu labels are user-visible, so they are localized. They are also
-/// looked up by title in `set_macos_menu_key_equivalent`, which is why that
-/// call now receives the same constants instead of inline literals — changing
-/// a label and its lookup site together is what keeps macOS from failing to
-/// build its menu.
-#[cfg(target_os = "macos")]
-fn zoom_in_label() -> &'static str {
-    "放大"
-}
-
-#[cfg(target_os = "macos")]
-fn zoom_out_label() -> &'static str {
-    "缩小"
-}
-
-#[cfg(target_os = "macos")]
-fn zoom_reset_label() -> &'static str {
-    "实际大小"
-}
-
-#[cfg(target_os = "macos")]
-fn export_diagnostics_label() -> &'static str {
-    "导出诊断信息…"
-}
-
-#[cfg(target_os = "macos")]
 fn setup_application_menu(
     app: &tauri::App,
     check_for_updates: Option<&MenuItem<tauri::Wry>>,
@@ -1283,24 +1271,18 @@ fn setup_application_menu(
     {
         app_menu.insert_items(&[check_for_updates], 1)?;
     }
-    let zoom_in = MenuItem::with_id(
-        app,
-        VIEW_ZOOM_IN_MENU_ID,
-        zoom_in_label(),
-        true,
-        None::<&str>,
-    )?;
+    let zoom_in = MenuItem::with_id(app, VIEW_ZOOM_IN_MENU_ID, "Zoom In", true, None::<&str>)?;
     let zoom_out = MenuItem::with_id(
         app,
         VIEW_ZOOM_OUT_MENU_ID,
-        zoom_out_label(),
+        "Zoom Out",
         true,
         Some("CmdOrCtrl+-"),
     )?;
     let zoom_reset = MenuItem::with_id(
         app,
         VIEW_ZOOM_RESET_MENU_ID,
-        zoom_reset_label(),
+        "Actual Size",
         true,
         Some("CmdOrCtrl+0"),
     )?;
@@ -1309,7 +1291,7 @@ fn setup_application_menu(
     let export_diagnostics = MenuItem::with_id(
         app,
         EXPORT_DIAGNOSTICS_MENU_ID,
-        export_diagnostics_label(),
+        "Export Diagnostics…",
         true,
         None::<&str>,
     )?;
@@ -1317,12 +1299,9 @@ fn setup_application_menu(
     let mut view_menu = None;
     for item in menu.items()? {
         if let MenuItemKind::Submenu(submenu) = item {
-            // 子菜单标题按「是否为默认 View/Help」判定，而不是按英文字面量。
-            // 默认菜单由 Tauri 构造，标题随系统语言变化；一旦把下面的兜底
-            // 子菜单翻成中文，用字面量匹配就会失配并重复插入一个子菜单。
             match submenu.text()?.as_str() {
-                "View" | "显示" | "视图" => view_menu = Some(submenu),
-                "Help" | "帮助" => help_menu = Some(submenu),
+                "View" => view_menu = Some(submenu),
+                "Help" => help_menu = Some(submenu),
                 _ => {}
             }
         }
@@ -1332,7 +1311,7 @@ fn setup_application_menu(
         view_menu.prepend_items(&[&zoom_in, &zoom_out, &zoom_reset, &separator])?;
     } else {
         let view_menu =
-            Submenu::with_items(app, VIEW_MENU_TITLE, true, &[&zoom_in, &zoom_out, &zoom_reset])?;
+            Submenu::with_items(app, "View", true, &[&zoom_in, &zoom_out, &zoom_reset])?;
         menu.append(&view_menu)?;
     }
 
@@ -1341,16 +1320,14 @@ fn setup_application_menu(
     } else {
         menu.append(&Submenu::with_items(
             app,
-            HELP_MENU_TITLE,
+            "Help",
             true,
             &[&export_diagnostics],
         )?)?;
     }
 
     app.set_menu(menu)?;
-    // 关键：按 ID 定位而不是按标题。set_macos_menu_key_equivalent 走 AppKit 的
-    // itemWithTitle，标题一旦汉化就会找不到并让整个菜单设置失败。
-    set_macos_menu_key_equivalent(VIEW_MENU_TITLE, zoom_in_label(), "+")?;
+    set_macos_menu_key_equivalent("View", "Zoom In", "+")?;
     app.on_menu_event(|app, event| {
         if event.id().as_ref() == CHECK_FOR_UPDATES_MENU_ID {
             handle_check_for_updates_menu(app);
@@ -1402,9 +1379,7 @@ fn setup_tray_icon(
     app: &tauri::App,
     check_for_updates: Option<MenuItem<tauri::Wry>>,
 ) -> tauri::Result<()> {
-    // 复用 tray_status_text，避免托盘初始状态与状态文案翻译不同步
-    let initial_status = tray_status_text(&UpdateStatus::default(), true);
-    let status = MenuItem::new(app, initial_status, false, None::<&str>)?;
+    let status = MenuItem::new(app, "Status: Healthy", false, None::<&str>)?;
     let running_sessions = MenuItem::new(app, running_sessions_text(0), false, None::<&str>)?;
     let mut menu = MenuBuilder::new(app)
         .text(
@@ -1423,12 +1398,12 @@ fn setup_tray_icon(
     }
     let menu = menu
         .separator()
-        .text(TRAY_NEW_SESSION_MENU_ID, "新建会话")
+        .text(TRAY_NEW_SESSION_MENU_ID, "New Session")
         .item(&running_sessions)
         .separator()
-        .text(TRAY_SETTINGS_MENU_ID, "设置")
+        .text(TRAY_SETTINGS_MENU_ID, "Settings")
         .separator()
-        .text(TRAY_QUIT_MENU_ID, "退出")
+        .text(TRAY_QUIT_MENU_ID, "Quit")
         .build()?;
 
     // This is the same glyph used by webview/components/cline-logo.tsx,
@@ -1504,6 +1479,11 @@ fn set_tray_status(
 }
 
 fn main() {
+    // Must stay first: WebKitGTK reads the environment while initializing,
+    // and the variable has to be in place before any thread exists.
+    #[cfg(target_os = "linux")]
+    linux_webview::configure_environment();
+
     let desktop_backend = Arc::new(DesktopBackendState::default());
     let launch_cwd = std::env::current_dir()
         .map(|p| p.to_string_lossy().to_string())
@@ -1765,23 +1745,26 @@ mod tests {
             error: None,
         };
 
-        assert_eq!(tray_status_text(&status("idle"), true), "状态：运行正常");
-        assert_eq!(tray_status_text(&status("idle"), false), "状态：Hub 已断开");
+        assert_eq!(tray_status_text(&status("idle"), true), "Status: Healthy");
+        assert_eq!(
+            tray_status_text(&status("idle"), false),
+            "Status: Hub Disconnected"
+        );
         assert_eq!(
             tray_status_text(&status("checking"), false),
-            "状态：正在检查更新"
+            "Status: Checking for Updates"
         );
         assert_eq!(
             tray_status_text(&status("downloading"), false),
-            "状态：正在下载更新"
+            "Status: Downloading Update"
         );
         assert_eq!(
             tray_status_text(&status("ready"), false),
-            "状态：有可用更新"
+            "Status: Update Available"
         );
         assert_eq!(
             tray_status_text(&status("error"), false),
-            "状态：检查更新失败"
+            "Status: Update Check Failed"
         );
     }
 
@@ -1794,21 +1777,24 @@ mod tests {
         };
 
         let idle = status("idle", None);
-        assert_eq!(update_menu_item_text(&idle), "检查更新…");
+        assert_eq!(update_menu_item_text(&idle), "Check for Updates...");
         assert!(update_menu_item_enabled(&idle));
         let failed = status("error", None);
-        assert_eq!(update_menu_item_text(&failed), "检查更新…");
+        assert_eq!(update_menu_item_text(&failed), "Check for Updates...");
         assert!(update_menu_item_enabled(&failed));
 
         let checking = status("checking", None);
-        assert_eq!(update_menu_item_text(&checking), "正在检查更新…");
+        assert_eq!(update_menu_item_text(&checking), "Checking for Updates...");
         assert!(!update_menu_item_enabled(&checking));
         let downloading = status("downloading", Some("1.2.3"));
-        assert_eq!(update_menu_item_text(&downloading), "正在下载更新 v1.2.3…");
+        assert_eq!(
+            update_menu_item_text(&downloading),
+            "Downloading Update v1.2.3..."
+        );
         assert!(!update_menu_item_enabled(&downloading));
 
         let ready = status("ready", Some("1.2.3"));
-        assert_eq!(update_menu_item_text(&ready), "重启以更新到 v1.2.3");
+        assert_eq!(update_menu_item_text(&ready), "Restart to Update to v1.2.3");
         assert!(update_menu_item_enabled(&ready));
     }
 
@@ -1822,14 +1808,14 @@ mod tests {
 
     #[test]
     fn tray_session_count_updates_menu_tooltip_and_badge_copy() {
-        assert_eq!(running_sessions_text(0), "0 个会话运行中");
-        assert_eq!(running_sessions_text(1), "1 个会话运行中");
-        assert_eq!(running_sessions_text(3), "3 个会话运行中");
+        assert_eq!(running_sessions_text(0), "0 sessions running");
+        assert_eq!(running_sessions_text(1), "1 session running");
+        assert_eq!(running_sessions_text(3), "3 sessions running");
         assert_eq!(tray_tooltip_text("Cline", 0), "Cline");
-        assert_eq!(tray_tooltip_text("Cline", 3), "Cline — 3 个会话运行中");
+        assert_eq!(tray_tooltip_text("Cline", 3), "Cline — 3 sessions running");
         assert_eq!(
             tray_tooltip_text("Cline Beta", 2),
-            "Cline Beta — 2 个会话运行中"
+            "Cline Beta — 2 sessions running"
         );
         assert_eq!(tray_badge_text(0), None);
         assert_eq!(tray_badge_text(3), Some("3".to_string()));
@@ -2049,7 +2035,10 @@ mod tests {
                 ensure_desktop_backend_started_with(&state, spawn_exiting_sidecar)
             },
         );
-        assert_eq!(result, Err("桌面后端端点未就绪".to_string()));
+        assert_eq!(
+            result,
+            Err("desktop backend endpoint not ready".to_string())
+        );
         // 400ms window with a 150ms backoff allows the initial respawn plus
         // at most a few paced ones — not one per 10ms poll tick.
         let respawns = respawn_count.load(Ordering::SeqCst);
@@ -2073,7 +2062,10 @@ mod tests {
             Duration::from_millis(100),
             || panic!("a live child must not be respawned"),
         );
-        assert_eq!(result, Err("桌面后端端点未就绪".to_string()));
+        assert_eq!(
+            result,
+            Err("desktop backend endpoint not ready".to_string())
+        );
 
         if let Ok(mut guard) = state.process.lock() {
             if let Some(child) = guard.as_mut() {
@@ -2095,7 +2087,7 @@ mod tests {
             Duration::from_millis(100),
             || panic!("shutdown must not respawn"),
         );
-        assert_eq!(result, Err("桌面后端正在关闭".to_string()));
+        assert_eq!(result, Err("desktop backend is shutting down".to_string()));
     }
 
     #[test]

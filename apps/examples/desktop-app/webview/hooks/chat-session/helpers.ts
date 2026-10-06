@@ -1,11 +1,8 @@
 import {
-	getProviderCollectionSync,
-	resolveProviderLocalCli,
-} from "@cline/llms/browser";
-import {
 	createSessionId,
 	type GeneratedMedia,
 	isGeneratedMedia,
+	type ProviderAuthInfo,
 } from "@cline/shared/browser";
 import type {
 	ChatMessage,
@@ -205,13 +202,23 @@ export function mapCloudRuntimeStatus(
 	}
 }
 
+function matchingProviderAuth(
+	providerId: string,
+	auth: ProviderAuthInfo | undefined,
+): ProviderAuthInfo | undefined {
+	return auth &&
+		normalizeProviderId(auth.providerId) === normalizeProviderId(providerId)
+		? auth
+		: undefined;
+}
+
 export function resolveCredentialError(
 	config: ChatSessionConfig,
 	options?: { hasActiveSession?: boolean },
 ): string | null {
 	if (config.executionTarget === "cloud") {
 		if (config.provider.trim().toLowerCase() !== "cline") {
-			return "云端会话需要使用 Cline 供应商。";
+			return "Cloud sessions require the Cline provider.";
 		}
 		// Sends into an existing cloud session need no repo URL — the sandbox
 		// was already provisioned with one.
@@ -220,34 +227,36 @@ export function resolveCredentialError(
 		}
 		const repoUrl = config.repoUrl?.trim() ?? "";
 		if (!repoUrl) {
-			return "开始云端会话前请先选择 GitHub 仓库。";
+			return "Select a GitHub repository before starting a cloud session.";
 		}
 		// The picker validates as-you-type, but config accepts any keystroke —
 		// re-validate here so a half-typed URL can't reach the create call.
 		if (!isGitHubRepositoryUrl(repoUrl)) {
-			return "请输入有效的 HTTPS GitHub 仓库地址（https://github.com/owner/repo）。";
+			return "Enter a valid HTTPS GitHub repository URL (https://github.com/owner/repo).";
 		}
 		return null;
 	}
 	const providerId = config.provider.trim().toLowerCase();
 	if (!providerId) {
-		return "开始会话前必须先选择供应商。";
+		return "Provider is required before starting a chat session.";
 	}
 	if (OAUTH_MANAGED_PROVIDERS.has(providerId)) {
 		return null;
 	}
 	// OAuth and local-auth providers (Claude Code, Codex CLI) keep their
 	// credentials outside the webview config and never read an API key.
-	const capabilities = getProviderCollectionSync(
-		normalizeProviderId(providerId),
-	)?.provider.capabilities;
+	const auth = matchingProviderAuth(config.provider, config.providerAuth);
+	// Missing or stale catalog facts mean auth is unknown. Let the host
+	// validate credentials instead of assuming this provider uses an API key.
+	if (!auth) return null;
+	const capabilities = auth.capabilities;
 	if (capabilities?.includes("oauth") || capabilities?.includes("local-auth")) {
 		return null;
 	}
 	if (config.apiKey.trim().length > 0) {
 		return null;
 	}
-	return `供应商 "${config.provider}" 缺少 API 密钥，请在设置中添加凭据，或改用其他供应商。`;
+	return `Missing API key for provider "${config.provider}". Add credentials in Settings, or switch providers.`;
 }
 
 /**
@@ -257,15 +266,22 @@ export function resolveCredentialError(
  * Code's "OAuth session expired and could not be refreshed" needs a fresh
  * sign-in in the `claude` CLI itself.
  */
-export function resolveCredentialFailureHint(providerId: string): string {
-	const cli = resolveProviderLocalCli(providerId);
+export function resolveCredentialFailureHint(
+	providerId: string,
+	auth?: ProviderAuthInfo,
+): string {
+	const providerAuth = matchingProviderAuth(providerId, auth);
+	const cli = providerAuth?.localCli;
 	if (cli) {
-		return `请在终端中用 \`${cli.command}\` CLI 重新登录，然后重试。`;
+		return `Sign in again with the \`${cli.command}\` CLI in a terminal, then try again.`;
 	}
 	if (normalizeProviderId(providerId) === "cline") {
-		return "请在「设置 → 账户」中重新登录 Cline，然后重试。";
+		return "Sign in to Cline again in Settings → Account, then try again.";
 	}
-	return "请在「设置 → 供应商」中检查你的模型连接（或使用 Cline 登录），然后重试。";
+	if (!providerAuth) {
+		return "Sign in again using your provider's authentication method, then try again.";
+	}
+	return "Check your model connection in Settings → Providers (or sign in with Cline), then try again.";
 }
 
 /**
@@ -289,22 +305,28 @@ export function isCredentialFailure(description: string): boolean {
  */
 export function resolveCredentialFailureAction(
 	providerId: string,
+	auth?: ProviderAuthInfo,
 ): { label: string; target: "account" | "models" } | null {
-	if (resolveProviderLocalCli(providerId)) {
+	if (normalizeProviderId(providerId) === "cline") {
+		return { label: "Sign in to Cline", target: "account" };
+	}
+	const providerAuth = matchingProviderAuth(providerId, auth);
+	if (!providerAuth || providerAuth.localCli) {
 		return null;
 	}
-	return normalizeProviderId(providerId) === "cline"
-		? { label: "登录 Cline", target: "account" }
-		: { label: "打开 API 供应商", target: "models" };
+	return { label: "Open API providers", target: "models" };
 }
 
-/** Message meta that makes the chat render the credential fix action. */
+/** Keep auth facts for error rendering even when there is no in-app fix action. */
 export function credentialFailureMeta(
 	providerId: string,
+	auth?: ProviderAuthInfo,
 ): ChatMessage["meta"] | undefined {
-	return resolveCredentialFailureAction(providerId)
-		? { reason: "credentials", providerId }
-		: undefined;
+	return {
+		reason: "credentials",
+		providerId,
+		providerAuth: matchingProviderAuth(providerId, auth),
+	};
 }
 
 function mapHistoryStatusToChatStatus(

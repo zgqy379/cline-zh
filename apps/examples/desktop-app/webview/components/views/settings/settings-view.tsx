@@ -1,4 +1,3 @@
-import { providerOffersModelTool } from "@cline/llms/browser";
 import { Switch } from "@cline/ui";
 import { Download, Minus, Plus, RotateCcw } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -10,13 +9,6 @@ import {
 	DialogHeader,
 	DialogTitle,
 } from "@/components/ui/dialog";
-import {
-	Select,
-	SelectContent,
-	SelectItem,
-	SelectTrigger,
-	SelectValue,
-} from "@/components/ui/select";
 import { Slider } from "@/components/ui/slider";
 import {
 	DEFAULT_APP_FONT_SIZE,
@@ -44,11 +36,9 @@ import {
 	OAUTH_LOGIN_TIMEOUT_MS,
 } from "@/lib/provider-connection";
 import {
-	fetchProviderCatalog,
 	invalidateProviderCatalogCache,
 	notifyVoiceInputSettingsChanged,
 	publishProviderModels,
-	subscribeToProviderCatalogInvalidation,
 } from "@/lib/provider-model-catalog";
 import type {
 	Provider,
@@ -59,16 +49,17 @@ import type {
 import {
 	type HubAccent,
 	type HubTheme,
-	type HubThemePreference,
 	readStoredHubAccent,
-	readStoredHubThemePreference,
+	readStoredHubTheme,
 	readSystemHubTheme,
 	setStoredHubAccent,
-	setStoredHubThemePreference,
-	watchSystemHubTheme,
+	setStoredHubTheme,
 } from "@/lib/theme";
 import { cn } from "@/lib/utils";
-import { MarketplaceExplorerView } from "../marketplace-explorer-view";
+import {
+	MarketplaceExplorerView,
+	type MarketplaceTypeFilter,
+} from "../marketplace-explorer-view";
 import { PageFrame, PageHeader } from "../page-layout";
 import { AboutContent } from "./about-view";
 import { AccountView } from "./account-view";
@@ -98,7 +89,6 @@ export {
 type GlobalSettingsResponse = {
 	telemetryOptOut: boolean;
 	autoUpdateEnabled: boolean;
-	tools?: Partial<Record<"web_search", { enabled: boolean }>>;
 };
 
 const PROVIDER_CATALOG_CACHE_TTL_MS = 60_000;
@@ -124,6 +114,8 @@ export function SettingsView({
 	onOpenSession?: (sessionId: string) => void | Promise<void>;
 }) {
 	const activeNav = section;
+	const [marketplaceInitialFilter, setMarketplaceInitialFilter] =
+		useState<MarketplaceTypeFilter | null>(null);
 	const [providers, setProviders] = useState<Provider[]>(
 		() => providerCatalogCache?.providers ?? [],
 	);
@@ -283,7 +275,7 @@ export function SettingsView({
 				return true;
 			} catch (error) {
 				const message = error instanceof Error ? error.message : String(error);
-				window.alert(`保存供应商 ${id} 的设置失败：${message}`);
+				window.alert(`Failed to save provider settings for ${id}: ${message}`);
 				// The optimistic list update no longer matches disk: resync from
 				// the authoritative catalog. Retry when a concurrent edit
 				// superseded the in-flight response (that edit performs no
@@ -483,7 +475,7 @@ export function SettingsView({
 			setSelectedProviderId(id);
 		} catch (error) {
 			const message = error instanceof Error ? error.message : String(error);
-			window.alert(`登录供应商 ${id} 失败：${message}`);
+			window.alert(`Failed to sign in to ${id}: ${message}`);
 		} finally {
 			setOauthSigningProviderId(null);
 		}
@@ -548,9 +540,9 @@ export function SettingsView({
 		>
 			<DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-3xl">
 				<DialogHeader>
-					<DialogTitle>添加供应商</DialogTitle>
+					<DialogTitle>Add Provider</DialogTitle>
 					<DialogDescription>
-						添加一个 OpenAI 兼容供应商并选择其可用模型。
+						Add an OpenAI-compatible provider and choose its available models.
 					</DialogDescription>
 				</DialogHeader>
 				<AddProviderContent
@@ -565,12 +557,12 @@ export function SettingsView({
 
 	const providerContent = providersLoading ? (
 		<div className="flex h-full items-center justify-center">
-			<p className="text-sm text-muted-foreground">正在加载供应商…</p>
+			<p className="text-sm text-muted-foreground">Loading providers...</p>
 		</div>
 	) : providerCatalogError ? (
 		<div className="flex h-full items-center justify-center">
 			<p className="max-w-xl px-4 text-center text-sm text-destructive">
-				加载供应商失败：{providerCatalogError}
+				Failed to load providers: {providerCatalogError}
 			</p>
 		</div>
 	) : selectedProvider ? (
@@ -631,10 +623,14 @@ export function SettingsView({
 			/>
 		) : activeNav === "Customize" ? (
 			<CustomizeView
-				onOpenMarketplace={() => onNavigateSection("Marketplace")}
+				onOpenModelProviders={() => onNavigateSection("Providers")}
+				onOpenMarketplace={(filter) => {
+					setMarketplaceInitialFilter(filter ?? null);
+					onNavigateSection("Marketplace");
+				}}
 			/>
 		) : activeNav === "Marketplace" ? (
-			<MarketplaceExplorerView />
+			<MarketplaceExplorerView initialTypeFilter={marketplaceInitialFilter} />
 		) : activeNav === "Channels" ? (
 			<ChannelsContent />
 		) : activeNav === "Schedules" ? (
@@ -646,16 +642,13 @@ export function SettingsView({
 		) : activeNav === "Account" ? (
 			<AccountView />
 		) : activeNav === "About" ? (
-			<AboutContent />
+			<AboutContent onOpenConnectors={() => onNavigateSection("Customize")} />
 		) : activeNav === "General" ? (
-			<GeneralSettingsContent
-				onExportDiagnostics={onExportDiagnostics}
-				onOpenModelProviders={() => onNavigateSection("Providers")}
-			/>
+			<GeneralSettingsContent onExportDiagnostics={onExportDiagnostics} />
 		) : (
 			<div className="flex h-full items-center justify-center">
 				<p className="text-sm text-muted-foreground">
-					{activeNav} 设置即将推出。
+					{activeNav} settings coming soon.
 				</p>
 			</div>
 		);
@@ -673,39 +666,23 @@ export function SettingsView({
  * violet reads the live brand token so it always matches the default theme.
  */
 const ACCENT_OPTIONS: { id: HubAccent; label: string; swatch: string }[] = [
-	{ id: "violet", label: "紫色", swatch: "var(--brand-violet)" },
-	{ id: "graphite", label: "石墨色", swatch: "oklch(0.27 0.012 248)" },
-	{ id: "cyan", label: "青色", swatch: "oklch(0.6 0.12 222)" },
-	{ id: "pink", label: "粉色", swatch: "oklch(0.75 0.1 354)" },
-	{ id: "espresso", label: "浓缩咖啡色", swatch: "oklch(0.36 0.035 35)" },
-	{ id: "ember", label: "余烬橙", swatch: "oklch(0.6 0.19 33)" },
+	{ id: "violet", label: "Violet", swatch: "var(--brand-violet)" },
+	{ id: "graphite", label: "Graphite", swatch: "oklch(0.27 0.012 248)" },
+	{ id: "cyan", label: "Cyan", swatch: "oklch(0.6 0.12 222)" },
+	{ id: "pink", label: "Pink", swatch: "oklch(0.75 0.1 354)" },
+	{ id: "espresso", label: "Espresso", swatch: "oklch(0.36 0.035 35)" },
+	{ id: "ember", label: "Ember", swatch: "oklch(0.6 0.19 33)" },
 ];
 
 function GeneralSettingsContent({
 	onExportDiagnostics,
-	onOpenModelProviders,
 }: {
-	onOpenModelProviders: () => void;
 	onExportDiagnostics: () => void;
 }) {
-	const [themePreference, setThemePreference] =
-		useState<HubThemePreference>(() => {
-			if (typeof window === "undefined") return "system";
-			// 无偏好等同于「跟随系统」，与旧行为（只看系统）保持一致
-			return readStoredHubThemePreference() ?? "system";
-		});
-	// 实际生效的深浅色。偏好为 system 时跟随系统实时变化，
-	// 因此单独保存一份状态，供 UI 显示「当前生效：深色/浅色」。
 	const [theme, setTheme] = useState<HubTheme>(() => {
 		if (typeof window === "undefined") return "light";
-		return readSystemHubTheme();
+		return readStoredHubTheme() ?? readSystemHubTheme();
 	});
-
-	// 偏好切到「跟随系统」后，监听系统变化以更新生效值
-	useEffect(() => {
-		if (themePreference !== "system") return;
-		return watchSystemHubTheme((next) => setTheme(next));
-	}, [themePreference]);
 	const [accent, setAccent] = useState<HubAccent>(() => {
 		if (typeof window === "undefined") return "violet";
 		return readStoredHubAccent();
@@ -757,59 +734,15 @@ function GeneralSettingsContent({
 			setCloudSessionsAvailable(false);
 		}
 	}, []);
-	const [webSearchEnabled, setWebSearchEnabled] = useState(false);
-	const [webSearchLoading, setWebSearchLoading] = useState(true);
-	const [webSearchSaving, setWebSearchSaving] = useState(false);
-	const [webSearchError, setWebSearchError] = useState<string | null>(null);
-	// Connected providers that offer native web search; null until the
-	// catalog loads. The toggle silently does nothing with other providers,
-	// so the row spells out whether it will actually take effect.
-	const [webSearchReadyProviders, setWebSearchReadyProviders] = useState<
-		string[] | null
-	>(null);
 
 	useEffect(() => setAppIconLocation(appIconSurface(navigator.userAgent)), []);
 	useEffect(() => subscribeToAppFontSize(setFontSize), []);
-
-	useEffect(() => {
-		let cancelled = false;
-		const loadWebSearchSupport = () => {
-			void fetchProviderCatalog()
-				.then((payload) => {
-					if (cancelled) return;
-					setWebSearchReadyProviders(
-						(payload.providers ?? [])
-							.filter(
-								(provider) =>
-									provider.enabled &&
-									providerOffersModelTool(provider.id, "web_search"),
-							)
-							.map((provider) => provider.name),
-					);
-				})
-				.catch(() => {
-					// Support status is best-effort; the toggle works without it.
-				});
-		};
-		loadWebSearchSupport();
-		// Provider saves invalidate the catalog cache when they complete, so
-		// refetching on invalidation keeps the status current even when the
-		// user navigates here while a save is still in flight.
-		const unsubscribe =
-			subscribeToProviderCatalogInvalidation(loadWebSearchSupport);
-		return () => {
-			cancelled = true;
-			unsubscribe();
-		};
-	}, []);
 
 	const loadGlobalSettings = useCallback(async () => {
 		setTelemetryLoading(true);
 		setTelemetryError(null);
 		setAutoUpdateLoading(true);
 		setAutoUpdateError(null);
-		setWebSearchLoading(true);
-		setWebSearchError(null);
 		setCloudSessionsLoading(true);
 		setCloudSessionsError(null);
 		await Promise.all([
@@ -820,17 +753,14 @@ function GeneralSettingsContent({
 					);
 					setTelemetryOptOut(settings.telemetryOptOut);
 					setAutoUpdateEnabled(settings.autoUpdateEnabled);
-					setWebSearchEnabled(settings.tools?.web_search?.enabled === true);
 				} catch (error) {
 					const message =
 						error instanceof Error ? error.message : String(error);
 					setTelemetryError(message);
 					setAutoUpdateError(message);
-					setWebSearchError(message);
 				} finally {
 					setTelemetryLoading(false);
 					setAutoUpdateLoading(false);
-					setWebSearchLoading(false);
 				}
 			})(),
 			(async () => {
@@ -920,29 +850,9 @@ function GeneralSettingsContent({
 		}
 	};
 
-	const updateWebSearchEnabled = async (nextValue: boolean) => {
-		const previousValue = webSearchEnabled;
-		setWebSearchEnabled(nextValue);
-		setWebSearchSaving(true);
-		setWebSearchError(null);
-		try {
-			const settings = await desktopClient.invoke<GlobalSettingsResponse>(
-				"set_web_search_enabled",
-				{ web_search_enabled: nextValue },
-			);
-			setWebSearchEnabled(settings.tools?.web_search?.enabled === true);
-		} catch (error) {
-			const message = error instanceof Error ? error.message : String(error);
-			setWebSearchEnabled(previousValue);
-			setWebSearchError(message);
-		} finally {
-			setWebSearchSaving(false);
-		}
-	};
-
-	const updateThemePreference = (nextPreference: HubThemePreference) => {
-		setThemePreference(nextPreference);
-		setTheme(setStoredHubThemePreference(nextPreference));
+	const updateTheme = (darkModeEnabled: boolean) => {
+		const nextTheme = darkModeEnabled ? "dark" : "light";
+		setTheme(setStoredHubTheme(nextTheme));
 	};
 
 	const updateAccent = (nextAccent: HubAccent) => {
@@ -986,49 +896,34 @@ function GeneralSettingsContent({
 	return (
 		<PageFrame>
 			<PageHeader
-				description="管理此浏览器与 CLI 环境的桌面端偏好设置。"
-				title="设置"
+				description="Manage desktop preferences for this browser and CLI environment."
+				title="Settings"
 			/>
 			<section className="max-w-344">
 				<NotificationSettings />
 				<div className="flex py-4 items-center justify-between gap-5 border-b max-[720px]:flex-col max-[720px]:items-stretch max-[720px]:py-4">
 					<div className="flex flex-col gap-1">
-						<p className="text-base font-semibold text-foreground">主题外观</p>
+						<p className="text-base font-semibold text-foreground">Dark mode</p>
 						<p className="text-sm text-muted-foreground">
-							{themePreference === "system"
-								? `跟随系统（当前为${theme === "dark" ? "深色" : "浅色"}）`
-								: "固定使用所选外观，不再随系统变化。"}
+							Keep the desktop interface in dark mode on this browser.
 						</p>
 					</div>
-					<Select
-						onValueChange={(value) =>
-							updateThemePreference(value as HubThemePreference)
-						}
-						value={themePreference}
-					>
-						<SelectTrigger
-							aria-label="主题外观"
-							className="w-40 shrink-0"
-						>
-							<SelectValue placeholder="选择主题" />
-						</SelectTrigger>
-						<SelectContent align="end">
-							<SelectItem value="system">跟随系统</SelectItem>
-							<SelectItem value="light">浅色</SelectItem>
-							<SelectItem value="dark">深色</SelectItem>
-						</SelectContent>
-					</Select>
+					<Switch
+						aria-label="Dark mode"
+						checked={theme === "dark"}
+						onCheckedChange={updateTheme}
+					/>
 				</div>
 				<div className="flex items-center justify-between gap-5 border-b py-4 max-[720px]:flex-col max-[720px]:items-stretch">
 					<div className="flex flex-col gap-1">
-						<p className="text-base font-semibold text-foreground">字号</p>
+						<p className="text-base font-semibold text-foreground">Font size</p>
 						<p className="text-sm text-muted-foreground">
-							调整整个应用中的文字和界面元素尺寸。
+							Adjust the size of text and interface elements throughout the app.
 						</p>
 					</div>
 					<div className="flex w-64 shrink-0 items-center gap-3 max-[720px]:w-full">
 						<Button
-							aria-label="减小字号"
+							aria-label="Decrease font size"
 							className="size-7"
 							disabled={fontSize === MIN_APP_FONT_SIZE}
 							onClick={() => updateFontSizePreference(fontSize - 1)}
@@ -1039,8 +934,8 @@ function GeneralSettingsContent({
 							<Minus />
 						</Button>
 						<Slider
-							aria-label="字号"
-							aria-valuetext={`${fontSize} 像素`}
+							aria-label="Font size"
+							aria-valuetext={`${fontSize} pixels`}
 							max={MAX_APP_FONT_SIZE}
 							min={MIN_APP_FONT_SIZE}
 							onValueChange={updateFontSize}
@@ -1048,7 +943,7 @@ function GeneralSettingsContent({
 							value={[fontSize]}
 						/>
 						<Button
-							aria-label="增大字号"
+							aria-label="Increase font size"
 							className="size-7"
 							disabled={fontSize === MAX_APP_FONT_SIZE}
 							onClick={() => updateFontSizePreference(fontSize + 1)}
@@ -1059,7 +954,7 @@ function GeneralSettingsContent({
 							<Plus />
 						</Button>
 						<output
-							aria-label="当前字号"
+							aria-label="Selected font size"
 							className="w-10 shrink-0 text-right font-mono text-sm tabular-nums text-foreground"
 						>
 							{fontSize}px
@@ -1069,10 +964,10 @@ function GeneralSettingsContent({
 				<div className="flex py-4 items-center justify-between gap-5 border-b max-[720px]:flex-col max-[720px]:items-stretch max-[720px]:py-4">
 					<div className="flex flex-col gap-1">
 						<p className="text-base font-semibold text-foreground">
-							强调色
+							Accent color
 						</p>
 						<p className="text-sm text-muted-foreground">
-							为整个应用中的按钮、链接和高亮元素着色。
+							Tint buttons, links, and highlights across the app.
 						</p>
 					</div>
 					<div className="flex shrink-0 items-center gap-2">
@@ -1096,13 +991,13 @@ function GeneralSettingsContent({
 				</div>
 				<div className="flex items-center justify-between gap-5 border-b py-4 max-[720px]:flex-col max-[720px]:items-stretch">
 					<div className="flex flex-col gap-1">
-						<p className="text-base font-semibold text-foreground">应用图标</p>
+						<p className="text-base font-semibold text-foreground">App icon</p>
 						<p className="text-sm text-muted-foreground">
-							选择 Cline 在{appIconLocation}中显示的图标。
+							Pick the icon Cline shows in the {appIconLocation}.
 						</p>
 						{appIconError ? (
 							<p className="mt-2 text-xs text-destructive" role="alert">
-								更改应用图标失败：{appIconError}
+								Failed to change app icon: {appIconError}
 							</p>
 						) : null}
 					</div>
@@ -1145,65 +1040,21 @@ function GeneralSettingsContent({
 				<div className="flex py-4 items-center justify-between gap-5 border-b max-[720px]:flex-col max-[720px]:items-stretch max-[720px]:py-4">
 					<div className="flex flex-col gap-1">
 						<p className="text-base font-semibold text-foreground">
-							网络搜索
+							Keep CLI up to date
 						</p>
 						<p className="text-sm text-muted-foreground">
-							允许模型在任务执行中搜索网页。仅部分供应商
-							内置网络搜索的供应商会遵循此设置，其他供应商则忽略。
-							仅对新会话生效。
-						</p>
-						{webSearchReadyProviders ===
-						null ? null : webSearchReadyProviders.length > 0 ? (
-							<p className="text-xs text-muted-foreground">
-								可在支持该功能的模型上配合 {webSearchReadyProviders.join(", ")} 使用
-								，无需额外配置。
-							</p>
-						) : (
-							<p className="text-xs text-amber-700 dark:text-amber-300">
-								你已连接的供应商均未内置网络搜索，因此
-								此设置暂不生效。{" "}
-								<button
-									className="underline underline-offset-2 hover:text-foreground"
-									onClick={onOpenModelProviders}
-									type="button"
-								>
-									连接供应商
-								</button>{" "}
-								连接支持该功能的供应商，例如 Anthropic、OpenAI、Google Gemini 或
-								Cline。
-							</p>
-						)}
-						{webSearchError ? (
-							<p className="mt-2 text-xs text-destructive" role="alert">
-								更新网络搜索设置失败：{webSearchError}
-							</p>
-						) : null}
-					</div>
-					<Switch
-						aria-label="网络搜索"
-						checked={webSearchEnabled}
-						disabled={webSearchLoading || webSearchSaving}
-						onCheckedChange={(checked) => void updateWebSearchEnabled(checked)}
-					/>
-				</div>
-				<div className="flex py-4 items-center justify-between gap-5 border-b max-[720px]:flex-col max-[720px]:items-stretch max-[720px]:py-4">
-					<div className="flex flex-col gap-1">
-						<p className="text-base font-semibold text-foreground">
-							保持 CLI 为最新
-						</p>
-						<p className="text-sm text-muted-foreground">
-							自动更新 cline 终端命令，它与本应用
-							共享你的会话和设置。应用本体会
-							单独更新。
+							Automatically update the cline terminal command, which shares your
+							sessions and settings with this app. The app itself updates
+							separately.
 						</p>
 						{autoUpdateError ? (
 							<p className="mt-2 text-xs text-destructive" role="alert">
-								更新 CLI 自动更新设置失败：{autoUpdateError}
+								Failed to update CLI auto-update setting: {autoUpdateError}
 							</p>
 						) : null}
 					</div>
 					<Switch
-						aria-label="保持 CLI 为最新"
+						aria-label="Keep CLI up to date"
 						checked={autoUpdateEnabled}
 						disabled={autoUpdateLoading || autoUpdateSaving}
 						onCheckedChange={(checked) => void updateAutoUpdateEnabled(checked)}
@@ -1213,31 +1064,34 @@ function GeneralSettingsContent({
 					<div className="flex py-4 items-center justify-between gap-5 border-b max-[720px]:flex-col max-[720px]:items-stretch max-[720px]:py-4">
 						<div className="flex flex-col gap-1">
 							<p className="flex items-center gap-2 text-base font-semibold text-foreground">
-								云端会话
+								Cloud sessions
 								<span className="rounded-full bg-primary/10 px-2 py-0.5 text-[11px] font-medium uppercase tracking-wide text-primary">
-									预览
+									Preview
 								</span>
 							</p>
 							<p className="text-sm text-muted-foreground">
-								在安全的云端沙箱中对你的 GitHub 仓库运行 Cline。
-								会在新建会话的编辑器中增加一个「云端」选项，需要已连接 GitHub 的 Cline 账户。
+								Run Cline on your GitHub repositories in secure cloud sandboxes.
+								Adds a Cloud option to the new-session composer. Requires a
+								Cline account with GitHub connected.
 							</p>
 							{cloudSessionsError ? (
 								<p className="mt-2 text-xs text-destructive" role="alert">
-									更新云端会话设置失败：{cloudSessionsError}
+									Failed to update cloud sessions setting: {cloudSessionsError}
 								</p>
 							) : null}
 							{cloudSessionsEffective !== null &&
 							!cloudSessionsLoading &&
 							cloudSessionsEffective !== cloudSessionsEnabled ? (
 								<p className="mt-2 text-xs text-muted-foreground">
-									云端会话当前{cloudSessionsEffective ? "已启用" : "已禁用"}，这是由{" "}
-									<code>CLINE_CODE_CLOUD_AGENTS</code> 环境变量覆盖所致，该覆盖优先于此设置。
+									Cloud sessions are currently{" "}
+									{cloudSessionsEffective ? "enabled" : "disabled"} by the
+									CLINE_CODE_CLOUD_AGENTS environment override, which takes
+									precedence over this setting.
 								</p>
 							) : null}
 						</div>
 						<Switch
-							aria-label="云端会话"
+							aria-label="Cloud sessions"
 							checked={cloudSessionsEnabled}
 							disabled={cloudSessionsLoading || cloudSessionsSaving}
 							onCheckedChange={(checked) =>
@@ -1248,18 +1102,18 @@ function GeneralSettingsContent({
 				) : null}
 				<div className="flex py-4 items-center justify-between gap-5 border-b max-[720px]:flex-col max-[720px]:items-stretch max-[720px]:py-4">
 					<div className="flex flex-col gap-1">
-						<p className="text-base font-semibold text-foreground">遥测</p>
+						<p className="text-base font-semibold text-foreground">Telemetry</p>
 						<p className="text-sm text-muted-foreground">
-							启用错误和使用情况报告，以帮助改进 Cline。
+							Enable error and usage reports to help improve Cline.
 						</p>
 						{telemetryError ? (
 							<p className="mt-2 text-xs text-destructive" role="alert">
-								更新遥测设置失败：{telemetryError}
+								Failed to update telemetry setting: {telemetryError}
 							</p>
 						) : null}
 					</div>
 					<Switch
-						aria-label="遥测"
+						aria-label="Telemetry"
 						checked={!telemetryOptOut}
 						disabled={telemetryLoading || telemetrySaving}
 						onCheckedChange={(checked) => void updateTelemetryOptOut(!checked)}
@@ -1268,10 +1122,11 @@ function GeneralSettingsContent({
 				<div className="flex py-4 items-center justify-between gap-5 border-b max-[720px]:flex-col max-[720px]:items-stretch max-[720px]:py-4">
 					<div className="flex flex-col gap-1">
 						<p className="text-base font-semibold text-foreground">
-							新手引导体验
+							New user experience
 						</p>
 						<p className="text-sm text-muted-foreground">
-							重放新用户首次打开 Cline 时看到的首次运行引导。
+							Replay the first-run experience new users see when they open Cline
+							for the first time.
 						</p>
 					</div>
 					<Button
@@ -1282,16 +1137,17 @@ function GeneralSettingsContent({
 						variant="outline"
 					>
 						<RotateCcw className="size-3" />
-						重放
+						Replay
 					</Button>
 				</div>
 				<div className="flex py-4 items-center justify-between gap-5 max-[720px]:flex-col max-[720px]:items-stretch max-[720px]:py-4">
 					<div className="flex flex-col gap-1">
 						<p className="text-base font-semibold text-foreground">
-							诊断信息
+							Diagnostics
 						</p>
 						<p className="text-sm text-muted-foreground">
-							导出应用信息、近期日志以及你所选会话的元数据，生成可随问题反馈一起附上的文件。
+							Export app info, recent logs, and the metadata of sessions you
+							choose as a file you can attach when reporting a problem.
 						</p>
 					</div>
 					<Button
@@ -1302,7 +1158,7 @@ function GeneralSettingsContent({
 						variant="outline"
 					>
 						<Download className="size-3" />
-						导出…
+						Export…
 					</Button>
 				</div>
 			</section>
