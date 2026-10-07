@@ -243,7 +243,7 @@ describe("resolveCredentialFailureAction", () => {
 		expect(
 			resolveCredentialFailureAction("anthropic", { providerId: "anthropic" }),
 		).toEqual({
-			label: "Open API providers",
+			label: "打开 API 供应商",
 			target: "models",
 		});
 	});
