@@ -916,14 +916,14 @@ function GeneralSettingsContent({
 				</div>
 				<div className="flex items-center justify-between gap-5 border-b py-4 max-[720px]:flex-col max-[720px]:items-stretch">
 					<div className="flex flex-col gap-1">
-						<p className="text-base font-semibold text-foreground">Font size</p>
+						<p className="text-base font-semibold text-foreground">字号</p>
 						<p className="text-sm text-muted-foreground">
-							Adjust the size of text and interface elements throughout the app.
+							调整整个应用的文字与界面元素大小。
 						</p>
 					</div>
 					<div className="flex w-64 shrink-0 items-center gap-3 max-[720px]:w-full">
 						<Button
-							aria-label="Decrease font size"
+							aria-label="减小字号"
 							className="size-7"
 							disabled={fontSize === MIN_APP_FONT_SIZE}
 							onClick={() => updateFontSizePreference(fontSize - 1)}
@@ -934,8 +934,8 @@ function GeneralSettingsContent({
 							<Minus />
 						</Button>
 						<Slider
-							aria-label="Font size"
-							aria-valuetext={`${fontSize} pixels`}
+							aria-label="字号"
+							aria-valuetext={`${fontSize} 像素`}
 							max={MAX_APP_FONT_SIZE}
 							min={MIN_APP_FONT_SIZE}
 							onValueChange={updateFontSize}
@@ -943,7 +943,7 @@ function GeneralSettingsContent({
 							value={[fontSize]}
 						/>
 						<Button
-							aria-label="Increase font size"
+							aria-label="增大字号"
 							className="size-7"
 							disabled={fontSize === MAX_APP_FONT_SIZE}
 							onClick={() => updateFontSizePreference(fontSize + 1)}
@@ -954,7 +954,7 @@ function GeneralSettingsContent({
 							<Plus />
 						</Button>
 						<output
-							aria-label="Selected font size"
+							aria-label="所选字号"
 							className="w-10 shrink-0 text-right font-mono text-sm tabular-nums text-foreground"
 						>
 							{fontSize}px
@@ -1064,34 +1064,34 @@ function GeneralSettingsContent({
 					<div className="flex py-4 items-center justify-between gap-5 border-b max-[720px]:flex-col max-[720px]:items-stretch max-[720px]:py-4">
 						<div className="flex flex-col gap-1">
 							<p className="flex items-center gap-2 text-base font-semibold text-foreground">
-								Cloud sessions
+								云端会话
 								<span className="rounded-full bg-primary/10 px-2 py-0.5 text-[11px] font-medium uppercase tracking-wide text-primary">
-									Preview
+									预览
 								</span>
 							</p>
 							<p className="text-sm text-muted-foreground">
-								Run Cline on your GitHub repositories in secure cloud sandboxes.
-								Adds a Cloud option to the new-session composer. Requires a
-								Cline account with GitHub connected.
+								在安全的云端沙箱中，让 Cline 运行于你的 GitHub
+								仓库之上。会在新会话编辑器中增加「云端」选项。需要已连接
+								GitHub 的 Cline 账号。
 							</p>
 							{cloudSessionsError ? (
 								<p className="mt-2 text-xs text-destructive" role="alert">
-									Failed to update cloud sessions setting: {cloudSessionsError}
+									更新云端会话设置失败：{cloudSessionsError}
 								</p>
 							) : null}
 							{cloudSessionsEffective !== null &&
 							!cloudSessionsLoading &&
 							cloudSessionsEffective !== cloudSessionsEnabled ? (
 								<p className="mt-2 text-xs text-muted-foreground">
-									Cloud sessions are currently{" "}
-									{cloudSessionsEffective ? "enabled" : "disabled"} by the
-									CLINE_CODE_CLOUD_AGENTS environment override, which takes
-									precedence over this setting.
+									云端会话当前{cloudSessionsEffective ? "已启用" : "已禁用"}
+									，这是由{" "}
+									<code>CLINE_CODE_CLOUD_AGENTS</code>{" "}
+									环境变量覆盖所致，该覆盖优先于此设置。
 								</p>
 							) : null}
 						</div>
 						<Switch
-							aria-label="Cloud sessions"
+							aria-label="云端会话"
 							checked={cloudSessionsEnabled}
 							disabled={cloudSessionsLoading || cloudSessionsSaving}
 							onCheckedChange={(checked) =>

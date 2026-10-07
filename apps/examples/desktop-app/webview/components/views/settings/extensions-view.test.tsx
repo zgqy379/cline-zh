@@ -112,7 +112,7 @@ describe("CustomizationSectionView Agent Plugin inventory", () => {
 					catalogPrimitive="plugin"
 					chrome="embedded"
 					marketplaceVariant="installed"
-					section="Plugins"
+					section="插件"
 				/>,
 			);
 		});
@@ -153,7 +153,7 @@ describe("CustomizationSectionView Agent Plugin inventory", () => {
 					catalogPrimitive="plugin"
 					chrome="embedded"
 					marketplaceVariant="installed"
-					section="Plugins"
+					section="插件"
 				/>,
 			);
 		});
@@ -171,7 +171,7 @@ describe("CustomizationSectionView Agent Plugin inventory", () => {
 					catalogPrimitive="skill"
 					chrome="embedded"
 					marketplaceVariant="installed"
-					section="Skills"
+					section="技能"
 				/>,
 			);
 		});

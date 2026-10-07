@@ -197,7 +197,7 @@ describe("WelcomeScreen", () => {
 				: { available: true, branches: ["main", "feature"] },
 		);
 		await renderWelcomeScreen(props);
-		await clickButton("Select repository");
+		await clickButton("选择仓库");
 		await clickButton("org/repo");
 		expect(onRepoUrlChange).toHaveBeenLastCalledWith(repoUrl);
 		await renderWelcomeScreen({ ...props, repoUrl, cloudBranch: "main" });
@@ -230,21 +230,21 @@ describe("WelcomeScreen", () => {
 					? Promise.reject(new Error("Picker lookup failed"))
 					: branchCheck.promise,
 			);
-			await clickButton("Select repository");
-			expect(container.textContent).toContain("Could not load repositories.");
+			await clickButton("选择仓库");
+			expect(container.textContent).toContain("无法加载仓库。");
 		}
 		if (recovery === "retry" || recovery === "manual") {
 			await act(async () =>
 				branchCheck.reject(new Error("Branch lookup failed")),
 			);
 			expect(onRepoUrlChange).not.toHaveBeenCalledWith(repoUrl);
-			expect(container.textContent).toContain("Select repository");
+			expect(container.textContent).toContain("选择仓库");
 			expect(readCloudRepositorySelection(scope)).toEqual({
 				repoUrl,
 				branch: "feature",
 			});
 			if (recovery === "manual") {
-				await clickButton("Select repository");
+				await clickButton("选择仓库");
 				await clickButton("org/repo");
 				expect(onRepoUrlChange).toHaveBeenLastCalledWith(repoUrl);
 				expect(onCloudBranchChange).toHaveBeenLastCalledWith("main");
@@ -254,7 +254,7 @@ describe("WelcomeScreen", () => {
 					branch: "main",
 				});
 				expect(container.textContent).not.toContain(
-					"Could not reach Cline Cloud",
+					"无法连接到 Cline Cloud",
 				);
 				return;
 			}
@@ -263,7 +263,7 @@ describe("WelcomeScreen", () => {
 					? repositories
 					: { available: true, branches: ["feature"] },
 			);
-			await clickButton("Retry");
+			await clickButton("重试");
 		}
 		await act(async () =>
 			branchCheck.resolve({ available: true, branches: ["feature"] }),

@@ -5,7 +5,7 @@ import { createRoot, type Root } from "react-dom/client";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { ChatMessage } from "@/lib/chat-schema";
 import { MAX_LIVE_COMMAND_OUTPUT_CHARS } from "@/lib/command-output";
-import { resolveCredentialFailureHint } from "@/hooks/chat-session/helpers";
+import { formatRunError } from "@/lib/run-error";
 import { ChatMessages } from "./chat-messages";
 
 // @pierre/diffs' custom element adopts constructable stylesheets, which jsdom
@@ -2278,7 +2278,7 @@ describe("persisted run errors", () => {
 		// persisted message, otherwise the banner is treated as a new error and
 		// the same text renders twice. Deriving it from the shared helper keeps
 		// the fixture from rotting when the hint copy is reworded.
-		const fullError = `运行失败：API key expired. ${resolveCredentialFailureHint(providerId)}`;
+		const fullError = formatRunError("API key expired.", providerId, providerAuth);
 		await renderMessages(messages, { error: fullError, status: "failed" });
 		expect(container.textContent?.split("API key expired.")).toHaveLength(2);
 		expect(container.textContent).toContain(fullError.replaceAll("`", ""));

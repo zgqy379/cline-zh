@@ -215,7 +215,7 @@ async function compactSession(
 		}),
 	);
 	if (!updated) {
-		throw new Error("Compaction could not be saved. Try again.");
+		throw new Error("会话压缩保存失败，请重试。");
 	}
 	return `Compacted context from ${messages.length} to ${result.messages.length} messages.`;
 }

@@ -794,7 +794,7 @@ async function withSearchDeadline<T>(
 			promise,
 			new Promise<never>((_, reject) => {
 				timer = setTimeout(
-					() => reject(new Error("Session search timed out")),
+					() => reject(new Error("会话搜索超时")),
 					timeoutMs,
 				);
 			}),
@@ -857,7 +857,7 @@ async function listGitBranches(
 	const targetCwd = cwd?.trim() || binding.workspaceRoot;
 	if (binding.kind === "ssh") {
 		const remote = ctx.remoteEnvironments;
-		if (!remote) throw new Error("Remote environment service is unavailable");
+		if (!remote) throw new Error("远程环境服务不可用");
 		const [currentResult, branchesResult] = await Promise.all([
 			remote
 				.run(binding.environmentId, {
@@ -1112,7 +1112,7 @@ async function listWorkspaceDirectories(
 	}
 
 	const remote = ctx.remoteEnvironments;
-	if (!remote) throw new Error("Remote environment service is unavailable");
+	if (!remote) throw new Error("远程环境服务不可用");
 	const home = binding.remote?.homeDir ?? binding.workspaceRoot;
 	const canonicalResult = await remote.run(binding.environmentId, {
 		command: "pwd",
@@ -1121,7 +1121,7 @@ async function listWorkspaceDirectories(
 	});
 	const currentPath = canonicalResult.stdout.replace(/\r?\n$/, "");
 	if (!currentPath.startsWith("/") || /[\0\r\n]/.test(currentPath)) {
-		throw new Error("SSH host returned an invalid canonical directory path");
+		throw new Error("SSH 主机返回了无效的规范目录路径");
 	}
 	const listResult = await remote.run(binding.environmentId, {
 		command: "sh",
@@ -2246,7 +2246,7 @@ export async function handleCommand(
 		// only the webview connection dialed with the approval token may ask,
 		// never an arbitrary local WebSocket client.
 		if (!options?.connection?.data?.canApproveTools) {
-			throw new Error("hub upgrade requires a trusted desktop connection");
+			throw new Error("Hub 升级需要受信任的桌面连接");
 		}
 		// Only reached after the user accepted the blocking "Hub update
 		// required" dialog, so force: the old Hub is replaced even though it
@@ -2259,7 +2259,7 @@ export async function handleCommand(
 		});
 		if (result.outcome === "hub_not_older") {
 			throw new Error(
-				"The running Cline Hub is newer than this app, so it was not replaced. Update Cline instead.",
+				"正在运行的 Cline Hub 比本应用更新，因此未做替换。请改为升级 Cline。",
 			);
 		}
 		if (result.outcome === "still_busy") {
@@ -2283,7 +2283,7 @@ export async function handleCommand(
 		const sessionId = String(args?.sessionId ?? "").trim();
 		const connection = options?.connection;
 		if (!connection?.data?.canApproveTools) {
-			throw new Error("tool approvals require a trusted desktop connection");
+			throw new Error("工具批准需要受信任的桌面连接");
 		}
 		return Array.from(ctx.pendingApprovals.values())
 			.filter(
@@ -2301,14 +2301,14 @@ export async function handleCommand(
 		}
 		const connection = options?.connection;
 		if (!connection?.data?.canApproveTools) {
-			throw new Error("tool approvals require a trusted desktop connection");
+			throw new Error("工具批准需要受信任的桌面连接");
 		}
 		const pending = ctx.pendingApprovals.get(requestId);
 		if (!pending || (pending.owner && pending.owner !== connection)) {
-			throw new Error("tool approval does not belong to this connection");
+			throw new Error("工具批准不属于此连接");
 		}
 		if (pending.item.sessionId !== sessionId) {
-			throw new Error("tool approval does not belong to this session");
+			throw new Error("工具批准不属于此会话");
 		}
 		await pending.resolve({
 			approved: Boolean(args?.approved),
@@ -3497,7 +3497,7 @@ export async function handleCommand(
 		const targetCwd = cwd?.trim() || binding.workspaceRoot;
 		if (binding.kind === "ssh") {
 			if (!ctx.remoteEnvironments) {
-				throw new Error("Remote environment service is unavailable");
+				throw new Error("远程环境服务不可用");
 			}
 			await ctx.remoteEnvironments.run(binding.environmentId, {
 				command: "git",
@@ -3550,7 +3550,7 @@ export async function handleCommand(
 			AGENDA_TASK_EXECUTION_COMMANDS.has(command) &&
 			!options?.connection?.data?.canApproveTools
 		) {
-			throw new Error("task execution requires a trusted desktop connection");
+			throw new Error("任务执行需要受信任的桌面连接");
 		}
 		return await handleAgendaTaskCommand(ctx, command, args);
 	}
@@ -3666,7 +3666,7 @@ export async function handleCommand(
 		if (binding.kind === "ssh") {
 			try {
 				if (!ctx.remoteEnvironments) {
-					throw new Error("Remote environment service is unavailable");
+					throw new Error("远程环境服务不可用");
 				}
 				await ctx.remoteEnvironments.run(binding.environmentId, {
 					command: "test",

@@ -35,7 +35,7 @@ it.each([
 
 it("uses neutral guidance when restored errors have no auth metadata", () => {
 	const text = formatRunError("session expired", "claude-code");
-	expect(text).toContain("your provider's authentication method");
-	expect(text).not.toContain("Settings");
+	expect(text).toContain("你的供应商的认证方式");
+	expect(text).not.toContain("设置 → 供应商");
 	expect(formatRunError(text, "claude-code")).toBe(text);
 });

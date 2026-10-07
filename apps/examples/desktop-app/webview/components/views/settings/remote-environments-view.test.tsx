@@ -185,7 +185,7 @@ describe("RemoteEnvironmentsContent", () => {
 		expect(invokeMock).toHaveBeenNthCalledWith(2, "upsert_remote_environment", {
 			profile: { ...profile, name: "Build box 2" },
 		});
-		expect(container.textContent).toContain("Connected");
+		expect(container.textContent).toContain("已连接");
 		expect(container.textContent).toContain("Ready");
 	});
 

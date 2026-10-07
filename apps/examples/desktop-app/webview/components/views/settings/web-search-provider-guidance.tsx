@@ -44,26 +44,24 @@ export function WebSearchProviderGuidance({
 	if (readyProviders.length > 0)
 		return (
 			<p className="text-xs text-muted-foreground">
-				Ready to use with {readyProviders.join(", ")} on models that support web
-				search.
+				已就绪：可通过 {readyProviders.join(", ")} 使用支持联网搜索的模型。
 			</p>
 		);
 	return (
 		<p className="text-xs text-amber-700 dark:text-amber-300">
-			None of your connected providers support built-in web search, so this
-			setting has no effect yet.{" "}
+			你已连接的供应商均不支持内置联网搜索，此设置暂不生效。{" "}
 			{onOpenModelProviders ? (
 				<button
 					type="button"
 					className="underline underline-offset-2 hover:text-foreground"
 					onClick={onOpenModelProviders}
 				>
-					Connect a provider
+					连接供应商
 				</button>
 			) : (
-				"Connect a provider in Settings"
+				"在设置中连接供应商"
 			)}{" "}
-			that supports it.
+			后再启用。
 		</p>
 	);
 }

@@ -314,7 +314,7 @@ export function resolveCredentialFailureAction(
 	if (!providerAuth || providerAuth.localCli) {
 		return null;
 	}
-	return { label: "Open API providers", target: "models" };
+	return { label: "打开 API 供应商", target: "models" };
 }
 
 /** Keep auth facts for error rendering even when there is no in-app fix action. */

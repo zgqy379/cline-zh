@@ -231,7 +231,7 @@ describe("EnvironmentSelector", () => {
 		// Displaying the automatic fallback alone preserves the saved preference.
 		expect(getInitialChatConfig("local").executionTarget).toBe("cloud");
 		await pointerDown(trigger());
-		await click(menuItemContaining("Local"));
+		await click(menuItemContaining("本地"));
 		expect(onSelectExecutionTarget).toHaveBeenCalledExactlyOnceWith("local");
 		expect(onSelectEnvironment).not.toHaveBeenCalled();
 		expect(getInitialChatConfig("local").executionTarget).toBe("local");
@@ -260,7 +260,7 @@ describe("EnvironmentSelector", () => {
 		expect(onSelectEnvironment).toHaveBeenCalledExactlyOnceWith("build-box");
 
 		await pointerDown(trigger());
-		await click(menuItemContaining("Local"));
+		await click(menuItemContaining("本地"));
 		expect(onSelectExecutionTarget).toHaveBeenCalledExactlyOnceWith("local");
 		expect(onSelectEnvironment).toHaveBeenLastCalledWith("local");
 	});
@@ -306,7 +306,7 @@ describe("EnvironmentSelector", () => {
 		{
 			activeEnvironmentId: "pi-server",
 			executionTarget: "local" as const,
-			choice: "Local",
+			choice: "本地",
 		},
 		{
 			activeEnvironmentId: "local",

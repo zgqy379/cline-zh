@@ -171,7 +171,7 @@ export function ConnectorActionButton({
 					type="button"
 					variant="default"
 				>
-					View
+					查看
 				</Button>
 			);
 		}
@@ -223,7 +223,7 @@ export function ConnectorActionButton({
 			variant="default"
 		>
 			{busy ? <Loader2 className="size-4 animate-spin" /> : null}
-			Install
+			安装
 		</Button>
 	);
 }
@@ -545,8 +545,8 @@ export function ComposioConnectorsView({
 				) : null}
 				{!appendOnScroll && hiddenCount > 0 ? (
 					<p className="text-xs text-muted-foreground">
-						Showing the {CATALOG_PREVIEW_COUNT} most-used connectors — search to
-						find {hiddenCount} more.
+						默认展示最常用的 {CATALOG_PREVIEW_COUNT} 个连接器 —— 搜索还可找到{" "}
+						{hiddenCount} 个。
 					</p>
 				) : null}
 			</>
@@ -568,11 +568,10 @@ export function ComposioConnectorsView({
 				<div className="grid gap-4">
 					<div className="flex items-center justify-between gap-3">
 						<p className="text-sm text-muted-foreground">
-							Connect your accounts to give Cline tools for your favorite apps.
-							Tools become available in new sessions.
+							连接你的账号，让 Cline 获得常用应用的工具。工具将在新会话中可用。
 						</p>
 						<Button
-							aria-label="Refresh connectors"
+							aria-label="刷新连接器"
 							disabled={refreshing}
 							onClick={() => void refresh()}
 							size="sm"
@@ -586,7 +585,7 @@ export function ComposioConnectorsView({
 					</div>
 					{loadError ? (
 						<p className="text-xs text-destructive" role="alert">
-							Failed to refresh connectors: {loadError}
+							刷新连接器失败：{loadError}
 						</p>
 					) : null}
 				</div>
@@ -594,7 +593,7 @@ export function ComposioConnectorsView({
 				<section className="grid min-w-0 gap-3">
 					<div className="flex items-center justify-between gap-3">
 						<h2 className="text-base font-semibold text-foreground">
-							Installed
+							已安装
 						</h2>
 						<span className="text-sm text-muted-foreground">
 							{installedEntries.length}
@@ -635,7 +634,7 @@ export function ComposioConnectorsView({
 					) : (
 						<div className="rounded-lg border border-dashed bg-card p-6 text-center text-sm text-muted-foreground">
 							{trimmedInstalledQuery
-								? `没有匹配“${installedQuery.trim()}”的已安装连接器。`
+								? `没有匹配"${installedQuery.trim()}"的已安装连接器。`
 								: "尚未安装连接器。在下方安装一个，或让 Cline 在任务中帮你安装。"}
 						</div>
 					)}
@@ -955,7 +954,7 @@ function ConnectorCard({
 	return (
 		// biome-ignore lint/a11y/useSemanticElements: The card contains a nested action button, so the wrapper cannot be a native button.
 		<div
-			aria-label={`Open ${entry.name} details`}
+			aria-label={`打开 ${entry.name} 详情`}
 			className="relative grid min-w-0 cursor-pointer gap-2 rounded-lg border bg-card p-4 text-left transition-colors hover:bg-surface-hover-lighter focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none"
 			onClick={(event) => {
 				if (
@@ -1209,7 +1208,7 @@ function ConnectorDetailDialog({
 												<>
 													{toolNames.length}{" "}
 													<span className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-														available in new sessions
+														个在新会话中可用
 													</span>
 												</>
 											) : (

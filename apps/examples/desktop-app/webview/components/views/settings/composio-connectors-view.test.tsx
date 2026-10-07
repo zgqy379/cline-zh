@@ -112,7 +112,7 @@ describe("Customize connector catalog", () => {
 		await render();
 		expect(container.textContent).toContain("GitHub");
 		expect(container.textContent).toContain("Google Calendar");
-		expect(container.textContent).not.toContain("Marketplace");
+		expect(container.textContent).not.toContain("市场");
 		await act(async () => button("安装")?.click());
 		expect(mocks.connect).toHaveBeenCalledWith("github");
 		await act(async () => button("查看")?.click());
@@ -185,7 +185,7 @@ describe("installed connectors", () => {
 			).click(),
 		);
 		const dialog = document.querySelector('[role="dialog"]');
-		expect(dialog?.textContent).toContain("47 available in new sessions");
+		expect(dialog?.textContent).toContain("47 个在新会话中可用");
 		expect(dialog?.textContent).not.toContain("47/47");
 		expect(
 			[...(dialog?.querySelectorAll("li") ?? [])].map(
@@ -209,7 +209,7 @@ describe("installed connectors", () => {
 		).not.toContain("/47");
 		expect(
 			document.querySelector('[role="dialog"]')?.textContent,
-		).not.toContain("Slug");
+		).not.toContain("标识");
 	});
 
 	it("shows zero installed tools instead of the catalog total when none were retrieved", async () => {
@@ -299,7 +299,7 @@ describe("installed connectors", () => {
 		await act(async () =>
 			(
 				container.querySelector(
-					'[aria-label="Refresh connectors"]',
+					'[aria-label="刷新连接器"]',
 				) as HTMLElement
 			).click(),
 		);
@@ -329,7 +329,9 @@ describe("installed connectors", () => {
 		const installed = container.querySelector("section");
 		expect(installed?.textContent).toContain("Gmail");
 		expect(installed?.textContent).not.toContain("GitHub");
-		expect(container.textContent).not.toContain("推荐");
+		// 上游此断言守卫「行内 Recommended 徽标」不回归；保留英文词面，
+		// 以免与「推荐」分区标题（Suggested，本场景合法渲染）撞词。
+		expect(container.textContent).not.toContain("Recommended");
 		await act(async () => button("卸载")?.click());
 		expect(mocks.disconnect).toHaveBeenCalledWith("gmail");
 	});

@@ -681,8 +681,8 @@ describe("useChatSession", () => {
 				),
 			).toBe(false);
 		} else {
-			expect(current.error).toContain("This cloud session has expired");
-			expect(current.error?.includes("no archived history")).toBe(!hasHistory);
+			expect(current.error).toContain("此云端会话已过期");
+			expect(current.error?.includes("没有可用的归档历史")).toBe(!hasHistory);
 			expect(current.messages).toEqual(history);
 		}
 		invokeMock.mockClear();
@@ -1352,7 +1352,7 @@ describe("useChatSession", () => {
 			MAX_LIVE_COMMAND_OUTPUT_CHARS,
 		);
 		expect(
-			result.output.startsWith("\u001b[0m[Earlier command output truncated]"),
+			result.output.startsWith("\u001b[0m[此前的命令输出已截断]"),
 		).toBe(true);
 		expect(result.output.endsWith("tail")).toBe(true);
 	});
@@ -2200,7 +2200,7 @@ describe("useChatSession", () => {
 		);
 
 		expect(current.error).toBe(
-			"Couldn't create a worktree: Not a git repository: /workspace/cline",
+			"无法创建工作树：Not a git repository: /workspace/cline",
 		);
 		expect(current.status).toBe("error");
 		expect(
@@ -5024,7 +5024,7 @@ describe("useChatSession", () => {
 			(message) => message.role === "error",
 		);
 		expect(errorMessages).toHaveLength(1);
-		expect(errorMessages[0]?.content).toContain("The run failed");
+		expect(errorMessages[0]?.content).toContain("运行失败");
 		// The optimistic user message and the queued materialization of the
 		// same prompt must not duplicate each other.
 		const userMessages = current.messages.filter(
@@ -5086,7 +5086,7 @@ describe("useChatSession", () => {
 			(message) => message.role === "error",
 		);
 		expect(errorMessage?.content).toContain("Unauthorized: invalid API key");
-		expect(errorMessage?.content).toContain("Settings");
+		expect(errorMessage?.content).toContain("设置 → 账户");
 	});
 
 	it("shows a failure relayed through chat_session_ended", async () => {
@@ -5302,7 +5302,7 @@ describe("useChatSession", () => {
 			(message) => message.role === "error",
 		);
 		expect(errorMessage?.content).toContain(
-			"The run failed before a response was produced.",
+			"运行失败，未产生任何回复。",
 		);
 		expect(errorMessage?.content).not.toContain("Unauthorized");
 	});
@@ -5404,7 +5404,7 @@ describe("useChatSession", () => {
 		);
 		expect(errorMessages).toHaveLength(1);
 		expect(errorMessages[0]?.content).toContain(
-			persistedError ? "API key expired" : "The run failed",
+			persistedError ? "API key expired" : "运行失败",
 		);
 		if (persistedError) {
 			const failedSessionId = current.sessionId!;
@@ -5486,7 +5486,7 @@ describe("useChatSession", () => {
 		});
 		expect(current.messages.filter((m) => m.role === "error")).toHaveLength(1);
 		expect(current.error).toContain(
-			"The run failed before a response was produced.",
+			"运行失败，未产生任何回复。",
 		);
 
 		await act(async () => {
@@ -5515,10 +5515,10 @@ describe("useChatSession", () => {
 		);
 		expect(errorMessages).toHaveLength(1);
 		expect(errorMessages[0]?.content).toContain(
-			"The run failed: cline requires re-authentication.",
+			"运行失败：cline requires re-authentication.",
 		);
 		expect(errorMessages[0]?.content).not.toContain(
-			"before a response was produced",
+			"未产生任何回复",
 		);
 		// The credential action points at the Cline account page.
 		expect(errorMessages[0]?.meta).toEqual({
@@ -5754,7 +5754,7 @@ describe("useChatSession", () => {
 		const errorMessages = current.messages.filter((m) => m.role === "error");
 		expect(errorMessages).toHaveLength(1);
 		expect(errorMessages[0]?.content).toContain("no longer valid");
-		expect(errorMessages[0]?.content).toContain("Settings → Account");
+		expect(errorMessages[0]?.content).toContain("设置 → 账户");
 		expect(errorMessages[0]?.meta).toEqual({
 			reason: "credentials",
 			providerId: "cline",
@@ -5876,9 +5876,9 @@ describe("useChatSession", () => {
 		// nothing that could fix an expired session there.
 		expect(errorMessage?.content).toContain("OAuth session expired");
 		expect(errorMessage?.content).toContain(
-			"Sign in again with the `claude` CLI",
+			"请在终端中用 `claude` CLI 重新登录",
 		);
-		expect(errorMessage?.content).not.toContain("Settings → Providers");
+		expect(errorMessage?.content).not.toContain("设置 → 供应商");
 		expect(errorMessage?.meta?.providerAuth).toMatchObject({
 			providerId: "claude-code",
 			localCli: { command: "claude" },
@@ -5948,7 +5948,7 @@ describe("useChatSession", () => {
 			(message) => message.role === "error",
 		);
 		expect(errorMessage?.content).toContain(
-			"Sign in again with the `claude` CLI",
+			"请在终端中用 `claude` CLI 重新登录",
 		);
 		expect(errorMessage?.meta?.providerAuth).toMatchObject({
 			providerId: "claude-code",

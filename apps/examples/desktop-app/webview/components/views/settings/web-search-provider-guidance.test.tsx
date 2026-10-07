@@ -29,12 +29,12 @@ it("offers provider setup and refreshes readiness when provider settings change"
 				<WebSearchProviderGuidance onOpenModelProviders={navigate} />,
 			),
 		);
-		expect(container.textContent).toContain("this setting has no effect yet");
+		expect(container.textContent).toContain("此设置暂不生效");
 		catalog.fetch.mockRejectedValueOnce(new Error("Temporary catalog failure"));
 		await act(async () => catalog.invalidate());
-		expect(container.textContent).toContain("this setting has no effect yet");
+		expect(container.textContent).toContain("此设置暂不生效");
 		expect(container.querySelector("button")?.textContent).toContain(
-			"Connect a provider",
+			"连接供应商",
 		);
 		await act(async () => container.querySelector("button")?.click());
 		expect(navigate).toHaveBeenCalledOnce();
@@ -55,12 +55,12 @@ it("offers provider setup and refreshes readiness when provider settings change"
 			],
 		});
 		await act(async () => catalog.invalidate());
-		expect(container.textContent).toContain("Ready to use with Anthropic");
+		expect(container.textContent).toContain("已就绪：可通过 Anthropic");
 		expect(container.textContent).not.toContain("OpenAI");
 		expect(container.querySelector("button")).toBeNull();
 		catalog.fetch.mockRejectedValueOnce(new Error("Temporary catalog failure"));
 		await act(async () => catalog.invalidate());
-		expect(container.textContent).toContain("Ready to use with Anthropic");
+		expect(container.textContent).toContain("已就绪：可通过 Anthropic");
 		expect(container.querySelector("button")).toBeNull();
 	} finally {
 		await act(async () => root.unmount());

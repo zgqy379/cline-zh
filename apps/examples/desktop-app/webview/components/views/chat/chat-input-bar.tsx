@@ -111,7 +111,7 @@ type UserInstructionConfigResponse = {
 const BUILTIN_SLASH_COMMANDS: SlashCommand[] = [
 	{
 		name: "compact",
-		description: "Summarize the conversation to free up context",
+		description: "总结对话以释放上下文",
 	},
 	{
 		name: "fork",

@@ -298,10 +298,10 @@ function SubagentSessionBadge({
 	onOpenParentSession?: (parentSessionId: string) => void | Promise<void>;
 }) {
 	const parentTitle = parentSession.title?.trim();
-	const label = "Main Agent Session";
+	const label = "主智能体会话";
 	const hint = parentTitle
-		? `Back to the main agent session: ${parentTitle}`
-		: "Back to the main agent session";
+		? `返回主智能体会话：${parentTitle}`
+		: "返回主智能体会话";
 
 	return (
 		<Button
@@ -441,7 +441,7 @@ function AgentRoster({
 		return (
 			<div className="flex items-center gap-2 px-3 py-4 text-xs text-muted-foreground">
 				<Loader2 aria-hidden="true" className="size-3.5 animate-spin" />
-				Loading agents...
+				正在加载智能体…
 			</div>
 		);
 	}
@@ -452,7 +452,7 @@ function AgentRoster({
 		return (
 			<div className="px-3 py-4 text-xs text-muted-foreground">
 				{activity.running > 0
-					? "Waiting for the first agent to report in..."
+					? "正在等待第一个智能体上报…"
 					: "No agent details were recorded for this session."}
 				{error ? (
 					<div className="mt-1 text-[11px] text-muted-foreground/80">
@@ -486,7 +486,7 @@ function AgentRoster({
 					className="border-t border-border/70 px-3 py-2 text-[11px] text-muted-foreground"
 					id="agent-roster-stale"
 				>
-					Could not refresh — showing the last known agents. {error}
+					无法刷新 —— 显示最后已知的智能体。{error}
 				</div>
 			) : null}
 		</>
@@ -562,8 +562,8 @@ function AgentRosterRow({
 						>
 							{lastAction ||
 								(isRunning
-									? "Starting up..."
-									: `No activity recorded (${state})`)}
+									? "正在启动…"
+									: `没有记录活动（${state}）`)}
 						</span>
 					</span>
 				</span>

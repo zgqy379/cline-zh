@@ -94,7 +94,7 @@ describe("resolveCredentialError", () => {
 		"custom-oauth",
 		"custom-local",
 		"anthropic",
-	it("当 %s 没有目录事实时将认证委托给宿主", (provider) => {
+	])("当 %s 没有目录事实时将认证委托给宿主", (provider) => {
 		expect(
 			resolveCredentialError(makeConfig({ provider, providerAuth: undefined })),
 		).toBeNull();
@@ -201,7 +201,7 @@ describe("resolveCredentialFailureHint", () => {
 	it.each([
 		undefined,
 		{ providerId: "unrelated", localCli: { command: "other" } },
-	it("当目录事实缺失或过期时不编造凭据修复方案", (auth) => {
+	])("当目录事实缺失或过期时不编造凭据修复方案", (auth) => {
 		expect(resolveCredentialFailureHint("claude-code", auth)).toBe(
 			"请使用你的供应商的认证方式重新登录，然后重试。",
 		);
