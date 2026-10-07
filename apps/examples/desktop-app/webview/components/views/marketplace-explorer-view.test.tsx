@@ -92,7 +92,7 @@ async function render() {
 }
 function connectorFilter() {
 	return [...container.querySelectorAll("button")].find((button) =>
-		button.textContent?.trim().startsWith("Connectors"),
+		button.textContent?.trim().startsWith("连接器"),
 	);
 }
 
@@ -103,20 +103,20 @@ describe("Marketplace directory", () => {
 		expect(connectorFilter()).toBeUndefined();
 		expect(mocks.catalog).not.toHaveBeenCalled();
 		expect(
-			container.querySelector('input[aria-label="Search marketplace"]'),
+			container.querySelector('input[aria-label="搜索市场"]'),
 		).not.toBeNull();
 	});
-	it("shows the shared marketplace rows in All and the Connectors filter, with marketplace search and install", async () => {
+	it("在「全部」和「连接器」筛选中显示共享的市场行，支持市场搜索和安装", async () => {
 		await render();
 		expect(container.textContent).toContain("Gmail");
 		expect(container.textContent).toContain("GitHub");
 		expect(
-			container.querySelector('input[aria-label="Search connectors"]'),
+			container.querySelector('input[aria-label="搜索连接器"]'),
 		).toBeNull();
 		await act(async () => connectorFilter()?.click());
 		expect(connectorFilter()?.getAttribute("aria-pressed")).toBe("true");
 		const input = container.querySelector(
-			'input[aria-label="Search marketplace"]',
+			'input[aria-label="搜索市场"]',
 		) as HTMLInputElement;
 		await act(async () => {
 			Object.getOwnPropertyDescriptor(
@@ -128,8 +128,8 @@ describe("Marketplace directory", () => {
 		expect(container.textContent).toContain("GitHub");
 		expect(container.textContent).not.toContain("Gmail");
 		expect(
-			container.querySelector('section[aria-label="Connectors"]')?.textContent,
-		).not.toContain("Install");
+			container.querySelector('section[aria-label="连接器"]')?.textContent,
+		).not.toContain("安装");
 		await act(async () =>
 			[...container.querySelectorAll("button")]
 				.find((button) => button.textContent === "GitHub")
@@ -140,7 +140,7 @@ describe("Marketplace directory", () => {
 		);
 		await act(async () =>
 			[...document.querySelectorAll("button")]
-				.find((button) => button.textContent === "Install")
+				.find((button) => button.textContent === "安装")
 				?.click(),
 		);
 		expect(mocks.connect).toHaveBeenCalledWith("github");
@@ -153,11 +153,11 @@ describe("Marketplace directory", () => {
 		);
 		await act(async () =>
 			[...container.querySelectorAll("button")]
-				.find((button) => button.textContent?.startsWith("Skills"))
+				.find((button) => button.textContent?.startsWith("技能"))
 				?.click(),
 		);
 		expect(
-			container.querySelector('section[aria-label="Connectors"]'),
+			container.querySelector('section[aria-label="连接器"]'),
 		).toBeNull();
 		await act(async () => connectorFilter()?.click());
 		expect(container.textContent).toContain("GitHub");
@@ -178,14 +178,14 @@ describe("Marketplace directory", () => {
 			})),
 		});
 		await render();
-		expect(connectorFilter()?.textContent).toBe("Connectors121");
-		const section = container.querySelector('section[aria-label="Connectors"]');
+		expect(connectorFilter()?.textContent).toBe("连接器121");
+		const section = container.querySelector('section[aria-label="连接器"]');
 		expect(section?.querySelector("h2")?.textContent).toContain(
-			"ConnectorsBeta",
+			"连接器Beta",
 		);
 		expect(section?.querySelectorAll("button")).toHaveLength(24);
 		const input = container.querySelector(
-			'input[aria-label="Search marketplace"]',
+			'input[aria-label="搜索市场"]',
 		) as HTMLInputElement;
 		await act(async () => {
 			Object.getOwnPropertyDescriptor(
@@ -196,9 +196,9 @@ describe("Marketplace directory", () => {
 		});
 		expect(section?.querySelectorAll("button")).toHaveLength(1);
 		expect(section?.textContent).toContain("App 120");
-		expect(connectorFilter()?.textContent).toBe("Connectors121");
+		expect(connectorFilter()?.textContent).toBe("连接器121");
 		expect(section?.querySelector("h2")?.textContent).toContain(
-			"ConnectorsBeta",
+			"连接器Beta",
 		);
 	});
 	it("appends pages on scroll through the full catalog and resets pagination for search", async () => {
@@ -209,8 +209,8 @@ describe("Marketplace directory", () => {
 			})),
 		});
 		await render();
-		const section = container.querySelector('section[aria-label="Connectors"]');
-		expect(section?.textContent).not.toContain("search to find");
+		const section = container.querySelector('section[aria-label="连接器"]');
+		expect(section?.textContent).not.toContain("搜索还可找到");
 		for (const count of [48, 72, 73]) {
 			await act(async () =>
 				[...intersections].forEach((callback) => {
@@ -218,7 +218,7 @@ describe("Marketplace directory", () => {
 				}),
 			);
 			expect(section?.querySelectorAll("button")).toHaveLength(count);
-			expect(connectorFilter()?.textContent).toBe("Connectors73");
+			expect(connectorFilter()?.textContent).toBe("连接器73");
 		}
 		expect(intersections.size).toBe(0);
 		expect(
@@ -229,7 +229,7 @@ describe("Marketplace directory", () => {
 			).size,
 		).toBe(73);
 		const input = container.querySelector(
-			'input[aria-label="Search marketplace"]',
+			'input[aria-label="搜索市场"]',
 		) as HTMLInputElement;
 		await act(async () => {
 			Object.getOwnPropertyDescriptor(

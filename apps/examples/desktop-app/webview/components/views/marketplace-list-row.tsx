@@ -105,7 +105,7 @@ export function MarketplaceListRow({
 			{showType ? <MarketplaceTypePill meta={meta} /> : null}
 			{installed ? (
 				<Check
-					aria-label="Installed"
+					aria-label="已安装"
 					className="size-3.5 shrink-0 text-emerald-500"
 				/>
 			) : null}

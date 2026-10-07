@@ -64,8 +64,8 @@ export type MarketplaceTypeFilter = MarketplacePrimitiveType | "connector";
 
 const TYPE_META: Record<MarketplaceTypeFilter, MarketplaceTypeMeta> = {
 	skill: {
-		label: "Skill",
-		plural: "Skills",
+		label: "技能",
+		plural: "技能",
 		short: "Skill",
 		icon: Zap,
 		blurb: "Step-by-step instructions Cline follows for a workflow. No setup.",
@@ -73,8 +73,8 @@ const TYPE_META: Record<MarketplaceTypeFilter, MarketplaceTypeMeta> = {
 		bg: "bg-amber-500/12",
 	},
 	mcp: {
-		label: "MCP server",
-		plural: "MCP servers",
+		label: "MCP 服务器",
+		plural: "MCP 服务器",
 		short: "MCP",
 		icon: Server,
 		blurb: "Live tools from an external server. You install and configure it.",
@@ -82,8 +82,8 @@ const TYPE_META: Record<MarketplaceTypeFilter, MarketplaceTypeMeta> = {
 		bg: "bg-sky-500/12",
 	},
 	plugin: {
-		label: "Plugin",
-		plural: "Plugins",
+		label: "插件",
+		plural: "插件",
 		short: "Plugin",
 		icon: Puzzle,
 		blurb: "A bundle of tools, hooks, and skills built for Cline.",
@@ -91,11 +91,11 @@ const TYPE_META: Record<MarketplaceTypeFilter, MarketplaceTypeMeta> = {
 		bg: "bg-violet-500/12",
 	},
 	connector: {
-		label: "Connector",
-		plural: "Connectors",
+		label: "连接器",
+		plural: "连接器",
 		short: "Connector",
 		icon: Cable,
-		blurb: "Sign in with your account and get hosted tools instantly. No keys.",
+		blurb: "登录你的账号，即时获取托管工具。无需密钥。",
 		text: "text-emerald-600 dark:text-emerald-300",
 		bg: "bg-emerald-500/12",
 	},
@@ -306,10 +306,10 @@ function actionLabelFor(
 	installed: boolean,
 	ready: boolean,
 ): string {
-	if (!ready) return "Checking...";
-	if (state?.status === "installing") return "Installing...";
-	if (state?.status === "uninstalling") return "Uninstalling...";
-	return installed ? "Uninstall" : "Install";
+	if (!ready) return "检查中…";
+	if (state?.status === "installing") return "安装中…";
+	if (state?.status === "uninstalling") return "卸载中…";
+	return installed ? "卸载" : "安装";
 }
 
 function isBusy(state: EntryActionState | undefined): boolean {
@@ -472,7 +472,7 @@ function DetailPane({
 						) : null}
 					</div>
 					<Button
-						aria-label="Close details"
+						aria-label="关闭详情"
 						className="shrink-0 text-muted-foreground"
 						onClick={onClose}
 						size="icon"
@@ -522,7 +522,7 @@ function DetailPane({
 								<button
 									key={tag}
 									onClick={() => onSelectTag(tag)}
-									title={`Filter by ${directory.tagLabels.get(tag) ?? tag}`}
+									title={`按 ${directory.tagLabels.get(tag) ?? tag} 筛选`}
 									type="button"
 								>
 									<Badge
@@ -715,10 +715,10 @@ export function MarketplaceExplorerView({
 					<div className="relative">
 						<Search className="pointer-events-none absolute left-2.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
 						<Input
-							aria-label="Search marketplace"
+							aria-label="搜索市场"
 							className="h-9 pl-8"
 							onChange={(event) => setQuery(event.target.value)}
-							placeholder="Search marketplace"
+							placeholder="搜索市场"
 							value={query}
 						/>
 					</div>
@@ -730,7 +730,7 @@ export function MarketplaceExplorerView({
 							type="button"
 							variant={typeFilter === null ? "default" : "outline"}
 						>
-							All
+							全部
 						</Button>
 						{MATURITY_ORDER.map((type) => {
 							const meta = TYPE_META[type];
@@ -774,7 +774,7 @@ export function MarketplaceExplorerView({
 										typeFilter !== "connector" && TYPE_META.connector.text,
 									)}
 								/>
-								Connectors
+								连接器
 								<span className="text-[10px] opacity-70">
 									{connectorCount ?? "…"}
 								</span>
@@ -784,7 +784,7 @@ export function MarketplaceExplorerView({
 							<DropdownMenu>
 								<DropdownMenuTrigger asChild>
 									<Button
-										aria-label="Filter by category"
+										aria-label="按类别筛选"
 										className="ml-auto text-muted-foreground"
 										size="xs"
 										type="button"
@@ -792,7 +792,7 @@ export function MarketplaceExplorerView({
 									>
 										{selectedTag
 											? (directory.tagLabels.get(selectedTag) ?? selectedTag)
-											: "All categories"}
+											: "全部分类"}
 										<ChevronDown className="size-3.5" />
 									</Button>
 								</DropdownMenuTrigger>
@@ -804,7 +804,7 @@ export function MarketplaceExplorerView({
 										value={selectedTag ?? ""}
 									>
 										<DropdownMenuRadioItem value="">
-											All categories
+											全部分类
 										</DropdownMenuRadioItem>
 										{visibleTags.map((tag) => (
 											<DropdownMenuRadioItem key={tag.id} value={tag.id}>
@@ -825,7 +825,7 @@ export function MarketplaceExplorerView({
 						{typeFilter !== "connector" && directory.loading ? (
 							<p className="flex items-center justify-center p-6 text-sm text-muted-foreground">
 								<Spinner className="mr-2" />
-								Loading marketplace...
+								正在加载市场...
 							</p>
 						) : null}
 						{typeFilter !== "connector" && directory.errorMessage ? (
@@ -865,11 +865,11 @@ export function MarketplaceExplorerView({
 						!directory.loading &&
 						!directory.errorMessage ? (
 							<p className="px-3 py-6 text-center text-sm text-muted-foreground">
-								No entries match the current filters.
+								没有符合当前筛选条件的条目。
 							</p>
 						) : null}
 						{showConnectors ? (
-							<section className="grid gap-0.5" aria-label="Connectors">
+							<section className="grid gap-0.5" aria-label="连接器">
 								<SectionHeader beta meta={TYPE_META.connector} />
 								<ComposioConnectorsView
 									appendOnScroll

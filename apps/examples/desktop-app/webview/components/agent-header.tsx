@@ -166,7 +166,7 @@ function AgentHeaderImpl({
 							/>
 						) : (
 							<Button
-								aria-label="New session"
+								aria-label="新建会话"
 								className="flex items-center gap-1 rounded-md text-sm text-muted-foreground hover:bg-surface-hover hover:text-foreground transition-colors"
 								onClick={() => onNewThread?.()}
 								size="icon-sm"
@@ -181,7 +181,7 @@ function AgentHeaderImpl({
 		>
 			<SessionStatus
 				className="shrink-0 font-mono"
-				label={`Session status: ${status}`}
+				label={`会话状态：${status}`}
 				showLabel={false}
 				style={
 					{
@@ -268,7 +268,7 @@ function AgentHeaderImpl({
 						onClick={triggerDeleteSession}
 					>
 						<Trash2 className="size-4" />
-						<span>{deletingSession ? "Deleting..." : "Delete session"}</span>
+						<span>{deletingSession ? "正在删除…" : "删除会话"}</span>
 					</DropdownMenuItem>
 				</DropdownMenuContent>
 			</DropdownMenu>

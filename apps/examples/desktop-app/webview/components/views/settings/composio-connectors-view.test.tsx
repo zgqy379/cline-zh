@@ -113,13 +113,13 @@ describe("Customize connector catalog", () => {
 		expect(container.textContent).toContain("GitHub");
 		expect(container.textContent).toContain("Google Calendar");
 		expect(container.textContent).not.toContain("Marketplace");
-		await act(async () => button("Install")?.click());
+		await act(async () => button("安装")?.click());
 		expect(mocks.connect).toHaveBeenCalledWith("github");
-		await act(async () => button("View")?.click());
+		await act(async () => button("查看")?.click());
 		expect(document.querySelector('[role="dialog"]')?.textContent).toContain(
 			"GMAIL_SEND_EMAIL",
 		);
-		await act(async () => button("Uninstall")?.click());
+		await act(async () => button("卸载")?.click());
 		expect(mocks.disconnect).toHaveBeenCalledWith("gmail");
 	});
 
@@ -133,25 +133,25 @@ describe("Customize connector catalog", () => {
 			})),
 		});
 		await render();
-		expect(container.textContent).toContain("search to find 1 more");
+		expect(container.textContent).toContain("搜索还可找到 1 个");
 		expect(container.textContent).not.toContain("App 24");
-		await type('input[aria-label="Search connectors"]', "App 24");
+		await type('input[aria-label="搜索连接器"]', "App 24");
 		expect(container.textContent).toContain("App 24");
 		expect(container.textContent).not.toContain("App 23");
 	});
 
 	it("shows catalog errors and retries in Customize", async () => {
 		mocks.catalog
-			.mockRejectedValueOnce(new Error("Service unavailable"))
+			.mockRejectedValueOnce(new Error("服务不可用"))
 			.mockResolvedValueOnce({
 				configured: true,
 				toolkits: [{ slug: "gmail", name: "Gmail" }],
 			});
 		await render();
 		expect(container.querySelector('[role="alert"]')?.textContent).toContain(
-			"Service unavailable",
+			"服务不可用",
 		);
-		await act(async () => button("Retry")?.click());
+		await act(async () => button("重试")?.click());
 		expect(container.textContent).toContain("Gmail");
 		expect(container.querySelector('[role="alert"]')).toBeNull();
 	});
@@ -180,7 +180,7 @@ describe("installed connectors", () => {
 		await act(async () =>
 			(
 				container.querySelector(
-					'[aria-label="Open Google Calendar details"]',
+					'[aria-label="打开 Google Calendar 详情"]',
 				) as HTMLElement
 			).click(),
 		);
@@ -200,9 +200,9 @@ describe("installed connectors", () => {
 			toolkits: [{ slug: "gmail", name: "Gmail", toolsCount: 47 }],
 		});
 		await render();
-		await act(async () => button("View")?.click());
+		await act(async () => button("查看")?.click());
 		expect(document.querySelector('[role="dialog"]')?.textContent).toContain(
-			"1 available in new sessions",
+			"1 个在新会话中可用",
 		);
 		expect(
 			document.querySelector('[role="dialog"]')?.textContent,
@@ -228,9 +228,9 @@ describe("installed connectors", () => {
 			toolkits: [{ slug: "gmail", name: "Gmail", toolsCount: 47 }],
 		});
 		await render();
-		await act(async () => button("View")?.click());
+		await act(async () => button("查看")?.click());
 		const text = document.querySelector('[role="dialog"]')?.textContent;
-		expect(text).toContain("0 available in new sessions");
+		expect(text).toContain("0 个在新会话中可用");
 		expect(text).not.toContain("47");
 	});
 
@@ -248,11 +248,11 @@ describe("installed connectors", () => {
 			root.render(<ComposioConnectorsView variant="installed" />),
 		);
 		const installed = container.querySelector("section");
-		expect(installed?.textContent).toContain("Installed0");
-		expect(installed?.textContent).toContain("No connectors installed");
+		expect(installed?.textContent).toContain("已安装0");
+		expect(installed?.textContent).toContain("尚未安装连接器");
 		expect(installed?.textContent).not.toContain("Gmail");
 		// Every recipe is suggested; chips install their connector.
-		expect(container.textContent).toContain("Suggested");
+		expect(container.textContent).toContain("推荐");
 		expect(container.textContent).toContain("Organize your day");
 		expect(container.textContent).toContain("Debug production incidents");
 		await act(async () =>
@@ -281,7 +281,7 @@ describe("installed connectors", () => {
 		expect(container.textContent).not.toContain("Organize your day");
 		expect(container.textContent).toContain("Debug production incidents");
 		// Slack is connected, so it is a non-interactive chip there.
-		expect(container.querySelector('[aria-label="Install Slack"]')).toBeNull();
+		expect(container.querySelector('[aria-label="安装 Slack"]')).toBeNull();
 		expect(
 			container.querySelector('[aria-label="Install Sentry"]'),
 		).not.toBeNull();
@@ -329,8 +329,8 @@ describe("installed connectors", () => {
 		const installed = container.querySelector("section");
 		expect(installed?.textContent).toContain("Gmail");
 		expect(installed?.textContent).not.toContain("GitHub");
-		expect(container.textContent).not.toContain("Recommended");
-		await act(async () => button("Uninstall")?.click());
+		expect(container.textContent).not.toContain("推荐");
+		await act(async () => button("卸载")?.click());
 		expect(mocks.disconnect).toHaveBeenCalledWith("gmail");
 	});
 
@@ -350,23 +350,23 @@ describe("installed connectors", () => {
 		);
 		const [installed, , browse] = container.querySelectorAll("section");
 		expect(installed?.textContent).toContain("Gmail");
-		expect(browse?.textContent).toContain("Browse2");
+		expect(browse?.textContent).toContain("浏览2");
 		expect(browse?.textContent).toContain("GitHub");
 		expect(browse?.textContent).toContain("Notion");
 		expect(browse?.textContent).not.toContain("Gmail");
 		expect(
 			browse?.querySelector('img[src="https://logos.composio.dev/api/notion"]'),
 		).not.toBeNull();
-		await act(async () => button("Install")?.click());
+		await act(async () => button("安装")?.click());
 		expect(mocks.connect).toHaveBeenCalledWith("github");
 		// Each list has its own search: Browse's narrows only the catalog.
-		await type('input[aria-label="Search all connectors"]', "notion");
+		await type('input[aria-label="搜索全部连接器"]', "notion");
 		expect(browse?.textContent).toContain("Notion");
 		expect(browse?.textContent).not.toContain("GitHub");
 		expect(installed?.textContent).toContain("Gmail");
-		await type('input[aria-label="Search installed connectors"]', "zzz");
+		await type('input[aria-label="搜索已安装的连接器"]', "zzz");
 		expect(installed?.textContent).toContain(
-			'No installed connectors match "zzz"',
+			'没有匹配"zzz"的已安装连接器',
 		);
 		expect(browse?.textContent).toContain("Notion");
 	});
@@ -378,11 +378,11 @@ describe("installed connectors", () => {
 		);
 		expect(
 			container.querySelector(
-				'input[aria-label="Search installed connectors"]',
+				'input[aria-label="搜索已安装的连接器"]',
 			),
 		).toBeNull();
 		expect(
-			container.querySelector('input[aria-label="Search all connectors"]'),
+			container.querySelector('input[aria-label="搜索全部连接器"]'),
 		).not.toBeNull();
 	});
 
@@ -404,14 +404,14 @@ describe("installed connectors", () => {
 			),
 		);
 		expect(
-			container.querySelector('[aria-label="Loading account"]'),
+			container.querySelector('[aria-label="正在加载账号"]'),
 		).not.toBeNull();
-		expect(button("Sign in")).toBeUndefined();
+		expect(button("登录")).toBeUndefined();
 		await act(async () =>
 			resolveMe({ email: "dev@cline.bot", displayName: "Dev" }),
 		);
 		expect(container.textContent).toContain(
-			"Connectors aren't enabled for your account yet",
+			"你的账号尚未开通连接器功能",
 		);
 	});
 
@@ -429,22 +429,22 @@ describe("installed connectors", () => {
 			),
 		);
 		expect(container.textContent).toContain(
-			"Sign in to Cline to use connectors",
+			"登录 Cline 以使用连接器",
 		);
-		expect(container.textContent).not.toContain("Browse");
+		expect(container.textContent).not.toContain("浏览");
 		expect(
 			container.querySelector(
 				'img[src="https://logos.composio.dev/api/slack"]',
 			),
 		).not.toBeNull();
-		await act(async () => button("Sign in")?.click());
+		await act(async () => button("登录")?.click());
 		expect(mocks.invoke).toHaveBeenCalledWith(
 			"run_provider_oauth_login",
 			{ provider: "cline" },
 			expect.anything(),
 		);
 		expect(mocks.refresh).toHaveBeenCalled();
-		await act(async () => button("Create account")?.click());
+		await act(async () => button("创建账号")?.click());
 		expect(mocks.openExternalUrl).toHaveBeenCalledWith("https://app.cline.bot");
 	});
 
@@ -462,16 +462,16 @@ describe("installed connectors", () => {
 			),
 		);
 		expect(container.textContent).toContain(
-			"Connectors aren't enabled for your account yet",
+			"你的账号尚未开通连接器功能",
 		);
-		expect(button("Sign in")).toBeUndefined();
-		await act(async () => button("Check again")?.click());
+		expect(button("登录")).toBeUndefined();
+		await act(async () => button("再试一次")?.click());
 		expect(mocks.refresh).toHaveBeenCalled();
 	});
 
 	it("shows catalog errors and retries in the Browse section", async () => {
 		mocks.catalog
-			.mockRejectedValueOnce(new Error("Service unavailable"))
+			.mockRejectedValueOnce(new Error("服务不可用"))
 			.mockResolvedValueOnce({
 				configured: true,
 				toolkits: [{ slug: "notion", name: "Notion" }],
@@ -479,9 +479,9 @@ describe("installed connectors", () => {
 		await act(async () =>
 			root.render(<ComposioConnectorsView variant="installed" />),
 		);
-		expect(container.textContent).toContain("Service unavailable");
-		await act(async () => button("Retry")?.click());
+		expect(container.textContent).toContain("服务不可用");
+		await act(async () => button("重试")?.click());
 		expect(container.textContent).toContain("Notion");
-		expect(container.textContent).not.toContain("Service unavailable");
+		expect(container.textContent).not.toContain("服务不可用");
 	});
 });

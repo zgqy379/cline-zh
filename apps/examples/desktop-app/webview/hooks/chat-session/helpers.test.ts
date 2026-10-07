@@ -19,11 +19,11 @@ const CLOUD_CONFIG: ChatSessionConfig = {
 } as ChatSessionConfig;
 
 describe("resolveCredentialError (cloud)", () => {
-	it("accepts a valid HTTPS GitHub URL for a new session", () => {
+	it("接受新会话的有效 HTTPS GitHub URL", () => {
 		expect(resolveCredentialError(CLOUD_CONFIG)).toBeNull();
 	});
 
-	it("rejects invalid GitHub repository URLs", () => {
+	it("拒绝无效的 GitHub 仓库 URL", () => {
 		for (const repoUrl of [
 			"https://exa",
 			"git@github.com:cline/cline.git",
@@ -31,7 +31,7 @@ describe("resolveCredentialError (cloud)", () => {
 			"http://github.com/cline/cline",
 		]) {
 			expect(resolveCredentialError({ ...CLOUD_CONFIG, repoUrl })).toMatch(
-				/valid HTTPS GitHub repository URL/,
+				/有效的 HTTPS GitHub 仓库地址/,
 			);
 		}
 	});
@@ -45,13 +45,13 @@ describe("resolveCredentialError (cloud)", () => {
 		).toBeNull();
 	});
 
-	it("still requires the Cline provider for existing sessions", () => {
+	it("still requires the Cline 供应商 for existing sessions", () => {
 		expect(
 			resolveCredentialError(
 				{ ...CLOUD_CONFIG, provider: "anthropic" },
 				{ hasActiveSession: true },
 			),
-		).toMatch(/Cline provider/);
+		).toMatch(/Cline 供应商/);
 	});
 });
 
@@ -69,13 +69,13 @@ function makeConfig(overrides: Partial<ChatSessionConfig>): ChatSessionConfig {
 }
 
 describe("resolveCredentialError", () => {
-	it("requires a provider", () => {
+	it("开始会话前必须先选择供应商", () => {
 		expect(resolveCredentialError(makeConfig({ provider: "  " }))).toMatch(
-			/Provider is required/,
+			/开始会话前必须先选择供应商/,
 		);
 	});
 
-	it("defers authentication to the host when facts belong to a different provider", () => {
+	it("当事实属于其他供应商时将认证委托给宿主", () => {
 		expect(
 			resolveCredentialError(
 				makeConfig({
@@ -94,19 +94,19 @@ describe("resolveCredentialError", () => {
 		"custom-oauth",
 		"custom-local",
 		"anthropic",
-	])("defers authentication to the host when %s has no catalog facts", (provider) => {
+	it("当 %s 没有目录事实时将认证委托给宿主", (provider) => {
 		expect(
 			resolveCredentialError(makeConfig({ provider, providerAuth: undefined })),
 		).toBeNull();
 	});
 
-	it("blocks API-key providers without a key", () => {
+	it("阻止没有密钥的 API 密钥供应商", () => {
 		expect(
 			resolveCredentialError(makeConfig({ provider: "anthropic" })),
-		).toMatch(/Missing API key/);
+		).toMatch(/缺少 API 密钥/);
 	});
 
-	it("allows API-key providers with a key", () => {
+	it("允许有密钥的 API 密钥供应商", () => {
 		expect(
 			resolveCredentialError(
 				makeConfig({ provider: "anthropic", apiKey: "sk-123" }),
@@ -129,7 +129,7 @@ describe("resolveCredentialError", () => {
 	it.each([
 		"claude-code",
 		"openai-codex-cli",
-	])("allows local-auth provider %s without an API key", (provider) => {
+	])("允许没有 API 密钥的本地认证供应商 %s", (provider) => {
 		// Local CLI providers authenticate from the CLI's own credential
 		// store; the catalog marks them `local-auth` and the key is inert.
 		expect(
@@ -153,7 +153,7 @@ describe("resolveCredentialError", () => {
 		).toBeNull();
 	});
 
-	it("treats provider ids case-insensitively", () => {
+	it("不区分大小写地处理供应商 ID", () => {
 		expect(
 			resolveCredentialError(makeConfig({ provider: "Cline-Pass" })),
 		).toBeNull();
@@ -161,14 +161,14 @@ describe("resolveCredentialError", () => {
 });
 
 describe("resolveCredentialFailureHint", () => {
-	it("points local-auth providers at their own CLI", () => {
+	it("将本地认证供应商指向其 CLI", () => {
 		expect(
 			resolveCredentialFailureHint("claude-code", {
 				providerId: "claude-code",
 				localCli: { command: "claude" },
 			}),
 		).toBe(
-			"Sign in again with the `claude` CLI in a terminal, then try again.",
+			"请在终端中用 `claude` CLI 重新登录，然后重试。",
 		);
 		expect(
 			resolveCredentialFailureHint("openai-codex-cli", {
@@ -184,16 +184,16 @@ describe("resolveCredentialFailureHint", () => {
 		).toMatch(/`opencode` CLI/);
 	});
 
-	it("points Cline at signing in again from Settings → Account", () => {
+	it("将 Cline 指向「设置 → 账户」重新登录", () => {
 		expect(resolveCredentialFailureHint("cline")).toBe(
-			"Sign in to Cline again in Settings → Account, then try again.",
+			"请在「设置 → 账户」中重新登录 Cline，然后重试。",
 		);
 	});
 
-	it("points known non-CLI providers at Settings → Providers", () => {
+	it("将已知的非 CLI 供应商指向「设置 → 供应商」", () => {
 		for (const providerId of ["anthropic", "openai-codex"]) {
 			expect(resolveCredentialFailureHint(providerId, { providerId })).toMatch(
-				/Settings → Providers/,
+				/设置 → 供应商/,
 			);
 		}
 	});
@@ -201,16 +201,16 @@ describe("resolveCredentialFailureHint", () => {
 	it.each([
 		undefined,
 		{ providerId: "unrelated", localCli: { command: "other" } },
-	])("does not invent a credential fix when catalog facts are missing or stale", (auth) => {
+	it("当目录事实缺失或过期时不编造凭据修复方案", (auth) => {
 		expect(resolveCredentialFailureHint("claude-code", auth)).toBe(
-			"Sign in again using your provider's authentication method, then try again.",
+			"请使用你的供应商的认证方式重新登录，然后重试。",
 		);
 		expect(resolveCredentialFailureAction("claude-code", auth)).toBeNull();
 	});
 });
 
 describe("resolveCredentialFailureAction", () => {
-	it("does not use a different provider's CLI metadata", () => {
+	it("不使用其他供应商的 CLI 元数据", () => {
 		expect(
 			resolveCredentialFailureAction("anthropic", {
 				providerId: "custom-cli",
@@ -218,7 +218,7 @@ describe("resolveCredentialFailureAction", () => {
 			}),
 		).toBeNull();
 	});
-	it("handles custom CLI providers from host metadata", () => {
+	it("处理来自宿主元数据的自定义 CLI 供应商", () => {
 		expect(
 			resolveCredentialFailureAction("custom-cli", {
 				providerId: "custom-cli",
@@ -235,9 +235,9 @@ describe("resolveCredentialFailureAction", () => {
 		).toBeNull();
 	});
 
-	it("sends Cline to the Account page and other providers to Models", () => {
+	it("将 Cline 发送到账户页面，其他供应商发送到模型页面", () => {
 		expect(resolveCredentialFailureAction("cline")).toEqual({
-			label: "Sign in to Cline",
+			label: "登录 Cline",
 			target: "account",
 		});
 		expect(

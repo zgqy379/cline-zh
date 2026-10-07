@@ -218,7 +218,7 @@ export function resolveCredentialError(
 ): string | null {
 	if (config.executionTarget === "cloud") {
 		if (config.provider.trim().toLowerCase() !== "cline") {
-			return "Cloud sessions require the Cline provider.";
+			return "云端会话需要使用 Cline 供应商。";
 		}
 		// Sends into an existing cloud session need no repo URL — the sandbox
 		// was already provisioned with one.
@@ -232,13 +232,13 @@ export function resolveCredentialError(
 		// The picker validates as-you-type, but config accepts any keystroke —
 		// re-validate here so a half-typed URL can't reach the create call.
 		if (!isGitHubRepositoryUrl(repoUrl)) {
-			return "Enter a valid HTTPS GitHub repository URL (https://github.com/owner/repo).";
+			return "请输入有效的 HTTPS GitHub 仓库地址（https://github.com/owner/repo）。";
 		}
 		return null;
 	}
 	const providerId = config.provider.trim().toLowerCase();
 	if (!providerId) {
-		return "Provider is required before starting a chat session.";
+		return "开始会话前必须先选择供应商。";
 	}
 	if (OAUTH_MANAGED_PROVIDERS.has(providerId)) {
 		return null;
@@ -256,7 +256,7 @@ export function resolveCredentialError(
 	if (config.apiKey.trim().length > 0) {
 		return null;
 	}
-	return `Missing API key for provider "${config.provider}". Add credentials in Settings, or switch providers.`;
+	return `供应商 "${config.provider}" 缺少 API 密钥，请在设置中添加凭据，或切换供应商。`;
 }
 
 /**
@@ -273,15 +273,15 @@ export function resolveCredentialFailureHint(
 	const providerAuth = matchingProviderAuth(providerId, auth);
 	const cli = providerAuth?.localCli;
 	if (cli) {
-		return `Sign in again with the \`${cli.command}\` CLI in a terminal, then try again.`;
+		return `请在终端中用 \`${cli.command}\` CLI 重新登录，然后重试。`;
 	}
 	if (normalizeProviderId(providerId) === "cline") {
-		return "Sign in to Cline again in Settings → Account, then try again.";
+		return "请在「设置 → 账户」中重新登录 Cline，然后重试。";
 	}
 	if (!providerAuth) {
-		return "Sign in again using your provider's authentication method, then try again.";
+		return "请使用你的供应商的认证方式重新登录，然后重试。";
 	}
-	return "Check your model connection in Settings → Providers (or sign in with Cline), then try again.";
+	return "请在「设置 → 供应商」中检查你的模型连接（或使用 Cline 登录），然后重试。";
 }
 
 /**
@@ -308,7 +308,7 @@ export function resolveCredentialFailureAction(
 	auth?: ProviderAuthInfo,
 ): { label: string; target: "account" | "models" } | null {
 	if (normalizeProviderId(providerId) === "cline") {
-		return { label: "Sign in to Cline", target: "account" };
+		return { label: "登录 Cline", target: "account" };
 	}
 	const providerAuth = matchingProviderAuth(providerId, auth);
 	if (!providerAuth || providerAuth.localCli) {

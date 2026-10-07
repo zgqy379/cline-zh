@@ -57,7 +57,7 @@ export function WhatsNewDialog({
 					style={{ background: HERO_BACKGROUND }}
 				>
 					<p className="text-[11.5px] font-semibold uppercase tracking-[0.08em] text-[oklch(0.88_0.09_315)]">
-						What's new in Cline
+						Cline 新功能
 					</p>
 					<DialogTitle className="mt-1.5 text-2xl font-semibold tracking-tight text-white">
 						{release.title}

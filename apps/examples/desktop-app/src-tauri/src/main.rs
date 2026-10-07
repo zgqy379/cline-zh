@@ -694,7 +694,7 @@ fn resolve_mcp_settings_path() -> Result<PathBuf, String> {
         // homedir() resolves there); HOME is usually unset on Windows.
         let home = std::env::var("HOME")
             .or_else(|_| std::env::var("USERPROFILE"))
-            .map_err(|_| "neither HOME nor USERPROFILE is set".to_string())?;
+            .map_err(|_| "未设置 HOME 或 USERPROFILE 环境变量".to_string())?;
         PathBuf::from(home).join(".cline").join("data")
     };
     Ok(data_dir.join("settings").join("cline_mcp_settings.json"))

@@ -191,7 +191,7 @@ export function ConnectorActionButton({
 				) : (
 					<Trash2 className="size-4" />
 				)}
-				Uninstall
+				卸载
 			</Button>
 		);
 	}
@@ -404,7 +404,7 @@ export function ComposioConnectorsView({
 	if (loadError && !status) {
 		return (
 			<p className="select-text text-sm text-destructive" role="alert">
-				Failed to load connectors: {loadError}
+				连接器加载失败：{loadError}
 			</p>
 		);
 	}
@@ -412,7 +412,7 @@ export function ComposioConnectorsView({
 	if (!status) {
 		return (
 			<output
-				aria-label="Loading connectors"
+				aria-label="正在加载连接器"
 				className="flex items-center justify-center py-16"
 			>
 				<Loader2 className="size-6 animate-spin text-muted-foreground" />
@@ -429,7 +429,7 @@ export function ComposioConnectorsView({
 		// The Marketplace hides its connector section in this case.
 		return (
 			<p className="text-sm text-muted-foreground">
-				Connectors aren&apos;t available.
+				连接器尚不可用。
 			</p>
 		);
 	}
@@ -470,7 +470,7 @@ export function ComposioConnectorsView({
 	const catalogList =
 		catalogLoading && !catalog ? (
 			<output
-				aria-label="Loading connector catalog"
+				aria-label="正在加载连接器目录"
 				className="flex items-center justify-center py-10"
 			>
 				<Loader2 className="size-5 animate-spin text-muted-foreground" />
@@ -486,7 +486,7 @@ export function ComposioConnectorsView({
 					type="button"
 					variant="outline"
 				>
-					Retry
+					重试
 				</Button>
 			</div>
 		) : (
@@ -535,8 +535,8 @@ export function ComposioConnectorsView({
 					{visibleCatalog.length === 0 ? (
 						<p className="py-4 text-sm text-muted-foreground">
 							{trimmedQuery
-								? `No connectors match "${query.trim()}".`
-								: "No connectors are available for your account yet."}
+								? `没有匹配"${query.trim()}"的连接器。`
+								: "你的账号暂无可用连接器。"}
 						</p>
 					) : null}
 				</div>
@@ -604,10 +604,10 @@ export function ComposioConnectorsView({
 						<div className="relative">
 							<Search className="pointer-events-none absolute left-2.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
 							<Input
-								aria-label="Search installed connectors"
+								aria-label="搜索已安装的连接器"
 								className="h-10 pl-8"
 								onChange={(event) => setInstalledQuery(event.target.value)}
-								placeholder="Search installed connectors"
+								placeholder="搜索已安装的连接器"
 								value={installedQuery}
 							/>
 						</div>
@@ -635,8 +635,8 @@ export function ComposioConnectorsView({
 					) : (
 						<div className="rounded-lg border border-dashed bg-card p-6 text-center text-sm text-muted-foreground">
 							{trimmedInstalledQuery
-								? `No installed connectors match "${installedQuery.trim()}".`
-								: "No connectors installed. Install a connector below or ask Cline about it in a task."}
+								? `没有匹配“${installedQuery.trim()}”的已安装连接器。`
+								: "尚未安装连接器。在下方安装一个，或让 Cline 在任务中帮你安装。"}
 						</div>
 					)}
 				</section>
@@ -646,7 +646,7 @@ export function ComposioConnectorsView({
 						<div className="flex items-center justify-between gap-3">
 							<div className="grid gap-0.5">
 								<h2 className="text-base font-semibold text-foreground">
-									Suggested
+									推荐
 								</h2>
 								<p className="text-xs text-muted-foreground">
 									Connector combinations that work well together. Install the
@@ -675,7 +675,7 @@ export function ComposioConnectorsView({
 
 				<section className="grid min-w-0 gap-3">
 					<div className="flex items-center justify-between gap-3">
-						<h2 className="text-base font-semibold text-foreground">Browse</h2>
+						<h2 className="text-base font-semibold text-foreground">浏览</h2>
 						{catalog ? (
 							<span className="text-sm text-muted-foreground">
 								{matchingCatalog.length}
@@ -686,10 +686,10 @@ export function ComposioConnectorsView({
 						<div className="relative">
 							<Search className="pointer-events-none absolute left-2.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
 							<Input
-								aria-label="Search all connectors"
+								aria-label="搜索全部连接器"
 								className="h-10 pl-8"
 								onChange={(event) => setLocalQuery(event.target.value)}
-								placeholder="Search all connectors"
+								placeholder="搜索全部连接器"
 								value={localQuery}
 							/>
 						</div>
@@ -717,8 +717,8 @@ export function ComposioConnectorsView({
 							<Input
 								className="h-8 w-64 pl-8"
 								onChange={(event) => setLocalQuery(event.target.value)}
-								aria-label="Search connectors"
-								placeholder="Search connectors"
+								aria-label="搜索连接器"
+								placeholder="搜索连接器"
 								value={query}
 							/>
 						</div>
@@ -784,7 +784,7 @@ function ConnectorsUnavailable({
 	if (!signedIn && !accountReady) {
 		return (
 			<output
-				aria-label="Loading account"
+				aria-label="正在加载账号"
 				className="flex items-center justify-center py-16"
 			>
 				<Loader2 className="size-6 animate-spin text-muted-foreground" />
@@ -807,13 +807,13 @@ function ConnectorsUnavailable({
 				<div className="grid gap-2">
 					<h2 className="text-lg font-semibold text-foreground">
 						{signedIn
-							? "Connectors aren't enabled for your account yet"
-							: "Sign in to Cline to use connectors"}
+							? "你的账号尚未开通连接器功能"
+							: "登录 Cline 以使用连接器"}
 					</h2>
 					<p className="text-sm text-muted-foreground">
 						{signedIn
-							? "Connectors are rolling out in beta. Once your Cline account has access, Gmail, Slack, GitHub, and hundreds of other apps will show up here with one-click install."
-							: "Connectors give Cline tools for Gmail, Slack, GitHub, and hundreds of other apps with a quick sign-in to each, no API keys. They require a Cline account."}
+							? "连接器正在逐步开放中。一旦你的 Cline 账号获得权限，Gmail、Slack、GitHub 等数百个应用将在此显示，支持一键安装。"
+							: "连接器为 Cline 提供 Gmail、Slack、GitHub 等数百个应用的工具，只需快速登录即可使用，无需 API 密钥。需要 Cline 账号。"}
 					</p>
 				</div>
 				{signedIn ? (
@@ -825,7 +825,7 @@ function ConnectorsUnavailable({
 						variant="outline"
 					>
 						<RefreshCw className={cn("size-4", refreshing && "animate-spin")} />
-						Check again
+						再试一次
 					</Button>
 				) : (
 					<div className="flex flex-wrap items-center justify-center gap-2">
@@ -840,7 +840,7 @@ function ConnectorsUnavailable({
 							) : (
 								<LogIn className="size-4" />
 							)}
-							{signingIn ? "Waiting for browser…" : "Sign in"}
+							{signingIn ? "等待浏览器…" : "登录"}
 						</Button>
 						<Button
 							onClick={() => void openExternalUrl(CREATE_ACCOUNT_URL)}
@@ -848,7 +848,7 @@ function ConnectorsUnavailable({
 							type="button"
 							variant="outline"
 						>
-							Create account
+							创建账号
 							<ExternalLink className="size-4" />
 						</Button>
 					</div>

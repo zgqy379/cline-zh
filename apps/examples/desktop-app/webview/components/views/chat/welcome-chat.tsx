@@ -470,7 +470,7 @@ export function WelcomeScreen({
 			hideWelcomeComposer={showCloudOnboarding}
 			welcomeHeader={
 				<div className="cline-view-enter">
-					<h1 className="sr-only">What would you like to build?</h1>
+					<h1 className="sr-only">你想构建什么？</h1>
 					<AgentWelcomeHero />
 
 					<div className="mt-11 flex min-w-0 items-center gap-2">
@@ -503,7 +503,7 @@ export function WelcomeScreen({
 						/>
 						{signInError ? (
 							<p className="mt-2 text-xs text-destructive">
-								Sign in failed: {signInError}
+								登录失败：{signInError}
 							</p>
 						) : null}
 					</div>
