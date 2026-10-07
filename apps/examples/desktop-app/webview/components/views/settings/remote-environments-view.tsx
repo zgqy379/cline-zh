@@ -68,11 +68,29 @@ function profileIdOrThrow(profile: RemoteEnvironmentProfile): string {
 }
 
 function statusLabel(value: string): string {
-	if (value === "untested") return "未测试";
-	return value
-		.split("-")
-		.map((part) => `${part.slice(0, 1).toUpperCase()}${part.slice(1)}`)
-		.join(" ");
+	const REMOTE_ENVIRONMENT_STATE_LABELS: Record<string, string> = {
+		active: "当前使用",
+		inactive: "未使用",
+		connected: "已连接",
+		connecting: "连接中",
+		disconnected: "已断开",
+		disconnecting: "断开中",
+		error: "错误",
+		untested: "未测试",
+		testing: "测试中",
+		passed: "已通过",
+		failed: "失败",
+		unknown: "未知",
+		installing: "安装中",
+		ready: "就绪",
+	};
+	return (
+		REMOTE_ENVIRONMENT_STATE_LABELS[value] ??
+		value
+			.split("-")
+			.map((part) => `${part.slice(0, 1).toUpperCase()}${part.slice(1)}`)
+			.join(" ")
+	);
 }
 
 function StatusBadge({ label, value }: { label: string; value: string }) {

@@ -186,7 +186,7 @@ describe("RemoteEnvironmentsContent", () => {
 			profile: { ...profile, name: "Build box 2" },
 		});
 		expect(container.textContent).toContain("已连接");
-		expect(container.textContent).toContain("Ready");
+		expect(container.textContent).toContain("就绪");
 	});
 
 	it("keeps a failed SSH test visible on its profile", async () => {
@@ -214,7 +214,7 @@ describe("RemoteEnvironmentsContent", () => {
 		await vi.waitFor(() => {
 			expect(container.textContent).toContain("Permission denied (publickey)");
 		});
-		expect(container.textContent).toContain("Failed");
+		expect(container.textContent).toContain("失败");
 		expect(invokeMock).toHaveBeenNthCalledWith(3, "test_remote_environment", {
 			id: profile.id,
 		});
