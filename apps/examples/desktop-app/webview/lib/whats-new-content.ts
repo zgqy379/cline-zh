@@ -45,7 +45,7 @@ export type WhatsNewRelease =
 export const WHATS_NEW_RELEASES: WhatsNewRelease[] = [
 	{
 		id: "2026-10-connectors",
-		title: "Connect Cline to your apps",
+		title: "把 Cline 连接到你的应用",
 		spotlight: "connectors",
 	},
 	{

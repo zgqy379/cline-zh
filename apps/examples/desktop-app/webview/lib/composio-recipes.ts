@@ -16,11 +16,11 @@ export type ComposioRecipe = {
 export const COMPOSIO_RECIPES: ComposioRecipe[] = [
 	{
 		id: "organize-your-day",
-		title: "Organize your day",
+		title: "理顺你的一天",
 		description:
-			"Start with a morning brief: Cline reads overnight email and Slack threads, lays out today's calendar, drafts the replies that need you, and flags what to prep before each meeting.",
+			"从一份晨间简报开始：Cline 读取夜间收到的邮件和 Slack 消息，排出今天的日程，为需要你处理的事起草回复，并标出每场会议前要准备的内容。",
 		prompt:
-			"Give me a morning brief: what came in overnight, what's on my calendar today, and draft replies to anything urgent.",
+			"给我一份晨间简报：昨晚有哪些新消息，我今天的日程是什么，并起草所有紧急事项的回复。",
 		connectors: [
 			{ slug: "gmail", name: "Gmail" },
 			{ slug: "slack", name: "Slack" },
@@ -29,11 +29,11 @@ export const COMPOSIO_RECIPES: ComposioRecipe[] = [
 	},
 	{
 		id: "incident-rca",
-		title: "Debug production incidents",
+		title: "排查生产环境故障",
 		description:
-			"An obscure high-memory report lands in Slack. Cline pulls the thread, correlates it with the matching Sentry errors and related Linear issues, and writes up a root-cause analysis with a fix plan.",
+			"一条不显眼的高内存告警出现在 Slack 里。Cline 拉取那条消息，把它与对应的 Sentry 错误和相关 Linear 议题关联起来，然后写出带修复方案的根本原因分析。",
 		prompt:
-			"Investigate the memory spike reported in #eng-alerts this morning and give me an RCA.",
+			"排查今天早上在 #eng-alerts 里报告的内存暴涨，并给我一份根因分析。",
 		connectors: [
 			{ slug: "slack", name: "Slack" },
 			{ slug: "sentry", name: "Sentry" },
@@ -42,11 +42,11 @@ export const COMPOSIO_RECIPES: ComposioRecipe[] = [
 	},
 	{
 		id: "spec-to-shipped",
-		title: "Run product from your desktop",
+		title: "在桌面端推进产品",
 		description:
-			"Turn a Notion spec into scoped Linear issues, keep them updated as work lands, and post the weekly status to Slack without leaving Cline.",
+			"把 Notion 里的需求文档拆成分范围的 Linear 议题，在工作落地时持续更新进度，并每周把状态同步到 Slack，全程不用离开 Cline。",
 		prompt:
-			"Break the checkout redesign spec in Notion into Linear issues and post a summary to #product.",
+			"把 Notion 上的结账流程改版需求拆成 Linear 议题，并把摘要发到 #product。",
 		connectors: [
 			{ slug: "notion", name: "Notion" },
 			{ slug: "linear", name: "Linear" },
@@ -55,11 +55,11 @@ export const COMPOSIO_RECIPES: ComposioRecipe[] = [
 	},
 	{
 		id: "launch-and-market",
-		title: "Launch and market what you build",
+		title: "发布并推广你的作品",
 		description:
-			"Ship a side project, then have Cline generate the teaser images and video, upload it to YouTube, and write the LinkedIn and Reddit launch posts.",
+			"先发布一个业余项目，然后让 Cline 生成宣传图片和视频，上传到 YouTube，并撰写 LinkedIn 和 Reddit 上的发布帖。",
 		prompt:
-			"Make a 30-second teaser for this project, upload it to YouTube, and draft launch posts for LinkedIn and r/SideProject.",
+			"为这个项目做一段 30 秒的预告片，上传到 YouTube，并为 LinkedIn 和 r/SideProject 起草发布帖。",
 		connectors: [
 			{ slug: "youtube", name: "YouTube" },
 			{ slug: "linkedin", name: "LinkedIn" },

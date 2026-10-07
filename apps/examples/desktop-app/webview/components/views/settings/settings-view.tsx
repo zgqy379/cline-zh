@@ -540,9 +540,9 @@ export function SettingsView({
 		>
 			<DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-3xl">
 				<DialogHeader>
-					<DialogTitle>Add Provider</DialogTitle>
+					<DialogTitle>添加供应商</DialogTitle>
 					<DialogDescription>
-						Add an OpenAI-compatible provider and choose its available models.
+						添加 OpenAI 兼容的供应商，并选择其可用的模型。
 					</DialogDescription>
 				</DialogHeader>
 				<AddProviderContent
@@ -557,12 +557,12 @@ export function SettingsView({
 
 	const providerContent = providersLoading ? (
 		<div className="flex h-full items-center justify-center">
-			<p className="text-sm text-muted-foreground">Loading providers...</p>
+			<p className="text-sm text-muted-foreground">正在加载供应商…</p>
 		</div>
 	) : providerCatalogError ? (
 		<div className="flex h-full items-center justify-center">
 			<p className="max-w-xl px-4 text-center text-sm text-destructive">
-				Failed to load providers: {providerCatalogError}
+				加载供应商失败：{providerCatalogError}
 			</p>
 		</div>
 	) : selectedProvider ? (
@@ -648,7 +648,7 @@ export function SettingsView({
 		) : (
 			<div className="flex h-full items-center justify-center">
 				<p className="text-sm text-muted-foreground">
-					{activeNav} settings coming soon.
+					{activeNav} 分区即将推出。
 				</p>
 			</div>
 		);
@@ -666,13 +666,24 @@ export function SettingsView({
  * violet reads the live brand token so it always matches the default theme.
  */
 const ACCENT_OPTIONS: { id: HubAccent; label: string; swatch: string }[] = [
-	{ id: "violet", label: "Violet", swatch: "var(--brand-violet)" },
-	{ id: "graphite", label: "Graphite", swatch: "oklch(0.27 0.012 248)" },
-	{ id: "cyan", label: "Cyan", swatch: "oklch(0.6 0.12 222)" },
-	{ id: "pink", label: "Pink", swatch: "oklch(0.75 0.1 354)" },
-	{ id: "espresso", label: "Espresso", swatch: "oklch(0.36 0.035 35)" },
-	{ id: "ember", label: "Ember", swatch: "oklch(0.6 0.19 33)" },
+	{ id: "violet", label: "紫", swatch: "var(--brand-violet)" },
+	{ id: "graphite", label: "石墨", swatch: "oklch(0.27 0.012 248)" },
+	{ id: "cyan", label: "青", swatch: "oklch(0.6 0.12 222)" },
+	{ id: "pink", label: "粉", swatch: "oklch(0.75 0.1 354)" },
+	{ id: "espresso", label: "浓缩咖啡", swatch: "oklch(0.36 0.035 35)" },
+	{ id: "ember", label: "余烬", swatch: "oklch(0.6 0.19 33)" },
 ];
+
+/**
+ * `appIconSurface()` returns a platform identifier that is also stored and
+ * compared as-is, so the Chinese wording lives here at the render site
+ * instead of inside the identifier (PROGRESS §4.3 判断口诀第 3 条).
+ */
+const APP_ICON_SURFACE_LABELS: Record<"Dock" | "Taskbar" | "desktop", string> = {
+	Dock: "程序坞",
+	Taskbar: "任务栏",
+	desktop: "桌面",
+};
 
 function GeneralSettingsContent({
 	onExportDiagnostics,
@@ -896,20 +907,20 @@ function GeneralSettingsContent({
 	return (
 		<PageFrame>
 			<PageHeader
-				description="Manage desktop preferences for this browser and CLI environment."
-				title="Settings"
+				description="管理此浏览器与 CLI 环境的桌面端偏好设置。"
+				title="设置"
 			/>
 			<section className="max-w-344">
 				<NotificationSettings />
 				<div className="flex py-4 items-center justify-between gap-5 border-b max-[720px]:flex-col max-[720px]:items-stretch max-[720px]:py-4">
 					<div className="flex flex-col gap-1">
-						<p className="text-base font-semibold text-foreground">Dark mode</p>
+						<p className="text-base font-semibold text-foreground">深色模式</p>
 						<p className="text-sm text-muted-foreground">
-							Keep the desktop interface in dark mode on this browser.
+							让此浏览器上的桌面界面保持深色模式。
 						</p>
 					</div>
 					<Switch
-						aria-label="Dark mode"
+						aria-label="深色模式"
 						checked={theme === "dark"}
 						onCheckedChange={updateTheme}
 					/>
@@ -964,10 +975,10 @@ function GeneralSettingsContent({
 				<div className="flex py-4 items-center justify-between gap-5 border-b max-[720px]:flex-col max-[720px]:items-stretch max-[720px]:py-4">
 					<div className="flex flex-col gap-1">
 						<p className="text-base font-semibold text-foreground">
-							Accent color
+							强调色
 						</p>
 						<p className="text-sm text-muted-foreground">
-							Tint buttons, links, and highlights across the app.
+							为整个应用中的按钮、链接和高亮元素着色。
 						</p>
 					</div>
 					<div className="flex shrink-0 items-center gap-2">
@@ -991,13 +1002,13 @@ function GeneralSettingsContent({
 				</div>
 				<div className="flex items-center justify-between gap-5 border-b py-4 max-[720px]:flex-col max-[720px]:items-stretch">
 					<div className="flex flex-col gap-1">
-						<p className="text-base font-semibold text-foreground">App icon</p>
+						<p className="text-base font-semibold text-foreground">应用图标</p>
 						<p className="text-sm text-muted-foreground">
-							Pick the icon Cline shows in the {appIconLocation}.
+							选择 Cline 在{APP_ICON_SURFACE_LABELS[appIconLocation]}中显示的图标。
 						</p>
 						{appIconError ? (
 							<p className="mt-2 text-xs text-destructive" role="alert">
-								Failed to change app icon: {appIconError}
+								更改应用图标失败：{appIconError}
 							</p>
 						) : null}
 					</div>
@@ -1040,21 +1051,20 @@ function GeneralSettingsContent({
 				<div className="flex py-4 items-center justify-between gap-5 border-b max-[720px]:flex-col max-[720px]:items-stretch max-[720px]:py-4">
 					<div className="flex flex-col gap-1">
 						<p className="text-base font-semibold text-foreground">
-							Keep CLI up to date
+							保持 CLI 为最新版本
 						</p>
 						<p className="text-sm text-muted-foreground">
-							Automatically update the cline terminal command, which shares your
-							sessions and settings with this app. The app itself updates
-							separately.
+							自动更新 cline 命令行工具，它与本应用共享会话和设置。
+							应用本身会单独更新。
 						</p>
 						{autoUpdateError ? (
 							<p className="mt-2 text-xs text-destructive" role="alert">
-								Failed to update CLI auto-update setting: {autoUpdateError}
+								更新 CLI 自动更新设置失败：{autoUpdateError}
 							</p>
 						) : null}
 					</div>
 					<Switch
-						aria-label="Keep CLI up to date"
+						aria-label="保持 CLI 为最新版本"
 						checked={autoUpdateEnabled}
 						disabled={autoUpdateLoading || autoUpdateSaving}
 						onCheckedChange={(checked) => void updateAutoUpdateEnabled(checked)}
@@ -1102,18 +1112,18 @@ function GeneralSettingsContent({
 				) : null}
 				<div className="flex py-4 items-center justify-between gap-5 border-b max-[720px]:flex-col max-[720px]:items-stretch max-[720px]:py-4">
 					<div className="flex flex-col gap-1">
-						<p className="text-base font-semibold text-foreground">Telemetry</p>
+						<p className="text-base font-semibold text-foreground">遥测</p>
 						<p className="text-sm text-muted-foreground">
-							Enable error and usage reports to help improve Cline.
+							启用错误与使用情况报告，以帮助改进 Cline。
 						</p>
 						{telemetryError ? (
 							<p className="mt-2 text-xs text-destructive" role="alert">
-								Failed to update telemetry setting: {telemetryError}
+								更新遥测设置失败：{telemetryError}
 							</p>
 						) : null}
 					</div>
 					<Switch
-						aria-label="Telemetry"
+						aria-label="遥测"
 						checked={!telemetryOptOut}
 						disabled={telemetryLoading || telemetrySaving}
 						onCheckedChange={(checked) => void updateTelemetryOptOut(!checked)}
@@ -1122,11 +1132,10 @@ function GeneralSettingsContent({
 				<div className="flex py-4 items-center justify-between gap-5 border-b max-[720px]:flex-col max-[720px]:items-stretch max-[720px]:py-4">
 					<div className="flex flex-col gap-1">
 						<p className="text-base font-semibold text-foreground">
-							New user experience
+							新的用户体验
 						</p>
 						<p className="text-sm text-muted-foreground">
-							Replay the first-run experience new users see when they open Cline
-							for the first time.
+							重放新用户首次打开 Cline 时所看到的初始引导流程。
 						</p>
 					</div>
 					<Button
@@ -1137,17 +1146,17 @@ function GeneralSettingsContent({
 						variant="outline"
 					>
 						<RotateCcw className="size-3" />
-						Replay
+						重放
 					</Button>
 				</div>
 				<div className="flex py-4 items-center justify-between gap-5 max-[720px]:flex-col max-[720px]:items-stretch max-[720px]:py-4">
 					<div className="flex flex-col gap-1">
 						<p className="text-base font-semibold text-foreground">
-							Diagnostics
+							诊断
 						</p>
 						<p className="text-sm text-muted-foreground">
-							Export app info, recent logs, and the metadata of sessions you
-							choose as a file you can attach when reporting a problem.
+							将应用信息、最近的日志和你所选会话的元数据导出为一个文件，
+							便于在报告问题时一并附上。
 						</p>
 					</div>
 					<Button
@@ -1158,7 +1167,7 @@ function GeneralSettingsContent({
 						variant="outline"
 					>
 						<Download className="size-3" />
-						Export…
+						导出…
 					</Button>
 				</div>
 			</section>

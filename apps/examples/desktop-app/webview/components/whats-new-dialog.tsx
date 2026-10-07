@@ -90,7 +90,7 @@ export function WhatsNewDialog({
 								type="button"
 								variant="ghost"
 							>
-								See all changes
+								查看全部更新
 								<ArrowRight className="size-3.5" />
 							</Button>
 						) : (
@@ -98,12 +98,12 @@ export function WhatsNewDialog({
 						)}
 						{spotlight ? (
 							<Button onClick={onOpenConnectors} type="button">
-								Open Connectors
+								打开连接器
 								<ArrowRight className="size-4" />
 							</Button>
 						) : (
 							<Button onClick={() => onOpenChange(false)} type="button">
-								Get Started
+								开始使用
 							</Button>
 						)}
 					</div>
@@ -142,8 +142,8 @@ function ConnectorsSpotlight({
 				))}
 			</div>
 			<p className="text-sm leading-relaxed text-muted-foreground">
-				Gmail, Slack, Calendar, Linear, Notion, and hundreds more, in one click.
-				Cline pulls context from them and acts on your behalf.
+				一键接入 Gmail、Slack、Calendar、Linear、Notion 以及数百个更多服务。
+				Cline 会从中获取上下文，并代你执行操作。
 			</p>
 			{recipe ? (
 				<button
@@ -153,7 +153,7 @@ function ConnectorsSpotlight({
 				>
 					<span className="flex items-center justify-between">
 						<span className="text-[11px] font-medium uppercase tracking-[0.06em] text-muted-foreground">
-							Example
+							示例
 						</span>
 						<ArrowRight className="size-3.5 text-muted-foreground transition-transform group-hover:translate-x-0.5" />
 					</span>

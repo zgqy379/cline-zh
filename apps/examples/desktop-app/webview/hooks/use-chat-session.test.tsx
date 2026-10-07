@@ -2190,7 +2190,7 @@ describe("useChatSession", () => {
 	it("surfaces a worktree creation failure without starting a session", async () => {
 		invokeMock.mockImplementation(async (command: string) => {
 			if (command === "create_git_worktree") {
-				throw new Error("Not a git repository: /workspace/cline");
+				throw new Error("不是 Git 仓库：/workspace/cline");
 			}
 			return [];
 		});
@@ -2200,7 +2200,7 @@ describe("useChatSession", () => {
 		);
 
 		expect(current.error).toBe(
-			"无法创建工作树：Not a git repository: /workspace/cline",
+			"无法创建工作树：不是 Git 仓库：/workspace/cline",
 		);
 		expect(current.status).toBe("error");
 		expect(
@@ -4226,7 +4226,7 @@ describe("useChatSession", () => {
 				workspaceRoot: "/home/pi/project",
 				startedAt: "2026-07-31T00:00:00.000Z",
 			}),
-		).rejects.toThrow("belongs to environment pi-server, not local");
+		).rejects.toThrow("属于环境 pi-server，而不是 local");
 		expect(current.sessionId).toBeNull();
 		expect(current.config.environmentId).toBe("local");
 	});

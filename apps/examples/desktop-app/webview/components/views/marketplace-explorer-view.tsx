@@ -68,7 +68,7 @@ const TYPE_META: Record<MarketplaceTypeFilter, MarketplaceTypeMeta> = {
 		plural: "技能",
 		short: "Skill",
 		icon: Zap,
-		blurb: "Step-by-step instructions Cline follows for a workflow. No setup.",
+		blurb: "Cline 逐步遵循的工作流说明，无需配置。",
 		text: "text-amber-600 dark:text-amber-300",
 		bg: "bg-amber-500/12",
 	},
@@ -77,7 +77,7 @@ const TYPE_META: Record<MarketplaceTypeFilter, MarketplaceTypeMeta> = {
 		plural: "MCP 服务器",
 		short: "MCP",
 		icon: Server,
-		blurb: "Live tools from an external server. You install and configure it.",
+		blurb: "来自外部服务器的在线工具，由你安装和配置。",
 		text: "text-sky-600 dark:text-sky-300",
 		bg: "bg-sky-500/12",
 	},
@@ -86,7 +86,7 @@ const TYPE_META: Record<MarketplaceTypeFilter, MarketplaceTypeMeta> = {
 		plural: "插件",
 		short: "Plugin",
 		icon: Puzzle,
-		blurb: "A bundle of tools, hooks, and skills built for Cline.",
+		blurb: "为 Cline 打包的一组工具、钩子和技能。",
 		text: "text-violet-600 dark:text-violet-300",
 		bg: "bg-violet-500/12",
 	},
@@ -421,7 +421,7 @@ function DetailPane({
 							{entry.verified ? (
 								<Badge className="border border-sky-500/20 bg-sky-500/10 text-sky-700 dark:text-sky-300">
 									<BadgeCheck />
-									Verified
+									已验证
 								</Badge>
 							) : null}
 							<MarketplaceTypePill meta={meta} />
@@ -453,7 +453,7 @@ function DetailPane({
 									variant="outline"
 								>
 									<Globe className="size-4" />
-									Learn more
+									了解更多
 									<ArrowUpRight className="size-3.5 text-muted-foreground" />
 								</Button>
 							) : null}
@@ -500,7 +500,7 @@ function DetailPane({
 					<div className="rounded-xl border bg-card p-4">
 						<MetaCell
 							icon={User}
-							label="Author"
+							label="作者"
 							onOpen={
 								entry.author.url
 									? () => void openExternalUrl(entry.author?.url as string)
@@ -512,7 +512,7 @@ function DetailPane({
 				) : null}
 
 				<section className="grid gap-2">
-					<h2 className="text-sm font-semibold text-foreground">About</h2>
+					<h2 className="text-sm font-semibold text-foreground">简介</h2>
 					<p className="text-sm leading-6 text-muted-foreground">
 						{entry.description}
 					</p>
@@ -540,7 +540,7 @@ function DetailPane({
 				{requiredEnv.length > 0 || optionalEnv.length > 0 ? (
 					<section className="grid gap-2">
 						<h2 className="text-sm font-semibold text-foreground">
-							Environment setup
+							环境变量配置
 						</h2>
 						<div className="grid gap-2">
 							{[...requiredEnv, ...optionalEnv].map((env) => (
@@ -553,7 +553,7 @@ function DetailPane({
 											{env.name}
 										</code>
 										<Badge variant="outline">
-											{env.required === false ? "Optional" : "Required"}
+											{env.required === false ? "可选" : "必需"}
 										</Badge>
 									</div>
 									{env.description ? (
@@ -567,7 +567,7 @@ function DetailPane({
 											onClick={() => void openExternalUrl(env.url as string)}
 											type="button"
 										>
-											Get value
+											获取值
 											<ArrowUpRight className="size-3" />
 										</button>
 									) : null}

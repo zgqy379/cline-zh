@@ -2176,7 +2176,7 @@ describe("/compact", () => {
 		expect(readCommandOutput()).toMatchObject({
 			sessionId,
 			command: "compact",
-			text: expect.stringContaining("Cannot compact while a response"),
+			text: expect.stringContaining("当前有回复正在进行，无法压缩"),
 		});
 	});
 
@@ -2194,7 +2194,7 @@ describe("/compact", () => {
 		expect(result).toEqual({ sessionId, ok: true, commandHandled: true });
 		expect(send).not.toHaveBeenCalled();
 		expect(readCommandOutput()).toMatchObject({
-			text: "No messages to compact.",
+			text: "没有可压缩的消息。",
 		});
 	});
 });

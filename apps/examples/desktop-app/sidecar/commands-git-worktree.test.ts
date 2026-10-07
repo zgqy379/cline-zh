@@ -112,7 +112,7 @@ describe("create_git_worktree command", () => {
 		const plain = join(sandbox, "plain");
 		mkdirSync(plain, { recursive: true });
 
-		await expect(run(plain)).rejects.toThrow("Not a git repository");
+		await expect(run(plain)).rejects.toThrow("不是 Git 仓库");
 	});
 });
 

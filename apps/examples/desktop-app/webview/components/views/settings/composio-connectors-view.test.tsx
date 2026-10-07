@@ -253,11 +253,11 @@ describe("installed connectors", () => {
 		expect(installed?.textContent).not.toContain("Gmail");
 		// Every recipe is suggested; chips install their connector.
 		expect(container.textContent).toContain("推荐");
-		expect(container.textContent).toContain("Organize your day");
-		expect(container.textContent).toContain("Debug production incidents");
+		expect(container.textContent).toContain("理顺你的一天");
+		expect(container.textContent).toContain("排查生产环境故障");
 		await act(async () =>
 			(
-				container.querySelector('[aria-label="Install Sentry"]') as HTMLElement
+				container.querySelector('[aria-label="安装 Sentry"]') as HTMLElement
 			).click(),
 		);
 		expect(mocks.connect).toHaveBeenCalledWith("sentry");
@@ -278,12 +278,12 @@ describe("installed connectors", () => {
 		await act(async () =>
 			root.render(<ComposioConnectorsView variant="installed" />),
 		);
-		expect(container.textContent).not.toContain("Organize your day");
-		expect(container.textContent).toContain("Debug production incidents");
+		expect(container.textContent).not.toContain("理顺你的一天");
+		expect(container.textContent).toContain("排查生产环境故障");
 		// Slack is connected, so it is a non-interactive chip there.
 		expect(container.querySelector('[aria-label="安装 Slack"]')).toBeNull();
 		expect(
-			container.querySelector('[aria-label="Install Sentry"]'),
+			container.querySelector('[aria-label="安装 Sentry"]'),
 		).not.toBeNull();
 	});
 

@@ -2266,7 +2266,7 @@ const ModelSelector = memo(function ModelSelector({
 				onClick={refreshActiveProviderModels}
 				type="button"
 			>
-				Could not load cloud models. Retry
+				无法加载云端模型。重试
 			</button>
 		);
 	}

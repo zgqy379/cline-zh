@@ -207,7 +207,7 @@ export function ConnectorActionButton({
 				variant="ghost"
 			>
 				<Loader2 className="size-4 animate-spin" />
-				Cancel
+				取消
 			</Button>
 		);
 	}
@@ -648,8 +648,7 @@ export function ComposioConnectorsView({
 									推荐
 								</h2>
 								<p className="text-xs text-muted-foreground">
-									Connector combinations that work well together. Install the
-									ones you are missing to unlock the workflow.
+									搭配起来效果很好的连接器组合。安装上还缺的那几个，即可解锁整套工作流。
 								</p>
 							</div>
 							<span className="text-sm text-muted-foreground">
@@ -706,9 +705,9 @@ export function ComposioConnectorsView({
 			{!renderItem ? (
 				<div className="flex flex-wrap items-center justify-between gap-3">
 					<p className="text-sm text-muted-foreground">
-						<Badge className="mr-1">Beta</Badge>Connect your accounts to give
-						Cline tools for your favorite apps. Tools will become available in
-						new sessions.
+						<Badge className="mr-1">Beta</Badge>
+						连接你的账号，让 Cline 获得你常用应用的工具。这些工具会在新会话中
+						生效。
 					</p>
 					{searchQuery === undefined ? (
 						<div className="relative">
@@ -854,7 +853,7 @@ function ConnectorsUnavailable({
 				)}
 				{signingIn && deviceUserCode ? (
 					<p className="text-sm text-muted-foreground">
-						Confirm this code in your browser:{" "}
+						请在浏览器中确认此代码：{" "}
 						<span className="font-mono font-medium text-foreground">
 							{deviceUserCode}
 						</span>
@@ -1000,12 +999,12 @@ function ConnectorCard({
 					</span>
 					{status === "pending" ? (
 						<Badge variant="outline" className="shrink-0 text-muted-foreground">
-							Authorizing…
+							授权中…
 						</Badge>
 					) : null}
 					{toolCount ? (
 						<Badge variant="outline" className="shrink-0 text-muted-foreground">
-							{toolCount} {toolCount === 1 ? "tool" : "tools"}
+							{toolCount} 个工具
 						</Badge>
 					) : null}
 				</span>
@@ -1088,8 +1087,8 @@ function RecipeCard({
 						<Button
 							aria-label={
 								status === "pending"
-									? `Cancel ${connector.name}`
-									: `Install ${connector.name}`
+									? `取消 ${connector.name}`
+									: `安装 ${connector.name}`
 							}
 							disabled={busy}
 							key={connector.slug}
@@ -1178,7 +1177,7 @@ function ConnectorDetailDialog({
 							<dl className="grid grid-cols-[auto_1fr] gap-x-6 gap-y-1.5 text-sm">
 								{entry.categories && entry.categories.length > 0 ? (
 									<>
-										<dt className="text-muted-foreground">Category</dt>
+										<dt className="text-muted-foreground">分类</dt>
 										<dd className="flex flex-wrap gap-1">
 											{entry.categories.map((category) => (
 												<Badge
@@ -1194,7 +1193,7 @@ function ConnectorDetailDialog({
 								) : null}
 								{summary?.connectedAt ? (
 									<>
-										<dt className="text-muted-foreground">Connected</dt>
+										<dt className="text-muted-foreground">已连接</dt>
 										<dd className="text-foreground">
 											{new Date(summary.connectedAt).toLocaleString()}
 										</dd>
@@ -1202,7 +1201,7 @@ function ConnectorDetailDialog({
 								) : null}
 								{isConnected || typeof entry.toolsCount === "number" ? (
 									<>
-										<dt className="text-muted-foreground">Tools</dt>
+										<dt className="text-muted-foreground">工具</dt>
 										<dd className="text-foreground">
 											{isConnected ? (
 												<>
@@ -1235,7 +1234,7 @@ function ConnectorDetailDialog({
 							{status === "pending" ? (
 								<p className="inline-flex items-center gap-2 text-sm text-muted-foreground">
 									<Loader2 className="size-4 animate-spin" />
-									Finish authorizing {entry.name} in your browser…
+									请在浏览器中完成 {entry.name} 的授权…
 								</p>
 							) : null}
 

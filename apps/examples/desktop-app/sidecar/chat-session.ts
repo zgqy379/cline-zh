@@ -136,7 +136,7 @@ const BUILTIN_SLASH_COMMAND_NAMES = new Set(["compact", "fork", "team"]);
 
 const FALLBACK_MANUAL_COMPACTION_MAX_INPUT_TOKENS = 64_000;
 const COMPACT_WHILE_RUNNING_MESSAGE =
-	"Cannot compact while a response is in progress. Try again once the current turn finishes.";
+	"当前有回复正在进行，无法压缩。请等本轮结束后再试。";
 
 /**
  * Manual `/compact`, mirroring the CLI's local command: summarizes the full
@@ -158,7 +158,7 @@ async function compactSession(
 		(message) => message.metadata?.displayOnly !== true,
 	);
 	if (conversationMessages.length === 0) {
-		return "No messages to compact.";
+		return "没有可压缩的消息。";
 	}
 	const {
 		providerId = "",
@@ -203,7 +203,7 @@ async function compactSession(
 		},
 	});
 	if (!result?.messages) {
-		return "No compaction needed.";
+		return "无需压缩。";
 	}
 	const { updated } = await manager.updateSessionCompactionState(
 		sessionId,

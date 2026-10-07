@@ -138,7 +138,7 @@ function AgentHeaderImpl({
 						/>
 						{additions !== 0 && (
 							<Button
-								aria-label={`Open diff: ${additions} additions, ${deletions} deletions`}
+								aria-label={`打开差异：新增 ${additions} 行，删除 ${deletions} 行`}
 								className={cn(
 									"flex items-center gap-1 rounded-md bg-secondary px-2 py-1 text-xs font-mono transition-colors",
 									hasChanges
@@ -251,7 +251,7 @@ function AgentHeaderImpl({
 			<DropdownMenu>
 				<DropdownMenuTrigger asChild>
 					<Button
-						aria-label="Session actions"
+						aria-label="会话操作"
 						className="shrink-0 text-muted-foreground transition-colors hover:text-foreground"
 						id="show-more-btn"
 						variant="ghost"
@@ -404,7 +404,7 @@ function AgentActivityStatus({
 				id="agent-activity-panel"
 			>
 				<div className="border-b border-border/70 px-3 py-2">
-					<div className="text-sm font-medium text-foreground">Agents</div>
+					<div className="text-sm font-medium text-foreground">智能体</div>
 					<div className="mt-0.5 text-[11px] text-muted-foreground">
 						{label}
 					</div>
@@ -453,7 +453,7 @@ function AgentRoster({
 			<div className="px-3 py-4 text-xs text-muted-foreground">
 				{activity.running > 0
 					? "正在等待第一个智能体上报…"
-					: "No agent details were recorded for this session."}
+					: "本次会话没有记录到任何智能体详情。"}
 				{error ? (
 					<div className="mt-1 text-[11px] text-muted-foreground/80">
 						{error}
@@ -533,7 +533,7 @@ function AgentRosterRow({
 			<button
 				className="flex w-full min-w-0 items-start gap-2 px-3 py-2 text-left transition-colors hover:bg-surface-hover"
 				onClick={onSelect}
-				title="Open this agent's session"
+				title="打开该智能体的会话"
 				type="button"
 			>
 				<StateIcon

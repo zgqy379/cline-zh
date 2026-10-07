@@ -3843,7 +3843,7 @@ export function useChatSession(environmentId: string) {
 				environmentId
 			) {
 				throw new Error(
-					`Session ${session.sessionId} belongs to environment ${session.environmentId}, not ${environmentId}.`,
+					`会话 ${session.sessionId} 属于环境 ${session.environmentId}，而不是 ${environmentId}。`,
 				);
 			}
 			const requestId = hydrationRequestIdRef.current + 1;
@@ -3986,7 +3986,7 @@ export function useChatSession(environmentId: string) {
 					attached.environmentId !== environmentId
 				) {
 					throw new Error(
-						`Session ${session.sessionId} attached to environment ${attached.environmentId}, not ${environmentId}.`,
+						`会话 ${session.sessionId} 连接到的是环境 ${attached.environmentId}，而不是 ${environmentId}。`,
 					);
 				}
 				setConfig((prev) => ({

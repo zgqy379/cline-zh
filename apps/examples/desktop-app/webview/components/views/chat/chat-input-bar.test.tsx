@@ -942,7 +942,7 @@ describe("ChatInputBar", () => {
 		);
 		expect(onSend).not.toHaveBeenCalled();
 		const retry = [...container.querySelectorAll("button")].find((button) =>
-			button.textContent?.includes("Retry"),
+			button.textContent?.includes("重试"),
 		);
 		expect(retry).toBeDefined();
 		catalogAvailable = true;
