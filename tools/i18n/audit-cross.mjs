@@ -15,10 +15,14 @@
  */
 
 import { readFileSync, readdirSync, statSync, existsSync } from "node:fs";
-import { join, relative, extname } from "node:path";
+import { join, relative, extname, dirname } from "node:path";
+import { fileURLToPath } from "node:url";
 
 const ROOT = process.argv[2];
-const MAPS = "D:/cline-zh/tools/maps";
+// maps 已收编进本仓库（tools/i18n/maps）；可用 MAPS_DIR 显式覆盖。
+const MAPS =
+	process.env.MAPS_DIR ||
+	join(dirname(fileURLToPath(import.meta.url)), "maps");
 if (!ROOT || !existsSync(ROOT)) {
 	console.error("用法: node tools/audit-cross.mjs <源码根目录>");
 	process.exit(1);

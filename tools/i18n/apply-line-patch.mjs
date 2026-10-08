@@ -16,9 +16,13 @@
  * 用法：node apply-line-patch.mjs <patch.json> [--write]
  */
 import { readFileSync, writeFileSync } from "node:fs";
-import { resolve } from "node:path";
+import { resolve, dirname } from "node:path";
+import { fileURLToPath } from "node:url";
 
-const REPO = "D:/cline-zh/cline";
+// 脚本位于 <repo>/tools/i18n/，上溯两级即仓库根；可用 REPO 环境变量覆盖。
+const REPO =
+	process.env.REPO ||
+	resolve(dirname(fileURLToPath(import.meta.url)), "..", "..");
 const patchPath = process.argv[2];
 if (!patchPath) {
 	console.error("用法: node apply-line-patch.mjs <patch.json> [--write]");

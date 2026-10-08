@@ -53,9 +53,12 @@ git diff 41deb5d HEAD
 | `sdk/packages/core/**` | 5 | 内置工具目录描述、云端会话事件消息 |
 | `apps/examples/desktop-app/src-tauri/**` | 2 | 托盘菜单、窗口/安装包标识 |
 | `sdk/packages/shared/**` | 1 | 连接器配置文案 |
-| `tools/i18n/**` | 57 | 本仓库新增的校验工具与译文映射表（见第七节） |
+| `tools/i18n/**` | 72 | 本仓库新增的校验工具与译文映射表（见第七节） |
 | 其他（`.gitignore`、`MODIFICATIONS.md`、`NOTICE`、`README.md`、`README.upstream.md`、`CHANGELOG.md`） | 6 | 见下 |
-| **合计** | **307** | **+8050 / −9323 行** |
+| **合计** | **322** | **+10445 / −9326 行** |
+
+> 统计口径：`git diff --name-only 476b165b9 HEAD`（已跟踪改动）+
+> `git ls-files --others --exclude-standard`（未跟踪新增），行数含未跟踪新增文件。
 
 本地化方式为**编译期硬替换**（非运行时 i18n 框架）。未引入任何新依赖。
 
@@ -240,7 +243,7 @@ Apache License 2.0 第 6 条**不授予商标许可**。本仓库：
 | `MODIFICATIONS.md` | 本文件 —— 满足 §4(b) 修改声明 |
 | `NOTICE` | 归属与商标立场（上游无 NOTICE，此为惯例补充） |
 | `README.upstream.md` | 上游英文 README 原样保留，满足归属要求 |
-| `tools/i18n/**` | 汉化校验工具（10 个脚本）与译文映射表（36 个 JSON） |
+| `tools/i18n/**` | 汉化校验工具（25 个脚本）与译文映射表（45 个 JSON） |
 
 `tools/i18n/` 的用法见 [`tools/i18n/README.md`](tools/i18n/README.md)。
 其中 `check-enums.mjs` 尤其重要：它检测「枚举值被误译」导致的**静默功能失效** ——

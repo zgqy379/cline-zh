@@ -140,11 +140,98 @@ node tools/i18n/audit.mjs <范围>
 
 术语表与踩坑记录的批量回填脚本，读写 `docs/` 下的文档。
 
+### `collect-pairs.mjs` —— 提取 EN→ZH 双语对
+
+```bash
+node tools/i18n/collect-pairs.mjs <repoRoot> <baselineSha> <outJson>
+```
+
+从「基线 commit 到 HEAD 的累计 diff」+ `maps/` 反查词典，提取 `[{en, zh, file, line}]`
+双语对照，供 `check-consistency.mjs` 跑质量规则。maps 目录默认取本仓库
+`tools/i18n/maps/`（可用 `MAPS_DIR` 覆盖）。
+
+### `check-consistency.mjs` —— 双语对质量规则
+
+```bash
+node tools/i18n/check-consistency.mjs <pairsJson> <outJson>
+node tools/i18n/check-consistency.mjs --selftest      # 跑内置用例
+```
+
+对双语对跑确定性规则：R1 EN→ZH 多义冲突、R2 GLOSSARY 偏离、R3 半角标点、
+R4 复数残留、R5 CJK 与拉丁混排。噪声不静默丢弃，走 `suppressed` 桶并附原因。
+术语表默认取本仓库 `docs/GLOSSARY.md`（可用 `GLOSSARY` 覆盖）。
+
+---
+
+## 测试与回归
+
+### `baseline-compare.mjs` —— 失败用例名称集合差集
+
+```bash
+node tools/i18n/baseline-compare.mjs <baseline-output.txt> <head-output.txt>
+node tools/i18n/baseline-compare.mjs --run          # 自动跑两侧
+```
+
+比**名称集合差集**，不比总数 —— 总数会被并行抖动干扰。仓库根默认从脚本位置推导
+（可用 `REPO` 覆盖）。
+
+### `check-stale-assertions.mjs` —— 过期断言诊断
+
+```bash
+node tools/i18n/check-stale-assertions.mjs            # guard 模式
+```
+
+列出「测试断言的英文在产品源码里仍存在」的条目，判断哪些断言不该改。
+静态扫描无法可靠配对「断言 ↔ 源串」，失败列表 + 词面比对才是可靠路径。
+
+### `agg.mjs` / `triage.mjs` —— 失败分诊
+
+```bash
+node tools/i18n/agg.mjs <vitest-json>     # 按文件聚合失败 + 标注「中英混杂」疑似翻译致因
+node tools/i18n/triage.mjs <vitest-json>  # 逐条列出失败与期望值
+```
+
+从 vitest `--reporter=json` 报告里提取失败，人工区分「翻译致因」与「平台遗留」。
+
+---
+
+## 出包验证
+
+### `verify-updater-disabled.mjs` —— 自动更新确已禁用
+
+```bash
+node tools/i18n/verify-updater-disabled.mjs
+```
+
+复刻 `main.rs::updates_enabled` 的判定逻辑，断言 `tauri.conf.json` 的
+`plugins.updater.endpoints` 为空且 `pubkey` 为空 —— 否则出包会把汉化版
+自动更新回英文官方版。**每次出包前必跑。**
+
+### `verify-runtime.mjs` / `capture-pages.mjs` —— CDP 运行时验证
+
+```bash
+# 先以 WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS=--remote-debugging-port=9333 启动 cline-app.exe
+node tools/i18n/verify-runtime.mjs 9333
+node tools/i18n/capture-pages.mjs 9336 <outDir>
+```
+
+`verify-runtime` 检查中文渲染 + 三态主题切换；`capture-pages` 逐页巡检
+拉丁残留 / 半角标点 / CJK 与拉丁无空格拼接。输出目录默认 `build-out/`（`OUT_DIR` 可覆盖）。
+
+---
+
+## 协作工具不在此目录
+
+多 Agent 的邮箱（`mail.mjs`）与席位契约（`seat-ping.mjs`）依赖工作区级的
+`docs/mailbox/`、`docs/BOARD.md`，它们**不属于本仓库的交付物**，因此不在
+`tools/i18n/` 内。本目录只放「汉化与校验」工具 —— 与 `MODIFICATIONS.md` 第七节
+的口径一致。
+
 ---
 
 ## 映射表（`maps/`）
 
-36 个 JSON 文件，每个对应一个源文件，格式为 `{"英文原文": "中文译文"}`。
+45 个 JSON 文件，每个对应一个源文件，格式为 `{"英文原文": "中文译文"}`。
 
 **这是本项目事实上的"词典"**，也是上游更新后重放汉化的依据：
 上游发布新版后，重跑 `scan-i18n.mjs` 找出新增/变更的文案，
