@@ -6,7 +6,7 @@
 
 <p align="center">
   <strong>Cline 桌面端（Desktop App）的简体中文本地化版本</strong><br>
-  非官方社区项目 · 基于 <a href="https://github.com/cline/cline">cline/cline</a> @ <code>desktop-v0.0.37</code> 编译
+  非官方社区项目 · 基于 <a href="https://github.com/cline/cline">cline/cline</a> @ <code>desktop-v0.0.43</code> 编译
 </p>
 
 ---
@@ -33,8 +33,8 @@ VS Code 扩展与桌面端是两套独立的 UI 代码，扩展版的汉化不�
 
 | 文件 | 说明 |
 |---|---|
-| `Cline-zh-CN_0.0.37_x64-setup.exe` | **推荐**，NSIS 安装包（普通用户） |
-| `Cline-zh-CN_0.0.37_x64.msi` | MSI 安装包（企业批量部署） |
+| `Cline-zh-CN_0.0.43_x64-setup.exe` | **推荐**，NSIS 安装包（普通用户） |
+| `Cline-zh-CN_0.0.43_x64.msi` | MSI 安装包（企业批量部署） |
 
 > 应用标识为 `bot.cline.app.zh`，可与官方 Cline **同时安装、同时运行**，配置目录与单实例锁互不干扰；
 > 但**不共享登录态与 API Key**，首次使用需重新配置。**自动更新已禁用**，升级请手动下载新版本。
@@ -87,18 +87,31 @@ Apache-2.0 第 4(b) 条对"修改声明"的要求。
 
 ### 为什么仓库里是整个 cline 源码？
 
-本仓库是上游**完整源码树**的 fork（基线提交 `41deb5d` = `desktop-v0.0.37` 的未改动快照），
-跟踪 4100+ 个文件，而汉化实际只改动其中约 280 个。其余部分 —— `apps/vscode`（VS Code 扩展）、
+本仓库是上游**完整源码树**的 fork，现对齐 `desktop-v0.0.43`
+（上游原始 commit `476b165b9`，合并点 `7190d75cf`；更早的
+`41deb5d` = `desktop-v0.0.37` 的未改动快照），
+跟踪 4100+ 个文件，而汉化实际只改动其中约 300 个。其余部分 —— `apps/vscode`（VS Code 扩展）、
 `apps/cli`、`apps/cline-hub`、`evals`、上游文档站等 —— 本 fork **一行未动**。
 
 保留完整树而不是只放一份「汉化补丁」，是三个硬约束的结果：
 
-1. **法务可追溯**：[`MODIFICATIONS.md`](MODIFICATIONS.md) 声明「本仓库与上游的全部差异可用
-   `git diff 41deb5d HEAD` 复现」。Apache-2.0 第 4(b) 条的修改声明要求可追溯，裁剪任何目录都会让这句话不成立。
+1. **法务可追溯**：[`MODIFICATIONS.md`](MODIFICATIONS.md) 声明本地化改动
+   可用 `git diff 476b165b9 HEAD` 复现。Apache-2.0 第 4(b) 条的修改声明要求可追溯，
+   裁剪任何目录都会让这句话不成立。
 2. **上游更新可重放**：上游发新版后可直接 rebase，再重跑 `tools/i18n/` 的扫描器复用译文映射表。
 3. **构建可复现**：桌面端依赖 `sdk/packages/**` 与根 workspace 配置，缺一块就编不出来。
 
-只想看汉化改了什么：`git diff --stat 41deb5d HEAD`。
+只想看汉化改了什么：
+
+```bash
+git diff --stat 476b165b9 HEAD          # ✅ 本地化改动（307 files）
+git diff --stat 41deb5d HEAD            # ⚠️ 含 0.0.37→0.0.43 的上游演进
+```
+
+> ⚠️ **升级上游时务必逐项复核 `tauri.conf.json`**：本 fork 在该文件上有两处
+> 功能性改动（`plugins.updater` 禁用自动更新、`bundle.windows.wix.language`），
+> 0.0.43 合并时两处都被打回上游，均已在 `9bfd32c11` / `36d1a938f` 修复。
+> 用 `node build-out/silent-revert.mjs <旧基线> HEAD` 做结构化核对。
 
 ---
 
@@ -150,31 +163,37 @@ cargo tauri build      # 或 bun run build:binary
 
 ## 测试状态（如实记录）
 
-桌面端全量 vitest 实测：**1656 用例，约 20 条失败**（Windows）。
+桌面端全量 vitest 实测（2026-10-08）：**18 条失败**，全部是 Windows 平台差异，
+**与汉化无关**。
 
-⚠️ **失败数不是稳定值**：同一份代码连跑两次分别得到 19 / 21 条。
-这是该仓库长期存在的**并行抖动**——sidecar 测试大量起真实端口与子进程，
-并行时互相争用；单个用例隔离复跑全部通过。所以此处只给量级，不写精确值。
+| 文件 | 条数 | 归因 |
+|---|---|---|
+| `sidecar/commands-git-worktree.test.ts` | 10 | git 打印 `C:/` 而断言写 `C:\`；`rmSync` 临时目录 `EPERM` |
+| `sidecar/commands-settings.test.ts` | 4 | `CLINE_DATA_DIR` 临时目录 `EPERM` 文件锁 |
+| `sidecar/chat-session.test.ts` | 2 | 会话 fork 的 workspace 锁时序 |
+| `sidecar/logging.test.ts` | 1 | 日志文件不可写时回落 stderr |
+| `sidecar/remote-environment-commands.test.ts` | 1 | `spawnSync sh ENOENT`（Windows 无 sh） |
 
-**稳定的是基线对照**：在**未改动的上游基线**（`41deb5d`）上同机跑，
-失败用例名称集合与本仓库做 `comm` 差集：
+`sdk/packages/ui`：**209/209 全绿**（29 个测试文件）。
 
-- **零新增失败**
-- 基线 30 条 → 当前 23 条（去重后），**净减少 4 条**：
-  `chat-input-bar` 的 3 条 token ring 断言 + 1 条 cline-pass picker
+失败集合**已验证稳定**：连跑 5 轮（全量 1 轮 + sidecar 目录 4 轮），
+sidecar 部分每轮失败名称集合逐字一致。
 
-比对方法是取失败用例**名称集合**做差集，而非比较总数——总数会被抖动干扰。
+**基线对照方法**（⚠️ 不要用 `git stash`，本工作区多 Agent 共享）：
 
-另需说明：汉化致因的失败也已全部清零。其中早期 6 条见 commit `e54ba5d`，
-7 条由 commit `10c3745` 修掉（`composio.test.ts` 1 条与
-`chat-messages.test.tsx` 6 条——这两处是本轮翻译使源码变中文后
-断言未同步所致，基线上本为绿，故不计入上述差集）。
+```bash
+git diff > build-out/x.patch                       # ① 先存 diff
+git checkout HEAD -- <改动路径>                     # ② 再还原
+node node_modules/vitest/vitest.mjs run <文件> --config vitest.config.ts \
+  --reporter=json --outputFile=D:/cline-zh/build-out/base.json
+git apply build-out/x.patch                        # ④ 还原（顺序不能反）
+```
 
-失败全部与汉化无关，属 Windows 平台差异，在 Linux / macOS 上不复现：
-git 路径分隔符（`C:/` vs `C:\`）、`EPERM` 删临时目录、模型目录异步加载的
-flake，以及 4 个 `scripts/*` 测试文件在 Windows 上整体未收集
-（仅在对应平台运行）。逐条分类见
-[`docs/TEST-FAILURE-TRIAGE.md`](docs/TEST-FAILURE-TRIAGE.md)。
+比对取失败用例**名称集合**做差集，而非比较总数。
+
+汉化致因的失败为 **0**：2026-10-08 对抗审查改动前后失败集合完全一致，
+并顺带修绿 1 条（`commands-settings` 的 non-boolean cloud sessions toggle）。
+逐条分类见 [`docs/TEST-FAILURE-TRIAGE.md`](docs/TEST-FAILURE-TRIAGE.md)。
 
 ---
 
@@ -184,6 +203,13 @@ flake，以及 4 个 `scripts/*` 测试文件在 Windows 上整体未收集
 若保持启用，自动更新会把汉化版**静默替换回英文官方版**。
 本仓库已置空 `endpoints` 与 `pubkey`。如需自建更新通道，
 请同时配置自己的端点与签名密钥。
+
+> ⚠️ **这一段在 0.0.43 合并时曾被整体打回上游**（`9bfd32c11` 修复）。
+> 升级上游后请用 `node tools/verify-updater-disabled.mjs` 复核，
+> 它会同时检查 `endpoints`、`pubkey` 与 Rust 侧 `updates_enabled()` 的联动。
+>
+> 顺带一提：托盘的「检查更新」菜单项依赖 `updates_enabled()`，
+> 所以禁用自动更新同时也隐藏了该菜单项 —— 这是预期行为。
 
 ---
 

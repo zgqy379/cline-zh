@@ -11,34 +11,51 @@ changed the files."）。上游许可证全文保留在 [`LICENSE`](LICENSE)，�
 | 项 | 值 |
 |---|---|
 | 上游项目 | [cline/cline](https://github.com/cline/cline) |
-| 对齐标签 | `desktop-v0.0.37` |
+| 对齐标签 | **`desktop-v0.0.43`**（2026-10-07 起；此前为 `desktop-v0.0.37`） |
 | 上游版权 | Copyright 2026 Cline Bot Inc. |
 | 许可 | Apache License 2.0（见 [`LICENSE`](LICENSE)） |
-| 本仓库基线 commit | `41deb5d`（"BASELINE: cline desktop-v0.0.37 upstream source (unmodified)"） |
-| 基线 tree hash | `6f6d2e38b0f1479eab178186c3b83f110473cb1b` |
+| 0.0.37 原始基线 commit | `41deb5d`（"BASELINE: cline desktop-v0.0.37 upstream source (unmodified)"） |
+| 0.0.37 基线 tree hash | `6f6d2e38b0f1479eab178186c3b83f110473cb1b` |
+| **上游 0.0.43 合并点** | **`7190d75cf`**（`merge: 合并上游 desktop-v0.0.43`） |
+| **上游 0.0.43 原始 commit** | **`476b165b9`**（合并点的第二父提交；`chore(desktop): trim v0.0.43 changelog`） |
 
-`41deb5d` 是上游 `desktop-v0.0.37` 的**未改动**快照。所有本地修改都在其之上。
+本仓库 = 上游 `desktop-v0.0.43`（`476b165b9`）＋ 其上的本地化改动。
 
-本仓库与上游的**全部**差异可用一条命令复现：
+### ⚠️ 如何复现差异（0.0.43 之后口径已变）
 
 ```bash
+# ✅ 只看本地化改动：与上游 0.0.43 原始 commit 比较
+git diff 476b165b9 HEAD          # 307 files, +8050 / −9323
+
+# ❌ 不要用合并点 7190d75cf：合并时未冲突文件的汉化已被保留，
+#    拿它当基准只会看到合并之后的增量（37 files），不是全部本地化改动。
+
+# ⚠️ 与 0.0.37 原始快照比较：会同时混入两个版本之间的上游演进
+#    （702 files, +35093 / −17370），仅用于追溯 0.0.37 时期的批次。
 git diff 41deb5d HEAD
 ```
+
+> 2026-10-07 之前，本文件把 `git diff 41deb5d HEAD` 描述为「与上游的**全部**差异」。
+> 合并上游 0.0.43 后该说法不再成立，故改为以上三档口径。
 
 ---
 
 ## 改动规模
 
+> 口径：`git diff 476b165b9 HEAD -- <路径>`（上游 0.0.43 原始 commit 为基准），
+> 实测于 2026-10-08（HEAD = `3f77c61e3`）。
+
 | 区域 | 改动文件数 | 说明 |
 |---|---|---|
-| `apps/examples/desktop-app/webview/**` | 138 | 桌面端界面文案 |
-| `apps/examples/desktop-app/sidecar/**` | 28 | sidecar 抛给 UI 的用户可见消息 |
-| `sdk/packages/ui/**` | 25 | 共享 React 组件库（含测试断言同步） |
+| `apps/examples/desktop-app/webview/**` | 144 | 桌面端界面文案 |
+| `apps/examples/desktop-app/sidecar/**` | 30 | sidecar 抛给 UI 的用户可见消息 |
+| `sdk/packages/ui/**` | 27 | 共享 React 组件库（含测试断言同步） |
+| `sdk/packages/core/**` | 5 | 内置工具目录描述、云端会话事件消息 |
 | `apps/examples/desktop-app/src-tauri/**` | 2 | 托盘菜单、窗口/安装包标识 |
 | `sdk/packages/shared/**` | 1 | 连接器配置文案 |
-| `sdk/packages/core/**` | 1 | 内置工具目录描述 |
-| 其他（`.gitignore`、`bun.lock`、CHANGELOG 等） | 5 | 见下 |
-| **合计** | **200** | **+3678 / −3204 行** |
+| `tools/i18n/**` | 57 | 本仓库新增的校验工具与译文映射表（见第七节） |
+| 其他（`.gitignore`、`MODIFICATIONS.md`、`NOTICE`、`README.md`、`README.upstream.md`、`CHANGELOG.md`） | 6 | 见下 |
+| **合计** | **307** | **+8050 / −9323 行** |
 
 本地化方式为**编译期硬替换**（非运行时 i18n 框架）。未引入任何新依赖。
 
@@ -46,7 +63,7 @@ git diff 41deb5d HEAD
 
 ## 一、界面文案汉化（T1）
 
-约 1500 处用户可见字符串译为简体中文，覆盖：
+约 1600 处用户可见字符串译为简体中文，覆盖：
 
 - 桌面端全部界面文案（会话列表、聊天、设置、欢迎页、模型选择器等）
 - 应用内展示的更新日志（`apps/examples/desktop-app/CHANGELOG.md`）
@@ -54,7 +71,10 @@ git diff 41deb5d HEAD
 - 共享组件库 `@cline/ui` 中的状态标签与工具摘要
 - 原生层托盘菜单与 macOS 应用菜单文案
 
-同步更新了 **354 处测试断言**，使其与汉化后的界面文案一致。
+测试断言同步量随批次累积，2026-10-08 实测 `desktop-app` 下
+`toBe/toContain/toEqual/toThrow/toMatch` 断言共约 **2900 条**，
+其中因汉化而需要改词面的是其中一部分（每批由 `tools/i18n/` 的映射表驱动）。
+逐批记录见 `docs/PROGRESS.md` 的批次看板。
 
 ### 刻意不翻译的部分
 
@@ -62,17 +82,27 @@ git diff 41deb5d HEAD
 
 - 命令名、事件名、IPC message type、API 字段名、JSON key
 - 工具名与参数名（`read_files` `editor` `run_commands` …）
+- **参数名校验错误串里的参数名本体**：`sessionId is required` 译作
+  `sessionId 为必填项` —— 参数名留原文、句式译中文（2026-10-08 对抗审查更正：
+  此前一度误判为「整句保留英文」，与本 fork 自 0.0.37 起的一贯做法冲突，已回退）
 - CSS 类名、`data-*` / `aria-*` 的枚举值、DOM id
 - `localStorage` key、配置键名、环境变量名
 - 存储契约值（如主题偏好 `"light" | "dark" | "system"`）
 - Zod schema 的 `.describe()`（发给模型的语义描述，保持与英文 prompt 一致）
+  ⚠️ 例外：`sdk/packages/core/src/extensions/tools/runtime.ts` 的
+  `BASE_TOOL_CATALOG[].description` **已汉化**。经核查，该目录表的 `description`
+  在桌面交付链路上只被 `sidecar/commands.ts` 的扩展清单读取并渲染到 UI
+  （`getCoreBuiltinToolCatalog` 的其余调用方一律只取 `id`）；
+  唯一把描述送进模型 user-instructions 的是 `apps/cline-hub/`，而该应用
+  **不在桌面交付链路上**（`desktop-app/package.json` 不依赖它，Tauri 只打包
+  `bin/code-sidecar`）。详见 `docs/PROGRESS.md` §8bis。
 - 产品名与厂商名：Cline、VS Code、MCP、JSON、Anthropic、OpenAI 等
 
 ---
 
-## 二、功能性修改（非文案，共 4 项）
+## 二、功能性修改（非文案，共 5 项）
 
-以下改动**超出纯本地化范围**，会改变运行时行为，特此显式声明。
+以下改动**超出纯本地化范围**，会改变运行时行为或构建行为，特此显式声明。
 
 ### 1. 三态主题支持（`webview/lib/theme.ts`）
 
@@ -110,6 +140,15 @@ git diff 41deb5d HEAD
 - 匹配集合同时接受中英文，以兼容历史会话与 CLI 侧回传的英文原文。
 - 新增 6 个回归测试。
 
+### 5. `bun.lock` 的桌面端包版本对齐（commit `fa5f5e5fb`）
+
+- 上游在 `desktop-app/package.json` 升到 `0.0.43` 时没有同步重新生成 `bun.lock`，
+  锁文件里的 workspace 版本停在 `0.0.41`。
+- 现将 `bun.lock` 中 `apps/examples/desktop-app` 的版本改为 `0.0.43`，与
+  `package.json` 一致，避免 `bun install` 后产生无意义 diff。
+- 不影响构建产物：CI 用的是普通 `bun install`（非 `--frozen-lockfile`）。
+- ⚠️ 本项属**上游元数据不一致**的修补，不是汉化需求，可独立回退。
+
 ---
 
 ## 三、构建与标识
@@ -129,36 +168,42 @@ git diff 41deb5d HEAD
 
 ## 四、测试状态（如实记录）
 
-桌面端全量 vitest 实测：**1656 用例，约 20 条失败**（Windows）。
+桌面端全量 vitest 实测（2026-10-08，`build-out/b58-full-names.txt`）：
+**18 条失败**，全部为 Windows 平台差异，**与汉化无关**。
 
-⚠️ 失败数**不是稳定值**：同一份代码连跑两次分别得 19 / 21 条。
-这是该仓库长期存在的并行抖动（`PROGRESS.md` 已多次登记「同一份代码连跑两次
-互相翻转」），sidecar 测试大量起真实端口与子进程、并行时互相争用，
-隔离复跑均通过。此处只给量级，不写精确值。
-（早前一次记录到 27 条的运行发生在断言修复**之前**，不属当前代码。）
+| 文件 | 条数 | 归因 |
+|---|---|---|
+| `sidecar/commands-git-worktree.test.ts` | 10 | git 打印 `C:/` 而断言写 `C:\`；`rmSync` 临时目录 `EPERM`；Windows 下 `git worktree` 行为差异 |
+| `sidecar/commands-settings.test.ts` | 4 | `CLINE_DATA_DIR` 临时目录 `EPERM` 文件锁 |
+| `sidecar/chat-session.test.ts` | 2 | 会话 fork 的 workspace 锁时序 |
+| `sidecar/logging.test.ts` | 1 | 日志文件不可写时回落 stderr 的 Windows 行为 |
+| `sidecar/remote-environment-commands.test.ts` | 1 | `spawnSync sh ENOENT`（Windows 无 sh） |
 
-**稳定的是基线对照**：`git stash` 后跑未改动的上游基线 `41deb5d`，
-取失败用例名称集合做 `comm` 差集（而非比较总数，总数会被抖动干扰）：
+`sdk/packages/ui`：29 个测试文件 **209/209 全绿**。
 
-- **零新增失败**
-- 基线 30 条 → 当前 23 条（去重后），**净减少 4 条**：
-  `chat-input-bar` 的 3 条 token ring 断言 + 1 条 cline-pass picker
+失败集合**已验证稳定**：连跑 5 轮（全量 1 轮 + sidecar 目录 4 轮），
+sidecar 部分每轮失败集合逐字一致。
 
-另有一类修复**不体现在上述差集里**，需分开记：
+**基线对照方法**（⚠️ 已更新，勿再用 `git stash`）：本工作区为多 Agent 共享，
+`git stash` 会连带 stash 掉他人的在途改动，已被禁用。正确做法：
 
-- **修掉本轮自己引入的回归 7 条** —— `composio.test.ts` 1 条
-  （`zeroToolsWarning` 译中文后断言未同步）与 `chat-messages.test.tsx` 6 条
-  （图片附件 `alt`/`aria-label` 译中文后 11 处选择器断言未同步）。
-  这 7 条在基线上是**绿的**（上游源码为英文原文），
-  是本轮翻译使源码变中文后、断言未同步导致的红；同步断言后复归绿。
-  故它们不进入「基线→当前」的差集，只体现在修前 7 红 → 修后 0 红的对比里。
+```bash
+git diff > build-out/x.patch        # ① 先存 diff
+git checkout HEAD -- <改动路径>      # ② 再还原
+node node_modules/vitest/vitest.mjs run <文件> --config vitest.config.ts \
+  --reporter=json --outputFile=D:/cline-zh/build-out/base.json   # ③ 跑基线
+git apply build-out/x.patch         # ④ 还原（顺序不能反，反了会静默丢文件）
+```
 
-**汉化致因的失败已全部清零**：早期 6 条见 commit `e54ba5d`，
-本轮上述 7 条由 commit `10c3745` 修掉。
+失败集合对比（**比计数更可靠**，计数会被并行抖动干扰）：
 
-剩余失败**均非汉化导致**，属 Windows 平台差异（git 路径分隔符、
-`EPERM` 删临时目录、模型目录异步加载的 flake），在 Linux / macOS 上不复现；
-另有 4 个 `scripts/*` 测试文件在 Windows 上整体未收集。
+```bash
+node -e "const d=require('D:/cline-zh/build-out/base.json');for(const t of d.testResults)for(const a of t.assertionResults)if(a.status==='failed')console.log(a.fullName)" | sort
+```
+
+**翻译致因的失败为 0**。本轮（2026-10-08 对抗审查）实测：
+改动前后失败集合**完全一致**，且顺带修绿 1 条
+（`commands-settings` 的 `rejects a non-boolean cloud sessions toggle value`）。
 逐条分类见 `docs/TEST-FAILURE-TRIAGE.md`。
 
 ---
