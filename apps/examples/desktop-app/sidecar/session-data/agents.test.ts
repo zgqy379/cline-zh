@@ -230,7 +230,7 @@ describe("listSessionAgents last action", () => {
 				]),
 			}),
 		);
-		expect(listSessionAgents(ROOT)[0]?.lastAction).toBe("Running read_files");
+		expect(listSessionAgents(ROOT)[0]?.lastAction).toBe("正在运行 read_files");
 	});
 
 	it("falls back to the latest assistant text", () => {

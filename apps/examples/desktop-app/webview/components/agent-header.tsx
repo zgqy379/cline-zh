@@ -93,7 +93,7 @@ function AgentHeaderImpl({
 	const statusTone = sessionStatusTone(status);
 	const statusColor = sessionStatusColor(status);
 	const threadTitle = useMemo(
-		() => normalizeTitle(title?.trim()) || "New Session",
+		() => normalizeTitle(title?.trim()) || "新建会话",
 		[title],
 	);
 
@@ -548,12 +548,12 @@ function AgentRosterRow({
 				    min-w-0 lets the clamp/truncate win over the text's intrinsic size. */}
 				<span className="flex min-w-0 flex-1 flex-col">
 					<span className="line-clamp-2 wrap-break-word text-xs font-medium text-foreground">
-						{task || "Untitled task"}
+						{task || "未命名任务"}
 					</span>
 					<span className="mt-0.5 flex min-w-0 items-center gap-1.5 text-[11px] text-muted-foreground">
 						{agent.kind === "teamtask" ? (
 							<span className="shrink-0 text-[10px] uppercase tracking-wide">
-								{agent.teamName ? `team ${agent.teamName}` : "team"}
+								{agent.teamName ? `团队 ${agent.teamName}` : "团队"}
 							</span>
 						) : null}
 						<span

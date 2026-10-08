@@ -305,7 +305,7 @@ describe("AgentHeader agent roster popover", () => {
 	it("labels a team-task agent with its team", async () => {
 		await renderHeader();
 		const panel = await openPanel();
-		expect(panel?.textContent).toContain("team platform");
+		expect(panel?.textContent).toContain("团队 platform");
 	});
 
 	it("spins the row of a running agent only", async () => {

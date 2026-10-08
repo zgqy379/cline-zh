@@ -275,7 +275,7 @@ export function SettingsView({
 				return true;
 			} catch (error) {
 				const message = error instanceof Error ? error.message : String(error);
-				window.alert(`Failed to save provider settings for ${id}: ${message}`);
+				window.alert(`保存供应商设置失败（${id}）：${message}`);
 				// The optimistic list update no longer matches disk: resync from
 				// the authoritative catalog. Retry when a concurrent edit
 				// superseded the in-flight response (that edit performs no
@@ -475,7 +475,7 @@ export function SettingsView({
 			setSelectedProviderId(id);
 		} catch (error) {
 			const message = error instanceof Error ? error.message : String(error);
-			window.alert(`Failed to sign in to ${id}: ${message}`);
+			window.alert(`登录 ${id} 失败：${message}`);
 		} finally {
 			setOauthSigningProviderId(null);
 		}

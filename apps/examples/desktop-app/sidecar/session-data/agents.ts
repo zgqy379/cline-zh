@@ -134,7 +134,7 @@ function deriveLastAction(messages: unknown[]): string | undefined {
 				continue;
 			}
 			if (block.type === "tool_use" && typeof block.name === "string") {
-				return `Running ${block.name}`;
+				return `正在运行 ${block.name}`;
 			}
 			if (block.type === "text" && typeof block.text === "string") {
 				const text = truncate(block.text);

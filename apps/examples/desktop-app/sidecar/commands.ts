@@ -428,14 +428,14 @@ function openUrlInDefaultBrowser(url: string): Promise<void> {
 		});
 		spawned.once("error", (error) => {
 			clearTimeout(graceTimer);
-			reject(new Error(`could not open browser: ${error.message}`));
+			reject(new Error(`无法打开浏览器：${error.message}`));
 		});
 		spawned.once("exit", (code) => {
 			clearTimeout(graceTimer);
 			if (code === 0 || code === null) {
 				resolve();
 			} else {
-				reject(new Error(`browser opener exited with code ${code}`));
+				reject(new Error(`浏览器打开命令以退出码 ${code} 退出`));
 			}
 		});
 	});
@@ -1292,7 +1292,7 @@ async function handleRoutineScheduleCommand(
 		const workspaceRoot = asTrimmedString(args?.workspace_root);
 		if (!name || !timing || !prompt || !workspaceRoot) {
 			throw new Error(
-				"createSchedule requires name, timing, prompt, and workspace_root",
+				"创建定时任务需要 name、timing、prompt 和 workspace_root 全部参数。",
 			);
 		}
 		const created = await clientCommand("schedule.create", {
@@ -1316,7 +1316,7 @@ async function handleRoutineScheduleCommand(
 		return { schedule: created.schedule ?? null };
 	}
 	const scheduleId = asTrimmedString(args?.schedule_id);
-	if (!scheduleId) throw new Error(`${command} requires schedule_id`);
+	if (!scheduleId) throw new Error(`${command} 需要 schedule_id 参数。`);
 	if (command === "update_routine_schedule") {
 		const mode = readHubScheduleMode(args);
 		const name = asTrimmedString(args?.name);
@@ -1325,7 +1325,7 @@ async function handleRoutineScheduleCommand(
 		const workspaceRoot = asTrimmedString(args?.workspace_root);
 		if (!name || !timing || !prompt || !workspaceRoot) {
 			throw new Error(
-				"updateSchedule requires schedule_id, name, timing, prompt, and workspace_root",
+				"更新定时任务需要 schedule_id、name、timing、prompt 和 workspace_root 全部参数。",
 			);
 		}
 		const reply = await clientCommand("schedule.update", {
@@ -1848,7 +1848,7 @@ async function openFileInCodeEditor(
 				}
 			}
 		}
-		throw new Error(`本机上没有可用的 ${editor.label}`);
+		throw new Error(`${editor.label} 在本机上不可用`);
 	}
 	if (!editorId) {
 		for (const editor of CODE_EDITOR_CATALOG) {
@@ -1901,7 +1901,7 @@ export async function handleCommand(
 	if (command === "upsert_remote_environment") {
 		const profile = args?.profile;
 		if (!profile || typeof profile !== "object" || Array.isArray(profile)) {
-			throw new Error("profile is required");
+			throw new Error("配置文件为必填项");
 		}
 		const saved = await getRemoteEnvironmentService(ctx).upsert(
 			profile as RemoteEnvironmentInput,
@@ -1912,7 +1912,7 @@ export async function handleCommand(
 	if (command === "test_remote_environment") {
 		const id = String(args?.id ?? "").trim();
 		if (!id) {
-			throw new Error("remote environment id is required");
+			throw new Error("远程环境 ID 为必填项");
 		}
 		const service = getRemoteEnvironmentService(ctx);
 		const profile = (await service.list()).find((item) => item.id === id);
@@ -1928,7 +1928,7 @@ export async function handleCommand(
 	if (command === "connect_remote_environment") {
 		const id = String(args?.id ?? "").trim();
 		if (!id) {
-			throw new Error("remote environment id is required");
+			throw new Error("远程环境 ID 为必填项");
 		}
 		return await withRemoteEnvironmentTransition(ctx, async () => {
 			const service = getRemoteEnvironmentService(ctx);
@@ -2046,7 +2046,7 @@ export async function handleCommand(
 	if (command === "delete_remote_environment") {
 		const id = String(args?.id ?? "").trim();
 		if (!id) {
-			throw new Error("remote environment id is required");
+			throw new Error("远程环境 ID 为必填项");
 		}
 		return await withRemoteEnvironmentTransition(ctx, async () => {
 			const service = getRemoteEnvironmentService(ctx);
@@ -2065,7 +2065,7 @@ export async function handleCommand(
 	if (command === "list_workspace_directories") {
 		const environmentId = requestedEnvironmentId(args);
 		if (!environmentId) {
-			throw new Error("environmentId is required");
+			throw new Error("environmentId 为必填项");
 		}
 		return await listWorkspaceDirectories(
 			ctx,
@@ -2086,7 +2086,7 @@ export async function handleCommand(
 	if (command === "proceed_while_running") {
 		const sessionId = String(args?.sessionId ?? "").trim();
 		if (!sessionId) {
-			throw new Error("sessionId is required");
+			throw new Error("sessionId 为必填项");
 		}
 		const toolCallId = asTrimmedString(args?.toolCallId);
 		const binding =
@@ -2100,7 +2100,7 @@ export async function handleCommand(
 		);
 		if (!reply.ok) {
 			throw new Error(
-				reply.error?.message ?? "命令执行中不可进行此操作。",
+				reply.error?.message ?? "命令运行期间无法继续。",
 			);
 		}
 		return {
@@ -2138,7 +2138,7 @@ export async function handleCommand(
 		const binding = await getCommandSessionBinding(ctx, sessionId, args);
 		if (binding?.kind === "ssh") {
 			throw new Error(
-				"SSH 运行时暂不支持远程会话钩子。",
+				"SSH 运行时暂不支持读取远程会话的 hook 产物。",
 			);
 		}
 		return await readSessionHooks(
@@ -2151,7 +2151,7 @@ export async function handleCommand(
 		const binding = await getCommandSessionBinding(ctx, sessionId, args);
 		if (binding?.kind === "ssh") {
 			throw new Error(
-				"SSH 运行时暂不支持远程会话智能体。",
+				"SSH 运行时暂不支持读取远程会话的 agent 产物。",
 			);
 		}
 		return listSessionAgents(
@@ -2259,12 +2259,12 @@ export async function handleCommand(
 		});
 		if (result.outcome === "hub_not_older") {
 			throw new Error(
-				"正在运行的 Cline Hub 比本应用更新，因此未做替换。请改为升级 Cline。",
+				"正在运行的 Cline Hub 版本比本应用更新，因此未被替换。请改为更新 Cline。",
 			);
 		}
 		if (result.outcome === "still_busy") {
 			throw new Error(
-				"正在运行的 Cline Hub 在被替换前接入了新会话，因此未做替换。请重试。",
+				"正在运行的 Cline Hub 在被替换前接入了新的会话，因此保持运行。请重试。",
 			);
 		}
 		// The mismatch is resolved: a null broadcast closes the dialog in
@@ -2297,7 +2297,7 @@ export async function handleCommand(
 		const sessionId = String(args?.sessionId ?? "").trim();
 		const requestId = String(args?.requestId ?? "").trim();
 		if (!sessionId || !requestId) {
-			throw new Error("sessionId and requestId are required");
+			throw new Error("sessionId 和 requestId 为必填项");
 		}
 		const connection = options?.connection;
 		if (!connection?.data?.canApproveTools) {
@@ -2339,12 +2339,12 @@ export async function handleCommand(
 	if (command === "respond_ask_question") {
 		const requestId = String(args?.requestId ?? "").trim();
 		if (!requestId) {
-			throw new Error("requestId is required");
+			throw new Error("requestId 为必填项");
 		}
 		const answer = String(args?.answer ?? "").trim();
 		const resolved = resolveSidecarAskQuestion(ctx, requestId, answer);
 		if (!resolved) {
-			throw new Error(`未知的追问请求：${requestId}`);
+			throw new Error(`未知的提问请求：${requestId}`);
 		}
 		broadcastEvent(ctx, "ask_question_answered", { requestId });
 		return true;
@@ -2476,7 +2476,7 @@ export async function handleCommand(
 	}
 	if (command === "get_discovered_session") {
 		const sessionId = String(args?.sessionId ?? args?.session_id ?? "").trim();
-		if (!sessionId) throw new Error("session id is required");
+		if (!sessionId) throw new Error("会话 ID 为必填项");
 		const cloud = getCloudSessionManager(ctx);
 		if (cloud.isCloudSession(sessionId)) {
 			// The active-scope list can omit a session created under another
@@ -2530,7 +2530,7 @@ export async function handleCommand(
 			requests.push({ tool: tool as SessionImportTool, sourceId });
 		}
 		if (requests.length === 0) {
-			throw new Error("at least one { tool, sourceId } selection is required");
+			throw new Error("至少需要选择一个 { tool, sourceId }");
 		}
 		const backend = await resolveSessionBackend({ backendMode: "local" });
 		const importer = new SessionImportService(backend);
@@ -2557,11 +2557,11 @@ export async function handleCommand(
 	}
 	if (command === "update_chat_session_title") {
 		const sessionId = String(args?.sessionId ?? "").trim();
-		if (!sessionId) throw new Error("session id is required");
+		if (!sessionId) throw new Error("会话 ID 为必填项");
 		const title = normalizeSessionTitle(String(args?.title ?? ""));
 		const cloud = getCloudSessionManager(ctx);
 		if (cloud.isCloudSession(sessionId)) {
-			if (!title) throw new Error("title is required");
+			if (!title) throw new Error("标题为必填项");
 			await cloud.updateTitle(sessionId, title);
 			return true;
 		}
@@ -2575,10 +2575,10 @@ export async function handleCommand(
 	}
 	if (command === "update_chat_session_metadata") {
 		const sessionId = String(args?.sessionId ?? args?.session_id ?? "").trim();
-		if (!sessionId) throw new Error("session id is required");
+		if (!sessionId) throw new Error("会话 ID 为必填项");
 		const patch = args?.metadata;
 		if (!patch || typeof patch !== "object" || Array.isArray(patch)) {
-			throw new Error("metadata patch is required");
+			throw new Error("元数据补丁为必填项");
 		}
 		// updateSession replaces metadata wholesale in both the session row and
 		// the manifest, so merge over what each already holds. A null value
@@ -2621,7 +2621,7 @@ export async function handleCommand(
 	}
 	if (command === "delete_chat_session" || command === "delete_cli_session") {
 		const sessionId = String(args?.sessionId ?? args?.session_id ?? "").trim();
-		if (!sessionId) throw new Error("session id is required");
+		if (!sessionId) throw new Error("会话 ID 为必填项");
 		const cloud = getCloudSessionManager(ctx);
 		if (cloud.isCloudSession(sessionId)) {
 			await cloud.delete(sessionId);
@@ -2768,7 +2768,7 @@ export async function handleCommand(
 		try {
 			parsed = new URL(rawUrl);
 		} catch {
-			throw new Error(`无效链接：${rawUrl}`);
+			throw new Error(`无效 URL：${rawUrl}`);
 		}
 		if (!OPENABLE_URL_PROTOCOLS.has(parsed.protocol)) {
 			throw new Error(
@@ -2782,7 +2782,7 @@ export async function handleCommand(
 	// ── Cline account ──────────────────────────────────────────────────
 	if (command === "cline_account") {
 		const operation = String(args?.operation ?? "").trim();
-		if (!operation) throw new Error("operation is required");
+		if (!operation) throw new Error("操作为必填项");
 		const manager = new ProviderSettingsManager();
 		// Signed out is an expected state, not a command failure: resolve the
 		// token up front and return a typed result the webview can act on
@@ -2820,7 +2820,7 @@ export async function handleCommand(
 	// ── Cline integrations (GitHub App) ────────────────────────────────
 	if (command === "cline_integrations") {
 		const operation = String(args?.operation ?? "").trim();
-		if (!operation) throw new Error("operation is required");
+		if (!operation) throw new Error("操作为必填项");
 		const manager = new ProviderSettingsManager();
 
 		const authToken = await resolveFreshClineAuthToken(manager, ctx);
@@ -2851,7 +2851,7 @@ export async function handleCommand(
 	// ── Composio connectors (Gmail / Google Calendar / GitHub / catalog) ─
 	if (command === "composio_integrations") {
 		const operation = String(args?.operation ?? "").trim();
-		if (!operation) throw new Error("operation is required");
+		if (!operation) throw new Error("操作为必填项");
 
 		switch (operation) {
 			case "status":
@@ -3206,14 +3206,14 @@ export async function handleCommand(
 	}
 	if (command === "set_telemetry_opt_out") {
 		if (typeof args?.telemetry_opt_out !== "boolean") {
-			throw new Error("telemetry_opt_out must be a boolean");
+			throw new Error("telemetry_opt_out 必须为布尔值");
 		}
 		setTelemetryOptOutGlobally(args.telemetry_opt_out);
 		return readGlobalSettings();
 	}
 	if (command === "set_auto_update_enabled") {
 		if (typeof args?.auto_update_enabled !== "boolean") {
-			throw new Error("auto_update_enabled must be a boolean");
+			throw new Error("auto_update_enabled 必须为布尔值");
 		}
 		setAutoUpdateEnabledGlobally(args.auto_update_enabled);
 		return readGlobalSettings();
@@ -3233,7 +3233,7 @@ export async function handleCommand(
 	}
 	if (command === "set_cloud_sessions_enabled") {
 		if (typeof args?.cloud_sessions_enabled !== "boolean") {
-			throw new Error("cloud_sessions_enabled must be a boolean");
+			throw new Error("cloud_sessions_enabled 必须为布尔值");
 		}
 		const settings = setCloudSessionsEnabled(args.cloud_sessions_enabled);
 		broadcastEvent(ctx, "cloud_sessions_changed", {});
@@ -3261,7 +3261,7 @@ export async function handleCommand(
 	}
 	if (command === "authorize_mcp_server_oauth") {
 		const name = String(args?.name ?? "").trim();
-		if (!name) throw new Error("server name is required");
+		if (!name) throw new Error("服务器名称为必填项");
 		const settingsPath = resolveMcpSettingsPath();
 		const registration = resolveMcpServerRegistration(name, {
 			filePath: settingsPath,
@@ -3303,7 +3303,7 @@ export async function handleCommand(
 	}
 	if (command === "cancel_mcp_server_oauth") {
 		const name = String(args?.name ?? "").trim();
-		if (!name) throw new Error("server name is required");
+		if (!name) throw new Error("服务器名称为必填项");
 		cancelMcpOAuthAuthorizationForReason(name, "user");
 		return readMcpServersResponse();
 	}
@@ -3339,7 +3339,7 @@ export async function handleCommand(
 				? (args.input as JsonRecord)
 				: (args as JsonRecord);
 		const name = String(input.name ?? "").trim();
-		if (!name) throw new Error("server name is required");
+		if (!name) throw new Error("服务器名称为必填项");
 		const previousName = String(
 			input.previousName ?? input.previous_name ?? "",
 		).trim();
@@ -3492,7 +3492,7 @@ export async function handleCommand(
 	if (command === "checkout_git_branch") {
 		const cwd = typeof args?.cwd === "string" ? args.cwd : undefined;
 		const branch = String(args?.branch ?? "").trim();
-		if (!branch) throw new Error("branch is required");
+		if (!branch) throw new Error("分支为必填项");
 		const binding = getCommandRuntimeBinding(ctx, args);
 		const targetCwd = cwd?.trim() || binding.workspaceRoot;
 		if (binding.kind === "ssh") {
@@ -3516,7 +3516,7 @@ export async function handleCommand(
 	}
 	if (command === "create_git_worktree") {
 		const cwd = typeof args?.cwd === "string" ? args.cwd.trim() : "";
-		if (!cwd) throw new Error("cwd is required");
+		if (!cwd) throw new Error("cwd 为必填项");
 		return await createGitWorktree(cwd);
 	}
 
@@ -3605,7 +3605,7 @@ export async function handleCommand(
 	if (command === "toggle_disabled_plugin_tool") {
 		const toolName = String(args?.name ?? "").trim();
 		if (!toolName) {
-			throw new Error("tool name is required");
+			throw new Error("工具名称为必填项");
 		}
 		const snapshot = await toggleHubSetting(ctx, {
 			type: "tools",
@@ -3619,7 +3619,7 @@ export async function handleCommand(
 			.map((name) => String(name ?? "").trim())
 			.filter(Boolean);
 		if (toolNames.length === 0) {
-			throw new Error("tool name is required");
+			throw new Error("工具名称为必填项");
 		}
 		let snapshot: CoreSettingsSnapshot | undefined;
 		for (const name of new Set(toolNames)) {
@@ -3634,7 +3634,7 @@ export async function handleCommand(
 	if (command === "set_plugin_disabled") {
 		const pluginPath = String(args?.path ?? "").trim();
 		if (!pluginPath) {
-			throw new Error("plugin path is required");
+			throw new Error("插件路径为必填项");
 		}
 		const snapshot = await toggleHubSetting(ctx, {
 			type: "plugins",
@@ -3646,7 +3646,7 @@ export async function handleCommand(
 	if (command === "set_skill_disabled") {
 		const skillPath = String(args?.path ?? "").trim();
 		if (!skillPath) {
-			throw new Error("skill path is required");
+			throw new Error("技能路径为必填项");
 		}
 		const snapshot = await toggleHubSetting(ctx, {
 			type: "skills",
@@ -3718,7 +3718,7 @@ export async function handleCommand(
 			);
 		}
 		const rawPath = String(args?.path ?? "").trim();
-		if (!rawPath) throw new Error("path is required");
+		if (!rawPath) throw new Error("路径为必填项");
 		const baseDir =
 			typeof args?.cwd === "string" && args.cwd.trim()
 				? args.cwd.trim()
@@ -3735,5 +3735,5 @@ export async function handleCommand(
 		return { path: filePath, editor };
 	}
 
-	throw new Error(`unsupported desktop command: ${command}`);
+	throw new Error(`不支持的桌面端命令：${command}`);
 }
