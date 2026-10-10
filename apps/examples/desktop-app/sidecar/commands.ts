@@ -859,7 +859,7 @@ async function runGit(
 ): Promise<string | undefined> {
 	if (binding.kind === "ssh") {
 		const remote = ctx.remoteEnvironments;
-		if (!remote) throw new Error("Remote environment service is unavailable");
+		if (!remote) throw new Error("远程环境服务不可用");
 		const result = await remote
 			.run(binding.environmentId, { command: "git", args, cwd })
 			.catch(() => undefined);

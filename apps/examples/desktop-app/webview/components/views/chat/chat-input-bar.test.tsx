@@ -1541,7 +1541,7 @@ describe("ChatInputBar", () => {
 			providerTrigger?.parentElement?.parentElement?.parentElement?.className,
 		).toContain("max-[560px]:hidden");
 		const modelTrigger = container.querySelector<HTMLButtonElement>(
-			'[aria-label^="Model:"]',
+			'[aria-label^="模型："]',
 		);
 		expect(modelTrigger?.className).toContain("max-w-full");
 		expect(modelTrigger?.className).not.toMatch(/max-w-\d/);

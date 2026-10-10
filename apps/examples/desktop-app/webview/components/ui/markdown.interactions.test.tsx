@@ -274,9 +274,9 @@ describe("MemoizedMarkdown interactions", () => {
 			container.querySelector(".cline-mermaid__filename")?.textContent,
 		).toBe("app-infrastructure-architecture.mmd");
 		expect(container.querySelector('button[title="Copy Code"]')).toBeNull();
-		expect(getLabelledButton("Zoom in")).toBeDefined();
-		expect(getLabelledButton("Zoom out")).toBeDefined();
-		expect(getLabelledButton("View fullscreen").disabled).toBe(false);
+		expect(getLabelledButton("放大")).toBeDefined();
+		expect(getLabelledButton("缩小")).toBeDefined();
+		expect(getLabelledButton("全屏查看").disabled).toBe(false);
 	});
 
 	test("re-renders with the dark theme when the app switches to dark mode", async () => {
@@ -329,7 +329,7 @@ describe("MemoizedMarkdown interactions", () => {
 	test("copies the diagram source", async () => {
 		const source = "flowchart LR\nA[Text] --> B[SVG]";
 		await renderReadyDiagram(source);
-		await click(getLabelledButton("Copy diagram source"));
+		await click(getLabelledButton("复制图表源码"));
 		await waitFor(() => {
 			expect(writeText).toHaveBeenCalledWith(`${source}\n`);
 		});
@@ -337,7 +337,7 @@ describe("MemoizedMarkdown interactions", () => {
 
 	test("offers PNG and MMD downloads only, never SVG", async () => {
 		await renderReadyDiagram("flowchart LR\nA --> B", 'title="my-flow"');
-		await click(getLabelledButton("Download diagram"));
+		await click(getLabelledButton("下载图表"));
 		const items = [
 			...container.querySelectorAll<HTMLButtonElement>('[role="menuitem"]'),
 		].map((item) => item.textContent?.trim());
@@ -358,7 +358,7 @@ describe("MemoizedMarkdown interactions", () => {
 			downloads.push(this.download);
 		});
 		await renderReadyDiagram("flowchart LR\nA --> B", 'title="my-flow"');
-		await click(getLabelledButton("Download diagram"));
+		await click(getLabelledButton("下载图表"));
 		await click(getMenuItem(".mmd"));
 		expect(downloads).toEqual(["my-flow.mmd"]);
 		expect(createObjectURL).toHaveBeenCalledOnce();
@@ -366,15 +366,15 @@ describe("MemoizedMarkdown interactions", () => {
 
 	test("opens fullscreen and closes it with the button and Escape", async () => {
 		await renderReadyDiagram("flowchart LR\nA --> B");
-		await click(getLabelledButton("View fullscreen"));
+		await click(getLabelledButton("全屏查看"));
 		await waitFor(() => {
 			expect(document.querySelector("dialog")).not.toBeNull();
-			expect(getLabelledButton("Exit fullscreen")).toBeDefined();
+			expect(getLabelledButton("退出全屏")).toBeDefined();
 		});
-		await click(getLabelledButton("Exit fullscreen"));
+		await click(getLabelledButton("退出全屏"));
 		expect(document.querySelector("dialog")).toBeNull();
 
-		await click(getLabelledButton("View fullscreen"));
+		await click(getLabelledButton("全屏查看"));
 		await act(async () => {
 			document
 				.querySelector("dialog")
@@ -390,7 +390,7 @@ describe("MemoizedMarkdown interactions", () => {
 		const canvas = () =>
 			container.querySelector<HTMLElement>(".cline-mermaid__canvas");
 		expect(canvas()?.style.transform).toContain("scale(1)");
-		await click(getLabelledButton("Zoom in"));
+		await click(getLabelledButton("放大"));
 		expect(canvas()?.style.transform).toContain("scale(1.25)");
 		await click(getButtonByPrefix("Reset zoom"));
 		expect(canvas()?.style.transform).toContain("scale(1)");
@@ -405,7 +405,7 @@ describe("MemoizedMarkdown interactions", () => {
 		await waitFor(() => {
 			expect(
 				container.querySelector(".cline-mermaid__skeleton")?.textContent,
-			).toContain("Drawing diagram");
+			).toContain("正在绘制图表");
 		});
 		expect(mermaidMocks.render).not.toHaveBeenCalled();
 		expect(container.querySelector('[role="alert"]')).toBeNull();
@@ -432,7 +432,7 @@ describe("MemoizedMarkdown interactions", () => {
 		});
 
 		await waitFor(() => {
-			expect(container.textContent).toContain("Mermaid Error: Parse error");
+			expect(container.textContent).toContain("Mermaid 错误：Parse error");
 			expect(container.textContent).toContain("Before");
 			expect(container.textContent).toContain("After");
 		});
@@ -584,7 +584,7 @@ describe("MemoizedMarkdown interactions", () => {
 		// destination must be what the user is shown before anything opens.
 		expect(openWindow).not.toHaveBeenCalled();
 
-		await click(getButton("Open link"));
+		await click(getButton("打开链接"));
 		expect(openWindow).toHaveBeenCalledTimes(1);
 		expect(openWindow).toHaveBeenCalledWith(
 			"https://evil.example.com/harvest?t=1",
@@ -600,7 +600,7 @@ describe("MemoizedMarkdown interactions", () => {
 		await vi.waitFor(() => {
 			expect(document.querySelector('[role="alertdialog"]')).not.toBeNull();
 		});
-		await click(getButton("Cancel"));
+		await click(getButton("取消"));
 
 		await vi.waitFor(() => {
 			expect(document.querySelector('[role="alertdialog"]')).toBeNull();
