@@ -2,13 +2,13 @@
 
 ## 0.0.45
 
-- SSH remotes start again. Since 0.0.38, connecting to an SSH environment failed with `SyntaxError: Invalid character`
-- On SSH environments, the git branch label no longer opens two new SSH logins every 5 seconds. It checks every 30 seconds now, and switching branches from the picker still updates it right away
-- Long model names in the composer show in full when the row has room, and only truncate when it runs out
-- Turning reasoning off no longer fails with a 400 error on GPT-6 Astra, GPT-6.1 Sol, Claude Fable 5 or Claude Opus 5.5
-- The background service no longer crashes about 3 seconds after an MCP server or hook quits before reading all of its input
-- Settings migrated from the VS Code extension no longer add an empty SAP AI Core provider
-- Refreshed the model catalog. Adds Claude Haiku 5.5. Default models change for Google Vertex AI (Claude Sonnet 5.5 → Claude Haiku 5.5), Cortecs, DevPass (LLM Gateway), Eden AI, GitHub Copilot, LLM Gateway, NanoGPT, OpenCode Go, Requesty, and Vivgrid (most now Claude Haiku 5.5)
+- SSH 远端恢复正常。自 0.0.38 起，连接 SSH 环境会报 `SyntaxError: Invalid character` 而失败
+- 在 SSH 环境里，git 分支标签不再每 5 秒新建两个 SSH 登录。现在改为每 30 秒检查一次，而从选择器切换分支时仍会立即更新
+- 输入框里较长的模型名在行宽足够时完整显示，仅在空间不足时才截断
+- 在 GPT-6 Astra、GPT-6.1 Sol、Claude Fable 5 与 Claude Opus 5.5 上关闭推理不再报 400 错误
+- MCP 服务器或钩子在读完全部输入前退出时，后台服务不再于约 3 秒后崩溃
+- 从 VS Code 扩展迁移过来的设置不再凭空多出一个空的 SAP AI Core 供应商
+- 刷新了模型目录，新增 Claude Haiku 5.5。默认模型的变更涉及 Google Vertex AI（Claude Sonnet 5.5 → Claude Haiku 5.5）、Cortecs、DevPass (LLM Gateway)、Eden AI、GitHub Copilot、LLM Gateway、NanoGPT、OpenCode Go、Requesty 与 Vivgrid（多数改为 Claude Haiku 5.5）
 
 ## 0.0.44
 
