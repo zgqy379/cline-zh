@@ -1,285 +1,295 @@
 [
-	{
-		"path": "webview/components/views/settings/extensions-view.tsx",
-		"text": "Project",
-		"reason": "ItemScope 数据契约字面量（被 ===/includes 消费）；渲染层 ScopeBadge 已映射为「项目」/「全局」"
-	},
-	{
-		"path": "webview/components/views/settings/extensions-view.tsx",
-		"text": "Global",
-		"reason": "ItemScope 数据契约字面量（同上）"
-	},
-	{
-		"path": "webview/components/views/settings/extensions-view.tsx",
-		"text": "/SKILL",
-		"reason": "命令名（红线 4）"
-	},
-	{
-		"path": "webview/components/views/settings/routine-view.tsx",
-		"text": "Review PRs opened yesterday and summarize issues.",
-		"reason": "定时任务表单的默认提示词，会原样回传模型；PROGRESS §0 明令不译 prompt 类文本"
-	},
-	{
-		"path": "webview/components/views/settings/routine-view.tsx",
-		"text": "cline schedule",
-		"reason": "CLI 命令名（红线 4）"
-	},
-	{
-		"path": "webview/components/views/settings/routine-view.tsx",
-		"text": "ID:",
-		"reason": "技术字段名标签（scheduleId），非自然语言"
-	},
-	{
-		"path": "webview/lib/composio-types.ts",
-		"reason": "第三方集成目录里的品牌名（Gmail / Google Calendar / GitHub），红线 4 产品名不译"
-	},
-	{
-		"path": "webview/lib/session-history.ts",
-		"reason": "会话来源标识（CLI / Desktop / VS Code），与产品形态名并列；VS Code 按 GLOSSARY §六 保留原名"
-	},
-	{
-		"path": "sdk/packages/ui/stories/",
-		"reason": "Storybook 开发者演示页：不在 package.json files 白名单、不在 exports，进不了 npm 包与桌面产物（B39 已裁定判不改，B55 复核 package.json 确认）"
-	},
-	{
-		"path": "sdk/packages/ui/.storybook/",
-		"reason": "Storybook 配置（开发工具链，不进产物）"
-	},
-	{
-		"path": "sdk/packages/ui/tests/agent-session-row.types.tsx",
-		"reason": "类型夹具（Native/Link/Invalid 是变体名，不是文案）"
-	},
-	{
-		"path": "sdk/packages/ui/components/agent-pull-request-bar.tsx",
-		"reason": "GitHub API 枚举字面量（OPEN / MERGEABLE）"
-	},
-	{
-		"path": "sdk/packages/shared/src/connectors/platforms.ts",
-		"reason": "CONNECTOR_CATALOG.description 仅 apps/cli 的 `connector describe` 消费（桌面 sidecar 只取 name），其余为第三方平台品牌名与 Slack ID 示例值；同文件的 hint/label/help 已是中文并由渠道页渲染"
-	},
-	{
-		"path": "sdk/packages/shared/src/llms/media.ts",
-		"reason": "LLM 请求体校验错误，回传模型/接口层"
-	},
-	{
-		"path": "sdk/packages/shared/src/llms/reasoning-options.ts",
-		"reason": "LLM 请求体校验错误，回传模型/接口层"
-	},
-	{
-		"path": "sdk/packages/shared/src/remote-config/runtime.ts",
-		"reason": "远程配置运行时的标识与描述字符串，不进桌面 UI"
-	},
-	{
-		"path": "sdk/packages/shared/src/remote-config/blob-storage.ts",
-		"reason": "Azure SDK 类名（BlockBlob）"
-	},
-	{
-		"path": "webview/app/layout.tsx",
-		"reason": "Next metadata 的产品名 title（GLOSSARY §六 产品名保留原样）"
-	},
-	{
-		"path": "webview/components/agent-sidebar.tsx",
-		"text": "Cline Hub @",
-		"reason": "产品名 + 端口占位符"
-	},
-	{
-		"path": "webview/components/agent-sidebar.tsx",
-		"text": "Beta",
-		"reason": "阶段徽标，与 BETA_PRODUCT_NAME=\"Cline Beta\" 同族；中文界面惯例保留 Beta（title 已汉化为「测试版…」）"
-	},
-	{
-		"path": "webview/components/views/onboarding/onboarding-view.tsx",
-		"reason": "品牌名（Cline / ClinePass）"
-	},
-	{
-		"path": "webview/components/views/settings/channels-view.tsx",
-		"text": "cline connect",
-		"reason": "CLI 命令名"
-	},
-	{
-		"path": "webview/components/views/settings/channels-view.tsx",
-		"text": "pid",
-		"reason": "技术缩写（进程号）标签"
-	},
-	{
-		"path": "webview/components/views/settings/sections.ts",
-		"reason": "CUSTOMIZATION_SECTION_LABELS 的英文兜底；agent-sidebar 的 SETTINGS_SECTION_LABELS_ZH 已覆盖 Customize/Marketplace 两个键，永不渲染（源码注释已声明 sections.ts 禁改）"
-	},
-	{
-		"path": "webview/components/views/settings/settings-view.tsx",
-		"text": "px",
-		"reason": "单位"
-	},
-	{
-		"path": "webview/components/views/settings/settings-view.tsx",
-		"text": "CLINE_CODE_CLOUD_AGENTS",
-		"reason": "环境变量名（GLOSSARY §六 代码/环境变量保留原样）"
-	},
-	{
-		"path": "webview/lib/desktop-client.ts",
-		"reason": "Error.name 兜底值与 HTTP 方法名，非展示文案"
-	},
-	{
-		"path": "webview/lib/pull-request.ts",
-		"reason": "GitHub API 枚举字面量（OPEN/MERGEABLE…），是类型契约"
-	},
-	{
-		"path": "webview/lib/session-import.ts",
-		"reason": "第三方工具名标签（Claude Code / Codex / opencode）"
-	},
-	{
-		"path": "webview/lib/streaming-transcription.ts",
-		"reason": "writeDesktopDebugLog 的调试日志串（红线 4：console/日志类不译）"
-	},
-	{
-		"path": "webview/app/api/changelog/route.ts",
-		"reason": "构建期 route 的兜底 error 字段，lib/changelog.ts 从不读取该字段，不进 UI"
-	},
-	{
-		"path": "webview/app/api/marketplace/catalog/route.ts",
-		"reason": "构建期 route 的兜底 error 字段，客户端不消费"
-	},
-	{
-		"path": "webview/components/session-command-bar.tsx",
-		"reason": "快捷键提示（GLOSSARY §六：快捷键保留原样）"
-	},
-	{
-		"path": "webview/components/ui/markdown.tsx",
-		"reason": "导出格式名（Markdown / CSV / TSV / PNG），格式名不译"
-	},
-	{
-		"path": "webview/components/views/chat/chat-input-bar.tsx",
-		"text": "Speech input failed in the webview",
-		"reason": "writeDesktopDebugLog 的调试日志串；同处 toast 文案已是中文"
-	},
-	{
-		"path": "webview/components/views/onboarding/onboarding-github-step.tsx",
-		"reason": "品牌名（GitHub）"
-	},
-	{
-		"path": "webview/components/views/settings/customize-view.tsx",
-		"reason": "协议名（MCP），GLOSSARY §一 要求保留原名"
-	},
-	{
-		"path": "webview/components/views/settings/mcp-view.tsx",
-		"text": "cline config mcp",
-		"reason": "CLI 命令名"
-	},
-	{
-		"path": "webview/hooks/use-chat-session.ts",
-		"text": "Tool call rejected from desktop approval prompt",
-		"reason": "作为 reason 回传给后端/模型的拒绝理由文本，改动会改变模型可见内容"
-	},
-	{
-		"path": "webview/lib/app-icon.ts",
-		"reason": "appIconSurface 的平台标识返回值（Dock/Taskbar/desktop），不是界面文案"
-	},
-	{
-		"path": "sdk/packages/core/src/services/providers/provider-config-fields.ts",
-		"reason": "core 的 provider 配置校验文案，仅被 core 自身的 provider-readiness 消费；桌面端「添加供应商」用的是 webview 的 add-provider/provider-list-view（已汉化）"
-	},
-	{
-		"path": "sdk/packages/core/src/services/providers/local-provider-service.ts",
-		"reason": "CLI / Hub 的本地 provider 交互文案，桌面端 UI 不消费"
-	},
-	{
-		"path": "sdk/packages/core/src/services/storage/provider-settings-legacy-migration.ts",
-		"reason": "旧数据迁移日志串（OpenAI Compatible 是厂商类型名）"
-	},
-	{
-		"path": "sdk/packages/core/src/extensions/tools/",
-		"reason": "工具描述与工具结果/错误文本：模型可见。B40 已立先例（LLM 侧 definitions.ts 保持英文），改这里会改变模型行为"
-	},
-	{
-		"path": "sdk/packages/core/src/extensions/tools/team/multi-agent.ts",
-		"reason": "同「工具描述/结果」：模型可见"
-	},
-	{
-		"path": "sdk/packages/core/src/extensions/context/",
-		"reason": "上下文序列化（compaction）与预算投影，文案会回传模型或写入运行日志"
-	},
-	{
-		"path": "sdk/packages/core/src/extensions/config/user-instruction",
-		"reason": "指令/技能加载器报错，回传模型"
-	},
-	{
-		"path": "sdk/packages/core/src/extensions/agent-plugin/loader.ts",
-		"reason": "插件加载日志与路径常量"
-	},
-	{
-		"path": "sdk/packages/core/src/extensions/composio/composio-tools-extension.ts",
-		"reason": "Composio 集成门控错误与 HTTP 方法名"
-	},
-	{
-		"path": "sdk/packages/core/src/extensions/mcp/",
-		"reason": "MCP 客户端错误与品牌名（AbortError 是 DOM 异常名、Cline 是产品名）"
-	},
-	{
-		"path": "sdk/packages/core/src/auth/",
-		"reason": "OAuth 流程：HTTP 方法、Bearer、以及 CLI/Hub 用的登录提示（桌面端登录走 sidecar 自有流程，文案已汉化）"
-	},
-	{
-		"path": "sdk/packages/core/src/tasks/",
-		"reason": "任务/定时任务的工具入参校验错误与内部状态串（任务状态的中文标签在 webview 渲染层，core 只产出枚举）"
-	},
-	{
-		"path": "sdk/packages/core/src/cron/",
-		"reason": "定时任务调度器内部串（Cline Cron 是组件名、FAILED 是状态枚举）"
-	},
-	{
-		"path": "sdk/packages/core/src/session/",
-		"reason": "会话内部状态与队友协调提示（回传模型/写入运行日志）"
-	},
-	{
-		"path": "sdk/packages/core/src/settings/settings-service.ts",
-		"reason": "插件包校验错误，回传模型/接口层"
-	},
-	{
-		"path": "sdk/packages/core/src/hub/",
-		"reason": "Hub 服务端/守护进程/客户端内部串；Hub 由 CLI 与 menubar 使用，桌面 webview 不渲染这些文案"
-	},
-	{
-		"path": "sdk/packages/core/src/runtime/",
-		"reason": "运行时主机内部错误；进入桌面 UI 的工具批准文案由 sidecar/webview 自行提供（已汉化）"
-	},
-	{
-		"path": "sdk/packages/core/src/cloud/",
-		"reason": "云端 API 内部消息；真正投影到桌面 UI 的两条（云端同步失败 / 云端对话记录刷新失败）已在 B55 译出，其余仅出现在 CLI/Hub 与云端请求错误里"
-	},
-	{
-		"path": "sdk/packages/core/src/services/cloud-handoff/git-preflight.ts",
-		"reason": "云端交接的 Git 前置检查错误，回传调用方（CLI/Hub）"
-	},
-	{
-		"path": "sdk/packages/core/src/services/telemetry/",
-		"reason": "遥测日志适配器名与日志级别（OpenTelemetryAdapter / TelemetryLoggerSink / INFO）"
-	},
-	{
-		"path": "sdk/packages/core/src/services/workspace/",
-		"reason": "文件索引/工作区清单的内部日志串"
-	},
-	{
-		"path": "sdk/packages/core/src/services/session-import/types.ts",
-		"reason": "第三方工具名标识（Claude Code / Codex）"
-	},
-	{
-		"path": "sdk/packages/core/src/services/plugin-mcp-settings.ts",
-		"reason": "MCP 配置错误，回传模型"
-	},
-	{
-		"path": "sdk/packages/core/src/services/local-runtime-bootstrap.ts",
-		"reason": "运行时组件标识（Terminal Shell）"
-	},
-	{
-		"path": "sdk/packages/core/src/hooks/subprocess-runner.ts",
-		"reason": "子进程 stdout 解析失败的日志串"
-	},
-	{
-		"path": "sdk/packages/core/src/ClineCore.ts",
-		"reason": "SDK 门面示例字符串（示例提示词/日志），非界面文案"
-	},
-	{
-		"path": "sdk/packages/core/scripts/",
-		"reason": "开发脚本的日志串，不进产物"
-	}
+  {
+    "path": "webview/components/views/settings/extensions-view.tsx",
+    "text": "Project",
+    "reason": "ItemScope 数据契约字面量（被 ===/includes 消费）；渲染层 ScopeBadge 已映射为「项目」/「全局」"
+  },
+  {
+    "path": "webview/components/views/settings/extensions-view.tsx",
+    "text": "Global",
+    "reason": "ItemScope 数据契约字面量（同上）"
+  },
+  {
+    "path": "webview/components/views/settings/extensions-view.tsx",
+    "text": "/SKILL",
+    "reason": "命令名（红线 4）"
+  },
+  {
+    "path": "webview/components/views/settings/routine-view.tsx",
+    "text": "Review PRs opened yesterday and summarize issues.",
+    "reason": "定时任务表单的默认提示词，会原样回传模型；PROGRESS §0 明令不译 prompt 类文本"
+  },
+  {
+    "path": "webview/components/views/settings/routine-view.tsx",
+    "text": "cline schedule",
+    "reason": "CLI 命令名（红线 4）"
+  },
+  {
+    "path": "webview/components/views/settings/routine-view.tsx",
+    "text": "ID:",
+    "reason": "技术字段名标签（scheduleId），非自然语言"
+  },
+  {
+    "path": "webview/lib/composio-types.ts",
+    "reason": "第三方集成目录里的品牌名（Gmail / Google Calendar / GitHub），红线 4 产品名不译"
+  },
+  {
+    "path": "webview/lib/session-history.ts",
+    "reason": "会话来源标识（CLI / Desktop / VS Code），与产品形态名并列；VS Code 按 GLOSSARY §六 保留原名"
+  },
+  {
+    "path": "sdk/packages/ui/stories/",
+    "reason": "Storybook 开发者演示页：不在 package.json files 白名单、不在 exports，进不了 npm 包与桌面产物（B39 已裁定判不改，B55 复核 package.json 确认）"
+  },
+  {
+    "path": "sdk/packages/ui/.storybook/",
+    "reason": "Storybook 配置（开发工具链，不进产物）"
+  },
+  {
+    "path": "sdk/packages/ui/tests/agent-session-row.types.tsx",
+    "reason": "类型夹具（Native/Link/Invalid 是变体名，不是文案）"
+  },
+  {
+    "path": "sdk/packages/ui/components/agent-pull-request-bar.tsx",
+    "reason": "GitHub API 枚举字面量（OPEN / MERGEABLE）"
+  },
+  {
+    "path": "sdk/packages/shared/src/connectors/platforms.ts",
+    "reason": "CONNECTOR_CATALOG.description 仅 apps/cli 的 `connector describe` 消费（桌面 sidecar 只取 name），其余为第三方平台品牌名与 Slack ID 示例值；同文件的 hint/label/help 已是中文并由渠道页渲染"
+  },
+  {
+    "path": "sdk/packages/shared/src/llms/media.ts",
+    "reason": "LLM 请求体校验错误，回传模型/接口层"
+  },
+  {
+    "path": "sdk/packages/shared/src/llms/reasoning-options.ts",
+    "reason": "LLM 请求体校验错误，回传模型/接口层"
+  },
+  {
+    "path": "sdk/packages/shared/src/remote-config/runtime.ts",
+    "reason": "远程配置运行时的标识与描述字符串，不进桌面 UI"
+  },
+  {
+    "path": "sdk/packages/shared/src/remote-config/blob-storage.ts",
+    "reason": "Azure SDK 类名（BlockBlob）"
+  },
+  {
+    "path": "webview/app/layout.tsx",
+    "reason": "Next metadata 的产品名 title（GLOSSARY §六 产品名保留原样）"
+  },
+  {
+    "path": "webview/components/agent-sidebar.tsx",
+    "text": "Cline Hub @",
+    "reason": "产品名 + 端口占位符"
+  },
+  {
+    "path": "webview/components/agent-sidebar.tsx",
+    "text": "Beta",
+    "reason": "阶段徽标，与 BETA_PRODUCT_NAME=\"Cline Beta\" 同族；中文界面惯例保留 Beta（title 已汉化为「测试版…」）"
+  },
+  {
+    "path": "webview/components/views/onboarding/onboarding-view.tsx",
+    "reason": "品牌名（Cline / ClinePass）"
+  },
+  {
+    "path": "webview/components/views/settings/channels-view.tsx",
+    "text": "cline connect",
+    "reason": "CLI 命令名"
+  },
+  {
+    "path": "webview/components/views/settings/channels-view.tsx",
+    "text": "pid",
+    "reason": "技术缩写（进程号）标签"
+  },
+  {
+    "path": "webview/components/views/settings/sections.ts",
+    "reason": "CUSTOMIZATION_SECTION_LABELS 的英文兜底；agent-sidebar 的 SETTINGS_SECTION_LABELS_ZH 已覆盖 Customize/Marketplace 两个键，永不渲染（源码注释已声明 sections.ts 禁改）"
+  },
+  {
+    "path": "webview/components/views/settings/settings-view.tsx",
+    "text": "px",
+    "reason": "单位"
+  },
+  {
+    "path": "webview/components/views/settings/settings-view.tsx",
+    "text": "CLINE_CODE_CLOUD_AGENTS",
+    "reason": "环境变量名（GLOSSARY §六 代码/环境变量保留原样）"
+  },
+  {
+    "path": "webview/lib/desktop-client.ts",
+    "reason": "Error.name 兜底值与 HTTP 方法名，非展示文案"
+  },
+  {
+    "path": "webview/lib/pull-request.ts",
+    "reason": "GitHub API 枚举字面量（OPEN/MERGEABLE…），是类型契约"
+  },
+  {
+    "path": "webview/lib/session-import.ts",
+    "reason": "第三方工具名标签（Claude Code / Codex / opencode）"
+  },
+  {
+    "path": "webview/lib/streaming-transcription.ts",
+    "reason": "writeDesktopDebugLog 的调试日志串（红线 4：console/日志类不译）"
+  },
+  {
+    "path": "webview/app/api/changelog/route.ts",
+    "reason": "构建期 route 的兜底 error 字段，lib/changelog.ts 从不读取该字段，不进 UI"
+  },
+  {
+    "path": "webview/app/api/marketplace/catalog/route.ts",
+    "reason": "构建期 route 的兜底 error 字段，客户端不消费"
+  },
+  {
+    "path": "webview/components/session-command-bar.tsx",
+    "reason": "快捷键提示（GLOSSARY §六：快捷键保留原样）"
+  },
+  {
+    "path": "webview/components/ui/markdown.tsx",
+    "reason": "导出格式名（Markdown / CSV / TSV / PNG），格式名不译"
+  },
+  {
+    "path": "webview/components/views/chat/chat-input-bar.tsx",
+    "text": "Speech input failed in the webview",
+    "reason": "writeDesktopDebugLog 的调试日志串；同处 toast 文案已是中文"
+  },
+  {
+    "path": "webview/components/views/onboarding/onboarding-github-step.tsx",
+    "reason": "品牌名（GitHub）"
+  },
+  {
+    "path": "webview/components/views/settings/customize-view.tsx",
+    "reason": "协议名（MCP），GLOSSARY §一 要求保留原名"
+  },
+  {
+    "path": "webview/components/views/settings/mcp-view.tsx",
+    "text": "cline config mcp",
+    "reason": "CLI 命令名"
+  },
+  {
+    "path": "webview/hooks/use-chat-session.ts",
+    "text": "Tool call rejected from desktop approval prompt",
+    "reason": "作为 reason 回传给后端/模型的拒绝理由文本，改动会改变模型可见内容"
+  },
+  {
+    "path": "webview/lib/app-icon.ts",
+    "reason": "appIconSurface 的平台标识返回值（Dock/Taskbar/desktop），不是界面文案"
+  },
+  {
+    "path": "sdk/packages/core/src/services/providers/provider-config-fields.ts",
+    "reason": "core 的 provider 配置校验文案，仅被 core 自身的 provider-readiness 消费；桌面端「添加供应商」用的是 webview 的 add-provider/provider-list-view（已汉化）"
+  },
+  {
+    "path": "sdk/packages/core/src/services/providers/local-provider-service.ts",
+    "reason": "CLI / Hub 的本地 provider 交互文案，桌面端 UI 不消费"
+  },
+  {
+    "path": "sdk/packages/core/src/services/storage/provider-settings-legacy-migration.ts",
+    "reason": "旧数据迁移日志串（OpenAI Compatible 是厂商类型名）"
+  },
+  {
+    "path": "sdk/packages/core/src/extensions/tools/",
+    "reason": "工具描述与工具结果/错误文本：模型可见。B40 已立先例（LLM 侧 definitions.ts 保持英文），改这里会改变模型行为"
+  },
+  {
+    "path": "sdk/packages/core/src/extensions/tools/team/multi-agent.ts",
+    "reason": "同「工具描述/结果」：模型可见"
+  },
+  {
+    "path": "sdk/packages/core/src/extensions/context/",
+    "reason": "上下文序列化（compaction）与预算投影，文案会回传模型或写入运行日志"
+  },
+  {
+    "path": "sdk/packages/core/src/extensions/config/user-instruction",
+    "reason": "指令/技能加载器报错，回传模型"
+  },
+  {
+    "path": "sdk/packages/core/src/extensions/agent-plugin/loader.ts",
+    "reason": "插件加载日志与路径常量"
+  },
+  {
+    "path": "sdk/packages/core/src/extensions/composio/composio-tools-extension.ts",
+    "reason": "Composio 集成门控错误与 HTTP 方法名"
+  },
+  {
+    "path": "sdk/packages/core/src/extensions/mcp/",
+    "reason": "MCP 客户端错误与品牌名（AbortError 是 DOM 异常名、Cline 是产品名）"
+  },
+  {
+    "path": "sdk/packages/core/src/auth/",
+    "reason": "OAuth 流程：HTTP 方法、Bearer、以及 CLI/Hub 用的登录提示（桌面端登录走 sidecar 自有流程，文案已汉化）"
+  },
+  {
+    "path": "sdk/packages/core/src/tasks/",
+    "reason": "任务/定时任务的工具入参校验错误与内部状态串（任务状态的中文标签在 webview 渲染层，core 只产出枚举）"
+  },
+  {
+    "path": "sdk/packages/core/src/cron/",
+    "reason": "定时任务调度器内部串（Cline Cron 是组件名、FAILED 是状态枚举）"
+  },
+  {
+    "path": "sdk/packages/core/src/session/",
+    "reason": "会话内部状态与队友协调提示（回传模型/写入运行日志）"
+  },
+  {
+    "path": "sdk/packages/core/src/settings/settings-service.ts",
+    "reason": "插件包校验错误，回传模型/接口层"
+  },
+  {
+    "path": "sdk/packages/core/src/hub/",
+    "reason": "Hub 服务端/守护进程/客户端内部串；Hub 由 CLI 与 menubar 使用，桌面 webview 不渲染这些文案"
+  },
+  {
+    "path": "sdk/packages/core/src/runtime/",
+    "reason": "运行时主机内部错误；进入桌面 UI 的工具批准文案由 sidecar/webview 自行提供（已汉化）"
+  },
+  {
+    "path": "sdk/packages/core/src/cloud/",
+    "reason": "云端 API 内部消息；真正投影到桌面 UI 的两条（云端同步失败 / 云端对话记录刷新失败）已在 B55 译出，其余仅出现在 CLI/Hub 与云端请求错误里"
+  },
+  {
+    "path": "sdk/packages/core/src/services/cloud-handoff/git-preflight.ts",
+    "reason": "云端交接的 Git 前置检查错误，回传调用方（CLI/Hub）"
+  },
+  {
+    "path": "sdk/packages/core/src/services/telemetry/",
+    "reason": "遥测日志适配器名与日志级别（OpenTelemetryAdapter / TelemetryLoggerSink / INFO）"
+  },
+  {
+    "path": "sdk/packages/core/src/services/workspace/",
+    "reason": "文件索引/工作区清单的内部日志串"
+  },
+  {
+    "path": "sdk/packages/core/src/services/session-import/types.ts",
+    "reason": "第三方工具名标识（Claude Code / Codex）"
+  },
+  {
+    "path": "sdk/packages/core/src/services/plugin-mcp-settings.ts",
+    "reason": "MCP 配置错误，回传模型"
+  },
+  {
+    "path": "sdk/packages/core/src/services/local-runtime-bootstrap.ts",
+    "reason": "运行时组件标识（Terminal Shell）"
+  },
+  {
+    "path": "sdk/packages/core/src/hooks/subprocess-runner.ts",
+    "reason": "子进程 stdout 解析失败的日志串"
+  },
+  {
+    "path": "sdk/packages/core/src/ClineCore.ts",
+    "reason": "SDK 门面示例字符串（示例提示词/日志），非界面文案"
+  },
+  {
+    "path": "sdk/packages/core/scripts/",
+    "reason": "开发脚本的日志串，不进产物"
+  },
+  {
+    "path": "sidecar/chat-session.ts",
+    "text": "Cline Hub reconnect gave up",
+    "reason": "hub 重连诊断串：经 emitHubReconnectActivity 以 level:'info' 发 chat_core_log，前端 dispatchCoreLog 对非 error/warn 直接 return（use-chat-session.ts L548-550）⇒ 不进 UI、不进 lastCoreError 兜底，仅 console。§4.20 第 11 类（诊断载荷无渲染方）。0.0.45 新增。"
+  },
+  {
+    "path": "sidecar/chat-session.ts",
+    "text": "Cline Hub reconnected",
+    "reason": "同上（hub 重连成功态的诊断串，level:'info'，前端直接 return）。0.0.45 新增。"
+  }
 ]
