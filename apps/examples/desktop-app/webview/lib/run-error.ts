@@ -6,6 +6,9 @@ import {
 
 const RUN_PREFIX = "运行失败：";
 
+/** Error-role notice that is not a failure and is shown verbatim. */
+export const HUB_INTERRUPTED_MESSAGE_KIND = "hub_interrupted";
+
 /** The same presentation for live failures and restored transcript errors. */
 export function formatRunError(
 	detail: string,

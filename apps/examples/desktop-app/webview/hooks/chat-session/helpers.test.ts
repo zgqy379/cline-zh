@@ -106,6 +106,23 @@ describe("resolveCredentialError", () => {
 		).toMatch(/缺少 API 密钥/);
 	});
 
+	it("allows a provider whose metadata declares the API key optional", () => {
+		// Local OpenAI-compatible endpoints (LM Studio, vLLM, ...) and Ollama
+		// have no key; the catalog carries the declaration from `@cline/llms`.
+		expect(
+			resolveCredentialError(
+				makeConfig({
+					provider: "openai-compatible",
+					providerAuth: {
+						providerId: "openai-compatible",
+						capabilities: ["tools"],
+						apiKeyOptional: true,
+					},
+				}),
+			),
+		).toBeNull();
+	});
+
 	it("允许有密钥的 API 密钥供应商", () => {
 		expect(
 			resolveCredentialError(
