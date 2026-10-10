@@ -11,32 +11,37 @@ changed the files."）。上游许可证全文保留在 [`LICENSE`](LICENSE)，�
 | 项 | 值 |
 |---|---|
 | 上游项目 | [cline/cline](https://github.com/cline/cline) |
-| 对齐标签 | **`desktop-v0.0.43`**（2026-10-07 起；此前为 `desktop-v0.0.37`） |
+| 对齐标签 | **`desktop-v0.0.45`**（2026-10-10 起；此前为 `desktop-v0.0.43`，再此前 `desktop-v0.0.37`） |
 | 上游版权 | Copyright 2026 Cline Bot Inc. |
 | 许可 | Apache License 2.0（见 [`LICENSE`](LICENSE)） |
 | 0.0.37 原始基线 commit | `41deb5d`（"BASELINE: cline desktop-v0.0.37 upstream source (unmodified)"） |
 | 0.0.37 基线 tree hash | `6f6d2e38b0f1479eab178186c3b83f110473cb1b` |
 | **上游 0.0.43 合并点** | **`7190d75cf`**（`merge: 合并上游 desktop-v0.0.43`） |
 | **上游 0.0.43 原始 commit** | **`476b165b9`**（合并点的第二父提交；`chore(desktop): trim v0.0.43 changelog`） |
+| **上游 0.0.45 合并点** | **`7b7360ccc`**（`merge: 合并上游 desktop-v0.0.45`） |
+| **上游 0.0.45 原始 commit** | **`417526f19`**（tag `desktop-v0.0.45` 指向的 commit） |
 
-本仓库 = 上游 `desktop-v0.0.43`（`476b165b9`）＋ 其上的本地化改动。
+本仓库 = 上游 `desktop-v0.0.45`（`417526f19`）＋ 其上的本地化改动。
 
-### ⚠️ 如何复现差异（0.0.43 之后口径已变）
+### ⚠️ 如何复现差异（0.0.45 口径）
 
 ```bash
-# ✅ 只看本地化改动：与上游 0.0.43 原始 commit 比较
-git diff 476b165b9 HEAD          # 307 files, +8050 / −9323
+# ✅ 只看本地化改动：与上游 0.0.45 原始 commit 比较
+git diff 417526f19 HEAD         # 与上游 0.0.45 的全部差异（含本地化）
 
-# ❌ 不要用合并点 7190d75cf：合并时未冲突文件的汉化已被保留，
-#    拿它当基准只会看到合并之后的增量（37 files），不是全部本地化改动。
+# ✅ 只看「相对 0.0.43 口径」的本地化改动（含 0.0.45 的增量汉化）
+git diff 476b165b9 HEAD         # 518 files, +25898 / −13540
 
-# ⚠️ 与 0.0.37 原始快照比较：会同时混入两个版本之间的上游演进
+# ❌ 不要用合并点 7b7360ccc：合并时未冲突文件的汉化已被保留，
+#    拿它当基准只会看到合并之后的增量，不是全部本地化改动。
+
+# ⚠️ 与 0.0.37 原始快照比较：会同时混入三个版本之间的上游演进
 #    （702 files, +35093 / −17370），仅用于追溯 0.0.37 时期的批次。
 git diff 41deb5d HEAD
 ```
 
-> 2026-10-07 之前，本文件把 `git diff 41deb5d HEAD` 描述为「与上游的**全部**差异」。
-> 合并上游 0.0.43 后该说法不再成立，故改为以上三档口径。
+> 2026-10-10 合并上游 0.0.45 后，基准由 `476b165b9`（0.0.43）更新为
+> `417526f19`（0.0.45）；0.0.43 口径的 diff 仍可用于查看增量汉化。
 
 ---
 
@@ -49,15 +54,15 @@ git diff 41deb5d HEAD
 |---|---|---|
 | `apps/examples/desktop-app/webview/**` | 144 | 桌面端界面文案 |
 | `apps/examples/desktop-app/sidecar/**` | 30 | sidecar 抛给 UI 的用户可见消息 |
-| `sdk/packages/ui/**` | 27 | 共享 React 组件库（含测试断言同步） |
+| `sdk/packages/ui/**` | 28 | 共享 React 组件库（含测试断言同步） |
 | `sdk/packages/core/**` | 5 | 内置工具目录描述、云端会话事件消息 |
 | `apps/examples/desktop-app/src-tauri/**` | 2 | 托盘菜单、窗口/安装包标识 |
 | `sdk/packages/shared/**` | 1 | 连接器配置文案 |
-| `tools/i18n/**` | 72 | 本仓库新增的校验工具与译文映射表（见第七节） |
+| `tools/i18n/**` | 73 | 本仓库新增的校验工具与译文映射表（见第七节） |
 | 其他（`.gitignore`、`MODIFICATIONS.md`、`NOTICE`、`README.md`、`README.upstream.md`、`CHANGELOG.md`） | 6 | 见下 |
-| **合计** | **322** | **+10445 / −9326 行** |
+| **合计** | **325** | **+10641 / −9413 行** |
 
-> 统计口径：`git diff --name-only 476b165b9 HEAD`（已跟踪改动）+
+> 统计口径：`git diff --name-only 417526f19 HEAD`（已跟踪改动）+
 > `git ls-files --others --exclude-standard`（未跟踪新增），行数含未跟踪新增文件。
 
 本地化方式为**编译期硬替换**（非运行时 i18n 框架）。未引入任何新依赖。

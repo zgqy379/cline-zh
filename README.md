@@ -6,7 +6,7 @@
 
 <p align="center">
   <strong>Cline 桌面端（Desktop App）的简体中文本地化版本</strong><br>
-  非官方社区项目 · 基于 <a href="https://github.com/cline/cline">cline/cline</a> @ <code>desktop-v0.0.43</code> 编译
+  非官方社区项目 · 基于 <a href="https://github.com/cline/cline">cline/cline</a> @ <code>desktop-v0.0.45</code> 编译
 </p>
 
 ---
@@ -87,7 +87,7 @@ Apache-2.0 第 4(b) 条对"修改声明"的要求。
 
 ### 为什么仓库里是整个 cline 源码？
 
-本仓库是上游**完整源码树**的 fork，现对齐 `desktop-v0.0.43`
+本仓库是上游**完整源码树**的 fork，现对齐 `desktop-v0.0.45`
 （上游原始 commit `476b165b9`，合并点 `7190d75cf`；更早的
 `41deb5d` = `desktop-v0.0.37` 的未改动快照），
 跟踪 4100+ 个文件，而汉化实际只改动其中约 300 个。其余部分 —— `apps/vscode`（VS Code 扩展）、
