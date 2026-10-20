@@ -2258,7 +2258,7 @@ export async function handleCommand(
 		const result = await upgradeManagedHub({
 			workspaceRoot: ctx.localWorkspaceRoot,
 			force: true,
-			reason: "Cline Desktop hub update",
+			reason: "Cline 桌面端 Hub 更新",
 		});
 		if (result.outcome === "hub_not_older") {
 			throw new Error(

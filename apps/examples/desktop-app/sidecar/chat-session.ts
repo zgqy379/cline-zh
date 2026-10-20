@@ -1516,8 +1516,8 @@ async function reconnectSessionAfterHubLoss(
 					sessionId,
 					"finished",
 					result === "failed"
-						? "Cline Hub reconnect gave up"
-						: "Cline Hub reconnected",
+						? "Cline Hub 重连已放弃"
+						: "Cline Hub 已重连",
 				);
 			return result;
 		},

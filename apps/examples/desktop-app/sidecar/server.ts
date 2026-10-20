@@ -276,7 +276,7 @@ export function createFetchHandler(
 					new Error(
 						typeof report.errorMessage === "string"
 							? report.errorMessage
-							: "Unknown desktop webview error",
+							: "未知的桌面端网页错误",
 					),
 					{
 						name:

@@ -69,7 +69,7 @@ describe("hub_upgrade command", () => {
 		expect(upgradeManagedHubMock).toHaveBeenCalledWith({
 			workspaceRoot: "/workspace",
 			force: true,
-			reason: "Cline Desktop hub update",
+			reason: "Cline 桌面端 Hub 更新",
 		});
 		expect(result).toEqual({
 			outcome: "replaced",

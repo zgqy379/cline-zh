@@ -1205,7 +1205,7 @@ describe("Code sidecar runtime capabilities", () => {
 
 		await expect(approval).resolves.toEqual({
 			approved: false,
-			reason: "Desktop approval surface disconnected",
+			reason: "桌面审批界面已断开",
 		});
 		expect(ctx.pendingApprovals.size).toBe(0);
 		expect(ctx.wsClients.has(failedClient)).toBe(false);
@@ -1247,7 +1247,7 @@ describe("Code sidecar runtime capabilities", () => {
 
 		await expect(approval).resolves.toEqual({
 			approved: false,
-			reason: "Desktop approval surface disconnected",
+			reason: "桌面审批界面已断开",
 		});
 		expect(ctx.pendingApprovals.size).toBe(0);
 		expect(ctx.wsClients.has(approvalClient)).toBe(false);
@@ -1300,7 +1300,7 @@ describe("Code sidecar runtime capabilities", () => {
 		await expect(firstApproval).resolves.toEqual({ approved: true });
 		await expect(siblingApproval).resolves.toEqual({
 			approved: false,
-			reason: "Desktop approval surface disconnected",
+			reason: "桌面审批界面已断开",
 		});
 		expect(ctx.pendingApprovals.size).toBe(0);
 		expect(ctx.wsClients.has(approvalClient)).toBe(false);

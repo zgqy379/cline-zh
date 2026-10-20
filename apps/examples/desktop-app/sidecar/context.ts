@@ -179,7 +179,7 @@ export function cancelSidecarToolApprovalsForOwner(
 			scoped.pendingApprovals.delete(requestId);
 			pending.resolve({
 				approved: false,
-				reason: "Desktop approval surface disconnected",
+				reason: "桌面审批界面已断开",
 			});
 		}
 	}
@@ -870,7 +870,7 @@ function requestSidecarToolApproval(
 	if (!owner) {
 		return Promise.resolve({
 			approved: false,
-			reason: "No trusted desktop approval surface is connected",
+			reason: "没有已连接的受信任桌面审批界面",
 		});
 	}
 	return new Promise<ToolApprovalResult>((resolve) => {
