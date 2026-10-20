@@ -787,15 +787,19 @@ async function installSkill(
 		"cline",
 		"-y",
 	]);
+	const output = commandOutput(result);
+	const missingGitHint = /\bspawn\s+git\s+ENOENT\b/i.test(output ?? "")
+		? "Git is required to install this skill. Install Git, make sure it is on PATH, and retry.\n"
+		: "";
 	if (result.exitCode !== 0) {
-		const output = commandOutput(result);
 		throw new Error(
-			`技能安装失败，退出码 ${result.exitCode}${output ? `:\n${output}` : ""}`,
+			`技能安装失败，退出码 ${result.exitCode}${output ? `:\n${missingGitHint}${output}` : ""}`,
 		);
 	}
-	const output = commandOutput(result);
 	if (/\bFailed to install\b/i.test(output ?? "")) {
-		throw new Error(`技能安装失败${output ? `：\n${output}` : ""}`);
+		throw new Error(
+			`技能安装失败${output ? `：\n${missingGitHint}${output}` : ""}`,
+		);
 	}
 	if (!isGlobalSkillInstalled(entry)) {
 		throw new Error(

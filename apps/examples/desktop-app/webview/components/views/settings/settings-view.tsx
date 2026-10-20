@@ -33,7 +33,7 @@ import { resetOnboarding } from "@/lib/onboarding";
 import {
 	getProviderAuthKind,
 	isProviderConnected,
-	OAUTH_LOGIN_TIMEOUT_MS,
+	runProviderOAuthLogin,
 } from "@/lib/provider-connection";
 import {
 	invalidateProviderCatalogCache,
@@ -442,16 +442,7 @@ export function SettingsView({
 	const runOAuthProviderLogin = async (id: string) => {
 		setOauthSigningProviderId(id);
 		try {
-			const result = await desktopClient.invoke<{
-				provider: string;
-				accessToken: string;
-			}>(
-				"run_provider_oauth_login",
-				{ provider: id },
-				// The browser round-trip routinely outlives the default command
-				// deadline; the sidecar bounds the flow by device-code expiry.
-				{ timeoutMs: OAUTH_LOGIN_TIMEOUT_MS },
-			);
+			const result = await runProviderOAuthLogin(id);
 			setProvidersWithCache((prev) =>
 				prev.map((provider) =>
 					provider.id === id
@@ -719,32 +710,6 @@ function GeneralSettingsContent({
 	const [autoUpdateLoading, setAutoUpdateLoading] = useState(true);
 	const [autoUpdateSaving, setAutoUpdateSaving] = useState(false);
 	const [autoUpdateError, setAutoUpdateError] = useState<string | null>(null);
-	const [cloudSessionsEnabled, setCloudSessionsEnabled] = useState(false);
-	const [cloudSessionsLoading, setCloudSessionsLoading] = useState(true);
-	const [cloudSessionsSaving, setCloudSessionsSaving] = useState(false);
-	const [cloudSessionsError, setCloudSessionsError] = useState<string | null>(
-		null,
-	);
-	// The environment override can differ from the stored opt-in.
-	const [cloudSessionsEffective, setCloudSessionsEffective] = useState<
-		boolean | null
-	>(null);
-	// Keep the preview hidden until the rollout service explicitly enables it.
-	const [cloudSessionsAvailable, setCloudSessionsAvailable] = useState(false);
-
-	const refreshCloudSessionsEffective = useCallback(async () => {
-		try {
-			const flags = await desktopClient.invoke<{
-				cloudAgents?: boolean;
-				cloudAgentsAvailable?: boolean;
-			}>("get_feature_flags");
-			setCloudSessionsEffective(Boolean(flags.cloudAgents));
-			setCloudSessionsAvailable(flags.cloudAgentsAvailable === true);
-		} catch {
-			setCloudSessionsEffective(null);
-			setCloudSessionsAvailable(false);
-		}
-	}, []);
 
 	useEffect(() => setAppIconLocation(appIconSurface(navigator.userAgent)), []);
 	useEffect(() => subscribeToAppFontSize(setFontSize), []);
@@ -754,45 +719,21 @@ function GeneralSettingsContent({
 		setTelemetryError(null);
 		setAutoUpdateLoading(true);
 		setAutoUpdateError(null);
-		setCloudSessionsLoading(true);
-		setCloudSessionsError(null);
-		await Promise.all([
-			(async () => {
-				try {
-					const settings = await desktopClient.invoke<GlobalSettingsResponse>(
-						"get_global_settings",
-					);
-					setTelemetryOptOut(settings.telemetryOptOut);
-					setAutoUpdateEnabled(settings.autoUpdateEnabled);
-				} catch (error) {
-					const message =
-						error instanceof Error ? error.message : String(error);
-					setTelemetryError(message);
-					setAutoUpdateError(message);
-				} finally {
-					setTelemetryLoading(false);
-					setAutoUpdateLoading(false);
-				}
-			})(),
-			(async () => {
-				try {
-					const desktopSettings = await desktopClient.invoke<{
-						cloudSessionsEnabled: boolean;
-					}>("get_desktop_settings");
-					setCloudSessionsEnabled(
-						Boolean(desktopSettings.cloudSessionsEnabled),
-					);
-				} catch (error) {
-					setCloudSessionsError(
-						error instanceof Error ? error.message : String(error),
-					);
-				} finally {
-					setCloudSessionsLoading(false);
-				}
-			})(),
-			refreshCloudSessionsEffective(),
-		]);
-	}, [refreshCloudSessionsEffective]);
+		try {
+			const settings = await desktopClient.invoke<GlobalSettingsResponse>(
+				"get_global_settings",
+			);
+			setTelemetryOptOut(settings.telemetryOptOut);
+			setAutoUpdateEnabled(settings.autoUpdateEnabled);
+		} catch (error) {
+			const message = error instanceof Error ? error.message : String(error);
+			setTelemetryError(message);
+			setAutoUpdateError(message);
+		} finally {
+			setTelemetryLoading(false);
+			setAutoUpdateLoading(false);
+		}
+	}, []);
 
 	useEffect(() => {
 		const timeoutId = window.setTimeout(() => {
@@ -838,26 +779,6 @@ function GeneralSettingsContent({
 			setAutoUpdateError(message);
 		} finally {
 			setAutoUpdateSaving(false);
-		}
-	};
-
-	const updateCloudSessionsEnabled = async (nextValue: boolean) => {
-		const previousValue = cloudSessionsEnabled;
-		setCloudSessionsEnabled(nextValue);
-		setCloudSessionsSaving(true);
-		setCloudSessionsError(null);
-		try {
-			const settings = await desktopClient.invoke<{
-				cloudSessionsEnabled: boolean;
-			}>("set_cloud_sessions_enabled", { cloud_sessions_enabled: nextValue });
-			setCloudSessionsEnabled(Boolean(settings.cloudSessionsEnabled));
-			await refreshCloudSessionsEffective();
-		} catch (error) {
-			const message = error instanceof Error ? error.message : String(error);
-			setCloudSessionsEnabled(previousValue);
-			setCloudSessionsError(message);
-		} finally {
-			setCloudSessionsSaving(false);
 		}
 	};
 
@@ -1070,46 +991,6 @@ function GeneralSettingsContent({
 						onCheckedChange={(checked) => void updateAutoUpdateEnabled(checked)}
 					/>
 				</div>
-				{cloudSessionsAvailable ? (
-					<div className="flex py-4 items-center justify-between gap-5 border-b max-[720px]:flex-col max-[720px]:items-stretch max-[720px]:py-4">
-						<div className="flex flex-col gap-1">
-							<p className="flex items-center gap-2 text-base font-semibold text-foreground">
-								云端会话
-								<span className="rounded-full bg-primary/10 px-2 py-0.5 text-[11px] font-medium uppercase tracking-wide text-primary">
-									预览
-								</span>
-							</p>
-							<p className="text-sm text-muted-foreground">
-								在安全的云端沙箱中，让 Cline 运行于你的 GitHub
-								仓库之上。会在新会话编辑器中增加「云端」选项。需要已连接
-								GitHub 的 Cline 账号。
-							</p>
-							{cloudSessionsError ? (
-								<p className="mt-2 text-xs text-destructive" role="alert">
-									更新云端会话设置失败：{cloudSessionsError}
-								</p>
-							) : null}
-							{cloudSessionsEffective !== null &&
-							!cloudSessionsLoading &&
-							cloudSessionsEffective !== cloudSessionsEnabled ? (
-								<p className="mt-2 text-xs text-muted-foreground">
-									云端会话当前{cloudSessionsEffective ? "已启用" : "已禁用"}
-									，这是由{" "}
-									<code>CLINE_CODE_CLOUD_AGENTS</code>{" "}
-									环境变量覆盖所致，该覆盖优先于此设置。
-								</p>
-							) : null}
-						</div>
-						<Switch
-							aria-label="云端会话"
-							checked={cloudSessionsEnabled}
-							disabled={cloudSessionsLoading || cloudSessionsSaving}
-							onCheckedChange={(checked) =>
-								void updateCloudSessionsEnabled(checked)
-							}
-						/>
-					</div>
-				) : null}
 				<div className="flex py-4 items-center justify-between gap-5 border-b max-[720px]:flex-col max-[720px]:items-stretch max-[720px]:py-4">
 					<div className="flex flex-col gap-1">
 						<p className="text-base font-semibold text-foreground">遥测</p>
