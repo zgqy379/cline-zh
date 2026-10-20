@@ -66,7 +66,7 @@ const TYPE_META: Record<MarketplaceTypeFilter, MarketplaceTypeMeta> = {
 	skill: {
 		label: "技能",
 		plural: "技能",
-		short: "Skill",
+		short: "技能",
 		icon: Zap,
 		blurb: "Cline 逐步遵循的工作流说明，无需配置。",
 		text: "text-amber-600 dark:text-amber-300",
@@ -84,7 +84,7 @@ const TYPE_META: Record<MarketplaceTypeFilter, MarketplaceTypeMeta> = {
 	plugin: {
 		label: "插件",
 		plural: "插件",
-		short: "Plugin",
+		short: "插件",
 		icon: Puzzle,
 		blurb: "为 Cline 打包的一组工具、钩子和技能。",
 		text: "text-violet-600 dark:text-violet-300",
@@ -93,7 +93,7 @@ const TYPE_META: Record<MarketplaceTypeFilter, MarketplaceTypeMeta> = {
 	connector: {
 		label: "连接器",
 		plural: "连接器",
-		short: "Connector",
+		short: "连接器",
 		icon: Cable,
 		blurb: "登录你的账号，即时获取托管工具。无需密钥。",
 		text: "text-emerald-600 dark:text-emerald-300",

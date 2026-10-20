@@ -114,17 +114,17 @@ describe("AccountView signed-out state", () => {
 			if (!found) throw new Error(`Missing button: ${label}`);
 			return found;
 		};
-		await act(async () => button("Sign in").click());
-		expect(button("Signing in").disabled).toBe(true);
+		await act(async () => button("登录").click());
+		expect(button("登录中").disabled).toBe(true);
 		expect(container.textContent).not.toContain("Create account");
-		await act(async () => button("Cancel").click());
+		await act(async () => button("取消").click());
 		expect(container.textContent).toContain("Could not cancel sign-in");
-		expect(button("Signing in").disabled).toBe(true);
-		expect(button("Cancel").disabled).toBe(false);
-		await act(async () => button("Cancel").click());
+		expect(button("登录中").disabled).toBe(true);
+		expect(button("取消").disabled).toBe(false);
+		await act(async () => button("取消").click());
 		expect(container.textContent).not.toContain("Could not cancel sign-in");
-		expect(button("Sign in").disabled).toBe(false);
-		expect(button("Create account").disabled).toBe(false);
+		expect(button("登录").disabled).toBe(false);
+		expect(button("创建账户").disabled).toBe(false);
 		expect(container.textContent).not.toContain("Sign-in cancelled");
 		expect(
 			invoke.mock.calls.filter(([command]) => command === "cline_account"),

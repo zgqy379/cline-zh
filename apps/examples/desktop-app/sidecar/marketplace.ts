@@ -789,11 +789,11 @@ async function installSkill(
 	]);
 	const output = commandOutput(result);
 	const missingGitHint = /\bspawn\s+git\s+ENOENT\b/i.test(output ?? "")
-		? "Git is required to install this skill. Install Git, make sure it is on PATH, and retry.\n"
+		? "安装此技能需要 Git。请先安装 Git 并确认它已在 PATH 中，然后重试。\n"
 		: "";
 	if (result.exitCode !== 0) {
 		throw new Error(
-			`技能安装失败，退出码 ${result.exitCode}${output ? `:\n${missingGitHint}${output}` : ""}`,
+			`技能安装失败，退出码 ${result.exitCode}${output ? `：\n${missingGitHint}${output}` : ""}`,
 		);
 	}
 	if (/\bFailed to install\b/i.test(output ?? "")) {

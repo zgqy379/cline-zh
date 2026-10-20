@@ -180,11 +180,11 @@ describe("WelcomeScreen", () => {
 			executionTarget: "cloud",
 			cloudAgentsEnabled: true,
 		});
-		await clickButton("Sign in with Cline");
-		expect(container.textContent).toContain("Waiting for browser");
-		await clickButton("Cancel");
+		await clickButton("使用 Cline 登录");
+		expect(container.textContent).toContain("正在等待浏览器");
+		await clickButton("取消");
 		const cancelling = Array.from(container.querySelectorAll("button")).find(
-			(button) => button.textContent === "Cancel",
+			(button) => button.textContent === "取消",
 		);
 		expect(cancelling?.disabled).toBe(true);
 		expect(invokeMock).toHaveBeenCalledWith("cancel_provider_oauth_login", {
@@ -196,15 +196,15 @@ describe("WelcomeScreen", () => {
 		});
 		expect(
 			Array.from(container.querySelectorAll("button")).find((button) =>
-				button.textContent?.includes("Waiting for browser"),
+				button.textContent?.includes("正在等待浏览器"),
 			)?.disabled,
 		).toBe(true);
 		await act(async () => {
 			if (first === "login") finishCancel();
 			else rejectLogin(new Error("Sign-in cancelled"));
 		});
-		expect(container.textContent).not.toContain("Sign in failed");
-		await clickButton("Sign in with Cline");
+		expect(container.textContent).not.toContain("登录失败");
+		await clickButton("使用 Cline 登录");
 		expect(
 			invokeMock.mock.calls.filter(
 				([command]) => command === "run_provider_oauth_login",

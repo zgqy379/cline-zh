@@ -225,7 +225,7 @@ describe("skill install failures", () => {
 		await expect(
 			installMarketplaceEntry({ entry: SKILL_ENTRY }, { spawnCommand }),
 		).rejects.toThrow(
-			/Git is required to install this skill\. Install Git, make sure it is on PATH, and retry\./,
+			/安装此技能需要 Git。请先安装 Git 并确认它已在 PATH 中，然后重试。/,
 		);
 		expect(spawnCommand).toHaveBeenCalledWith("npx", [
 			"-y",
@@ -250,7 +250,7 @@ describe("skill install failures", () => {
 		await expect(
 			installMarketplaceEntry({ entry: SKILL_ENTRY }, { spawnCommand }),
 		).rejects.toThrow(
-			"Skill install failed with exit code 1:\nNetwork request failed",
+			"技能安装失败，退出码 1：\nNetwork request failed",
 		);
 	});
 });

@@ -67,7 +67,7 @@ export function TranscriptOutline({ messages }: { messages: ChatMessage[] }) {
 	return (
 		<nav
 			ref={outlineRef}
-			aria-label="Transcript outline"
+			aria-label="对话大纲"
 			className="absolute left-2 top-1/2 z-10 flex max-h-[calc(100%-3rem)] -translate-y-1/2 flex-col overflow-y-auto rounded-md bg-background/90 p-1"
 		>
 			{userMessages.map((message, index) => (
@@ -108,7 +108,7 @@ const TranscriptOutlineEntry = memo(function TranscriptOutlineEntry({
 	const preview = useMemo(
 		() =>
 			formatChatMessageContent("user", content).replace(/\s+/g, " ") ||
-			(hasImages ? "Image attachment" : "User message"),
+			(hasImages ? "图片附件" : "用户消息"),
 		[content, hasImages],
 	);
 	return (
@@ -117,7 +117,7 @@ const TranscriptOutlineEntry = memo(function TranscriptOutlineEntry({
 				<button
 					ref={isCurrent ? currentButtonRef : undefined}
 					type="button"
-					aria-label={`Go to message ${index + 1}: ${preview.slice(0, 120)}`}
+					aria-label={`跳到消息 ${index + 1}：${preview.slice(0, 120)}`}
 					aria-current={isCurrent ? "location" : undefined}
 					className="group flex h-4 w-7 shrink-0 items-center justify-start rounded-sm px-1 outline-none focus-visible:ring-2 focus-visible:ring-ring"
 					onClick={() => onNavigate(messageId)}

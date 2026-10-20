@@ -1137,12 +1137,9 @@ describe("ChatMessages tool disclosures", () => {
 
 			expect(writeText).toHaveBeenCalledOnce();
 			expect(writeText).toHaveBeenCalledWith("Original prompt");
-			expect(copyButton?.getAttribute("aria-label")).toBe(
-				"Copied user message",
-			);
-
+			expect(copyButton?.getAttribute("aria-label")).toBe("已复制用户消息");
 			await act(async () => vi.runOnlyPendingTimers());
-			expect(copyButton?.getAttribute("aria-label")).toBe("Copy user message");
+			expect(copyButton?.getAttribute("aria-label")).toBe("复制用户消息");
 		} finally {
 			vi.useRealTimers();
 		}
@@ -2028,7 +2025,7 @@ describe("ChatMessages transcript navigation", () => {
 			},
 		]);
 		const outline = container.querySelector(
-			'nav[aria-label="Transcript outline"]',
+			'nav[aria-label="对话大纲"]',
 		);
 		expect(outline?.querySelectorAll("button")).toHaveLength(2);
 		expect(outline?.textContent).not.toContain("Continue");
@@ -2077,10 +2074,10 @@ describe("ChatMessages transcript navigation", () => {
 			},
 		]);
 		const button = container.querySelector<HTMLButtonElement>(
-			'nav[aria-label="Transcript outline"] button',
+			'nav[aria-label="对话大纲"] button',
 		);
 		expect(button?.getAttribute("aria-label")).toBe(
-			"Go to message 1: Please fix the tests",
+			"跳到消息 1：Please fix the tests",
 		);
 		await act(async () => {
 			button?.focus();
@@ -2097,7 +2094,7 @@ describe("ChatMessages transcript navigation", () => {
 		);
 		if (!viewport) throw new Error("Transcript viewport missing");
 		const buttons = container.querySelectorAll<HTMLButtonElement>(
-			'nav[aria-label="Transcript outline"] button',
+			'nav[aria-label="对话大纲"] button',
 		);
 		await act(async () => buttons[1].click());
 		expect(HTMLElement.prototype.scrollTo).toHaveBeenCalledWith(
@@ -2239,7 +2236,7 @@ describe("ChatMessages transcript navigation", () => {
 	it("hides the outline for an empty chat", async () => {
 		await renderMessages([]);
 		expect(
-			container.querySelector('nav[aria-label="Transcript outline"]'),
+			container.querySelector('nav[aria-label="对话大纲"]'),
 		).toBeNull();
 	});
 });

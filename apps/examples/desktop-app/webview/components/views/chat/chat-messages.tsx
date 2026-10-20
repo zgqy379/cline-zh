@@ -65,7 +65,7 @@ type ChatMessagesProps = {
 	error: string | null;
 	/** Set when the session's history was imported from another coding agent. */
 	importedFromTool?: SessionImportTool;
-	/** Replaces "Thinking..." while the runtime reports a named pre-output step. */
+	/** Replaces "思考中…" while the runtime reports a named pre-output step. */
 	activityLabel?: string | null;
 	streamingMessageId?: string | null;
 	pendingToolApprovals: ToolApprovalRequestItem[];
@@ -342,7 +342,7 @@ function ChatMessagesImpl({
 				await Promise.resolve(fn(requestId));
 			} catch (err) {
 				const message =
-					err instanceof Error ? err.message : "Could not submit decision.";
+					err instanceof Error ? err.message : "无法提交批准决定。";
 				setToolApprovalErrors((prev) => ({ ...prev, [requestId]: message }));
 			} finally {
 				setToolApprovalActions((prev) => {
@@ -371,7 +371,7 @@ function ChatMessagesImpl({
 				await Promise.resolve(onAnswerAskQuestion(requestId, answer));
 			} catch (err) {
 				const message =
-					err instanceof Error ? err.message : "Could not submit answer.";
+					err instanceof Error ? err.message : "无法提交回答。";
 				setAskQuestionErrors((prev) => ({ ...prev, [requestId]: message }));
 			} finally {
 				setAskQuestionActions((prev) => {
@@ -398,8 +398,8 @@ function ChatMessagesImpl({
 			} catch {
 				toast({
 					variant: "destructive",
-					title: "Copy failed",
-					description: "The message could not be copied to the clipboard.",
+					title: "复制失败",
+					description: "无法将该消息复制到剪贴板。",
 				});
 			}
 		},
@@ -424,7 +424,7 @@ function ChatMessagesImpl({
 				await Promise.resolve(onRestoreCheckpoint(runCount));
 			} catch (err) {
 				const message =
-					err instanceof Error ? err.message : "Could not restore checkpoint.";
+					err instanceof Error ? err.message : "无法还原检查点。";
 				setCheckpointErrors((prev) => ({ ...prev, [messageId]: message }));
 			} finally {
 				setCheckpointActions((prev) => {
@@ -460,7 +460,7 @@ function ChatMessagesImpl({
 				const message =
 					err instanceof Error
 						? err.message
-						: "Could not restart from this message.";
+						: "无法从该消息重新开始。";
 				setEditErrors((prev) => ({ ...prev, [messageId]: message }));
 			} finally {
 				setEditingMessageId((current) =>
@@ -534,7 +534,7 @@ function ChatMessagesImpl({
 				await Promise.resolve(onForkSession());
 			} catch (err) {
 				const message =
-					err instanceof Error ? err.message : "Could not fork session.";
+					err instanceof Error ? err.message : "无法分叉会话。";
 				setForkErrors((prev) => ({ ...prev, [messageId]: message }));
 			} finally {
 				setForkingMessageId((current) =>
@@ -742,7 +742,7 @@ function ChatMessagesImpl({
 									>
 										<Loader2 className="size-4 animate-spin" />
 										<span className={STREAMING_TITLE_CLASS}>
-											{startingLabel ?? activityLabel ?? "Thinking..."}
+											{startingLabel ?? activityLabel ?? "思考中…"}
 										</span>
 									</MessageScrollerItem>
 								) : null}
@@ -812,10 +812,10 @@ function ChatMessagesImpl({
 									<div className="mt-4 flex items-center gap-2 text-xs text-muted-foreground">
 										<Loader2 className="h-3.5 w-3.5 animate-spin" />
 										{chatTransportState === "reconnecting"
-											? "Reconnecting chat..."
+											? "正在重新连接对话…"
 											: chatTransportState === "unavailable"
-												? "Chat backend unavailable"
-												: "Connecting chat..."}
+												? "对话后端不可用"
+												: "正在连接对话…"}
 									</div>
 								) : null}
 								{shouldShowErrorBanner ? (

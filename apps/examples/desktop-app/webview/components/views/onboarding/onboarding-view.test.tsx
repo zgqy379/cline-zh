@@ -553,7 +553,7 @@ describe("OnboardingView", () => {
 
 	it("stays on Welcome when sign-in completes after Back", async () => {
 		await render();
-		await act(async () => buttonByText("Get started").click());
+		await act(async () => buttonByText("开始构建").click());
 		let finishLogin!: () => void;
 		invoke.mockImplementation(async (command: string) => {
 			if (command === "run_provider_oauth_login") {
@@ -566,26 +566,26 @@ describe("OnboardingView", () => {
 			}
 			return {};
 		});
-		await act(async () => buttonByText("Sign in").click());
+		await act(async () => buttonByText("登录").click());
 		await act(async () => {
 			container
-				.querySelector<HTMLButtonElement>('[aria-label="Back"]')
+				.querySelector<HTMLButtonElement>('[aria-label="返回"]')
 				?.click();
 		});
-		expect(buttonByText("Get started")).toBeDefined();
+		expect(buttonByText("开始构建")).toBeDefined();
 		await act(async () => finishLogin());
-		expect(buttonByText("Get started")).toBeDefined();
-		expect(container.textContent).not.toContain("Connect GitHub");
+		expect(buttonByText("开始构建")).toBeDefined();
+		expect(container.textContent).not.toContain("连接 GitHub");
 		expect(invoke).not.toHaveBeenCalledWith("cancel_provider_oauth_login", {
 			provider: "cline",
 		});
-		await act(async () => buttonByText("Get started").click());
-		expect(container.textContent).toContain("Signed in as");
+		await act(async () => buttonByText("开始构建").click());
+		expect(container.textContent).toContain("已登录为");
 	});
 
 	it("keeps sign-in busy during account refresh and does not advance after Cancel", async () => {
 		await render();
-		await act(async () => buttonByText("Get started").click());
+		await act(async () => buttonByText("开始构建").click());
 		let finishRefresh!: (user: { email: string; displayName: string }) => void;
 		invoke.mockImplementation(async (command: string) => {
 			if (command === "cline_account") {
@@ -595,16 +595,16 @@ describe("OnboardingView", () => {
 			}
 			return {};
 		});
-		await act(async () => buttonByText("Sign in").click());
-		expect(buttonByText("Waiting for browser...").disabled).toBe(true);
-		await act(async () => buttonByText("Cancel").click());
-		expect(buttonByText("Waiting for browser...").disabled).toBe(true);
+		await act(async () => buttonByText("登录").click());
+		expect(buttonByText("正在等待浏览器…").disabled).toBe(true);
+		await act(async () => buttonByText("取消").click());
+		expect(buttonByText("正在等待浏览器…").disabled).toBe(true);
 		await act(async () =>
 			finishRefresh({ email: "dev@example.com", displayName: "Dev" }),
 		);
-		expect(container.textContent).toContain("Signed in as");
-		expect(container.textContent).not.toContain("Connect GitHub");
-		expect(buttonByText("Continue").disabled).toBe(false);
+		expect(container.textContent).toContain("已登录为");
+		expect(container.textContent).not.toContain("连接 GitHub");
+		expect(buttonByText("继续").disabled).toBe(false);
 	});
 
 	it("connects with a Cline API key when OAuth sign-in is not used", async () => {

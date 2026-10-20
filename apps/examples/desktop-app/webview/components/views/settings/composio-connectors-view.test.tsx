@@ -172,7 +172,7 @@ describe("installed connectors", () => {
 		await render();
 		await act(async () => button("查看")?.click());
 		const text = document.querySelector('[role="dialog"]')?.textContent;
-		expect(text).toContain("Tools47");
+		expect(text).toContain("工具47");
 		expect(text).not.toContain("available in new sessions");
 	});
 
@@ -190,9 +190,9 @@ describe("installed connectors", () => {
 		const renderInstalled = () =>
 			root.render(<ComposioConnectorsView variant="installed" />);
 		const installedCard = () =>
-			container.querySelector('[aria-label="Open Gmail details"]');
+			container.querySelector('[aria-label="打开 Gmail 详情"]');
 		await act(async () => renderInstalled());
-		expect(installedCard()?.textContent).not.toContain("tools");
+		expect(installedCard()?.textContent).not.toContain("工具");
 		await act(async () =>
 			resolveCatalog({
 				configured: true,
@@ -202,14 +202,14 @@ describe("installed connectors", () => {
 				],
 			}),
 		);
-		expect(installedCard()?.textContent).toContain("47 tools");
-		expect(installedCard()?.textContent).not.toContain("99 tools");
+		expect(installedCard()?.textContent).toContain("47 个工具");
+		expect(installedCard()?.textContent).not.toContain("99 个工具");
 		expect(installedCard()?.textContent).not.toContain("Gmail catalog name");
 		await act(async () => (installedCard() as HTMLElement).click());
 		expect(document.querySelector('[role="dialog"]')?.textContent).toContain(
-			"Tools47",
+			"工具47",
 		);
-		await act(async () => button("Close")?.click());
+		await act(async () => button("关闭")?.click());
 		// Reload catalog data without changing the connection status reference.
 		mocks.configured = false;
 		await act(async () => renderInstalled());
@@ -221,8 +221,8 @@ describe("installed connectors", () => {
 				toolkits: [{ slug: "gmail", name: "Gmail", toolsCount: 53 }],
 			}),
 		);
-		expect(installedCard()?.textContent).toContain("53 tools");
-		expect(installedCard()?.textContent).not.toContain("47 tools");
+		expect(installedCard()?.textContent).toContain("53 个工具");
+		expect(installedCard()?.textContent).not.toContain("47 个工具");
 	});
 
 	it("omits an unknown tool count for a connected connector", async () => {
@@ -231,10 +231,10 @@ describe("installed connectors", () => {
 			toolkits: [{ slug: "gmail", name: "Gmail", description: "Email" }],
 		});
 		await render();
-		await act(async () => button("View")?.click());
+		await act(async () => button("查看")?.click());
 		const text = document.querySelector('[role="dialog"]')?.textContent;
 		expect(text).toContain("Gmail");
-		expect(text).not.toContain("Tools");
+		expect(text).not.toContain("工具");
 		expect(text).not.toContain("available in new sessions");
 	});
 
@@ -333,9 +333,11 @@ describe("installed connectors", () => {
 		const installed = container.querySelector("section");
 		expect(installed?.textContent).toContain("Gmail");
 		expect(installed?.textContent).not.toContain("GitHub");
-		// 上游此断言守卫「行内 Recommended 徽标」不回归；保留英文词面，
-		// 以免与「推荐」分区标题（Suggested，本场景合法渲染）撞词。
-		expect(container.textContent).not.toContain("Recommended");
+		// 上游此断言守卫「行内 Recommended 徽标」不回归。但上游 0.0.48 已删除该徽标，
+		// 原英文断言已成空转；且汉化后徽标词与「推荐」分区标题（Suggested）撞词，
+		// 不能再按词面断言。改为：断言「已安装」区块自身不含建议区特有的说明文案
+		//（建议区在 installed 变体里仍会渲染，属上游现状，故只能限定区块范围）。
+		expect(installed?.textContent).not.toContain("搭配起来效果很好的连接器组合");
 		await act(async () => button("卸载")?.click());
 		expect(mocks.disconnect).toHaveBeenCalledWith("gmail");
 	});
