@@ -39,12 +39,17 @@ VS Code 扩展与桌面端是两套独立的 UI 代码，扩展版的汉化不�
 只想看本 fork 实际做了什么：
 
 ```bash
-git log --author=cline-zh-agent --oneline   # 159 个提交（2026-10-05 ~ 10-20）
-git diff --stat 476b165b9 HEAD              # 本地化改动全量 diff（307 文件）
+git log main --author=cline-zh-agent --oneline             # main 上 159 个提交（2026-10-05 ~ 10-20）
+git log backup/pre-graft --author=cline-zh-agent --oneline # graft 前 136 个（B1–B55，至 2026-10-03）
+git diff --stat 476b165b9 HEAD                             # 本地化改动全量 diff（307 文件）
 ```
 
-工作按批次推进（B3 … B62，每批一个独立提交，同步更新受影响的测试断言）；
+工作按批次推进（B1 … B62，每批一个独立提交，同步更新受影响的测试断言）；
 上游发新版后做版本合并，并逐项复核 fork 侧改动是否被打回。
+
+> 关于提交计数：2026-10-05 做过一次血缘挂接（`graft-base`，把本 fork 接到上游
+> `desktop-v0.0.37`），挂接前的明细提交保留在 `backup/pre-graft` 分支、不在 `main` 的
+> 历史线里。两段是**同一份工作的前后两段历史**，按提交数估算工作量时不要相加。
 
 ---
 
