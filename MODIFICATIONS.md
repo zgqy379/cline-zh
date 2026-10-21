@@ -11,7 +11,7 @@ changed the files."）。上游许可证全文保留在 [`LICENSE`](LICENSE)，�
 | 项 | 值 |
 |---|---|
 | 上游项目 | [cline/cline](https://github.com/cline/cline) |
-| 对齐标签 | **`desktop-v0.0.45`**（2026-10-10 起；此前为 `desktop-v0.0.43`，再此前 `desktop-v0.0.37`） |
+| 对齐标签 | **`desktop-v0.0.48`**（2026-10-20 起；此前 `desktop-v0.0.45`（2026-10-10）、`desktop-v0.0.43`（2026-10-06）、`desktop-v0.0.37`） |
 | 上游版权 | Copyright 2026 Cline Bot Inc. |
 | 许可 | Apache License 2.0（见 [`LICENSE`](LICENSE)） |
 | 0.0.37 原始基线 commit | `41deb5d`（"BASELINE: cline desktop-v0.0.37 upstream source (unmodified)"） |
@@ -20,50 +20,67 @@ changed the files."）。上游许可证全文保留在 [`LICENSE`](LICENSE)，�
 | **上游 0.0.43 原始 commit** | **`476b165b9`**（合并点的第二父提交；`chore(desktop): trim v0.0.43 changelog`） |
 | **上游 0.0.45 合并点** | **`7b7360ccc`**（`merge: 合并上游 desktop-v0.0.45`） |
 | **上游 0.0.45 原始 commit** | **`417526f19`**（tag `desktop-v0.0.45` 指向的 commit） |
+| **上游 0.0.46–0.0.48 合并点** | **`e5602c426`**（`merge: 上游 desktop-v0.0.46 / 0.0.47 / 0.0.48`，落后 3 版 66 提交 / 438 文件） |
+| **上游 0.0.48 原始 commit（当前基准）** | **`a42df8c8d`**（合并点的第二父提交；`chore(desktop): release v0.0.48`） |
 
-本仓库 = 上游 `desktop-v0.0.45`（`417526f19`）＋ 其上的本地化改动。
+本仓库 = 上游 `desktop-v0.0.48`（`a42df8c8d`）＋ 其上的本地化改动。
 
-### ⚠️ 如何复现差异（0.0.45 口径）
+### ⚠️ 如何复现差异（0.0.48 口径）
 
 ```bash
-# ✅ 只看本地化改动：与上游 0.0.45 原始 commit 比较
-git diff 417526f19 HEAD         # 与上游 0.0.45 的全部差异（含本地化）
+# ✅ 当前口径：只看本地化改动 —— 与上游 0.0.48 原始 commit 比较
+git diff a42df8c8d HEAD         # 326 files, +10839 / −9533
 
-# ✅ 只看「相对 0.0.43 口径」的本地化改动（含 0.0.45 的增量汉化）
-git diff 476b165b9 HEAD         # 518 files, +25898 / −13540
+# ⚠️ 以下三个旧基准在 2026-10-20 合并上游 0.0.46→0.0.48 之后已被污染，
+#    数字里混进了上游自身的演进，不再等于"本地化改动"：
+git diff 417526f19 HEAD         # 0.0.45 基准 → 现为 721 files, +80589 / −38265
+git diff 476b165b9 HEAD         # 0.0.43 基准 → 现为 853 files, +94691 / −41248
+git diff 41deb5d HEAD           # 0.0.37 基准 → 现为 1151 files, +120821 / −48371
 
-# ❌ 不要用合并点 7b7360ccc：合并时未冲突文件的汉化已被保留，
-#    拿它当基准只会看到合并之后的增量，不是全部本地化改动。
-
-# ⚠️ 与 0.0.37 原始快照比较：会同时混入三个版本之间的上游演进
-#    （702 files, +35093 / −17370），仅用于追溯 0.0.37 时期的批次。
-git diff 41deb5d HEAD
+# ❌ 不要用合并点（`e5602c426` / `7b7360ccc` / `7190d75cf`）当基准：合并时未冲突
+#    文件的汉化已被保留，拿它比较只会看到合并之后的增量，不是全部本地化改动。
 ```
 
-> 2026-10-10 合并上游 0.0.45 后，基准由 `476b165b9`（0.0.43）更新为
-> `417526f19`（0.0.45）；0.0.43 口径的 diff 仍可用于查看增量汉化。
+> **基准迁移规则（踩坑沉淀）**：每次合并上游后，必须把差异基准移到**新的上游
+> release commit**（取合并点的第二父提交），否则本节命令与下节统计会静默失真。
+>
+> - 2026-10-10 合并 0.0.45 后：基准 `476b165b9`（0.0.43）→ `417526f19`（0.0.45）
+> - 2026-10-20 合并 0.0.46–0.0.48 后：基准 `417526f19`（0.0.45）→ `a42df8c8d`（0.0.48）
+>   —— 本节与下节数字即按新基准重算
 
 ---
 
 ## 改动规模
 
-> 口径：`git diff 476b165b9 HEAD -- <路径>`（上游 0.0.43 原始 commit 为基准），
-> 实测于 2026-10-08（HEAD = `3f77c61e3`）。
+> 口径：`git diff --name-only a42df8c8d HEAD -- <路径>`（上游 0.0.48 原始 commit 为基准），
+> 实测于 2026-10-21（HEAD = `6849a33b`）。
 
 | 区域 | 改动文件数 | 说明 |
 |---|---|---|
-| `apps/examples/desktop-app/webview/**` | 144 | 桌面端界面文案 |
-| `apps/examples/desktop-app/sidecar/**` | 30 | sidecar 抛给 UI 的用户可见消息 |
-| `sdk/packages/ui/**` | 28 | 共享 React 组件库（含测试断言同步） |
+| `apps/examples/desktop-app/webview/**` | 145 | 桌面端界面文案 |
+| `apps/examples/desktop-app/sidecar/**` | 29 | sidecar 抛给 UI 的用户可见消息 |
+| `sdk/packages/ui/**` | 29 | 共享 React 组件库（含测试断言同步） |
 | `sdk/packages/core/**` | 5 | 内置工具目录描述、云端会话事件消息 |
 | `apps/examples/desktop-app/src-tauri/**` | 2 | 托盘菜单、窗口/安装包标识 |
 | `sdk/packages/shared/**` | 1 | 连接器配置文案 |
 | `tools/i18n/**` | 73 | 本仓库新增的校验工具与译文映射表（见第七节） |
-| 其他（`.gitignore`、`MODIFICATIONS.md`、`NOTICE`、`README.md`、`README.upstream.md`、`CHANGELOG.md`） | 6 | 见下 |
-| **合计** | **325** | **+10641 / −9413 行** |
+| `.github/workflows/**` | 18 | 删除 16 个上游发布类 workflow + 2 个改为手动触发 |
+| `.github/**`（workflows 之外） | 2 | issue 模板等仓库治理文件 |
+| `docs/**` | 3 | 文档改为本 fork 版本 |
+| 其他零散文件 | 19 | `.gitignore`、`MODIFICATIONS.md`、`NOTICE`、`README.md`、`README.upstream.md`、`CHANGELOG.md`、`SECURITY.md`、`package.json`、`assets/docs/**`、`build-out/**` 等 |
+| **合计** | **326** | **+10839 / −9533 行** |
 
-> 统计口径：`git diff --name-only 417526f19 HEAD`（已跟踪改动）+
-> `git ls-files --others --exclude-standard`（未跟踪新增），行数含未跟踪新增文件。
+> 统计口径：全部为**已提交**改动的 `git diff --name-only`，不含未跟踪文件
+> （旧版本节把未跟踪新增也计入，故与历史数字不可直接比较）。
+
+> ⚠️ **待核实**：上表 19 个零散文件里有 3 个位于 README 声明"一行未动"的区域之外 ——
+> `apps/vscode/src/core/hooks/HookProcess.ts`（纯格式化换行，未改文案）、
+> `apps/cline-hub/.../settings/extensions-view.tsx`（"Builtin Tools / Plugin Tools"
+> 被译为"内置工具 / 插件工具"）、
+> `apps/cli/src/wizards/connect/platforms.test.ts`（测试断言期望值被改为中文，
+> 而对应 label 由 `pl.name` 动态取值，**该测试在当前汉化状态下是否仍通过尚未验证**）。
+> 这三处是批次工具的作用范围溢出，还是有意为之，需要逐项确认后回填本节与 README 的
+> "一行未动"表述。
 
 本地化方式为**编译期硬替换**（非运行时 i18n 框架）。未引入任何新依赖。
 
