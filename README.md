@@ -41,7 +41,8 @@ VS Code 扩展与桌面端是两套独立的 UI 代码，扩展版的汉化不�
 ```bash
 git log main --author=cline-zh-agent --oneline             # main 上 159 个提交（2026-10-05 ~ 10-20）
 git log backup/pre-graft --author=cline-zh-agent --oneline # graft 前 136 个（B1–B55，至 2026-10-03）
-git diff --stat 476b165b9 HEAD                             # 本地化改动全量 diff（307 文件）
+git log main --author=cline-zh-agent --name-only --format='' | sort -u | wc -l
+                                                           # 本 fork 提交共触及 327 个文件，累计 +12612 / −11085 行
 ```
 
 工作按批次推进（B1 … B62，每批一个独立提交，同步更新受影响的测试断言）；
@@ -121,8 +122,10 @@ Apache-2.0 第 4(b) 条对"修改声明"的要求。
 
 保留完整树而不是只放一份「汉化补丁」，是三个硬约束的结果：
 
-1. **法务可追溯**：[`MODIFICATIONS.md`](MODIFICATIONS.md) 声明本地化改动
-   可用 `git diff 476b165b9 HEAD` 复现。Apache-2.0 第 4(b) 条的修改声明要求可追溯，
+1. **法务可追溯**：[`MODIFICATIONS.md`](MODIFICATIONS.md) 逐项列出本地化与功能性改动，
+   全量差异可用 `git diff a42df8c8d HEAD` 复现
+   （`a42df8c8d` = 上游 `chore(desktop): release v0.0.48`，即最近一次上游合并的第二父）。
+   Apache-2.0 第 4(b) 条的修改声明要求可追溯，
    裁剪任何目录都会让这句话不成立。
 2. **上游更新可重放**：上游发新版后可直接 rebase，再重跑 `tools/i18n/` 的扫描器复用译文映射表。
 3. **构建可复现**：桌面端依赖 `sdk/packages/**` 与根 workspace 配置，缺一块就编不出来。
@@ -130,8 +133,16 @@ Apache-2.0 第 4(b) 条对"修改声明"的要求。
 只想看汉化改了什么：
 
 ```bash
-git diff --stat 476b165b9 HEAD          # ✅ 本地化改动（307 files）
-git diff --stat 41deb5d HEAD            # ⚠️ 含 0.0.37→0.0.43 的上游演进
+# ✅ 本 fork 相对上游 v0.0.48 的全部改动：326 files / +10829 / −9534
+git diff --stat a42df8c8d HEAD
+
+# ✅ 只看本 fork 自己的提交：327 个文件，累计 +12612 / −11085 行
+git log main --author=cline-zh-agent --stat
+
+# ⚠️ 旧基线已不适用：476b165b9 是上游 0.0.43，合并 0.0.46→0.0.48 后它连带
+#    853 files / +94691 / −41248 的上游演进，不再是纯本地化 diff
+git diff --stat 476b165b9 HEAD
+git diff --stat 41deb5d HEAD            # ⚠️ 同理，含 0.0.37→0.0.43 的上游演进
 ```
 
 > ⚠️ **升级上游时务必逐项复核 `tauri.conf.json`**：本 fork 在该文件上有两处
